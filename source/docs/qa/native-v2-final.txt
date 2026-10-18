@@ -1,7 +1,0 @@
-
-PASS 3976 native checks
-Content, frequency ceiling, guessing and pack roundtrip passed
-Separate listening, slow playback, subtitles and sentence tiles passed
-24-step native assessment, building scene, full battle and real media passed
-Focus spending and save validation passed
-

@@ -1,55 +1,57 @@
-词境前线 0.2.0
-原生 Android · 本地交锋与英语练习
+词境前线 3D · 0.3.0 可玩样段
+2026-10-15
 
-安装与更新
-安装“词境前线-0.2.0.apk”，可覆盖原 0.1.0，包名和个人签名保持一致。建议更新前在旧版设置中导出一次存档。不要先卸载，卸载会删除设备内进度。
-Android 8.0 及以上，竖屏设计；本次在 Android 16.1 模拟器验证，尚未在你的手机上实测。
+独立 Android 应用，包名 com.wordfrontier.frontier3d。Godot 4.5.1 实时三维渲染；没有浏览器或 WebView。与旧版 0.2 分开安装、分开存档。
 
-这版的变化
-全屏河谷场景、可建设的建筑、菜圃三阶段生长、角色交锋动作；场景与角色使用内置图像生成工具制作，并由原生 Canvas 绘制位图。界面为 Android 原生控件，没有浏览器或 WebView。
-营地主页没有上下滚动，设置收进右上角。常用操作采用短标签和按钮；阅读长文、小屏大字号和低频设置仍允许滚动，以保留可读性。
-测评改为 24 题，根据答题情况从八个词频区间选下一题；初始会试较高区间。读、听、组句分别调整，不用词义正确率冒充阅读或听力水平。
-正确且独立理解可获得专注，最多 3 点。每回合花 2 点洞察对手已选动作，或恢复 5 点耐久。每场最多八回合，四座建设有终点，之后可以继续交锋、收获和读新内容。
-查词换成底部卡片，包含音标、释义、发音和收藏。词册可以按收藏或最近练过查看。
+这一版可以玩什么
+一张河谷地图、一种六发武器、三种对手、一座可以修通的侧桥。模型、碰撞、遮挡和弹道在三维空间中运作。敌人会追击、侧移、寻找射击角度，也会在三连发后露出换弹空档。
+英语包括 6 组长短战术情报、12 段情报配音、1,200 道词义题及单词发音、24 题自适应抽样、可点击查词、收藏与战后句子拼接。全部内容随包提供，不联网生成。
 
-内容与声音
-内置 1,360 道词义练习，覆盖 1,349 个不同目标词；新增 1,200 道为按词频抽样的词义识别题，并非每词都配了新例句。词典保留 29,494 个词条/词形，不能把词典规模当作课程规模。
-48 道交锋阅读、24 段听力、24 道组句；来信共 18 个故事、各有短长两版，另有四次来访的短长两版。新故事包含信息判断、游戏对手、短片创作、地图等主题。
-1,428 段内置录音约 47.1 分钟，使用 Kokoro-82M 的 af_heart 美式英语音色，可离线播放和 0.8 倍慢放。这仍是合成声音，不是真人录音。未逐句人工听审全部发音。
-测评只给本题库范围内的起点和分区表现，没有经过标准化测量校准，不输出虚构的精确总词汇量。高分会提示触及当前题库上限。
+试玩
+左侧摇杆移动；按住右侧圆盘自动瞄准可见敌人，拖动圆盘可以手动瞄准。边移动边开火。
+闪避会短暂避开伤害；真正穿过敌弹会补回一发。抓住敌人黄色“换弹”提示进攻，可造成反制伤害。
+弹夹打空后会自动换弹，也能点小“换弹”按钮提前换。木箱挡子弹但会被打坏；红桶会炸伤附近所有人。
+胜利得到 10 木料，失败得到 3 木料。8 木料可修好侧桥，以后能从侧面接近据点。桥只需修一次。
+右上暂停菜单可以选练手、标准、挑战。Aa 打开英语手册。战前可以选短篇/展开阅读、听情报/慢速、查词与译文；作战中不会自动弹题。
+桌面编辑器调试可用 WASD、鼠标、空格闪避、R 换弹；主要验收对象为 Android 双指触控。
 
-继续增加材料
-手册 → 内容工坊。可以粘贴短文、导入 JSON 阅读包，或填写自己的兼容接口生成六篇阅读，预览后决定是否加入。附带一个示例包。
-接口需完整 HTTPS chat/completions 地址、模型名和自己的密钥。生成使用你自己的服务额度，仅发送主题、当前阅读档位和格式要求。密钥只在当前进程内保存，不写入存档；接口地址和模型名会保存在本机。没有预装账户或自动收费。
-主动生成才连接所填服务。扩展文章的朗读调用设备语音引擎；声音质量、英语语音包是否已安装、是否联网，取决于该引擎。内置录音不受影响。
-单次导入文件最多 1.5 MB；活跃扩展最多 300 篇、总计 2 MB。可以整理已读材料、恢复最近一次整理；存档导出会带上扩展内容。它是可继续添加内容的入口，不是本地无限生成模型。
-生成材料只通过格式校验，无法保证事实、答案、译文和难度一定正确；建议预览。未连接真实付费提供商做端到端验证。
+本地存档
+frontier3d.json 保存桥梁、木料、词汇档位、收藏和练习记录，带一份 .bak 备份。退出后回营地，不续接正在进行的战斗。
+24 题只用于粗调题目难度，不能据此准确宣称掌握几千个词。阅读字数是接触量，听力次数是播放开始次数，都不代表已经掌握。
 
-数据
-进度保存在设备内，无账户云同步，无自动云备份。通过 Android 文件选择器导出、导入；第三方云盘传输由你选择的文件服务处理。
-0.2 增加 INTERNET 权限用于可选内容生成；不申请联系人、麦克风或广泛存储权限。没有语音输入。
+源码位置
+scripts/main.gd：战斗、英语流程和存档。
+scripts/fighter.gd：角色动作、受击、对手行为。
+scripts/world.gd：地图、三维场景、碰撞、导航及造桥。
+scripts/hud.gd：触摸摇杆和界面。
+assets/models：10 个 glTF 模型。art-source：对应 Blender 4.4.3 建模文件。
+assets/*.json：冻结的题库、情报与查词数据。assets/audio：全部离线录音及音效。
+assets/CREDITS.txt：引擎、字体、词典与语音来源；相应许可也在 assets 中。
 
-构建
-已验证：Windows、JDK 21、Android SDK 36、Build Tools 34.0.0、Gradle 8.9、AGP 8.6.1，Java 源码级别 17，targetSdk 35、minSdk 26。
-设置 JAVA_HOME 与 ANDROID_SDK_ROOT 后运行 .\build.ps1；缓存齐全可加 -Offline。
-正常构建直接使用随源码提供的词典、图像和录音，不需要 Python、语音模型、FFmpeg 或图像生成服务。
-个人发布更新：把此前交付的私密签名备份解压到源码根目录，运行 .\build.ps1 -Release。源码 ZIP 不含签名密钥、密码和本机 local.properties。
-不要公开签名备份。丢失签名密钥后仍能构建，但无法覆盖当前已签名安装。
+重新构建 APK（Windows PowerShell）
+准备 Godot 4.5.1 标准 Windows 编辑器，以及同版本 Android 导出模板 android_debug.apk、android_release.apk。模板放在同一个目录。
+准备 Android SDK platform-tools/build-tools 及 Java。实际验证使用 Temurin 21、Android build-tools 36.1.0；APK 的 targetSdk 为 35，minSdk 为 24。
+使用自己的签名密钥和本地配置文件；源码包不含任何签名密钥、密码或服务密钥。配置文件采用 storeFile、storePassword、keyAlias、keyPassword 四个字段，storeFile 可以相对该配置文件指定。
+示例命令（把下面路径替换成你自己的路径）：
+  .\build.ps1 -Godot C:\Tools\Godot\Godot_v4.5.1-stable_win64_console.exe -Templates C:\Tools\Godot\templates -AndroidSdk C:\Android\Sdk -JavaHome C:\Tools\jdk-21 -SigningProperties C:\Private\signing.properties -OutputDirectory C:\Build\frontier3d
+脚本在临时隔离目录中导入、导出、对齐和签名，输出 APK、构建日志及输入文件 SHA-256 清单，不修改全局 Godot 编辑器设置。
+运行要求：Android 7.0 或以上，设备支持 Vulkan。包含 arm64-v8a、armeabi-v7a、x86_64 三种架构。实际手机驱动、温度和帧率尚未验证；本次原生流程验证使用 Android API 36.1 模拟器。
 
-验证
-.\gradlew.bat assembleDebug assembleDebugAndroidTest lintDebug
-.\tools\test_core.ps1 -JsonLibrary C:\path\to\json-20180813.jar
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-adb shell am instrument -w com.wordfrontier.app.test/com.wordfrontier.app.V2TestRunner
-只在专用测试安装或模拟器执行测试；测试会临时替换进度并尝试恢复，不适合直接在有个人进度的手机运行。
+验证命令（先完成编辑器导入）
+  Godot_v4.5.1-stable_win64_console.exe --headless --editor --path . --import
+  Godot_v4.5.1-stable_win64_console.exe --headless --path . --script tests/core.gd -- --qa
+  Godot_v4.5.1-stable_win64_console.exe --headless --path . --script tests/encounters.gd -- --qa
+  Godot_v4.5.1-stable_win64_console.exe --headless --path . --script tests/font.gd
+测试使用隔离模式，不读取或修改正式存档。Android instrumentation 源码放在 tests/android，仅用于单独的测试 APK，不随游戏包导出。
 
-源码
-Game.java：规则、对手、建设、复习记录。
-Adaptive.java：自适应词频探测；Content.java：材料、词典、扩展包与可选网络请求。
-MainActivity.java：原生界面、声音和存档；GameArt.java：位图场景、建筑状态、角色动画；SceneView.java：时机条。
-app/src/main/assets：已生成的课程、图像、录音、词典。
-art-source：图像生成原图；docs/美术生成记录.txt：实际提示词与参数。
-docs：本轮设计依据、内容维护和验证记录。history 是旧版证据，不代表当前实现。
+资产再生成
+日常构建直接使用随包提供的模型、字体、音频和 JSON，无需 Blender、语音模型或外部词典。
+tools/make_models.py 和 render_icon.py 供 Blender 后台执行；make_font.py 使用 fonttools 将随包原字体转换为改名后的静态子集。
+make_content.py 是迁移 0.2 内容的开发脚本，需要旧项目目录；随后必须运行 refine_vocabulary.py。词库已完成迁移及筛选，正常构建不要重复运行该步骤。
+make_voice.py 是开发时的离线配音脚本，需要自行配置 Kokoro 模型、kokoro-onnx、soundfile 和 FFmpeg 路径；tools/audio-manifest.json 保存文本与音频对应关系。应用只分发合成录音，不带推理模型。
 
-这仍是个人可玩的原型。画面、内容入口和决策已改进，但长期是否好玩、是否改善英语，仍需实际使用验证。没有把界面测试通过当成学习效果证明。
+当前范围和限制
+这是用于判断操作手感与学习介入是否合适的小样段，内容有限。建设只有一座桥，情报循环使用六组，词义题来自固定题库；还不是能持续生成新地图与新阅读的长期版本。
+对手是本地 AI，不冒充真人，也没有暗中控制胜负的匹配系统。当前自动对战检查只能证明部分策略能赢、站立不动会输，不能证明难度平衡或好玩。
+词义和干扰项经过规则筛选及抽查，没有完成全部人工语言学审校。语音为 Kokoro 合成，未经过真人听感评测。
+构建、原生操作、数据完整性通过，也不能据此声称学习效果已经验证。
