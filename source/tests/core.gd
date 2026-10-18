@@ -1,95 +1,95 @@
 extends SceneTree
-var game
 var passed=0
 var failed=0
+func check(value:bool,label:String):
+	if value:passed+=1;print("PASS ",label)
+	else:failed+=1;push_error("FAIL "+label)
 func _initialize():call_deferred("run")
-func check(ok:bool,name:String):
-	if ok:passed+=1;print("PASS "+name)
-	else:failed+=1;push_error("FAIL "+name)
-func frames(count:int):
-	for i in range(count):await physics_frame
-func walk(direction:Vector2,count:int):
-	for i in range(count):
-		await physics_frame
-		game.player.tick(1.0/60,direction,false)
 func run():
-	game=load("res://main.tscn").instantiate();root.add_child(game)
-	await frames(3);game.set_physics_process(false)
-	check(game.qa_mode,"test save isolation")
-	check(game.lessons.size()==6 and game.words.size()==1200,"content loaded")
-	game.player.position=Vector3(-.45,0,4.2);await frames(2)
-	await walk(Vector2(0,-1),90)
-	check(game.player.position.z < -2.5,"central bridge is traversable")
-	game.player.position=Vector3(8.65,0,4.2);game.player.velocity=Vector3.ZERO;await frames(2)
-	await walk(Vector2(0,-1),50)
-	check(game.player.position.z>2.7,"unbuilt crossing blocks movement")
-	game.save_data.wood=8;game.construct_bridge();await frames(3)
-	check(game.save_data.bridge and game.save_data.wood==0,"construction consumes wood once")
-	game.construct_bridge();check(game.save_data.wood==0,"construction cannot charge twice")
-	game.player.position=Vector3(8.65,0,4.2);game.player.velocity=Vector3.ZERO;await frames(2)
-	await walk(Vector2(0,-1),85)
-	check(game.player.position.z < -2,"built crossing opens physical route")
-	check(not game.world.nav.is_point_solid(Vector2i(9,1)),"construction updates AI route")
-	game.start_battle();game.set_physics_process(false);await frames(3)
-	check(game.living_enemies()==3,"three distinct opponents spawn")
-	game.player.position=Vector3(-3,0,-2);game.player.aim=Vector3.FORWARD;await frames(2)
-	var cover=game.world.breakables[0]
-	game.fire(game.player)
-	for i in range(15):await physics_frame;game.update_bullets(1.0/60)
-	check(float(cover.get_meta("hp"))==26,"actual projectile hits cover")
-	game.world.damage_prop(cover,26);await frames(2)
-	check(not is_instance_valid(cover),"destroyed cover removes collider")
-	game.player.position=Vector3(3.2,0,-4.92);game.player.aim=Vector3.FORWARD;await frames(2)
-	var near_cover=game.world.breakables[1];game.fire(game.player)
-	for i in range(8):await physics_frame;game.update_bullets(1.0/60)
-	check(float(near_cover.get_meta("hp"))<45,"point blank muzzle cannot bypass cover")
-	game.world.update_navigation()
-	var near_corner=game.world.steer(Vector3(4.2,0,-6),Vector3(0,0,-9))
-	check(near_corner.length()>.5,"navigation escapes rounded blocked cell")
-	var enemy=game.enemies[1];enemy.kind=1;enemy.aim=Vector3.BACK;enemy.hp=88;enemy.reload_left=0
-	enemy.hurt(19,Vector3.FORWARD,game.player)
-	check(abs(enemy.hp-76.6)<.01,"guard resists frontal damage")
-	enemy.reload_left=1;enemy.hurt(19,Vector3.FORWARD,game.player)
-	check(abs(enemy.hp-46.2)<.01 and game.counters==1,"reload creates stronger counter window")
-	game.player.hp=100;game.player.ammo=2;game.player.dash_cooldown=0
-	check(game.player.dash(Vector3.RIGHT),"dash starts immediately")
-	game.player.hurt(8,Vector3.LEFT,enemy)
-	check(game.player.hp==100 and game.player.ammo==3 and game.dodges==1,"timed dodge avoids damage and restores one shot")
-	game.player.hurt(8,Vector3.LEFT,enemy)
-	check(game.player.ammo==3,"dodge reward rate limited")
-	check(not game.player.dash(Vector3.RIGHT),"dash cooldown enforced")
-	game.hud.close();await frames(1)
-	var l=InputEventScreenTouch.new();l.index=3;l.pressed=true;l.position=game.hud.stick_left+Vector2(0,-50);game.hud.touch(l)
-	var r=InputEventScreenTouch.new();r.index=7;r.pressed=true;r.position=game.hud.stick_right+Vector2(0,-50);game.hud.touch(r)
-	check(game.hud.move.y<-.5 and game.hud.fire and game.hud.aim.y<-.5,"independent two finger move and shoot")
-	l.pressed=false;game.hud.touch(l)
-	check(game.hud.move==Vector2.ZERO and game.hud.fire,"releasing movement preserves firing finger")
-	game.player.ammo=2;game.player.reload_left=0
-	var reload_touch=InputEventScreenTouch.new();reload_touch.index=9;reload_touch.pressed=true;reload_touch.position=Vector2(game.hud.size.x-270,game.hud.size.y-200);game.hud.touch(reload_touch)
-	check(game.player.reload_left>0 and game.hud.fire,"manual reload works while firing finger stays held")
-	game.pause_menu();check(not game.hud.fire and game.hud.move==Vector2.ZERO,"opening overlay releases both controls")
-	game.begin_quiz(24)
-	for i in range(24):game.word_answer(true)
-	check(game.save_data.band==7,"all correct calibration reaches high band")
-	game.begin_quiz(5)
-	for i in range(5):game.word_answer(false)
-	check(game.save_data.band==7,"short practice does not overwrite calibration")
-	game.begin_quiz(24)
-	for i in range(24):game.word_answer(false)
-	check(game.save_data.band==0,"low calibration backs off difficulty")
-	game.begin_quiz(24);game.quiz.guessed=true;game.word_answer(true)
-	check(game.quiz.right==0,"guessed answer not counted independent")
-	game.return_camp();game.show_brief();game.word_card("after")
-	check(game.helped and game.brief_open,"dictionary preserves reading context")
-	var back=InputEventKey.new();back.keycode=KEY_ESCAPE;back.pressed=true;game.last_back_msec=-1000;game._input(back)
-	check(game.hud.screen=="brief","back returns from word to reading")
-	game.lesson_index=1;game.sentence_lesson();game.quiz.picked=[0,1,2,6,4,5,3,7]
-	check(game.sentence_matches(),"identical word tiles are interchangeable")
-	game.start_battle();game.set_physics_process(false);var wood=game.save_data.wood
-	game.player.hp=0;game.fighter_down(game.player);game.fighter_down(game.player);await frames(2)
-	check(game.save_data.wood==wood+3,"loss settles once")
-	game.return_camp();await frames(30)
-	check(game.player.model.scale.distance_to(Vector3.ONE)<.01 and game.player.invulnerable==0,"fast restart cancels death and dash state")
-	print("CORE_RESULT "+str(passed)+" passed / "+str(failed)+" failed")
-	game.queue_free();await frames(3)
-	quit(0 if failed==0 else 1)
+	var game=load("res://main.tscn").instantiate();root.add_child(game);await process_frame
+	check(game.qa,"save isolation")
+	check(ProjectSettings.get_setting("display/window/handheld/orientation")==1,"portrait app orientation")
+	check(game.learning.bank.size()==96,"96 curated words")
+	var valid=true
+	for q in game.learning.bank:
+		if q.options.size()!=4 or q.options[q.correct]!=q.zh or q.example.is_empty() or not ResourceLoader.exists("res://assets/"+q.audio):valid=false
+	check(valid,"every word has four options, a correct answer, example and audio")
+	var m=IslandLearning.new();m.rng.seed=1
+	m.data.words["retain"]={"seen":1,"correct":0,"strength":0,"last":1,"due":2,"helped":1}
+	check(m.next_word(1000).id=="retain","due review precedes unseen word")
+	check(m.next_word(1000).id!="retain","immediate repeats are avoided")
+	m.mark_help("repair")
+	var restarted=IslandLearning.new();restarted.accept_save(JSON.parse_string(JSON.stringify(m.data)))
+	check(restarted.next_word(1000).id=="repair","unfinished helped word resumes after app restart")
+	m.data.help_pending=""
+	var a=m.record("retain",false,1000)
+	check(m.data.words.retain.strength==1 and m.data.words.retain.due>1000,"independent recall schedules a later review")
+	m.record("retain",false,1001)
+	check(m.data.words.retain.strength==1,"instant repetition does not inflate memory strength")
+	m.mark_help("retain");m.record("retain",false,2000)
+	check(m.data.words.retain.strength==0 and m.data.words.retain.due==2120,"help stays recorded and returns sooner")
+	check(m.data.build[0]==3,"assisted learning still advances construction")
+	m.data.band=1;m.data.success_run=0
+	for i in range(4):m.record("adapt",false,3000+i*200)
+	check(m.data.band==2,"sustained independent recall raises difficulty")
+	m.data.miss_run=0
+	m.record("repair",true,5000);m.record("repair",true,5200)
+	check(m.data.band==1,"repeated help lowers difficulty")
+	var n=IslandLearning.new()
+	for i in range(36):n.record("retain",false,10000+i*200);n.next_project()
+	check(n.data.build==[8,12,16] and n.completed(),"three finite projects complete at 36 actions")
+	n.record("retain",true,20000)
+	check(n.data.build==[8,12,16],"review never degrades completed buildings")
+	var restored=IslandLearning.new()
+	check(restored.accept_save(JSON.parse_string(JSON.stringify(n.data))) and restored.data.build==[8,12,16],"JSON round trip preserves buildings")
+	check(not restored.accept_save({"version":4,"build":["bad",0,0]}),"malformed save is rejected")
+	game.current=game.learning.by_id["retain"];game.order=[0,1,2,3];game.hud.show_word()
+	var before=game.learning.data.actions;game.answer(0);game.answer(0)
+	check(game.learning.data.actions==before+1,"double tap cannot collect twice")
+	check(game.world.effects.size()>=5,"word recall immediately moves actual 3D material")
+	check(not game.hud.overlay.visible,"harvest has no reward claim dialog")
+	await create_timer(.9).timeout
+	before=game.learning.data.actions;game.answer(1)
+	check(game.help_visible and game.learning.data.actions==before,"wrong meaning shows teaching without false collection")
+	game.retry();game.answer(game.current.correct)
+	check(game.learning.data.actions==before+1,"recall after help performs the same collection action")
+	check(game.learning.data.words[game.current.id].strength==0,"corrected answer is not counted as independent mastery")
+	await create_timer(.9).timeout
+	game.learning.data.build=[8,12,16];game.world.sync_buildings();await process_frame
+	var final_parts=true
+	for b in game.world.buildings:
+		for stage in b.find_children("Stage*","Node3D",true,false):
+			if not stage.visible:final_parts=false
+	check(final_parts,"completed houses have all modeled stages visible")
+	var start=game.world.buildings[0].position;game.learning.data.flags.cottage_west=true;game.world.sync_buildings()
+	check(game.world.buildings[0].position.distance_to(start)>.2,"understood location changes the actual building position")
+	game.show_letter(2);game.letter_answer(0)
+	check(game.hud.screen=="sentence","reading choice leads to an actionable sentence")
+	var tile_order=game.sentence_order.duplicate();game.select_word(0)
+	check(game.sentence_order==tile_order,"sentence tiles keep their positions after choosing a word")
+	while game.sentence_chosen.size()<game.sentence_words.size():
+		var index=game.sentence_chosen.size();game.select_word(index)
+	check(game.learning.data.flags.get("water",false),"organizing the sentence connects the water route")
+	game.show_letter(0);game.lookup("the");game.back()
+	check(game.hud.screen=="letter","Android back returns from lookup to the letter")
+	game.hud.close();game.explore();check(not game.hud.card.visible and game.exploring,"world inspection hides the learning panel")
+	game.resume_collect();check(game.hud.card.visible and not game.exploring,"returning restores continuous collection")
+	await process_frame
+	check(game.hud.card.get_global_rect().end.y<=game.hud.size.y,"portrait card stays inside the screen")
+	root.size=Vector2i(540,960);await process_frame;await process_frame
+	print("COMPACT_RECTS ",game.hud.size," ",game.hud.card.get_global_rect())
+	check(game.hud.card.get_global_rect().position.y>300 and game.hud.card.get_global_rect().end.y<=game.hud.size.y,"compact portrait screen leaves room for world and controls")
+	var all_fit=true
+	game.help_visible=false;game.order=[0,1,2,3]
+	for q in game.learning.bank:
+		game.current=q;game.hud.show_word();await process_frame;await process_frame;await process_frame
+		if game.hud.card.get_global_rect().end.x>game.hud.size.x or game.hud.card.get_global_rect().end.y>game.hud.size.y:
+			all_fit=false;print("LAYOUT_OVERFLOW ",q.id," ",game.hud.card.get_global_rect())
+	check(all_fit,"all 96 word cards fit a compact portrait screen")
+	var all_help_fit=true
+	for q in game.learning.bank:
+		game.current=q;game.hud.show_help();await process_frame;await process_frame;await process_frame
+		if game.hud.card.get_global_rect().end.y>game.hud.size.y:all_help_fit=false;print("HELP_OVERFLOW ",q.id)
+	check(all_help_fit,"all 96 explanations fit a compact portrait screen")
+	print("CORE_RESULT ",passed," passed / ",failed," failed")
+	game.queue_free();await process_frame;quit(1 if failed else 0)

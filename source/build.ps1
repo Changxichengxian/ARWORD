@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory=$true)][string]$Godot,
     [Parameter(Mandatory=$true)][string]$Templates,
     [string]$AndroidSdk=$env:ANDROID_SDK_ROOT,
@@ -54,7 +54,7 @@ $preset | Set-Content -LiteralPath (Join-Path $stage 'export_presets.cfg') -Enco
 $log=Join-Path $OutputDirectory 'build.log'
 $unsigned=Join-Path $buildRoot 'unsigned.apk'
 $aligned=Join-Path $buildRoot 'aligned.apk'
-$apk=Join-Path $OutputDirectory '词境前线-3D-0.3.0.apk'
+$apk=Join-Path $OutputDirectory '词屿-0.4.0.apk'
 Write-Host '导入三维资源……'
 & $engineExe --headless --editor --path $stage --import *> $log
 if($LASTEXITCODE -ne 0){throw "导入失败，请看 $log"}

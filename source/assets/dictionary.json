@@ -1,6098 +1,1454 @@
 {
-  "happened": {
-    "meaning": "v. 发生（happen的过去式, 过去分词）",
-    "phonetic": ""
-  },
-  "acquisition": {
-    "meaning": "n. 获得, 获得物\n[经] 收购, 招揽, 取得",
-    "phonetic": ".ækwi'ziʃәn"
-  },
-  "using": {
-    "meaning": "[计] 使用",
-    "phonetic": ""
-  },
-  "floral": {
-    "meaning": "a. 花似的, 花的, 植物的",
-    "phonetic": "'flɒ:rәl"
-  },
-  "tiger": {
-    "meaning": "n. 老虎, 虎, 凶暴的人",
-    "phonetic": "'taigә"
-  },
-  "protrude": {
-    "meaning": "vi. 伸出, 突出\nvt. 使伸出, 使突出",
-    "phonetic": "prәu'tru:d"
-  },
-  "memoir": {
-    "meaning": "n. 传记, 实录, 追思录, 回忆录, 自传\n[化] 研究报告",
-    "phonetic": "'memwɑ:"
-  },
-  "chilly": {
-    "meaning": "a. 寒冷的, 冷淡的, 不友好的\n[建] 番椒, 冷",
-    "phonetic": "'tʃili"
-  },
-  "terminate": {
-    "meaning": "a. 有结尾的, (可)结束的\nvi. 结束, 终止, 满期\nvt. 使停止, 使结束, 使终止\n[计] 终止",
-    "phonetic": "'tә:mineit"
-  },
-  "erect": {
-    "meaning": "a. 直立的, 竖立的, 笔直的\nvt. 使竖立, 使直立, 树立, 建立\nvi. 勃起",
-    "phonetic": "i'rekt"
-  },
-  "that": {
-    "meaning": "a. 那, 那个\nconj. 以致, 因为\npron. 那\nadv. 那么, 那样",
-    "phonetic": "ðæt"
-  },
-  "feud": {
-    "meaning": "n. 不和, 封地, 争执\nvi. 长期不和, 擦亮",
-    "phonetic": "fju:d"
-  },
-  "missed": {
-    "meaning": "v. 投偏；未抓住；错过（miss的过去分词）",
-    "phonetic": ""
-  },
-  "flinch": {
-    "meaning": "vi. 畏缩, 退缩, 畏首畏尾\nn. 退缩, 弗林奇戏",
-    "phonetic": "flintʃ"
-  },
-  "liver": {
-    "meaning": "n. 肝脏, 生活者, 居民\n[医] 肝",
-    "phonetic": "'livә"
-  },
-  "closure": {
-    "meaning": "n. 关闭\nvt. 使终止",
-    "phonetic": "'klәuʒә"
-  },
-  "excellence": {
-    "meaning": "n. 优秀, 卓越, 优点",
-    "phonetic": "'ekslәns"
-  },
-  "goblin": {
-    "meaning": "n. 小妖精",
-    "phonetic": "'gɒblin"
-  },
-  "stinging": {
-    "meaning": "a. 刺人的, 刺一般的, 激烈的",
-    "phonetic": "'stiŋiŋ"
-  },
-  "barber": {
-    "meaning": "n. 理发师",
-    "phonetic": "'bɑ:bә"
-  },
-  "surf": {
-    "meaning": "n. 海浪, 拍岸浪\nvi. 作冲浪运动",
-    "phonetic": "sә:f"
-  },
-  "parliamentary": {
-    "meaning": "a. 国会的, 议会的, 议会制度的",
-    "phonetic": ".pɑ:lә'mentәri"
-  },
-  "lighten": {
-    "meaning": "vt. 照亮, 点亮, 减轻, 使轻松, 闪出\nvi. 发亮, 打闪, 变轻",
-    "phonetic": "'laitn"
-  },
-  "boxing": {
-    "meaning": "n. 拳击\n[医] 围模(牙科)",
-    "phonetic": "'bɒksiŋ"
-  },
-  "broadcast": {
-    "meaning": "n. 广播, 传播\na. 广播的\nv. 广播\nadv. 经广播, 四散地\n[计] 广播命令, 广播",
-    "phonetic": "'brɒ:dkæst"
-  },
-  "oblivion": {
-    "meaning": "n. 遗忘, (头脑的)一片空白状, 湮没, 大赦, 赦免\n[法] 忘却, 被忘却的事, 大赦",
-    "phonetic": "ә'bliviәn"
-  },
-  "scoff": {
-    "meaning": "n. 嘲笑, 愚弄, 笑柄, 食品\nv. 嘲笑, 嘲弄, 贪吃, 狼吞虎咽地吃",
-    "phonetic": "skɒf"
-  },
-  "recover": {
-    "meaning": "vt. 重新获得, 恢复, 复原, 拯救\nvi. 痊愈, 复原, 胜诉\n[计] 恢复",
-    "phonetic": "ri'kʌvә"
-  },
-  "zinc": {
-    "meaning": "n. 锌\nvt. 镀锌于",
-    "phonetic": "ziŋk"
-  },
-  "spokeswoman": {
-    "meaning": "n. 女发言人, 女代言人",
-    "phonetic": "'spәuks,wumәn"
-  },
-  "unlike": {
-    "meaning": "a. 不像的, 不同的\nprep. 不像, 和...不同",
-    "phonetic": ".ʌn'laik"
-  },
-  "radiation": {
-    "meaning": "n. 辐射\n[化] 放射",
-    "phonetic": ".reidi'eiʃәn"
-  },
-  "does": {
-    "meaning": "v. 做；工作；有用（do的第三人称单数形式）",
-    "phonetic": "dʌz; dәz"
-  },
-  "cupboard": {
-    "meaning": "n. 食橱, 碗柜, 餐具柜",
-    "phonetic": "'kʌpbɒ:d"
-  },
-  "grease": {
-    "meaning": "n. 脂肪, 兽脂, 油脂, 贿赂\nvt. 涂脂于, 贿赂",
-    "phonetic": "gri:s"
-  },
-  "unload": {
-    "meaning": "vi. 卸货\nvt. 从...卸下, 摆脱...之负担, 倾销, 卸(货)\n[计] 卸载",
-    "phonetic": ".ʌn'lәud"
-  },
-  "value": {
-    "meaning": "n. 价值, 价格, 购买力, 评价, 估价, 计算结果\nvt. 评价, 估价, 重视\n[计] 计算结果",
-    "phonetic": "'vælju:"
-  },
-  "brochure": {
-    "meaning": "n. 小册子, 小册",
-    "phonetic": "'brәuʃә"
-  },
-  "reach": {
-    "meaning": "n. 伸出, 延伸, 区域, 范围, 流域, 岬\nvt. 到达, 达到, 伸出, 延伸, 影响\nvi. 达到, 延伸, 伸出手, 传到",
-    "phonetic": "ri:tʃ"
-  },
-  "outwards": {
-    "meaning": "adv. 向外地",
-    "phonetic": "'autwәdz"
-  },
-  "embarrassing": {
-    "meaning": "a. 令人为难的, 麻烦的",
-    "phonetic": "im'bærәsiŋ"
-  },
-  "removed": {
-    "meaning": "a. 离开的, 间隔的, 远离的\n[化] 拆除的",
-    "phonetic": "ri'mu:vd"
-  },
-  "corpse": {
-    "meaning": "n. 尸体\n[医] 尸体",
-    "phonetic": "kɒ:ps"
-  },
-  "locally": {
-    "meaning": "adv. 地方性地, 局部性地, 在当地",
-    "phonetic": "'lәukәli"
-  },
-  "contentious": {
-    "meaning": "a. 好争吵的, 爱争论的, 有异议的\n[法] 诉讼的, 争执的, 引起争论的",
-    "phonetic": "kәn'tenʃәs"
-  },
-  "unheard": {
-    "meaning": "a. 没有被听到的, 未予倾听的, 未予考虑的",
-    "phonetic": ".ʌn'hә:d"
-  },
-  "nervously": {
-    "meaning": "adv. 焦急地；神经质地；提心吊胆地",
-    "phonetic": ""
-  },
-  "rich": {
-    "meaning": "a. 富裕的, 富饶的, 浓厚的, 贵重的",
-    "phonetic": "ri:tʃ"
-  },
-  "participation": {
-    "meaning": "n. 参与, 分享\n[经] 参与, 参股",
-    "phonetic": ".pɑ:tisi'peiʃәn"
-  },
-  "uncomfortable": {
-    "meaning": "a. 不舒服的, 不自在的, 不安的",
-    "phonetic": ".ʌn'kʌmfәtәbl"
-  },
-  "same": {
-    "meaning": "a. 相同的, 同样的\npron. 相同的人(或事物)\nadv. 同样地",
-    "phonetic": "seim"
-  },
-  "bristle": {
-    "meaning": "n. 刚毛, 猪鬃\nvi. 直立, 发怒, 充满\nvt. 使直立",
-    "phonetic": "'brisl"
-  },
-  "on": {
-    "meaning": "prep. 在...之上\nadv. ...上去\na. 正起作用的\n[计] 打开",
-    "phonetic": "ɒn"
-  },
-  "disappointment": {
-    "meaning": "n. 失望",
-    "phonetic": ".disә'pɒintmәnt"
-  },
-  "twig": {
-    "meaning": "n. 小枝, 细枝\nv. 懂得, 了解",
-    "phonetic": "twig"
-  },
-  "visits": {
-    "meaning": "v. 参观；拜访；视察（visit的第三人称单数）",
-    "phonetic": ""
-  },
-  "predominantly": {
-    "meaning": "adv. 主要地, 显著地, 大多数地, 突出地",
-    "phonetic": ""
-  },
-  "housing": {
-    "meaning": "n. 遮盖, 住房供给, 居留(处), 房屋, 装饰\n[化] 外壳",
-    "phonetic": "'hausiŋ"
-  },
-  "solid": {
-    "meaning": "n. 固体\na. 坚硬的, 稳固的, 固体的, 实心的, 纯质的, 立体的, 立方的\n[计] 原色",
-    "phonetic": "'sɒlid"
-  },
-  "railing": {
-    "meaning": "n. 扶手, 栏杆, 抱怨\n[电] 高重回率的雷达脉冲排挤",
-    "phonetic": "'reiliŋ"
-  },
-  "vertical": {
-    "meaning": "a. 垂直的, 直立的\n[医] 垂直的, 顶的, 头顶的",
-    "phonetic": "'vә:tikl"
-  },
-  "is": {
-    "meaning": "be的现在式第三人称\n[计] 加下标次序, 信息系统, 国际标准, 中间系统",
-    "phonetic": "iz"
-  },
-  "complain": {
-    "meaning": "v. 抱怨, 抗议, 控诉",
-    "phonetic": "kәm'plein"
-  },
-  "happening": {
-    "meaning": "n. 事件, 意外发生的事",
-    "phonetic": "'hæpәniŋ"
-  },
-  "vary": {
-    "meaning": "vt. 改变, 使多样化\nvi. 变化, 有不同, 违反",
-    "phonetic": "'vєәri"
-  },
-  "directly": {
-    "meaning": "adv. 径直地, 直接地, 直率地, 正好地, 直截了当地, (非正式)立即, 马上\nconj. 一...(就...), 一当...就...\n[计] 直接的",
-    "phonetic": "di'rektli, dai'rektli"
-  },
-  "explains": {
-    "meaning": "v. 解释；说明（explain的三单形式）",
-    "phonetic": ""
-  },
-  "triangle": {
-    "meaning": "n. 三角形, 三个一组, 三角关系\n[医] 三角, 三角形",
-    "phonetic": "'traiæŋgl"
-  },
-  "genetic": {
-    "meaning": "a. 创始的, 遗传的, 起源的, 遗传学的\n[医] 生殖的, 遗传的",
-    "phonetic": "dʒi'netik"
-  },
-  "propaganda": {
-    "meaning": "n. 宣传, 宣传活动\n[医] 宣传",
-    "phonetic": ".prɒpә'gændә"
-  },
-  "distinguishing": {
-    "meaning": "a. 有区别的",
-    "phonetic": "dis'tiŋgwiʃiŋ"
-  },
-  "exhaust": {
-    "meaning": "n. 排气, 排气装置, 废气\nvt. 抽完, 用尽, 耗尽, 使精疲力尽\nvi. 排气",
-    "phonetic": "ig'zɒ:st"
-  },
-  "aptitude": {
-    "meaning": "n. 资质, 才能, 自然倾向\n[医] 资质, 才能",
-    "phonetic": "'æptitju:d"
-  },
-  "ghetto": {
-    "meaning": "n. 犹太人区",
-    "phonetic": "'getәu"
-  },
-  "apprehend": {
-    "meaning": "vt. 理解, 忧虑, 逮捕\nvi. 担心, 理解",
-    "phonetic": ".æpri'hend"
-  },
-  "instead": {
-    "meaning": "adv. 作为替代, 反而",
-    "phonetic": "in'sted"
-  },
-  "glazing": {
-    "meaning": "n. 玻璃装配业, 玻璃窗, 上光, 上釉\n[机] 起釉, 变滑",
-    "phonetic": "'gleiziŋ"
-  },
-  "tariff": {
-    "meaning": "n. 关税, 关税表, 价格表, 收费表\nvt. 课以关税\n[计] 价目表",
-    "phonetic": "'tærif"
-  },
-  "avoidance": {
-    "meaning": "n. 避免, 避开, 逃避\n[经] 回避, 废止, 宣告无效",
-    "phonetic": "ә'vɒidәns"
-  },
-  "relaxing": {
-    "meaning": "a. 令人轻松的",
-    "phonetic": ""
-  },
-  "chancellor": {
-    "meaning": "n. 大臣, 总理, 首相, 大使馆/领事馆的一等秘书, 司法官, 大学校长",
-    "phonetic": "'tʃɑ:nsәlә"
-  },
-  "deplete": {
-    "meaning": "vt. 耗尽, 使衰竭\n[医] 排除, 减少",
-    "phonetic": "di'pli:t"
-  },
-  "horrify": {
-    "meaning": "vt. 使恐惧, 使震惊",
-    "phonetic": "'hɒrifai"
-  },
-  "intensify": {
-    "meaning": "vt. 加强\nvi. 强化",
-    "phonetic": "in'tensifai"
-  },
-  "hurt": {
-    "meaning": "n. 伤害, 创伤, 损害\nv. 伤害, (使)伤心, 危害, 刺痛",
-    "phonetic": "hә:t"
-  },
-  "briefly": {
-    "meaning": "adv. 简短地, 扼要地, 简明地, 简单地",
-    "phonetic": "'brifli"
-  },
-  "remedial": {
-    "meaning": "a. 治疗的, 补救的, 矫正的\n[医] 治疗的",
-    "phonetic": "ri'mi:diәl"
-  },
-  "modernity": {
-    "meaning": "n. 现代性, 现代状态, 现代东西",
-    "phonetic": "mɒ'dә:nәti"
-  },
-  "still": {
-    "meaning": "n. 蒸馏室, 寂静, 剧照\nv. 蒸馏, (使)平静, (使)静止\na. 静止的, 不动的, 静寂的, 不起泡的, 静物摄影的\nadv. 仍然, 更, 静止地\nconj. 然而, 但是",
-    "phonetic": "stil"
-  },
-  "execution": {
-    "meaning": "n. 实行, 完成, 执行, 死刑\n[计] 执行",
-    "phonetic": ".eksi'kju:ʃәn"
-  },
-  "cracker": {
-    "meaning": "n. 饼干, 爆竹\n[计] 破袭者",
-    "phonetic": "'krækә"
-  },
-  "fruitful": {
-    "meaning": "a. 结果实的, 多实的, 产量多的",
-    "phonetic": "'fru:tful"
-  },
-  "only": {
-    "meaning": "a. 唯一的, 仅有的, 最佳的\nadv. 只有, 仅仅, 只能\nconj. 但是, 不过",
-    "phonetic": "'әunli"
-  },
-  "contradict": {
-    "meaning": "vt. 反驳, 与...抵触, 与...矛盾\nvi. 反驳",
-    "phonetic": ".kɒntrә'dikt"
-  },
-  "increasingly": {
-    "meaning": "adv. 逐渐地, 渐增地",
-    "phonetic": "in'kri:siŋli"
-  },
-  "gala": {
-    "meaning": "n. 节日, 祝贺",
-    "phonetic": "'geilә"
-  },
-  "coconut": {
-    "meaning": "n. 椰子\n[医] 椰子(实)",
-    "phonetic": "'kәukәnәt"
-  },
-  "show": {
-    "meaning": "n. 显示, 表现, 展览, 卖弄, 炫耀, 外观, 演出, 洋相\nvt. 表示, 显示, 展现, 陈列, 演出, 表明, 指出, 带领\nvi. 露面, 显现, 演出\n[计] 显示",
-    "phonetic": "ʃәu"
-  },
-  "ramification": {
-    "meaning": "n. 分枝, 分叉, 枝状物, 支脉, 支流, 衍生物\n[医] 分支, 支状分布",
-    "phonetic": ".ræmifi'keiʃәn"
-  },
-  "but": {
-    "meaning": "prep. 除了\nconj. 但是\nadv. 仅仅",
-    "phonetic": "bʌt"
-  },
-  "no": {
-    "meaning": "n. 不, 拒绝, 否决票\na. 没有, 不是, 绝非\nadv. 不",
-    "phonetic": "nәu"
-  },
-  "keep": {
-    "meaning": "n. 生计, 维持, 保持\nvt. 保持, 保存, 遵守, 看守, 整理, 维持, 履行, 经营, 拘留, 记帐\nvi. 保持, 继续不断",
-    "phonetic": "ki:p"
-  },
-  "either": {
-    "meaning": "a. (两者之中)任一的, (两者之中)各一的\npron. (两者之中)任一\nconj. 或, 要么",
-    "phonetic": "'i:ðә"
-  },
-  "simulated": {
-    "meaning": "a. 模仿的\n[计] 模拟的",
-    "phonetic": ""
-  },
-  "as": {
-    "meaning": "adv. 同样地, 例如\nprep. 做为, 当作\nconj. 当...之时, 以...的方式, 像...一样, 因为\n[计] 高级系统, 先进系统, 辅助存储器, 自治系统",
-    "phonetic": "æz"
-  },
-  "lagoon": {
-    "meaning": "n. 环礁湖, 近海岸的浅水区, 泻湖, 咸水湖",
-    "phonetic": "lә'^u:n"
-  },
-  "slum": {
-    "meaning": "n. 贫民窟\nvi. 访问贫民区",
-    "phonetic": "slʌm"
-  },
-  "nanny": {
-    "meaning": "n. 保姆；母山羊",
-    "phonetic": "'næni"
-  },
-  "pine": {
-    "meaning": "n. 松树, 松木\nvi. 消瘦, 憔悴, 痛苦, 怀念, 渴望\n[计] 邮件程序",
-    "phonetic": "pain"
-  },
-  "crunch": {
-    "meaning": "v. 嘎吱嘎吱的咬嚼, 压碎, 嘎吱嘎吱地踏过\nn. 咬碎, 咬碎声",
-    "phonetic": "krʌntʃ"
-  },
-  "means": {
-    "meaning": "n. 方法, 手段, 工具, 财产, 收入\n[经] 方法, 手段, 工具; 意谓",
-    "phonetic": "mi:nz"
-  },
-  "psychic": {
-    "meaning": "a. 灵魂的, 精神的, 心灵的\nn. 巫师, 灵物, 心灵现象",
-    "phonetic": "'saikik"
-  },
-  "grandma": {
-    "meaning": "n. 奶奶, 外婆",
-    "phonetic": "'grændmɑ:"
-  },
-  "objective": {
-    "meaning": "n. 目的, 目标, 宗旨, 宾格, 实物\na. 客观的, 如实的, 无偏见的, 宾格的",
-    "phonetic": "әb'dʒektiv"
-  },
-  "warden": {
-    "meaning": "n. 典狱官, 渔猎法监督官, 看守人\n[法] 看守人, 监护人, 管理员",
-    "phonetic": "'wɒ:dn"
-  },
-  "dangerous": {
-    "meaning": "a. 危险的\n[法] 危险的, 危害的",
-    "phonetic": "'deindʒәrәs"
-  },
-  "different": {
-    "meaning": "a. 不同的\n[机] 差动, 微分的, 差速器",
-    "phonetic": "'difәrәnt"
-  },
-  "removes": {
-    "meaning": "n. 引语排版；迁移；清除；差距（remove的复数）",
-    "phonetic": ""
-  },
-  "shabby": {
-    "meaning": "a. 衣衫褴褛的, 低劣的, 破旧的, 吝啬的, 卑鄙的",
-    "phonetic": "'ʃæbi"
-  },
-  "bullet": {
-    "meaning": "n. 子弹\n[医] 弹, 子弹, 距节(马)",
-    "phonetic": "'bulit"
-  },
-  "reduced": {
-    "meaning": "a. 减少的；简化的；缩减的",
-    "phonetic": "ri'dju:st"
-  },
-  "for": {
-    "meaning": "prep. 为, 因为, 至于\nconj. 因为\n[计] DOS批处理命令:对一组参数重复执行指定的命令",
-    "phonetic": "fɒ:"
-  },
-  "plywood": {
-    "meaning": "n. 夹板, 合板\n[机] 层板, 木夹板, 三夹板",
-    "phonetic": "'plaiwud"
-  },
-  "institutional": {
-    "meaning": "a. 制度的, 公共机构的, 学会的\n[法] 组织机构的, 制度的, 公共机构的",
-    "phonetic": ".insti'tju:ʃәnәl"
-  },
-  "moves": {
-    "meaning": "v. 移动；搬家；感动（move的第三人称单数）",
-    "phonetic": "mu:vz"
-  },
-  "contractual": {
-    "meaning": "a. 契约的\n[经] 契约的, 契约性的",
-    "phonetic": "kәn'træktʃuәl"
-  },
-  "illuminated": {
-    "meaning": "a. 被照明的, 受启发的, 加了灯饰的, 加了彩饰的",
-    "phonetic": ""
-  },
-  "briskly": {
-    "meaning": "adv. 活泼地, 精神勃勃地",
-    "phonetic": "'briskli"
-  },
-  "paving": {
-    "meaning": "n. 铺筑过的地面, 铺过的道路, 铺筑过的路, 修筑路面/地面的材料",
-    "phonetic": "'peiviŋ"
-  },
-  "excitation": {
-    "meaning": "n. 刺激, 鼓舞, 兴奋\n[化] 激发",
-    "phonetic": ".eksai'teiʃәn"
-  },
-  "pantry": {
-    "meaning": "n. 餐具室, 食品室",
-    "phonetic": "'pæntri"
-  },
-  "hyde": {
-    "meaning": "n. 海德",
-    "phonetic": "haid"
-  },
-  "suitability": {
-    "meaning": "n. 适合, 适当\n[医] 适合性, 适应性",
-    "phonetic": ".sju:tә'biliti"
-  },
-  "crate": {
-    "meaning": "n. 板条箱, 装货箱\n[建] 篓, 筐",
-    "phonetic": "kreit"
-  },
-  "made": {
-    "meaning": "a. 人工制成的, 成功的, 创造的\nmake的过去式和过去分词",
-    "phonetic": "meid"
-  },
-  "line": {
-    "meaning": "n. 列, 线, 绳, 电线, 线路, 路线, 航线, 作业线, 界线, 战线, 外形, 排, 家系\nvt. 排成一行, 顺...排列, 划线于, 加衬里, 使有线条, 使起皱纹\nvi. 排队\n[计] 线路",
-    "phonetic": "lain"
-  },
-  "chase": {
-    "meaning": "n. 追求, 狩猎, 追逐\nvt. 追捕, 追逐, 雕刻, 在...上镶嵌宝石\nvi. 追赶, 奔跑",
-    "phonetic": "tʃeis"
-  },
-  "rushed": {
-    "meaning": "a. 匆忙的；贸然的",
-    "phonetic": ""
-  },
-  "understandable": {
-    "meaning": "a. 可以理解的",
-    "phonetic": ".ʌndә'stændәbl"
-  },
-  "strait": {
-    "meaning": "n. 海峡, 困境\na. 困难的, 窘迫的, 狭窄的",
-    "phonetic": "streit"
-  },
-  "ascending": {
-    "meaning": "a. 上升的, 向上的\n[计] 递增",
-    "phonetic": "ә'sendiŋ"
-  },
-  "delegate": {
-    "meaning": "n. 代表\nvt. 委派...为代表",
-    "phonetic": "'deligeit"
-  },
-  "their": {
-    "meaning": "pron. 他们的",
-    "phonetic": "ðєә"
-  },
-  "teddy": {
-    "meaning": "n. 连衫衬裤；泰迪玩具熊",
-    "phonetic": "'tedi"
-  },
-  "quick": {
-    "meaning": "a. 快的, 迅速的, 敏捷的, 灵敏的, 急速的\nadv. 快\nn. 新长出的肉, 要害, 核心, 感觉敏锐部位",
-    "phonetic": "kwik"
-  },
-  "into": {
-    "meaning": "prep. 进入...之内, 朝..., 深入...之中, 成为...状况",
-    "phonetic": "'intu:"
-  },
-  "episode": {
-    "meaning": "n. 插曲, 插话, 有趣的事件, 一段情节\n[医] 插话, 插曲, 发作",
-    "phonetic": "'episәud"
-  },
-  "individuality": {
-    "meaning": "n. 个性, 个人, 特征",
-    "phonetic": "'indi.vidʒu'æliti"
-  },
-  "had": {
-    "meaning": "have的过去式和过去分词",
-    "phonetic": "hæd"
-  },
-  "monumental": {
-    "meaning": "a. 纪念碑的, 做为纪念的, 不朽的",
-    "phonetic": ".mɒnju'mentәl"
-  },
-  "geological": {
-    "meaning": "a. 地质学的, 地质的",
-    "phonetic": ".dʒiәu'lɒdʒikәl"
-  },
-  "attack": {
-    "meaning": "n. 攻击, 抨击\nvt. 攻击, 抨击, 动手干\nvi. 攻击",
-    "phonetic": "ә'tæk"
-  },
-  "toward": {
-    "meaning": "prep. 向, 对于, 为了\na. 即将来临的, 进行中的",
-    "phonetic": "tә'wɒ:d"
-  },
-  "chef": {
-    "meaning": "n. 厨师",
-    "phonetic": "ʃef"
-  },
-  "contempt": {
-    "meaning": "n. 轻视, 轻蔑\n[法] 藐视, 侮辱, 轻视",
-    "phonetic": "kәn'tempt"
-  },
-  "ugly": {
-    "meaning": "a. 丑陋的, 邪恶的, 险恶的, 不祥的\nn. 丑陋的人(或物)",
-    "phonetic": "'ʌgli"
-  },
-  "likes": {
-    "meaning": "n. 爱好的事物",
-    "phonetic": ""
-  },
-  "optimist": {
-    "meaning": "n. 乐观者, 乐观主义者",
-    "phonetic": "'ɔptimist"
-  },
-  "weapon": {
-    "meaning": "n. 武器, 兵器\nvt. 武装",
-    "phonetic": "'wepәn"
-  },
-  "once": {
-    "meaning": "adv. 一次, 曾经, 一旦\nconj. 一旦, 一经\nn. 一次\na. 从前的",
-    "phonetic": "wʌns"
-  },
-  "positions": {
-    "meaning": "n. 定位；位置（position的复数）",
-    "phonetic": ""
-  },
-  "including": {
-    "meaning": "prep. 包含, 包括\n[经] 包括, 算入",
-    "phonetic": ""
-  },
-  "costly": {
-    "meaning": "a. 昂贵的, 奢华的, 费用大的",
-    "phonetic": "'kɒstli"
-  },
-  "blast": {
-    "meaning": "n. 一阵风, 爆炸, 枯萎病\nvt. 炸, 使枯萎\nvi. 炸, 猛攻, 猛烈抨击, 枯萎",
-    "phonetic": "blæst"
-  },
-  "unlimited": {
-    "meaning": "a. 无限的, 不受限制的, 无条件的\n[经] 无限的, 不定的",
-    "phonetic": ".ʌn'limitid"
-  },
-  "humanity": {
-    "meaning": "n. 人性, 人类, 博爱",
-    "phonetic": "hju:'mæniti"
-  },
-  "segment": {
-    "meaning": "n. 片段, 部分, 分节, 段\nv. 分割, 分裂\n[计] 段",
-    "phonetic": "'segmәnt"
-  },
-  "systematic": {
-    "meaning": "a. 有系统的, 分类上的, 体系的\n[医] 系统的, 系的, 分类的",
-    "phonetic": ".sisti'mætik"
-  },
-  "liquid": {
-    "meaning": "n. 液体, 流体, 流音\na. 液体的, 透明的, 明亮的, 流动的, 易变的",
-    "phonetic": "'likwid"
-  },
-  "incomplete": {
-    "meaning": "a. 不完全的, 未完成的, 不完善的\n[机] 不完全的",
-    "phonetic": ".inkәm'pli:t"
-  },
-  "gives": {
-    "meaning": "n. 付出；弯曲；内幕消息（give的复数）",
-    "phonetic": ""
-  },
-  "simulation": {
-    "meaning": "n. 模拟, 假冒物, 模仿\n[计] 模拟",
-    "phonetic": ".simju'leiʃәn"
-  },
-  "prevailing": {
-    "meaning": "a. 盛行很广的, 优势的, 主要的, 普遍的\n[法] 占优势的, 盛行的, 通行的",
-    "phonetic": "pri'veiliŋ"
-  },
-  "fight": {
-    "meaning": "n. 打架, 争吵, 斗志\nv. 对抗, 打架",
-    "phonetic": "fait"
-  },
-  "practitioner": {
-    "meaning": "n. 从业者, 开业者\n[医] 行医者, 医师",
-    "phonetic": "præk'tiʃәnә"
-  },
-  "uncommon": {
-    "meaning": "a. 不寻常的, 非凡的, 罕有的\nadv. 不平常地",
-    "phonetic": ".ʌn'kɒmәn"
-  },
-  "apprehension": {
-    "meaning": "n. 理解, 忧惧, 逮捕\n[医] 领会",
-    "phonetic": ".æpri'henʃәn"
-  },
-  "treaty": {
-    "meaning": "n. 条约, 谈判\n[经] 协议, 协定, 协商",
-    "phonetic": "'tri:ti"
-  },
-  "harmless": {
-    "meaning": "a. 无害处的, 未受损害的, 无辜的, 无恶意的\n[法] 无害的, 无恶意的, 无损害的",
-    "phonetic": "'hɑ:mlis"
-  },
-  "obstacle": {
-    "meaning": "n. 障碍, 妨害物, 阻碍",
-    "phonetic": "'ɒbstәkl"
-  },
-  "divisive": {
-    "meaning": "a. 区分的, 制造分裂的, 造成不和的",
-    "phonetic": "di'vaisiv"
-  },
-  "verbally": {
-    "meaning": "adv. 口头地, 非书面地",
-    "phonetic": "'v\\\\\\\\:bәli"
-  },
-  "filming": {
-    "meaning": "n. 摄影；拍摄；薄膜形成",
-    "phonetic": "'filmiŋ"
-  },
-  "bulge": {
-    "meaning": "n. 胀, 膨胀\nvi. 凸出\nvt. 使膨胀",
-    "phonetic": "bʌldʒ"
-  },
-  "earner": {
-    "meaning": "n. 赚钱的人",
-    "phonetic": "'ә:nә"
-  },
-  "plea": {
-    "meaning": "n. 恳求, 辩解, 抗辩, 诉讼, 请愿, 托词\n[法] 抗辩, 申诉案件, 答辩",
-    "phonetic": "pli:"
-  },
-  "cabbage": {
-    "meaning": "n. 卷心菜\n[医] 卷心菜, 甘兰",
-    "phonetic": "'kæbidʒ"
-  },
-  "suspiciously": {
-    "meaning": "adv. 猜疑地；怀疑地",
-    "phonetic": ""
-  },
-  "quota": {
-    "meaning": "n. 配额, 限额\n[化] 定额",
-    "phonetic": "'kwәutә"
-  },
-  "worried": {
-    "meaning": "a. 担心的, 闷闷不乐的",
-    "phonetic": "'wʌrid"
-  },
-  "will": {
-    "meaning": "n. 意志, 决心, 意愿, 意向, 干劲, 遗嘱\nvt. 用意志的力量驱使, 决意, 愿意, 立遗嘱\nvi. 下决心, 愿意\naux. 将, 愿意, 必须",
-    "phonetic": "wil"
-  },
-  "tandem": {
-    "meaning": "adv. 一前一后地, 纵排地\na. 纵排的, 串联的\nn. 纵列两匹马拉的马车, 前后纵列的两匹马, 串座双人自行车",
-    "phonetic": "'tændәm"
-  },
-  "fork": {
-    "meaning": "n. 叉子, 叉状物, 分岔\nvi. 分支, 分歧\nvt. 做成叉形, 叉起\n[计] 派生指令",
-    "phonetic": "fɒ:k"
-  },
-  "repair": {
-    "meaning": "n. 修理, 补救, 修复\nvt. 修理, 修补, 补救, 恢复, 补偿\nvi. 修理, 修补, 补救, 恢复, 去, 常去, 集合",
-    "phonetic": "ri'pєә"
-  },
-  "distortion": {
-    "meaning": "n. 扭曲, 变形, 曲解\n[计] 畸变; 失真",
-    "phonetic": "dis'tɒ:ʃәn"
-  },
-  "palm": {
-    "meaning": "n. 手掌, 棕榈, 胜利\nvt. 与...握手, 藏...于掌中",
-    "phonetic": "pɑ:m"
-  },
-  "new": {
-    "meaning": "a. 新的, 陌生的, 最近的, 不熟悉的\n[法] 新发现的, 新的, 重新开始的",
-    "phonetic": "nju:"
-  },
-  "target": {
-    "meaning": "n. 目标, 靶子, 指标\nvt. 对准, 订指标",
-    "phonetic": "'tɑ:git"
-  },
-  "scrap": {
-    "meaning": "n. 碎片, 残余物, 些微, 片断, 铁屑, 吵架\nvt. 扔弃, 敲碎, 拆毁\nvi. 互相殴打\na. 零碎拼凑成的, 废弃的",
-    "phonetic": "skræp"
-  },
-  "tomato": {
-    "meaning": "n. 番茄, 西红柿",
-    "phonetic": "tә'mɑ:tәu"
-  },
-  "rock": {
-    "meaning": "n. 岩石, 岩礁, 石头, 基石, 暗礁, 摇动, 摇滚乐\nvt. 摇摆, 摇动, 使摇晃, 使动摇\nvi. 摇, 摇动",
-    "phonetic": "rɒk"
-  },
-  "designation": {
-    "meaning": "n. 指示, 指定, 命名\n[电] 指定",
-    "phonetic": ".dezig'neiʃәn"
-  },
-  "vocation": {
-    "meaning": "n. 职业, 天命, 天职, 才能, 行业\n[法] 行业, 职业, 职业上的才能",
-    "phonetic": "vәu'keiʃәn"
-  },
-  "single": {
-    "meaning": "a. 单身的, 单程的, 单一的, 个别的, 孤独的, 专一的\nn. 一个, 单打, 单程票\nvt. 选出\nvi. 击出一垒打\n[计] 单精度型",
-    "phonetic": "'siŋgl"
-  },
-  "supper": {
-    "meaning": "n. 晚餐",
-    "phonetic": "'sʌpә"
-  },
-  "appear": {
-    "meaning": "vi. 出现, 显得, 来到\n[法] 出庭, 到案, 出现",
-    "phonetic": "ә'piә"
-  },
-  "safe": {
-    "meaning": "n. 保险箱, 冷藏室\na. 安全的, 可靠的, 平安的, 稳健的, 有把握的",
-    "phonetic": "seif"
-  },
-  "fuel": {
-    "meaning": "n. 燃料, 木炭\nvt. 加燃料, 供燃料\nvi. 得到燃料",
-    "phonetic": "'fjuәl"
-  },
-  "hitch": {
-    "meaning": "n. 猛拉, 急推, 蹒跚, 故障\nvt. 猛拉, 系住\nvi. 蹒跚, 被钩住",
-    "phonetic": "hitʃ"
-  },
-  "tuition": {
-    "meaning": "n. 学费, 讲授",
-    "phonetic": "tju:'iʃәn"
-  },
-  "embargo": {
-    "meaning": "n. 封港令, 禁运\nvt. 禁止出入港口, 禁运",
-    "phonetic": "im'bɑ:gәu"
-  },
-  "paperback": {
-    "meaning": "n. 平装本, 纸面本",
-    "phonetic": "'peipәbæk"
-  },
-  "motorbike": {
-    "meaning": "n. 机动脚踏两用车, 摩托车",
-    "phonetic": "'mәjtәbaik"
-  },
-  "frivolous": {
-    "meaning": "a. 轻佻的, 妄动的, 琐碎的\n[法] 轻薄的, 轻浮的, 无意义的",
-    "phonetic": "'frivәlәs"
-  },
-  "keen": {
-    "meaning": "a. 锋利的, 敏锐的, 强烈的, 敏捷的, 热心的, 渴望的\nn. 挽歌, 痛哭\nv. 唱挽歌, 痛哭",
-    "phonetic": "ki:n"
-  },
-  "solving": {
-    "meaning": "v. 解决",
-    "phonetic": ""
-  },
-  "applicant": {
-    "meaning": "n. 申请者\n[经] 申请人, 请求人, 谋事人",
-    "phonetic": "'æplikәnt"
-  },
-  "chance": {
-    "meaning": "n. 机会, 意外, 可能性\nvi. 偶然发生\nvt. 冒险",
-    "phonetic": "tʃæns. tʃɑ:ns"
-  },
-  "triumphant": {
-    "meaning": "a. 得胜的, 得意洋洋的",
-    "phonetic": "trai'ʌmfәnt"
-  },
-  "between": {
-    "meaning": "prep. 在...之间",
-    "phonetic": "bi'twi:n"
-  },
-  "tentacle": {
-    "meaning": "n. 触须, 触手, 触角\n[医] 触角, 触须",
-    "phonetic": "'tentәkl"
-  },
-  "imprison": {
-    "meaning": "vt. 使下狱, 关闭, 拘禁, 限制\n[法] 关押, 监禁, 限制",
-    "phonetic": "im'prizn"
-  },
-  "behind": {
-    "meaning": "adv. 在后地\nprep. 在...背后",
-    "phonetic": "bi'haind"
-  },
-  "daft": {
-    "meaning": "a. 愚笨的, 癫狂的, 狂闹的",
-    "phonetic": "dɑ:ft. dæft"
-  },
-  "sleep": {
-    "meaning": "n. 睡眠, 静止, 昏迷, 麻木, 长眠, 冬眠\nvi. 睡觉, 睡眠, 静止\nvt. 睡",
-    "phonetic": "sli:p"
-  },
-  "contextual": {
-    "meaning": "a. 上下文的, 前后关系的",
-    "phonetic": "kɒn'tekstjuәl"
-  },
-  "subtlety": {
-    "meaning": "n. 微妙, 精明",
-    "phonetic": "'sʌtlti"
-  },
-  "infant": {
-    "meaning": "n. 婴儿, 儿童, 初学者\na. 婴儿的, 幼稚的",
-    "phonetic": "'infәnt"
-  },
-  "shortest": {
-    "meaning": "[计] 最短的",
-    "phonetic": ""
-  },
-  "relocate": {
-    "meaning": "vt. 重新安置, 再配置, 放在新地方\n[计] 再定位; 浮动",
-    "phonetic": "ri:'lәukeit"
-  },
-  "lead": {
-    "meaning": "n. 铅, 铅条, 领导, 超前量, 领引, 榜样, 主角, 导线\nvt. 引导, 带领, 领导, 指挥, 致使, 加铅于, 用铅包\nvi. 领导, 带头, 导致, 用测深锤测深, 被铅覆盖\na. 带头的, 最重要的",
-    "phonetic": "li:d. led"
-  },
-  "especially": {
-    "meaning": "adv. 尤其, 特别, 格外",
-    "phonetic": "i'speʃәli"
-  },
-  "motorcycle": {
-    "meaning": "n. 摩托车\n[机] 机动车, 机踏车, 摩托车",
-    "phonetic": "'mәutәsaikl"
-  },
-  "whim": {
-    "meaning": "n. 一时的兴致, 冲动, 怪念头, 绞盘",
-    "phonetic": "hwim"
-  },
-  "give": {
-    "meaning": "n. 弹性, 适应性\nvt. 给, 授予, 供给, 产生, 发表, 付出, 献出, 让出\nvi. 捐赠, 支持不住, 让步",
-    "phonetic": "giv"
-  },
-  "wield": {
-    "meaning": "vt. 挥舞, 运用",
-    "phonetic": "wi:ld"
-  },
-  "progress": {
-    "meaning": "n. 进步, 发展, 前进\nvi. 进步, 进行",
-    "phonetic": "'prәugres"
-  },
-  "earl": {
-    "meaning": "n. 伯爵",
-    "phonetic": "ә:l"
-  },
-  "radically": {
-    "meaning": "adv. 根本地, 完全地",
-    "phonetic": "'rædikәli"
-  },
-  "repeated": {
-    "meaning": "a. 重复的, 再三的\n[法] 反复的, 再三的, 屡次的",
-    "phonetic": "ri'pi:tid"
-  },
-  "yet": {
-    "meaning": "adv. 还, 尚, 仍然, 已经, 然而\nconj. 然而",
-    "phonetic": "jet"
-  },
-  "platinum": {
-    "meaning": "n. 白金, 铂, 银灰色\n[化] 铂Pt",
-    "phonetic": "'plætinәm"
-  },
-  "open": {
-    "meaning": "n. 公开, 户外, 空旷\na. 开着的, 开放的, 开阔的, 营业着的, 公开的, 悬而未决的\nvt. 打开, 公开, 开放\nvi. 展开, 开始, 展现\n[计] 打开指令; 打开语句",
-    "phonetic": "'әupәn"
-  },
-  "during": {
-    "meaning": "prep. 在...的时候",
-    "phonetic": "'djuәriŋ"
-  },
-  "routine": {
-    "meaning": "n. 常规, 日常工作, 惯例, 例行公事\na. 日常的, 常规的\n[计] 例程",
-    "phonetic": "ru:'ti:n"
-  },
-  "camping": {
-    "meaning": "n. 野营, 露营",
-    "phonetic": "'kæmpiŋ"
-  },
-  "foreman": {
-    "meaning": "n. 领班, 工头, 陪审长\n[经] 领班, 工头",
-    "phonetic": "'fɒ:mәn"
-  },
-  "break": {
-    "meaning": "n. 休息, 中断, 破裂处, 绝交, 破晓, 突变\nvt. 打破, 弄破, 弄坏, 破坏, 违反, 打断, 削弱, 放弃\nvi. 破碎, 决裂, 破晓, 突变, 变弱, 暂停\nn. 分隔符\n[计] 分隔符; 中断; DOS内部命令:设定扫描中断按键的时机",
-    "phonetic": "breik"
-  },
-  "moment": {
-    "meaning": "n. 片刻, 瞬间, 重要, 阶段, 力矩\n[医] 片刻, 瞬间, 时机, 因素, 矩",
-    "phonetic": "'mәumәnt"
-  },
-  "youthful": {
-    "meaning": "a. 年轻的, 青年的\n[法] 青年的, 年轻的",
-    "phonetic": "'ju:θful"
-  },
-  "another": {
-    "meaning": "a. 另外的, 再一的, 不同的\npron. 又一个, 另一个, 类似的另一个",
-    "phonetic": "ә'nʌðә"
-  },
-  "ammunition": {
-    "meaning": "n. 军火, 弹药\n[机] 弹药",
-    "phonetic": ".æmju'niʃәn"
-  },
-  "auspices": {
-    "meaning": "n. 赞助, 主办, 保护",
-    "phonetic": "'ɔ:spisiz"
-  },
-  "devise": {
-    "meaning": "vt. 设计, 发明, 图谋, 遗赠给\nn. 遗赠",
-    "phonetic": "di'vaiz"
-  },
-  "change": {
-    "meaning": "n. 变化, 找回的零钱, 找头, 更换\nvt. 改变, 更换, 兑换",
-    "phonetic": "tʃeindʒ"
-  },
-  "double": {
-    "meaning": "n. 两倍\na. 两倍的, 双重的\nvt. 使加倍\nvi. 加倍, 代替, 快步走\n[计] 双精度型",
-    "phonetic": "'dʌbl"
-  },
-  "recur": {
-    "meaning": "vi. 复发, 回到, 重现, 再来, 诉诸, 采用, 循环",
-    "phonetic": "ri'kә:"
-  },
-  "speed": {
-    "meaning": "n. 速率, 速度, 迅速\nvi. 加速, 超速, 快进\nvt. 快速传送, 促进, 使加速\n[计] 中央处理机速度设置程序",
-    "phonetic": "spi:d"
-  },
-  "obliged": {
-    "meaning": "a. 感激的；有责任的；必须的",
-    "phonetic": ""
-  },
-  "nowhere": {
-    "meaning": "adv. 无处, 到处都无",
-    "phonetic": "'nәuhwєә"
-  },
-  "fabric": {
-    "meaning": "n. 织物, 布, 结构, 构造, 建筑物\n[经] 组织, 建筑物, 工厂",
-    "phonetic": "'fæbrik"
-  },
-  "stylistic": {
-    "meaning": "a. 格式上的, 体裁上的",
-    "phonetic": "stai'listik"
-  },
-  "entertainer": {
-    "meaning": "n. 表演娱乐节目的人, 演艺人员",
-    "phonetic": ".entә'teinә"
-  },
-  "insane": {
-    "meaning": "a. 患精神病的, 极愚蠢的\n[医] 神经错乱的",
-    "phonetic": "in'sein"
-  },
-  "master": {
-    "meaning": "n. 主人, 硕士, 大师, 母机\na. 主人的, 主要的\nvt. 征服, 控制, 精通",
-    "phonetic": "'mɑ:stә. 'mæstә"
-  },
-  "aggression": {
-    "meaning": "n. 侵犯, 侵略\n[医] 攻击",
-    "phonetic": "ә'greʃәn"
-  },
-  "hanger": {
-    "meaning": "n. 挂钩, 吊架, 衣架, 挂衣钩\n[经] (挂在店内的)广告牌",
-    "phonetic": "'hæŋә"
-  },
-  "workforce": {
-    "meaning": "n. 劳动力；工人总数, 职工总数",
-    "phonetic": ""
-  },
-  "flick": {
-    "meaning": "n. 快速的轻打, 轻打声, 弹开\nv. 轻弹, 轻轻拂去, 忽然摇动",
-    "phonetic": "flik"
-  },
-  "near": {
-    "meaning": "a. 近的, 近亲的, 近似的\nadv. 接近, 亲近\nprep. 靠近, 近似于\nv. 接近, 走近",
-    "phonetic": "niә"
-  },
-  "proprietor": {
-    "meaning": "n. 所有者\n[经] 所有人, 资本主, 业主",
-    "phonetic": "prә'praiәtә"
-  },
-  "manure": {
-    "meaning": "n. 肥料, 粪肥\nvt. 施肥于",
-    "phonetic": "mә'njuә"
-  },
-  "unimportant": {
-    "meaning": "a. 不重要的",
-    "phonetic": ".ʌnim'pɒ:tnt"
-  },
-  "stunning": {
-    "meaning": "a. 打昏迷的, 弄得人昏头昏脑的, 令人震惊的",
-    "phonetic": "'stʌniŋ"
-  },
-  "emotion": {
-    "meaning": "n. 情绪, 激动, 强烈的情感\n[医] 情绪, 情感",
-    "phonetic": "i'mәuʃәn"
-  },
-  "normative": {
-    "meaning": "a. 合乎规范的, 标准的, 规范的\n[法] 标准的, 规范的, 合乎规范的",
-    "phonetic": "'nɒ:mәtiv"
-  },
-  "side": {
-    "meaning": "n. 旁边, 侧, 方面, 胁, 侧边, 血统\na. 旁的, 侧的, 次要的\nvt. 同意, 支持\nvi. 支持, 赞助",
-    "phonetic": "said"
-  },
-  "spending": {
-    "meaning": "n. 经费, 开销\n[经] 开支, 开销, 经费",
-    "phonetic": "'spendiŋ"
-  },
-  "variant": {
-    "meaning": "n. 变体, 异体\na. 不同的, 有差别的\n[计] 变体型",
-    "phonetic": "'vєәriәnt"
-  },
-  "proximity": {
-    "meaning": "n. 接近, 亲近",
-    "phonetic": "prɒk'simiti"
-  },
-  "wrist": {
-    "meaning": "n. 手腕, 腕关节\n[医] 腕",
-    "phonetic": "rist"
-  },
-  "midnight": {
-    "meaning": "n. 午夜, 子夜, 半夜\na. 午夜的, 半夜的",
-    "phonetic": "'midnait"
-  },
-  "one": {
-    "meaning": "n. 一(个)\npron. 一, 任何人\nnum. 一, 一个\na. 一致的, 完整的",
-    "phonetic": "wʌn"
-  },
-  "closest": {
-    "meaning": "a. 最靠近的（close的最高级）",
-    "phonetic": ""
-  },
-  "must": {
-    "meaning": "n. 必须, 未发酵葡萄汁, 绝对必要的事物\naux. 必须",
-    "phonetic": "mʌst"
-  },
-  "investigator": {
-    "meaning": "n. 调查者, 审查者\n[法] 审查员, 侦查员, 调查员",
-    "phonetic": "in'vestigeitә"
-  },
-  "needed": {
-    "meaning": "a. 需要的",
-    "phonetic": ""
-  },
-  "stretcher": {
-    "meaning": "n. 担架, 延伸器\n[医] 担架",
-    "phonetic": "'stretʃә"
-  },
-  "positively": {
-    "meaning": "adv. 明确地, 肯定地, 无疑地, (非正式)确实地, 真正地",
-    "phonetic": ""
-  },
-  "installation": {
-    "meaning": "n. 安装, 装置, 就职\n[医] 结构, 装置, 设立",
-    "phonetic": ".instә'leiʃәn"
-  },
-  "embodiment": {
-    "meaning": "n. 具体化, 化身",
-    "phonetic": "im'bɒdimәnt"
-  },
-  "almond": {
-    "meaning": "n. 杏仁\n[化] 杏仁",
-    "phonetic": "'ɑ:mәnd"
-  },
-  "imaginative": {
-    "meaning": "a. 想像的, 虚构的",
-    "phonetic": "i'mædʒinәtiv"
-  },
-  "sweetness": {
-    "meaning": "n. 甜蜜, 芳香, 美妙",
-    "phonetic": "'swi:tnis"
-  },
-  "follow": {
-    "meaning": "vt. 跟随, 沿行, 遵循, 追求\nvi. 跟随, 接着\nn. 跟随, 追随",
-    "phonetic": "'fɒlәu"
-  },
-  "district": {
-    "meaning": "n. 区域, 地方\n[医] 地区, 地段",
-    "phonetic": "'distrikt"
-  },
-  "herring": {
-    "meaning": "n. 青鱼, 鲱",
-    "phonetic": "'heriŋ"
-  },
-  "conceptual": {
-    "meaning": "a. 概念的\n[医] 概念的",
-    "phonetic": "kәn'septʃuәl"
-  },
-  "lonely": {
-    "meaning": "a. 孤单的, 孤寂的, 荒凉的",
-    "phonetic": "'lәunli"
-  },
-  "instalment": {
-    "meaning": "n. 就职, 装设, 分期付款",
-    "phonetic": "in'stɒ:lmәnt"
-  },
-  "champion": {
-    "meaning": "n. 冠军, 拥护者, 战士\nvt. 保卫, 拥护\na. 优胜的",
-    "phonetic": "'tʃæmpiәn"
-  },
-  "tries": {
-    "meaning": "n. 尝试, 试验（try的复数）",
-    "phonetic": ""
-  },
-  "confrontation": {
-    "meaning": "n. 对抗；对质；面对",
-    "phonetic": ".kɔnfrʌn'teiʃәn"
-  },
-  "sewage": {
-    "meaning": "n. 脏水, 污水\n[医] 污水, 污物",
-    "phonetic": "'sju:idʒ"
-  },
-  "inaugural": {
-    "meaning": "a. 就任的, 开幕的\nn. 就职演讲",
-    "phonetic": "i'nɒ:gjurәl"
-  },
-  "preserve": {
-    "meaning": "vt. 保护, 保持, 保存, 维持, 腌, 禁猎\nvi. 加工食品, 禁猎\nn. 加工成的食品, 禁猎地, 保护区, 防护物",
-    "phonetic": "pri'zә:v"
-  },
-  "trust": {
-    "meaning": "n. 信任, 信赖, 相信, 受托, 职责, 信心, 托拉斯\na. 信托的, 托拉斯的\nvt. 信赖, 信任, 相信, 盼望, 赊卖给\nvi. 相信, 信赖, 依靠\n[计] 委托, 信任",
-    "phonetic": "trʌst"
-  },
-  "consideration": {
-    "meaning": "n. 考虑, 原因\n[法] 考虑, 思考, 报酬",
-    "phonetic": "kәn.sidә'reiʃәn"
-  },
-  "aged": {
-    "meaning": "a. 老的, 陈的, 有...岁的\n[化] 老化的; 老化了的; 陈化的; 陈化了的",
-    "phonetic": "'eidʒid"
-  },
-  "then": {
-    "meaning": "adv. 然后, 当时\nconj. 然后, 当时\nn. 那时",
-    "phonetic": "ðen"
-  },
-  "object": {
-    "meaning": "n. 物体, 目标, 目的, 对象, 宾语, 客体\nvi. 反对, 抱反感\nvt. 提出...来反对\n[计] 对象",
-    "phonetic": "'ɒbdʒekt"
-  },
-  "stronger": {
-    "meaning": "[经] 强劲的",
-    "phonetic": ""
-  },
-  "petrol": {
-    "meaning": "n. 汽油\n[经] 汽油, 挥发油, 石油",
-    "phonetic": "'petrәl"
-  },
-  "soil": {
-    "meaning": "n. 土壤, 土地, 国家, 国土, 温床, 污物, 粪便, 水池\nvt. 弄脏, 污辱\nvi. 变脏",
-    "phonetic": "sɒil"
-  },
-  "limited": {
-    "meaning": "a. 有限制的, 有限的, 有限责任的\nn. 特别快车",
-    "phonetic": "'limitid"
-  },
-  "clearance": {
-    "meaning": "n. 清除, 间隙\n[化] 间隙; 空隙",
-    "phonetic": "'kliәrәns"
-  },
-  "peculiarly": {
-    "meaning": "adv. 特别, 尤其, 奇怪地",
-    "phonetic": "pi'kju:liәli"
-  },
-  "abusive": {
-    "meaning": "a. 恶言谩骂的, 被滥用的, 腐败的, 虐待的",
-    "phonetic": "ә'bju:siv"
-  },
-  "use": {
-    "meaning": "n. 使用, 习惯, 使用价值, 用法, 使用权\nvt. 使用, 利用, 运用, 耗费\nvi. 惯常",
-    "phonetic": "ju:s"
-  },
-  "interception": {
-    "meaning": "n. 拦截, 截断, 截住, 截取, 截击, 窃听, 侦听, 雷达侦察\n[计] 截取, 窃听",
-    "phonetic": ",intә(:)'sepʃәn"
-  },
-  "manufacture": {
-    "meaning": "n. 产品, 制造\nvt. 制造, 假造\nvi. 制造",
-    "phonetic": ".mænju'fæktʃә"
-  },
-  "uniformity": {
-    "meaning": "n. 无差异, 同样, 划一, 一致\n[医] 均匀性",
-    "phonetic": ".ju:ni'fɒ:mәti"
-  },
-  "setting": {
-    "meaning": "n. 环境, 背景, 布景, 镶嵌, 调整, 沉落, 一副餐具\n[计] 设置",
-    "phonetic": "'setiŋ"
-  },
-  "you": {
-    "meaning": "pron. 你, 你们",
-    "phonetic": "ju:"
-  },
-  "mislead": {
-    "meaning": "vt. 误导",
-    "phonetic": "mis'li:d"
-  },
-  "move": {
-    "meaning": "n. 移动, 迁居, 步骤\nvt. 移动, 开动, 感动, 搬(家)\nvi. 移动, 离开, 运行, 迁移, 摇动, 搬家, 交往, 进展, 脱手\n[计] 移动; 传送; DOS外部命令:移动文件, 它可将文件移动到指定的地方",
-    "phonetic": "mu:v"
-  },
-  "ordinarily": {
-    "meaning": "adv. 通常, 普通, 一般地",
-    "phonetic": "'ɒ:dinәrili"
-  },
-  "squint": {
-    "meaning": "n. 斜视眼, 斜着\na. 斜视的\nvt. 使变斜视眼\nvi. 斜视, 倾向, 斜行",
-    "phonetic": "skwint"
-  },
-  "shooting": {
-    "meaning": "n. 发射, 猎场, 射击",
-    "phonetic": "'ʃu:tiŋ"
-  },
-  "lies": {
-    "meaning": "v. 躺卧（lie的第三人称单数形式）",
-    "phonetic": ""
-  },
-  "timber": {
-    "meaning": "n. 木材, 木料\nvt. 用木材建造",
-    "phonetic": "'timbә"
-  },
-  "tablecloth": {
-    "meaning": "n. 台布",
-    "phonetic": "'teiblklɒθ"
-  },
-  "favourable": {
-    "meaning": "a. 有用的, 良好的, 赞成的, 顺利的\n[医] 良好的, 顺利的",
-    "phonetic": "'feivәrәbl"
-  },
-  "atomic": {
-    "meaning": "a. 原子的, 原子能的\n[医] 原子的",
-    "phonetic": "ә'tɒmik"
-  },
-  "looks": {
-    "meaning": "n. 美貌",
-    "phonetic": ""
-  },
-  "dame": {
-    "meaning": "n. 夫人",
-    "phonetic": "deim"
-  },
-  "tunic": {
-    "meaning": "n. 束腰外衣\n[医] 膜, 被膜",
-    "phonetic": "'tju:nik"
-  },
-  "rendering": {
-    "meaning": "n. 翻译, 表现, 描写, 表演, 打底, 透视图",
-    "phonetic": "'rendәriŋ"
-  },
-  "liberty": {
-    "meaning": "n. 自由, 特权, 许可, 冒失\n[法] 自由, 自由权, 自由区域",
-    "phonetic": "'libәli"
-  },
-  "presume": {
-    "meaning": "vt. 假定, 推测, 擅自, 意味着\nvi. 擅自行动, 相信",
-    "phonetic": "pri'zu:m"
-  },
-  "weapons": {
-    "meaning": "n. 武装切换；斗争工具；武器（weapon的复数）",
-    "phonetic": ""
-  },
-  "shots": {
-    "meaning": "n. 炮弹；射击；射手（shot的复数）",
-    "phonetic": ""
-  },
-  "bacon": {
-    "meaning": "n. 熏猪肉\n[机] 腌肉",
-    "phonetic": "'beikәn"
-  },
-  "intricate": {
-    "meaning": "a. 复杂的, 错综的, 缠结的, 难懂的",
-    "phonetic": "'intrikit"
-  },
-  "biblical": {
-    "meaning": "a. 圣经的",
-    "phonetic": "'biblikәl"
-  },
-  "theatre": {
-    "meaning": "n. 戏院, 电影院, 剧场, 全体观众, 戏剧, 戏剧效果, 阶梯式讲堂, 场所",
-    "phonetic": ""
-  },
-  "nearby": {
-    "meaning": "a. 附近的, 近旁的\nadv. 在附近, 近旁地\nprep. 在...附近",
-    "phonetic": "'niәbai"
-  },
-  "predominant": {
-    "meaning": "a. 占主导地位的, 卓越的\n[法] 占优势的, 支配其他的, 主要的",
-    "phonetic": "pri'dɒminәnt"
-  },
-  "incompetence": {
-    "meaning": "n. 不胜任, 不够格, 不合格, 不适合, 无能力, 不熟练, 无资格\n[医] 机能不全, 闭锁不全, 关闭不全",
-    "phonetic": "in'kɔmpitәns"
-  },
-  "marsh": {
-    "meaning": "n. 沼泽, 湿地\na. 沼泽的",
-    "phonetic": "mɑ:ʃ"
-  },
-  "rejoice": {
-    "meaning": "vt. 使欢喜\nvi. 欣喜, 高兴, 庆祝",
-    "phonetic": "ri'dʒɒis"
-  },
-  "crag": {
-    "meaning": "n. 峭壁, 危岩\n[建] 岩石碎块",
-    "phonetic": "kræg"
-  },
-  "yank": {
-    "meaning": "v. 猛拉",
-    "phonetic": "jæŋk"
-  },
-  "trot": {
-    "meaning": "n. 快步\nvi. 快步走, 小跑\nvt. 使小跑, 策马小跑",
-    "phonetic": "trɒt"
-  },
-  "turn": {
-    "meaning": "n. 转弯, 转动, 旋转, 翻转, 一圈, 顺次, 改动, 变化, 性格, 特色, 形状, 转折\nvt. 使旋转, 转弯, 转动, 使转向, 驱赶, 阻挡, 兑换, 改写, 使作对, 绕过, 使流通\nvi. 转动, 转弯, 转向, 翻转, 回转, 改变, 转身, 变成, 变质, 晕眩, 易脱手",
-    "phonetic": "tә:n"
-  },
-  "pursuit": {
-    "meaning": "n. 追踪, 追求, 追赶, 娱乐, 职业\n[法] 追捕, 追求",
-    "phonetic": "pә'sju:t"
-  },
-  "thatcher": {
-    "meaning": "n. 盖屋顶者",
-    "phonetic": ""
-  },
-  "connects": {
-    "meaning": "v. 连接( connect的第三人称单数 ); 把…看作有关联; 由…联想到; 给…接通电话",
-    "phonetic": "kəˈnekts"
-  },
-  "thriller": {
-    "meaning": "n. 使人激动的东西, 使人毛骨悚然的东西, 使人毛骨悚然的小说",
-    "phonetic": "'θrilә"
-  },
-  "unaware": {
-    "meaning": "a. 未认识到的, 不知道的\n[法] 不知道的, 不察觉的, 无意的",
-    "phonetic": ".ʌnә'wєә"
-  },
-  "makeup": {
-    "meaning": "n. 组成, 性格, 化妆品, 化装(术), 虚构, 补考",
-    "phonetic": "'meikʌp"
-  },
-  "away": {
-    "meaning": "adv. 离去",
-    "phonetic": "ә'wei"
-  },
-  "expects": {
-    "meaning": "v. 期望( expect的第三人称单数 ); 预料; 要求; 认为（某事）会发生",
-    "phonetic": "iksˈpekts"
-  },
-  "inspiring": {
-    "meaning": "a. 鼓舞人心的",
-    "phonetic": "in'spaiәriŋ"
-  },
-  "while": {
-    "meaning": "n. 一会儿, (一段)时间\nconj. 当...的时候, 虽然\nvt. 消磨",
-    "phonetic": "hwail"
-  },
-  "summons": {
-    "meaning": "n. 召唤, 传唤, 召集, 传票\nvt. 传唤, 唤出, 传到",
-    "phonetic": "'sʌmәnz"
-  },
-  "fascination": {
-    "meaning": "n. 令人着迷的事物, 入迷, 魅力",
-    "phonetic": ".fæsi'neiʃәn"
-  },
-  "where": {
-    "meaning": "adv. 在哪里\npron. 哪里\nn. 地点",
-    "phonetic": "hwєә"
-  },
-  "vengeance": {
-    "meaning": "n. 复仇, 报仇\n[法] 报仇, 复仇",
-    "phonetic": "'vendʒәns"
-  },
-  "breaking": {
-    "meaning": "[计] 断开, 停止, 设断点\n[化] 打开; 分割; 打碎; 轧碎; 破碎",
-    "phonetic": "'breikiŋ"
-  },
-  "jeopardise": {
-    "meaning": "vt. 使受危险, 危及, 危害\n[法] 使受危害, 使陷入危险, 危及",
-    "phonetic": ""
-  },
-  "longer": {
-    "meaning": "adv. 比较久",
-    "phonetic": "'lɔŋɡә. 'lɔ:ŋ-"
-  },
-  "beside": {
-    "meaning": "prep. 在旁边",
-    "phonetic": "bi'said"
-  },
-  "standing": {
-    "meaning": "n. 起立, 持续, 身分\na. 立着的, 不动的, 经常的, 持续的",
-    "phonetic": "'stændiŋ"
-  },
-  "potency": {
-    "meaning": "n. 力量, 权力, 效力\n[化] 能力",
-    "phonetic": "'pәutәnsi"
-  },
-  "apparently": {
-    "meaning": "adv. 表面上, 清楚地, 显然地",
-    "phonetic": "ә'pærәntli"
-  },
-  "hell": {
-    "meaning": "n. 地狱, 邪恶势力, 苦境, 阴间, 毁坏, 训斥\nvi. 狂饮, 飞驰",
-    "phonetic": "hel"
-  },
-  "borrower": {
-    "meaning": "n. 借用人, 剽窃者\n[经] 借款人, 借用人",
-    "phonetic": "'bɒrәuә"
-  },
-  "could": {
-    "meaning": "aux. 可以, 能",
-    "phonetic": "kud"
-  },
-  "graphite": {
-    "meaning": "n. 石墨\n[化] 石墨",
-    "phonetic": "'græfait"
-  },
-  "distinctly": {
-    "meaning": "adv. 显然地, 明显地, 清楚地",
-    "phonetic": "dis'tiŋktli"
-  },
-  "running": {
-    "meaning": "n. 赛跑, 流出, 运转\na. 流动的, 跑着的, 连续的",
-    "phonetic": "'rʌniŋ"
-  },
-  "potent": {
-    "meaning": "a. 有力的, 有说服力的, 有效的\n[医] 有力的, 有性交能力的",
-    "phonetic": "'pәutnt"
-  },
-  "towering": {
-    "meaning": "a. 高耸的, 激烈的",
-    "phonetic": "'tauәriŋ"
-  },
-  "waft": {
-    "meaning": "vt. 随风传送, 使飘荡\nvi. 飘荡\nn. 吹拂, 飘荡",
-    "phonetic": "wɑ:ft"
-  },
-  "symposium": {
-    "meaning": "n. 讨论会, 座谈会, 专题报告会, 专题论文集",
-    "phonetic": "sim'pәuziәm"
-  },
-  "create": {
-    "meaning": "vt. 创造, 建造, 引起, 任命",
-    "phonetic": "kri:'eit"
-  },
-  "fiasco": {
-    "meaning": "n. 惨败, 大失败",
-    "phonetic": "fi'æskәu"
-  },
-  "ornamental": {
-    "meaning": "n. 装饰物, 观赏植物\na. 装饰性的, 装饰的, 观赏用的",
-    "phonetic": ".ɒ:nә'mentl"
-  },
-  "commemorate": {
-    "meaning": "vt. 纪念",
-    "phonetic": "kә'memәreit"
-  },
-  "behold": {
-    "meaning": "vt. 看到, 注视\nvi. 看",
-    "phonetic": "bi'hәuld"
-  },
-  "fumble": {
-    "meaning": "n. 摸索, 笨拙的行动, 漏球\nvt. 摸索, 乱摸, 笨拙的处理, 漏接(球)\nvi. 摸索, 笨手笨脚, 漏球",
-    "phonetic": "'fʌmbl"
-  },
-  "resume": {
-    "meaning": "vt. 重新开始, 取回, 恢复\nvi. 再开始\nn. 摘要, 个人简历\n[计] 继续执行",
-    "phonetic": "ri'zju:m"
-  },
-  "inverted": {
-    "meaning": "a. 倒转的, 反向的",
-    "phonetic": "in'vә:tid"
-  },
-  "accustom": {
-    "meaning": "vt. 使习惯于",
-    "phonetic": "ә'kʌstәm"
-  },
-  "annoyance": {
-    "meaning": "n. 烦恼, 打扰, 可厌之事\n[法] 使人烦恼的事物, 麻烦事, 讨厌物",
-    "phonetic": "ә'nɒiәns"
-  },
-  "leap": {
-    "meaning": "n. 跳跃, 剧增, 急变, 被越过之物\nvi. 跳跃, 突然经过\nvt. 跃过, 使跃过",
-    "phonetic": "li:p"
-  },
-  "cameraman": {
-    "meaning": "n. 照相师, 摄影师",
-    "phonetic": "'kæmәrәmæn"
-  },
-  "fractured": {
-    "meaning": "a. 断裂的；挫伤的；折裂的",
-    "phonetic": ""
-  },
-  "loom": {
-    "meaning": "n. 织布机, 若隐若现的景象\nvi. 朦胧地出现, 隐约可见, 可怕地出现",
-    "phonetic": "lu:m"
-  },
-  "safely": {
-    "meaning": "adv. 安全地, 确实地",
-    "phonetic": "'seifli"
-  },
-  "address": {
-    "meaning": "n. 住址, 演说, 举止, 灵巧, 求爱\nvt. 发表(演说或讲话), 对付, 写地址\n[计] 地址, 寻址",
-    "phonetic": "ә'dres"
-  },
-  "scholarship": {
-    "meaning": "n. 学问, 学术成就, 奖学金",
-    "phonetic": "'skɒlәʃip"
-  },
-  "doubling": {
-    "meaning": "n. 加倍, 双重, 折迭, 重合, 折回, 防护板, 加强板\n[计] 双倍, 双重",
-    "phonetic": "'dʌbliŋ"
-  },
-  "of": {
-    "meaning": "prep. 的, 属于",
-    "phonetic": "ɒv"
-  },
-  "alienate": {
-    "meaning": "vt. 使疏远, 离间, 转让\n[法] 转让, 让与, 疏远",
-    "phonetic": "'eiljәneit"
-  },
-  "bellow": {
-    "meaning": "v. 怒吼",
-    "phonetic": "'belәu"
-  },
-  "partnership": {
-    "meaning": "n. 合伙, 合股, 合作关系\n[经] 合伙(合作)关系, 全体合伙人",
-    "phonetic": "'pɑ:tnәʃip"
-  },
-  "outlaw": {
-    "meaning": "n. 被剥夺法律保护的人, 罪犯\nvt. 使...失去法律保护, 将...逐出社会, 宣告非法, 取缔",
-    "phonetic": "'autlɒ:"
-  },
-  "firing": {
-    "meaning": "n. 烧毁, 焚烧, 加热, 添煤\n[计] 点火",
-    "phonetic": "'faiәriŋ"
-  },
-  "hockey": {
-    "meaning": "n. 冰球, 曲棍球",
-    "phonetic": "'hɒki"
-  },
-  "poll": {
-    "meaning": "n. 投票, 民意测验, 选举投票, 投票数, 一组人中的一个, 头颈和后脑部, 鹦鹉\nvt. 对...进行民意测验, 获得...票, 剪树枝, 轮询\nvi. 投票\na. 剪过毛的, 修过枝的\n[计] 轮询",
-    "phonetic": "pәul"
-  },
-  "destroy": {
-    "meaning": "vt. 破坏, 毁坏, 消灭",
-    "phonetic": "di'strɒi"
-  },
-  "slab": {
-    "meaning": "n. 平板, 厚片\nvt. 切成厚板, 以平板盖上",
-    "phonetic": "slæb"
-  },
-  "gazette": {
-    "meaning": "n. 报, 公报, 报纸\nvt. 在公报上宣布, 刊载于公报",
-    "phonetic": "gә'zet"
-  },
-  "palmer": {
-    "meaning": "n. 朝圣者；变戏法的人；毛虫（尤指北美的小舌麦蛾幼虫）",
-    "phonetic": "'pɑ:mә"
-  },
-  "wild": {
-    "meaning": "n. 荒野, 荒地\na. 野性的, 野蛮的, 野生的, 失控的, 任性的, 杂乱的, 轻率的, 狂热的, 疯狂的\nadv. 狂暴地, 失控地",
-    "phonetic": "waild"
-  },
-  "overboard": {
-    "meaning": "adv. 自船上落下, 在船外",
-    "phonetic": "'әuvәbɒ:d"
-  },
-  "easy": {
-    "meaning": "a. 容易的, 缓缓的, 舒适的, 从容的, 宽容的, 流畅的, 随便的, 自在的, 疲软的\nadv. 容易地, 慢慢地",
-    "phonetic": "'i:zi"
-  },
-  "lookout": {
-    "meaning": "n. 注意, 前途, 了望台, 景色\n[法] 看守, 守望",
-    "phonetic": "'lukaut"
-  },
-  "rare": {
-    "meaning": "a. 稀罕的, 罕有的, 珍奇的, 稀薄的, 半熟的, 非常好的\nadv. 非常",
-    "phonetic": "rєә"
-  },
-  "intimacy": {
-    "meaning": "n. 亲密, 熟悉, 亲昵行为(言语)\n[法] 亲近的行为, 亲密, 隐私",
-    "phonetic": "'intimәsi"
-  },
-  "slash": {
-    "meaning": "v. 猛砍, 乱砍\nn. 猛砍, 乱砍, 删减\n[计] 斜线",
-    "phonetic": "slæʃ"
-  },
-  "coverage": {
-    "meaning": "n. 覆盖的范围, 保险总额, 新闻报导\n[化] 可达范围; 覆盖度",
-    "phonetic": "'kʌvәridʒ"
-  },
-  "problem": {
-    "meaning": "n. 问题, 难题\na. 成问题的, 难处理的",
-    "phonetic": "'prɒblәm"
-  },
-  "fault": {
-    "meaning": "n. 过错, 故障, 毛病\nvt. 挑剔\nvi. 产生断层, 弄错\n[计] 故障",
-    "phonetic": "fɒ:lt"
-  },
-  "outcome": {
-    "meaning": "n. 结果, 出口",
-    "phonetic": "'autkʌm"
-  },
-  "occurrence": {
-    "meaning": "n. 发生, 事件, 出现\n[医] 发生",
-    "phonetic": "ә'kʌrәns"
-  },
-  "simmer": {
-    "meaning": "vt. 煨\nvi. 炖, 内心充满\nn. 即将沸腾的状态, 即将发作",
-    "phonetic": "'simә"
-  },
-  "plume": {
-    "meaning": "n. 羽毛, 羽毛装饰, 羽状的\nvt. 用羽毛装饰, 整理羽毛, 使成羽毛状",
-    "phonetic": "plu:m"
-  },
-  "accordingly": {
-    "meaning": "adv. 相应地, 因此, 于是",
-    "phonetic": "ә'kɒ:diŋli"
-  },
-  "mechanically": {
-    "meaning": "adv. 机械, 用机械, 机械学, 物理, 力学, 呆板, 无意识, 手工操作, 技工",
-    "phonetic": "mi'kænikәli"
-  },
-  "able": {
-    "meaning": "a. 能干的, 能够的",
-    "phonetic": "'eibl"
-  },
-  "glad": {
-    "meaning": "a. 高兴的, 喜欢的, 情愿的",
-    "phonetic": "glæd"
-  },
-  "spokesperson": {
-    "meaning": "n. 发言人, 代言人",
-    "phonetic": "'spәukspә:sn"
-  },
-  "memorabilia": {
-    "meaning": "n. 值得纪念的事物, 大事记",
-    "phonetic": ".memәrә'biliә"
-  },
-  "vain": {
-    "meaning": "a. 无价值的, 徒然的, 空虚的, 自负的, 愚蠢的",
-    "phonetic": "vein"
-  },
-  "detective": {
-    "meaning": "n. 侦探\na. 侦探的",
-    "phonetic": "di'tektiv"
-  },
-  "unhappiness": {
-    "meaning": "n. 苦恼；忧愁",
-    "phonetic": ""
-  },
-  "imply": {
-    "meaning": "vt. 暗示, 意味\n[计] 隐含",
-    "phonetic": "im'plai"
-  },
-  "incorporate": {
-    "meaning": "a. 合并的, 组成公司的, 一体化的\nvt. 吸收, 合并, 使组成公司, 体现\nvi. 合并, 混合, 组成公司",
-    "phonetic": "in'kɒ:pәreit"
-  },
-  "prod": {
-    "meaning": "n. 刺针, 刺棒, 激励话, 提醒物\nvt. 戳, 刺, 刺激\nvi. 戳, 刺",
-    "phonetic": "prɒd"
-  },
-  "harbour": {
-    "meaning": "n. 港, 避难所\nv. 庇护, 藏匿, (使)入港停泊",
-    "phonetic": "'hɑ:bә"
-  },
-  "ventral": {
-    "meaning": "a. 腹的, 腹部的, 腹面的\nn. 腹鳍",
-    "phonetic": "'ventrәl"
-  },
-  "molecular": {
-    "meaning": "a. 分子的, 由分子组成的\n[医] 分子的",
-    "phonetic": "mә'lekjulә"
-  },
-  "discourse": {
-    "meaning": "n. 谈话, 演讲\nvi. 谈话, 讲述",
-    "phonetic": "'diskɒ:s"
-  },
-  "around": {
-    "meaning": "prep. 包围, 在...周围, 四处\nadv. 兜着圈子, 在附近, 到处",
-    "phonetic": "ә'raund"
-  },
-  "depressed": {
-    "meaning": "a. 沮丧的, 降低的\n[医] 抑郁的, 阻抑的, 压低的, 凹[陷]的, 扁平的",
-    "phonetic": "di'prest"
-  },
-  "twitch": {
-    "meaning": "vi. 急拉, 抽搐, 阵痛\nvt. 急拉, 攫取, 抽动\nn. 急拉, 抽搐, 阵痛",
-    "phonetic": "twitʃ"
-  },
-  "heave": {
-    "meaning": "n. 举, 抛, 起伏, 鼓起\nvt. 用力举起, 使举起, 使鼓起\nvi. 抛出, 起伏, 喘息, 凸起",
-    "phonetic": "hi:v"
-  },
-  "recording": {
-    "meaning": "a. 记录的, 记录用的\nn. 录音",
-    "phonetic": "ri'kɒ:diŋ"
-  },
-  "dune": {
-    "meaning": "n. 沙丘",
-    "phonetic": "dju:n"
-  },
-  "suggests": {
-    "meaning": "v. 暗示, 建议（suggest的单数）",
-    "phonetic": ""
-  },
-  "junk": {
-    "meaning": "n. 垃圾, 乌七八糟的东西, 舢板\n[计] 清除",
-    "phonetic": "dʒʌŋk"
-  },
-  "gaze": {
-    "meaning": "n. 注视, 凝视\nvi. 注视, 凝视",
-    "phonetic": "geiz"
-  },
-  "punter": {
-    "meaning": "n. 用篙撑船的人, 船夫, 赌博者",
-    "phonetic": "'pʌntә"
-  },
-  "east": {
-    "meaning": "n. 东方, 东\na. 东方的, 向东的\nadv. 向东方, 朝东方",
-    "phonetic": "i:st"
-  },
-  "difficult": {
-    "meaning": "a. 困难的",
-    "phonetic": "'difikәlt"
-  },
-  "retreating": {
-    "meaning": "[化] 再精制; 再处理",
-    "phonetic": ""
-  },
-  "unhealthy": {
-    "meaning": "a. 不健康的",
-    "phonetic": ".ʌn'helθi"
-  },
-  "spreadsheet": {
-    "meaning": "n. 空白表格程序, 电子制表软件, 电子数据表\n[计] 电子表格",
-    "phonetic": "'spredʃi:t"
-  },
-  "lazy": {
-    "meaning": "a. 懒惰的, 怠惰的, 缓慢的\nvi. 懒散",
-    "phonetic": "'leizi"
-  },
-  "choice": {
-    "meaning": "n. 选择, 精选品, 选择权\na. 精选的, 挑三拣四的, 上等的\n[计] DOS内部命令:在批处理文件中\n该命令用于提示用户作出选择, 决定批处理文件的流程",
-    "phonetic": "tʃɒis"
-  },
-  "genuinely": {
-    "meaning": "adv. 真诚地；诚实地",
-    "phonetic": ""
-  },
-  "even": {
-    "meaning": "a. 平坦的, 相等的, 连贯的, 均等的, 公平的, 偶数的, 平均的, 平衡的, 恰好的\nvt. 使平坦, 使相等\nvi. 变平, 成为相等\nadv. 甚至, 实际上, 完全, 十分\nn. 偶数, 偶校验\n[计] 偶数, 偶校验",
-    "phonetic": "'i:vәn"
-  },
-  "pitch": {
-    "meaning": "n. 程度, 坡度, 顶点, 前倾, 倾斜, 投掷, 音高, 螺距, 节距, 摊位, 树脂, 沥青\nvt. 投, 掷, 向前倾跌, 扎营, 竭力推销, 为...定调, 定位于, 用沥青涂\nvi. 搭帐篷, 投掷, 向前跌, 猛然摔倒, 坠落, 倾斜\n[计] 孔距",
-    "phonetic": "pitʃ"
-  },
-  "essential": {
-    "meaning": "n. 要素, 要点, 本质\na. 必要的, 重要的, 本质的\n[计] 本质冒险",
-    "phonetic": "i'senʃәl"
-  },
-  "gifted": {
-    "meaning": "a. 有天才的",
-    "phonetic": "'giftid"
-  },
-  "important": {
-    "meaning": "a. 重要的, 有地位的, 大量的, 显要的, 自负的\n[计] 要点",
-    "phonetic": "im'pɒ:tәnt"
-  },
-  "failed": {
-    "meaning": "a. 已失败的\n[计] 失败的",
-    "phonetic": ""
-  },
-  "capable": {
-    "meaning": "a. 有能力的, 能的, 能干的",
-    "phonetic": "'keipәbl"
-  },
-  "counting": {
-    "meaning": "n. 计算\n[医] 计数",
-    "phonetic": "'kauntiŋ"
-  },
-  "sock": {
-    "meaning": "n. 短袜, 鞋垫, 一击\nvt. 重击, 猛投, 给...穿袜\nvi. 打击\nadv. 正着地, 不偏不倚地\na. 非常成功的",
-    "phonetic": "sɒk"
-  },
-  "legislation": {
-    "meaning": "n. 立法, 法律\n[医] 立法, 法规",
-    "phonetic": ".ledʒis'leiʃәn"
-  },
-  "sleepy": {
-    "meaning": "a. 困乏的, 欲睡的",
-    "phonetic": "'sli:pi"
-  },
-  "partial": {
-    "meaning": "a. 部分的, 偏袒的, 偏爱的\nn. 分音",
-    "phonetic": "'pɑ:ʃәl"
-  },
-  "reverence": {
-    "meaning": "n. 尊敬, 敬重, 敬礼, 尊严, 威望\nvt. 崇敬, 敬畏, 尊敬",
-    "phonetic": "'revәrәns"
-  },
-  "offer": {
-    "meaning": "n. 给予(物), 出价, 提议, 意图, 报价\nvt. 提供, 出价, 奉献, 试图, 使出现, 演出\nvi. 出现, 献祭, 提议, 求婚",
-    "phonetic": "'ɒfә"
-  },
-  "conspicuous": {
-    "meaning": "a. 显著的, 显眼的, 出众的",
-    "phonetic": "kәn'spikjuәs"
-  },
-  "veterinary": {
-    "meaning": "a. 兽医的\nn. 兽医",
-    "phonetic": "'vetәrinәri"
-  },
-  "cane": {
-    "meaning": "n. 手杖, 细长的茎, 藤条\nvt. 以杖击, 以藤编制",
-    "phonetic": "kein"
-  },
-  "handle": {
-    "meaning": "n. 柄, 把手, 把柄, 柄状物, 手感\nvt. 触摸, 运用, 买卖, 处理, 操作\nvi. 搬运, 易于操纵\nn. 句柄\n[计] 句柄",
-    "phonetic": "hændl"
-  },
-  "warmly": {
-    "meaning": "adv. 亲切地, 温暖地, 热心地",
-    "phonetic": "'wɒ:mli"
-  },
-  "expansive": {
-    "meaning": "a. 扩张性的, 使扩大的, 广阔的\n[化] 膨胀的; 可以膨胀的",
-    "phonetic": "ik'spænsiv"
-  },
-  "remind": {
-    "meaning": "vt. 提醒, 使想起",
-    "phonetic": "ri'maind"
-  },
-  "miscarriage": {
-    "meaning": "n. 失败, 误送, 流产\n[医] 流产",
-    "phonetic": "mis'kæridʒ"
-  },
-  "cortex": {
-    "meaning": "n. 皮层\n[医] (树)皮; 皮质, 皮层",
-    "phonetic": "'kɒ:teks"
-  },
-  "diagram": {
-    "meaning": "n. 图表；图解",
-    "phonetic": "'daiәɡræm"
-  },
-  "check": {
-    "meaning": "n. 检查, 支票, 阻止物, 寄物牌, 象棋中将军\nvt. 检查, 阻止, 核对, 寄存, 托运\nvi. 逐项相符, 开支票\n[计] 复选",
-    "phonetic": "tʃek"
-  },
-  "syllabus": {
-    "meaning": "n. 摘要, 提纲, 课程表, 教学大纲\n[医] 摘要, 要目",
-    "phonetic": "'silәbәs"
-  },
-  "early": {
-    "meaning": "a. 早的, 早熟的\nadv. 很早, 初",
-    "phonetic": "'ә:li"
-  },
-  "comet": {
-    "meaning": "n. 彗星",
-    "phonetic": "'kɒmit"
-  },
-  "talented": {
-    "meaning": "a. 天资高的, 有才能的",
-    "phonetic": "'tælәntid"
-  },
-  "steps": {
-    "meaning": "n. （楼外的）台阶；步伐；步幅；步数",
-    "phonetic": ""
-  },
-  "dine": {
-    "meaning": "vi. 用正餐, 进餐\nvt. 宴请",
-    "phonetic": "dain"
-  },
-  "spinner": {
-    "meaning": "n. 纺纱工人, 旋床工人, 纺纱机, 机头罩, 旋转动作, (美)(非正式)卡车司机\n[计] 微调控制项",
-    "phonetic": "'spinә"
-  },
-  "broadcaster": {
-    "meaning": "n. 播送者, 广播装置, 播种机",
-    "phonetic": "'brɒ:dkæstә"
-  },
-  "simply": {
-    "meaning": "adv. 简单地, 只是, 简直, 简朴地, 坦白地",
-    "phonetic": "'simpli"
-  },
-  "reproduction": {
-    "meaning": "n. 再现, 复制, 生殖, 繁殖, 复制品\n[医] 生殖, 复现(心理)",
-    "phonetic": ".ri:prә'dʌkʃәn"
-  },
-  "treating": {
-    "meaning": "[机] 处理",
-    "phonetic": "'tri:tiŋ"
-  },
-  "shave": {
-    "meaning": "n. 修面, 刮胡子, 幸免, 剃刀\nvt. 修面, 剃, 修剪, 掠过\nvi. 刮脸, 勉强通过",
-    "phonetic": "ʃeiv"
-  },
-  "workplace": {
-    "meaning": "n. 工作场所, 工厂, 车间",
-    "phonetic": ""
-  },
-  "hike": {
-    "meaning": "n. 徒步旅行, 远足, 涨价, 提高\nvi. 步行, 徒步旅行, 上升\nvt. 使高涨, 拉起",
-    "phonetic": "haik"
-  },
-  "incumbent": {
-    "meaning": "a. 现任的, 依靠的, 负有义务的\nn. 领圣俸者, 在职者",
-    "phonetic": "in'kʌmbәnt"
-  },
-  "judicial": {
-    "meaning": "a. 法庭的, 公正的, 审判上的, 司法的\n[法] 司法的, 审判上的, 法官的",
-    "phonetic": "dʒu:'diʃәl"
-  },
-  "enough": {
-    "meaning": "n. 充足, 够, 很多\na. 充足的, 足够\nadv. 足够\ninterj. 够了",
-    "phonetic": "i'nʌf"
-  },
-  "again": {
-    "meaning": "adv. 再一次, 又, 到原处",
-    "phonetic": "ә'gein"
-  },
-  "selling": {
-    "meaning": "a. 卖的, 销路好的, 出售的\n[经] 卖盘, 出售, 销路好",
-    "phonetic": "'seliŋ"
-  },
-  "disagreement": {
-    "meaning": "n. 不合, 争论, 不一致\n[法] 不一致, 不同意, 陪审团的意见不一",
-    "phonetic": ".disә'gri:mәnt"
-  },
-  "landowner": {
-    "meaning": "n. 地主\n[法] 土地所有人, 地主",
-    "phonetic": "'lændәunә"
-  },
-  "creed": {
-    "meaning": "n. 宗教信条, 教义, 纲领",
-    "phonetic": "kri:d"
-  },
-  "overt": {
-    "meaning": "a. 明显的, 公然的, 蓄意的\n[法] 明显的, 公开的",
-    "phonetic": "'әuvә:t"
-  },
-  "compressed": {
-    "meaning": "a. 被压缩的, 扁平的",
-    "phonetic": "kәm'prest"
-  },
-  "easily": {
-    "meaning": "adv. 容易地, 轻易地, 流利地",
-    "phonetic": "'i:zili"
-  },
-  "spend": {
-    "meaning": "vt. 花费, 浪费, 度过, 消耗, 消磨\nvi. 花费, 用尽",
-    "phonetic": "spend"
-  },
-  "whereby": {
-    "meaning": "adv. 靠什么, 如何, 为何, 靠那个, 因此, 由此\n[法] 因此, 由是",
-    "phonetic": "(h)weә'bai"
-  },
-  "betrayal": {
-    "meaning": "n. 背叛, 辜负\n[法] 背叛, 通敌, 背信",
-    "phonetic": "bi'treiәl"
-  },
-  "indication": {
-    "meaning": "n. 指示, 象征, 暗示\n[医] 指示, 指征, 适应征",
-    "phonetic": ".indi'keiʃәn"
-  },
-  "ridicule": {
-    "meaning": "n. 嘲笑, 愚弄, 笑柄\nvt. 嘲笑, 嘲弄, 愚弄",
-    "phonetic": "'ridikju:l"
-  },
-  "well": {
-    "meaning": "n. 井, 泉水, 源泉, 好\nv. 涌出\na. 健康的, 良好的, 适宜的, 恰当的\nadv. 很好地, 适当地, 好意地, 很, 完全\ninterj. 好啦",
-    "phonetic": "wel"
-  },
-  "daylight": {
-    "meaning": "n. 白昼, 日光\nvt. 使沐浴于日光\nvi. 享有日光",
-    "phonetic": "'deilait"
-  },
-  "robbery": {
-    "meaning": "n. 抢掠, 抢夺\n[法] 强盗, 抢劫, 劫掠",
-    "phonetic": "'rɒbәri"
-  },
-  "loan": {
-    "meaning": "n. 贷款, 借出\nv. 借, 供应货款, 借给",
-    "phonetic": "lәun"
-  },
-  "support": {
-    "meaning": "n. 支持, 支撑, 援助, 供养, 支撑物\nvt. 支援, 支撑, 帮助, 支持, 忍受, 供养, 证实\n[计] 后援; 支持",
-    "phonetic": "sә'pɒ:t"
-  },
-  "what": {
-    "meaning": "pron. 什么\ninterj. 怎么, 多么\na. 什么的\nadv. 到什么程度",
-    "phonetic": "hwɒt"
-  },
-  "affective": {
-    "meaning": "a. 情感的, 表达感情的\n[医] 感情的, 情感的",
-    "phonetic": "ә'fektiv"
-  },
-  "need": {
-    "meaning": "n. 需要, 必须, 缺乏\nvt. 需要, 必需\nvi. 贫困, 有必要\naux. 需要",
-    "phonetic": "ni:d"
-  },
-  "original": {
-    "meaning": "a. 最初的, 原始的, 有创意的\nn. 原物, 原作",
-    "phonetic": "ә'ridʒәnl"
-  },
-  "circle": {
-    "meaning": "n. 圆周, 社交圈, 循环, 范围\nvt. 围着, 环绕\nvi. 盘旋, 循环",
-    "phonetic": "'sә:kl"
-  },
-  "grandfather": {
-    "meaning": "n. 祖父, 始祖\n[电] 原始资料组",
-    "phonetic": "'grændfɑ:ðә"
-  },
-  "perpetual": {
-    "meaning": "a. 永久的, 不断的, 无期限的, 没完没了的, 四季开花的\n[经] 永远的, 终身的, 持续的",
-    "phonetic": "pә'petʃuәl"
-  },
-  "reconnaissance": {
-    "meaning": "n. 侦察, 勘察队\n[电] 勘查",
-    "phonetic": "ri'kɒnisәns"
-  },
-  "excuse": {
-    "meaning": "vt. 原谅, 申辩, 做为...的托辞\nn. 致歉, 理由, 饶恕, 借口",
-    "phonetic": "ik'skju:z"
-  },
-  "repairing": {
-    "meaning": "v. 修理；修复（repair的ing形式）",
-    "phonetic": ""
-  },
-  "scratching": {
-    "meaning": "v. 擦伤；划伤；刮痕（scratch的ing形式）",
-    "phonetic": ""
-  },
-  "reptile": {
-    "meaning": "n. 爬行动物, 爬虫, 卑鄙的人\na. 爬行的, 爬虫类的, 卑鄙的",
-    "phonetic": "'reptail"
-  },
-  "rediscover": {
-    "meaning": "vt. 重新发现",
-    "phonetic": ".ri:dis'kʌvә"
-  },
-  "storage": {
-    "meaning": "n. 存储器, 储藏, 保管, 库存, 仓库\n[计] 存放处; 存储",
-    "phonetic": "'stɒ:ridʒ"
-  },
-  "catalogue": {
-    "meaning": "n. 目录, 大学情况一览\nvt. 编入目录",
-    "phonetic": "'kætәlɒg"
-  },
-  "assassin": {
-    "meaning": "n. 暗杀者, 刺客\n[法] 暗杀者, 行刺者",
-    "phonetic": "ә'sæsin"
-  },
-  "next": {
-    "meaning": "n. 下一个\na. 下一个的, 其次的, 贴近的\nadv. 然后, 下次, 次于\n[计] 近邻干扰",
-    "phonetic": "'nekst"
-  },
-  "bureaucrat": {
-    "meaning": "n. 官僚作风的人, 官僚, 官僚主义者\n[法] 官僚, 官僚作风的人",
-    "phonetic": "'bjuәrәukræt"
-  },
-  "impersonal": {
-    "meaning": "a. 客观的, 和个人无关的, 没有人情味的, 非人称的\nn. 非人称动词(或代词)",
-    "phonetic": "im'pә:sәnәl"
-  },
-  "indefinite": {
-    "meaning": "a. 模糊的, 不确定的, 无限的\n[法] 不确定的, 无限制的",
-    "phonetic": "in'definit"
-  },
-  "arrives": {
-    "meaning": "v. 到达, 来( arrive的第三人称单数 ); 发生",
-    "phonetic": "əˈraivz"
-  },
-  "socket": {
-    "meaning": "n. 窝, 穴, 插座, 眼窝\nvt. 插进插座\n[计] 套接字",
-    "phonetic": "'sɒkit"
-  },
-  "genuine": {
-    "meaning": "a. 真正的, 真实的, 诚恳的\n[医] 真性的",
-    "phonetic": "'dʒenjuin"
-  },
-  "more": {
-    "meaning": "n. 更多\na. 多的, 程度较大的, 更大的\nadv. 多, 更多, 进一步\n[计] DOS外部命令:显示满屏后自动暂停, 并显示:\"--More--\", 按任意键继续",
-    "phonetic": "mɒ:"
-  },
-  "berry": {
-    "meaning": "n. 浆果\nvi. 采集浆果",
-    "phonetic": "'beri"
-  },
-  "raider": {
-    "meaning": "n. 奇袭者, 侵入者\n[法] 袭击者, 侵入者, 劫掠商船的武装快船",
-    "phonetic": "'reidә"
-  },
-  "surrogate": {
-    "meaning": "n. 替代者, 代用品\nvt. 代理, 替代",
-    "phonetic": "'sʌrәgit"
-  },
-  "cringe": {
-    "meaning": "n. 畏缩, 奉承\nvi. 畏缩, 抖缩, 阿谀",
-    "phonetic": "krindʒ"
-  },
-  "effectively": {
-    "meaning": "adv. 有效地, 有力地, 实际上",
-    "phonetic": "i'fektivli"
-  },
-  "affected": {
-    "meaning": "a. 假装的, 做作的, 受影响的",
-    "phonetic": "ә'fektid"
-  },
-  "fire": {
-    "meaning": "n. 火, 炉火, 电炉, 火灾, 闪光体, 炮火, 热情\nvt. 点燃, 烧制, 使发光, 激动, 放枪, 解雇\nvi. 着火, 烧火, 开枪, 射击, 激动",
-    "phonetic": "'faiә"
-  },
-  "discriminate": {
-    "meaning": "v. 区别, 差别待遇",
-    "phonetic": "dis'krimineit"
-  },
-  "ought": {
-    "meaning": "aux. 应该, 大概\nn. 责任",
-    "phonetic": "ɒ:t"
-  },
-  "dash": {
-    "meaning": "n. 冲撞, 破折号, 短跑\nvi. 猛冲, 冲撞\nvt. 泼溅, 使猛撞, 搀和, 使破灭, 使沮丧",
-    "phonetic": "dæʃ"
-  },
-  "ounce": {
-    "meaning": "n. 盎司, 少量, 雪豹\n[医] 英两, Г",
-    "phonetic": "auns"
-  },
-  "disruption": {
-    "meaning": "n. 分裂, 崩溃, 瓦解",
-    "phonetic": "dis'rʌpʃәn"
-  },
-  "johnny": {
-    "meaning": "n. 男人, 家伙",
-    "phonetic": "'dʒɒni"
-  },
-  "inconvenience": {
-    "meaning": "n. 不便, 困难\nvt. 使感不便, 使感困难",
-    "phonetic": ".inkәn'vi:njәns"
-  },
-  "losing": {
-    "meaning": "a. 损失的, 输的\nn. 失败, 损失",
-    "phonetic": "'lu:ziŋ"
-  },
-  "added": {
-    "meaning": "a. 额外的；更多的",
-    "phonetic": "'ædid"
-  },
-  "billing": {
-    "meaning": "n. 节目次序, 广告\n[经] 开票(发票,帐单)",
-    "phonetic": "'biliŋ"
-  },
-  "first": {
-    "meaning": "adv. 首先, 第一, 优先\na. 第一的\nnum. 第一\nn. 开始, 第一",
-    "phonetic": "fә:st"
-  },
-  "unstable": {
-    "meaning": "a. 不稳定的",
-    "phonetic": ".ʌn'steibl"
-  },
-  "lemon": {
-    "meaning": "n. 柠檬, 柠檬树, 柠檬色\n[医] 柠檬",
-    "phonetic": "'lemәn"
-  },
-  "casserole": {
-    "meaning": "n. 餐桌上用有盖的焙盘, 砂锅菜\n[化] 勺皿",
-    "phonetic": "'kæsәrәul"
-  },
-  "fragmentation": {
-    "meaning": "n. 分裂, 破碎\n[计] 在IP层将打包文件切成适当大小的程序",
-    "phonetic": ".frægmәn'teiʃәn"
-  },
-  "apprenticeship": {
-    "meaning": "n. 学徒身分, 见习(期)\n[经] 学徒制, 学徒期",
-    "phonetic": "ә'prentisʃip"
-  },
-  "arable": {
-    "meaning": "a. 适于耕种的, 可耕的",
-    "phonetic": "'ærәbl"
-  },
-  "tennis": {
-    "meaning": "n. 网球",
-    "phonetic": "'tenis"
-  },
-  "affiliation": {
-    "meaning": "n. 联系, 从属关系\n[医] 父权(判定私生儿的父亲)",
-    "phonetic": "ә.fili'eiʃәn"
-  },
-  "meanwhile": {
-    "meaning": "n. 其时, 其间\nadv. 同时, 于此时",
-    "phonetic": "'mi:nhwail"
-  },
-  "attention": {
-    "meaning": "n. 注意, 注意力\n[计] 引起注意信号",
-    "phonetic": "ә'tenʃәn"
-  },
-  "request": {
-    "meaning": "n. 请求, 需要, 申请书\nvt. 请求, 要求, 邀请\n[计] 请求",
-    "phonetic": "ri'kwest"
-  },
-  "be": {
-    "meaning": "v. 是, 表示, 在\n[计] 后端, 总线允许",
-    "phonetic": "bi:"
-  },
-  "direction": {
-    "meaning": "n. 方向, 指导, 趋势\n[计] 方向; 流向",
-    "phonetic": "di'rekʃәn"
-  },
-  "optimum": {
-    "meaning": "n. 最适条件, 最佳效果\na. 最优的, 最适宜的",
-    "phonetic": "'ɒptimәm"
-  },
-  "before": {
-    "meaning": "prep. 在...之前\nconj. 在...之前\nadv. 在前",
-    "phonetic": "bi'fɒ:"
-  },
-  "result": {
-    "meaning": "n. 结果, 成绩, 答案\nvi. 产生, 结果, 致使\n[计] 结果",
-    "phonetic": "ri'zʌlt"
-  },
-  "smoky": {
-    "meaning": "a. 冒烟的, 满是烟的, 熏脏的, 烟灰色的",
-    "phonetic": "'smәuki"
-  },
-  "makeshift": {
-    "meaning": "n. 权宜之计, 临时代用品\na. 权宜的, 临时代用的",
-    "phonetic": "'meikʃift"
-  },
-  "the": {
-    "meaning": "art. 那",
-    "phonetic": "ðә"
-  },
-  "ruined": {
-    "meaning": "a. 毁灭的, 没落的, 荒废的",
-    "phonetic": "'ruind"
-  },
-  "blocks": {
-    "meaning": "n. 积木；黑金石；街区；[音]双头木鱼；楼群（block的复数）",
-    "phonetic": "'blɔks"
-  },
-  "outpost": {
-    "meaning": "n. 前哨, 前哨部队, 前哨基地",
-    "phonetic": "'autpәust"
-  },
-  "incorrectly": {
-    "meaning": "adv. 错误地；不适当地",
-    "phonetic": ""
-  },
-  "path": {
-    "meaning": "n. 路径, 小路, 道路, 途径, 路线, 轨道\n[计] 路径; DOS内部命令:设定DOS读取程序的路径",
-    "phonetic": "pɑ:θ"
-  },
-  "hardware": {
-    "meaning": "n. 硬件, 五金器具, 零件\n[计] 硬件",
-    "phonetic": "'hɑ:dwєә"
-  },
-  "reservoir": {
-    "meaning": "n. 贮水池, 贮藏处, 贮备, 水库\nvt. 储藏",
-    "phonetic": "'rezәvwɑ:"
-  },
-  "geology": {
-    "meaning": "n. 地质学, 地质情况",
-    "phonetic": "dʒi'ɒlәdʒi"
-  },
-  "pick": {
-    "meaning": "n. 精选, 选择, 掘, 精华, 牙签, 鹤嘴锄\nv. 摘, 掘, 凿, 挖, 挑选\n[计] 拾取",
-    "phonetic": "pik"
-  },
-  "adamant": {
-    "meaning": "n. 坚硬的东西\na. 非常坚硬的, 坚强的, 固执的",
-    "phonetic": "'ædәmәnt"
-  },
-  "test": {
-    "meaning": "n. 测试, 试验, 化验, 检验, 考验, 甲壳\nvt. 测试, 试验, 化验\nvi. 接受测验, 进行测试",
-    "phonetic": "test"
-  },
-  "appropriately": {
-    "meaning": "adv. 适当的, 恰如其分的, 恰当的, 合适的",
-    "phonetic": ""
-  },
-  "regulation": {
-    "meaning": "n. 规则, 管理, 调整\n[计] 调整; 规章; 规则; 调节",
-    "phonetic": ".regju'leiʃәn"
-  },
-  "misfortune": {
-    "meaning": "n. 不幸, 灾祸, 坏运气\n[法] 不幸事故, 不幸, 灾祸",
-    "phonetic": "mis'fɒ:tʃәn"
-  },
-  "bird": {
-    "meaning": "n. 鸟, 羽毛球\nvi. 打鸟",
-    "phonetic": "bә:d"
-  },
-  "uphold": {
-    "meaning": "vt. 支撑, 赞成, 鼓励, 举起, 坚持\n[法] 确认, 赞成, 支持",
-    "phonetic": "ʌp'hәuld"
-  },
-  "barrel": {
-    "meaning": "n. 桶\nvt. 装入桶内",
-    "phonetic": "'bærәl"
-  },
-  "depends": {
-    "meaning": "v. 依赖；信赖（depend的三单形式）",
-    "phonetic": ""
-  },
-  "rather": {
-    "meaning": "adv. 宁可, 稍微, 相当",
-    "phonetic": "'ræðә"
-  },
-  "grim": {
-    "meaning": "a. 冷酷的, 坚强的, 残忍的, 可怕的, 讨厌的",
-    "phonetic": "grim"
-  },
-  "cannot": {
-    "meaning": "aux. 无法, 不能",
-    "phonetic": "'kænɒt"
-  },
-  "fridge": {
-    "meaning": "n. 电冰箱",
-    "phonetic": "fridʒ"
-  },
-  "opportunity": {
-    "meaning": "n. 机会, 时机",
-    "phonetic": ".ɒpә'tju:niti"
-  },
-  "begins": {
-    "meaning": "v. 开始( begin的第三人称单数 ); 着手; 创始; 创办",
-    "phonetic": "bɪ'ɡɪnz"
-  },
-  "witness": {
-    "meaning": "n. 证人, 目击者, 证据, 证词\nvt. 目击, 作证, 证明, 表明\nvi. 作证人, 作为证据",
-    "phonetic": "'witnis"
-  },
-  "an": {
-    "meaning": "art. 一",
-    "phonetic": "æn"
-  },
-  "straight": {
-    "meaning": "n. 直线, 直\na. 直的, 笔直的, 正直的, 直接的, 连续的, 整齐的\nadv. 直接地, 立即, 不断地",
-    "phonetic": "streit"
-  },
-  "benefactor": {
-    "meaning": "n. 恩人, 捐助者, 施主\n[法] 捐赠人, 赠送人",
-    "phonetic": "'benifæktә"
-  },
-  "statistical": {
-    "meaning": "a. 统计的, 统计上的, 统计学的\n[经] 统计的, 统计学的",
-    "phonetic": "stә'tistikl"
-  },
-  "from": {
-    "meaning": "prep. 从, 来自, 根据",
-    "phonetic": "frɒm"
-  },
-  "bacterial": {
-    "meaning": "a. 细菌的\n[医] 细菌的, [无芽胞]杆菌的",
-    "phonetic": "bæk'tiәriәl"
-  },
-  "needless": {
-    "meaning": "a. 不需要的, 不必要的",
-    "phonetic": "'ni:dlis"
-  },
-  "rear": {
-    "meaning": "n. 后面, 背后, 后方\na. 后面的, 背面的, 后方的\nvt. 养育, 培养, 饲养, 举起, 树立, 栽种\nvi. 高耸, 暴跳",
-    "phonetic": "riә"
-  },
-  "remove": {
-    "meaning": "vt. 移动, 调动, 除去, 迁移, 开除, 移交\nvi. 迁移, 移动, 搬家\nn. 班级, 升级, 移动, 搬家, 间距\n[计] 删除",
-    "phonetic": "ri'mu:v"
-  },
-  "who": {
-    "meaning": "pron. 谁",
-    "phonetic": "hu:"
-  },
-  "misleading": {
-    "meaning": "a. 引入歧途的, 使人误解的, 骗人的\n[法] 误写姓名的, 误称的, 令人误解的",
-    "phonetic": "mis'li:diŋ"
-  },
-  "opening": {
-    "meaning": "n. 开始, 口子, 穴, 揭幕\na. 开始的",
-    "phonetic": "'әupәniŋ"
-  },
-  "clear": {
-    "meaning": "a. 清楚的, 明确的, 澄清的\nadv. 清晰地\nvt. 澄清, 清除障碍\nvi. 放晴, 变清澈\nn. 空隙\n[计] 清除",
-    "phonetic": "kliә"
-  },
   "a": {
-    "meaning": "第一个字母 A; 一个; 第一的\\r\nart. [计] 累加器, 加法器, 地址, 振幅, 模拟, 区域, 面积, 汇编, 组件, 异步",
-    "phonetic": "ei"
-  },
-  "specify": {
-    "meaning": "vt. 详列, 指定, 说明\n[计] 指定",
-    "phonetic": "'spesifai"
-  },
-  "sharply": {
-    "meaning": "adv. 锐利地, 严厉地, 厉害地\n[经] 剧烈地",
-    "phonetic": "'ʃɑ:pli"
-  },
-  "effort": {
-    "meaning": "n. 努力, 成就",
-    "phonetic": "'efәt"
-  },
-  "underline": {
-    "meaning": "vt. 在...下面划线, 作...的衬里, 强调\nn. 下划线, 图下说明文字\n[计] 加下划线; 下划线",
-    "phonetic": "'ʌndәlain"
-  },
-  "spouse": {
-    "meaning": "n. 配偶",
-    "phonetic": "spauz"
-  },
-  "offender": {
-    "meaning": "n. 罪犯, 无礼的人, 得罪人的人",
-    "phonetic": "ә'fendә"
-  },
-  "proton": {
-    "meaning": "n. 质子\n[化] 质子",
-    "phonetic": "'prәutɒn"
-  },
-  "template": {
-    "meaning": "n. 样板, 模板, 垫木\n[计] 模板",
-    "phonetic": "'templit"
-  },
-  "soda": {
-    "meaning": "n. 苏打, 碳酸水\n[化] 纯碱; 苏打; 碳酸钠",
-    "phonetic": "'sәudә"
-  },
-  "implement": {
-    "meaning": "n. 工具, 器具, 手段\nvt. 实现, 使生效, 执行",
-    "phonetic": "'implimәnt"
-  },
-  "exceptionally": {
-    "meaning": "adv. 特殊地；异常地；例外地",
-    "phonetic": ""
-  },
-  "compile": {
-    "meaning": "vt. 编译, 编辑, 编纂, 收集\n[计] 编译",
-    "phonetic": "kәm'pail"
-  },
-  "or": {
-    "meaning": "conj. 或, 或者\n[计] 或",
-    "phonetic": "ɒ:"
-  },
-  "imprisonment": {
-    "meaning": "n. 监禁, 下狱, 坐牢\n[法] 监禁, 徒刑, 拘禁",
-    "phonetic": "im'priznmәnt"
-  },
-  "hits": {
-    "meaning": "n. 击打；网页点击数；采样数（hit的复数）",
-    "phonetic": ""
-  },
-  "verb": {
-    "meaning": "n. 动词\n[计] 动词",
-    "phonetic": "vә:b"
-  },
-  "confidential": {
-    "meaning": "a. 机密的, 获他人信赖的, 易于信任他人的\n[经] 秘密件",
-    "phonetic": ".kɒnfi'denʃәl"
-  },
-  "tribe": {
-    "meaning": "n. 宗族, 部落, 一群人\n[医] 族(生物分类)",
-    "phonetic": "traib"
-  },
-  "out": {
-    "meaning": "a. 外面的, 熄灭的, 结束的\nadv. 在外, 熄灭, 出现\nprep. 出自, 离去, 向",
-    "phonetic": "aut"
-  },
-  "chew": {
-    "meaning": "vt. 咀嚼, 嚼碎\nvi. 咀嚼, 细想\nn. 咀嚼, 咀嚼物",
-    "phonetic": "tʃu:"
-  },
-  "strategy": {
-    "meaning": "n. 战略, 策略\n[经] 战略, 策略",
-    "phonetic": "'strætidʒi"
-  },
-  "strip": {
-    "meaning": "n. 长条, 条状, 带, 脱衣舞\nvt. 脱衣, 被剥去, 剥夺, 拆卸\nvi. 脱衣服",
-    "phonetic": "strip"
-  },
-  "charming": {
-    "meaning": "a. 迷人的, 有吸引力的",
-    "phonetic": "'tʃɑ:miŋ"
-  },
-  "uses": {
-    "meaning": "abbr. 美国就业局（United States Employment Service）",
-    "phonetic": ""
-  },
-  "incomprehensible": {
-    "meaning": "a. 不能理解的, 费解的, 无限的",
-    "phonetic": "in.kɒmpri'hensәbl"
-  },
-  "levy": {
-    "meaning": "n. 税款, 所征的人数, 征收\nvi. 征税, 课税\nvt. 征收, 强求, 召集",
-    "phonetic": "'levi"
-  },
-  "become": {
-    "meaning": "vi. 变成, 变得\nvt. 适合",
-    "phonetic": "bi'kʌm"
-  },
-  "brush": {
-    "meaning": "n. 刷子, 毛笔, 争吵\nvt. 刷\nvi. 擦过, 掠过\n[计] 电刷",
-    "phonetic": "brʌʃ"
-  },
-  "dominant": {
-    "meaning": "a. 占优势的, 支配的\n[医] 优性的, 显性的",
-    "phonetic": "'dɒminәnt"
-  },
-  "chemist": {
-    "meaning": "n. 化学家, 药剂师\n[化] 化学家; 化学师; 化学工作者; 药剂师; 药房",
-    "phonetic": "'kemist"
-  },
-  "elevate": {
-    "meaning": "vt. 举起, 提拔, 鼓舞",
-    "phonetic": "'eliveit"
-  },
-  "view": {
-    "meaning": "n. 视野, 风景, 见解, 视力, 观看, 视图, 指望, 意图, 印象\nvt. 看, 考虑, 视察, 查看, 估量\n[计] 视图",
-    "phonetic": "vju:"
-  },
-  "eject": {
-    "meaning": "vt. 逐放, 放逐, 喷射\n[化] 排出",
-    "phonetic": "i'dʒekt"
-  },
-  "cult": {
-    "meaning": "n. 膜拜, 礼拜式, 祭仪, 一群信徒\n[医] 迷信, 巫术",
-    "phonetic": "kʌlt"
-  },
-  "find": {
-    "meaning": "vt. 发现, 感到, 找到, 认为, 得到\nvi. 裁决\nn. 发现\n[计] 查找; DOS外部命令:在指定的文件或从键盘输入的文本行中\n寻找指定的字符串, 将符合条件的行或行数输出到标准输出设备上",
-    "phonetic": "faind"
-  },
-  "coded": {
-    "meaning": "a. 编码的；电码的；译成电码的",
-    "phonetic": "'kәudid"
-  },
-  "destroying": {
-    "meaning": "v. 破坏( destroy的现在分词 ); 毁灭; 消灭; 杀死",
-    "phonetic": "disˈtrɔiŋ"
-  },
-  "perimeter": {
-    "meaning": "n. 周长, 周界, 边缘\n[医] 周, 周边, 周界线; 周长; 视野计",
-    "phonetic": "pә'rimitә"
-  },
-  "farmer": {
-    "meaning": "n. 农夫, 农场主\n[法] 农民, 农场主, 承包者",
-    "phonetic": "'fɑ:mә"
-  },
-  "shove": {
-    "meaning": "n. 推, 挤\nvt. 推挤, 猛推, 强使\nvi. 推",
-    "phonetic": "ʃʌv"
-  },
-  "guards": {
-    "meaning": "n. 禁卫军；护卫队；守卫；后卫（guard的复数形式）",
-    "phonetic": ""
-  },
-  "stranded": {
-    "meaning": "a. 处于困境的, 进退两难的",
-    "phonetic": ""
-  },
-  "its": {
-    "meaning": "pron. 它的",
-    "phonetic": "its"
-  },
-  "vibrant": {
-    "meaning": "a. 振动的, 战栗的, 响亮的, 活跃的",
-    "phonetic": "'vaibrәnt"
-  },
-  "distance": {
-    "meaning": "n. 距离, 远方, 遥远\n[计] 位距",
-    "phonetic": "'distәns"
-  },
-  "showroom": {
-    "meaning": "n. 陈列室\n[经] 样品间, 陈列室",
-    "phonetic": "'ʃәuru:m"
-  },
-  "reproductive": {
-    "meaning": "a. 生殖的, 再生的, 复制的\n[医] 生殖的, 复现的",
-    "phonetic": ".ri:prә'dʌktiv"
-  },
-  "foster": {
-    "meaning": "a. 收养的, 养育的\nvt. 养育, 抚育, 培养, 鼓励, 抱(希望)",
-    "phonetic": "'fɒstә"
-  },
-  "fearsome": {
-    "meaning": "a. 吓人的, 可怕的, 害怕的",
-    "phonetic": "'fiәsәm"
-  },
-  "chimpanzee": {
-    "meaning": "n. 黑猩猩\n[医] 黑猩猩",
-    "phonetic": ".tʃimpәn'zi:"
-  },
-  "dish": {
-    "meaning": "n. 盘子, 碟, 菜肴\n[医] 皿, 碟",
-    "phonetic": "diʃ"
-  },
-  "perhaps": {
-    "meaning": "adv. 也许, 大概",
-    "phonetic": "pә'hæps"
-  },
-  "two": {
-    "meaning": "num. 二, 二个",
-    "phonetic": "tu:"
-  },
-  "sliver": {
-    "meaning": "n. 裂片, 薄片, 梳毛\nvt. 切成长片\nvi. 剖开, 分裂",
-    "phonetic": "'slivә"
-  },
-  "insulting": {
-    "meaning": "a. 侮辱的, 损害人体的",
-    "phonetic": "in'sʌltiŋ"
-  },
-  "sickness": {
-    "meaning": "n. 疾病, 不健康, 呕吐\n[医] 病",
-    "phonetic": "'siknis"
-  },
-  "reputation": {
-    "meaning": "n. 名誉, 名声, 声望\n[法] 名声, 名誉, 公认证据",
-    "phonetic": ".repju'teiʃәn"
-  },
-  "through": {
-    "meaning": "adv. 穿越, 从头至尾, 到底, 因为\nprep. 经过, 穿过\na. 对穿的, 直达的, 完结的",
-    "phonetic": "θru:"
-  },
-  "chocolate": {
-    "meaning": "n. 巧克力\na. 巧克力制的",
-    "phonetic": "'tʃɒkәlit"
-  },
-  "saline": {
-    "meaning": "a. 盐的, 苦涩的, 由碱金属(或含镁之盐类)组成的\nn. 盐湖, 盐田, 碱盐泻药, 生理盐水",
-    "phonetic": "'seilain"
-  },
-  "appalling": {
-    "meaning": "a. 骇人的, 令人震惊的",
-    "phonetic": "ә'pɒ:liŋ"
-  },
-  "embankment": {
-    "meaning": "n. 堤防, 筑堤",
-    "phonetic": "im'bæŋkmәnt"
-  },
-  "teamwork": {
-    "meaning": "n. 协同作业, 协力\n[法] 联合工作, 联合行动, 协调工作",
-    "phonetic": "'ti:mwә:k"
-  },
-  "generosity": {
-    "meaning": "n. 慷慨, 宽大",
-    "phonetic": ".dʒenә'rɒsiti"
-  },
-  "damage": {
-    "meaning": "n. 损害, 伤害\nv. 损害",
-    "phonetic": "'dæmidʒ"
-  },
-  "flip": {
-    "meaning": "vt. 掷, 弹, 轻击, 空翻\nvi. 用指轻弹, 抽打, 蹦跳\nn. 抛, 弹, 筋斗\na. 无礼的\n[计] 翻转",
-    "phonetic": "flip"
-  },
-  "willing": {
-    "meaning": "a. 乐意的, 自愿的, 甘愿的",
-    "phonetic": "'wiliŋ"
-  },
-  "gully": {
-    "meaning": "n. 小峡谷, 排水沟",
-    "phonetic": "'gʌli"
-  },
-  "companionship": {
-    "meaning": "n. 交往, 友谊, 一群同伴",
-    "phonetic": "kәm'pænjәnʃip"
-  },
-  "triple": {
-    "meaning": "n. 三倍数, 三个一组\na. 三倍的\nvt. 使增至三倍\nvi. 增至三倍",
-    "phonetic": "'tripl"
-  },
-  "piece": {
-    "meaning": "n. 块, 片, 篇, 碎片, 部分, 部件, 标准量\nvt. 修补, 修理, 拼合, 接线头\nvi. 吃零食",
-    "phonetic": "pi:s"
-  },
-  "mature": {
-    "meaning": "a. 成熟的, 到期的, 充分考虑的\nvt. 使成熟\nvi. 成熟, 到期",
-    "phonetic": "mә'tjuә"
-  },
-  "approach": {
-    "meaning": "n. 接近, 入门\nvt. 接近, 近似, 找...商量\nvi. 靠近",
-    "phonetic": "ә'prәutʃ"
-  },
-  "lovely": {
-    "meaning": "a. 可爱的, 有趣的",
-    "phonetic": "'lʌvli"
-  },
-  "zeal": {
-    "meaning": "n. 热心, 热衷, 热诚",
-    "phonetic": "zi:l"
-  },
-  "extra": {
-    "meaning": "n. 额外的事物, 另外的收费\na. 额外的, 特别的\nadv. 额外地, 特别地, 非常地",
-    "phonetic": "'ekstrә"
-  },
-  "has": {
-    "meaning": "have的第三人称单数现在式",
-    "phonetic": "hæz"
-  },
-  "wasted": {
-    "meaning": "a. 浪费的",
-    "phonetic": "'weistid"
-  },
-  "oracle": {
-    "meaning": "n. 神谕, 神谕处, 预言",
-    "phonetic": "'ɒ:rәkl"
-  },
-  "indifferent": {
-    "meaning": "a. 漠不关心的, 无重要性的, 中立的\n[医] 中性的, 无作用的, 无亲和力的, 淡漠的",
-    "phonetic": "in'difәrәnt"
-  },
-  "opens": {
-    "meaning": "n. 打开；公开赛事；旷野（open的复数形式）",
-    "phonetic": ""
-  },
-  "necklace": {
-    "meaning": "n. 项链",
-    "phonetic": "'neklis"
-  },
-  "demographic": {
-    "meaning": "a. 人口统计的\n[法] 人口统计的, 人口学的",
-    "phonetic": ".demә'græfik"
-  },
-  "salient": {
-    "meaning": "a. 显著的, 突出的, 跳跃的\nn. 凸角, 突出部分",
-    "phonetic": "'seiliәnt"
-  },
-  "booming": {
-    "meaning": "a. 急速发展的\n[经] 暴涨的, 大受欢迎的",
-    "phonetic": "'bu:miŋ"
-  },
-  "decline": {
-    "meaning": "n. 衰退, 跌落, 下降\nvt. 使降低, 婉谢\nvi. 下降, 衰落, 偏斜",
-    "phonetic": "di'klain"
-  },
-  "ludicrous": {
-    "meaning": "a. 可笑的, 滑稽的, 荒唐的",
-    "phonetic": "'lu:dikrәs"
-  },
-  "introductory": {
-    "meaning": "a. 介绍的, 引导的, 开端的",
-    "phonetic": ".intrә'dʌktәri"
-  },
-  "terrific": {
-    "meaning": "a. 非常好的, 极端的, 可怕的",
-    "phonetic": "tә'rifik"
-  },
-  "aim": {
-    "meaning": "n. 目标, 瞄准, 击中目标的能力\nvi. 对准目标, 致力, 打算\nvt. 瞄准\n[计] 医学文摘索引, 存取隔离机构, 高级信息管理程序, 先进接口模块\n应用接口模块, 医学人工智能, 相联索引法, 异步接口模块\n自动化信息管理, 自动化综合制造, 自动化库存管理",
-    "phonetic": "eim"
-  },
-  "entirely": {
-    "meaning": "adv. 完全, 全然, 一概",
-    "phonetic": "in'taiәli"
-  },
-  "creeping": {
-    "meaning": "n. 爬行\na. 爬行的",
-    "phonetic": "'kri:piŋ"
-  },
-  "asbestos": {
-    "meaning": "n. 石棉\n[化] 石棉",
-    "phonetic": "æs'bestɒs"
-  },
-  "cover": {
-    "meaning": "n. 盖子, 封面, 藉口\nvt. 覆盖, 掩饰, 保护, 掩护, 包括\nvi. 覆盖",
-    "phonetic": "'kʌvә"
-  },
-  "shape": {
-    "meaning": "n. 形状, 形态, 外形, 形式, 身材\nvt. 定形, 使成形, 塑造, 计划, 使符合\nvi. 成形, 形成, 成长\n[计] 形状",
-    "phonetic": "ʃeip"
-  },
-  "stands": {
-    "meaning": "n. 看台；架子；货摊（stand的复数）",
-    "phonetic": ""
-  },
-  "burst": {
-    "meaning": "n. 破裂, 突发, 爆发\nv. 爆裂, 突发, 充满\n[计] 二进制位组; 字符组; 脉冲串",
-    "phonetic": "bә:st"
-  },
-  "accusation": {
-    "meaning": "n. 控告, 指控, 指责\n[法] 控告, 起诉, 告发",
-    "phonetic": "ækju:'zeiʃәn"
-  },
-  "convene": {
-    "meaning": "vt. 集合, 召集, 召唤\nvi. 聚集, 集合",
-    "phonetic": "kәn'vi:n"
-  },
-  "cartel": {
-    "meaning": "n. 卡特尔, 企业联合, 俘虏交换条约, 决斗挑战书\n[经] 同业联合, 联合贩卖, 卡特尔",
-    "phonetic": "kɑ:'tel"
-  },
-  "work": {
-    "meaning": "n. 工作, 劳动, 职业, 行为, 功, 作品, 成果, 产品, 工程\nvi. 工作, 劳动, 做, 运转, 起作用, 被加工\nvt. 使工作, 使转动, 开动, 使用, 经营, 使逐渐变得, 造成",
-    "phonetic": "wә:k"
-  },
-  "route": {
-    "meaning": "n. 路径, 途径, 路线\nvt. 确定路线, 按规定路线发送\n[计] 传递, 路由设定程序",
-    "phonetic": "ru:t"
-  },
-  "thicket": {
-    "meaning": "n. 丛林, 草丛",
-    "phonetic": "'θikit"
-  },
-  "fragrant": {
-    "meaning": "a. 芬香的, 馥郁的, 愉快的",
-    "phonetic": "'freigrәnt"
-  },
-  "enlightenment": {
-    "meaning": "n. 启迪, 教化",
-    "phonetic": "in'laitmәnt"
-  },
-  "wagon": {
-    "meaning": "n. 四轮马车, 货车\n[法] 囚车, 马车, 运货车",
-    "phonetic": "'wægәn"
-  },
-  "guise": {
-    "meaning": "n. 相似, 外观, 伪装\nv. 穿戴, 伪装",
-    "phonetic": "gaiz"
-  },
-  "this": {
-    "meaning": "pron. 这, 本\na. 这, 本\nadv. 这么",
-    "phonetic": "θis"
-  },
-  "suggestion": {
-    "meaning": "n. 提议, 意见\n[医] 暗示",
-    "phonetic": "sә'dʒestʃәn"
-  },
-  "setback": {
-    "meaning": "n. 挫折, 退步, 逆流",
-    "phonetic": "'setbæk"
-  },
-  "erotic": {
-    "meaning": "a. 性爱的, 性欲的, 色情的\nn. 好色之徒, 色情诗",
-    "phonetic": "i'rɒtik"
-  },
-  "idea": {
-    "meaning": "n. 主意, 办法, 理想, 思想, 概念, 意见\n[医] 观念, 思想",
-    "phonetic": "ai'diә"
-  },
-  "conscience": {
-    "meaning": "n. 良心\n[法] 良心, 道德感, 正义感",
-    "phonetic": "'kɒnʃәns"
-  },
-  "commander": {
-    "meaning": "n. 司令官, 指挥官",
-    "phonetic": "kә'mɑ:ndә"
-  },
-  "packet": {
-    "meaning": "n. 小包, 一批信件, 大量, 信息包\nvt. 打包, 装进小包\n[计] 分组, 分组报文, 数据分组",
-    "phonetic": "'pækit"
-  },
-  "flickering": {
-    "meaning": "a. 闪烁的, 摇曳的, 微弱的\n[计] 闪烁",
-    "phonetic": "'flikәriŋ"
-  },
-  "game": {
-    "meaning": "n. 比赛, 玩耍, 比分, 得胜, 比赛规则, 策略, 游戏, 野味\nvi. 赌博\na. 勇敢的, 有胆量的, 关于野味的, 跛的\n[计] 博弈; 对策",
-    "phonetic": "geim"
-  },
-  "skull": {
-    "meaning": "n. 头盖骨, 头脑, 好学生\n[医] 头颅",
-    "phonetic": "skʌl"
-  },
-  "knitting": {
-    "meaning": "n. 编结, 针织法, 针织, 编结法, 编结物, 针织品\n[医] 骨愈合",
-    "phonetic": "'nitiŋ"
-  },
-  "flutter": {
-    "meaning": "n. 摆动, 鼓翼, 烦扰\nvi. 摆动, 鼓翼, 烦扰\nvt. 拍(翅), 使焦急\n[计] 颤动",
-    "phonetic": "'flʌtә"
-  },
-  "are": {
-    "meaning": "be的现在时复数或第二人称单数",
-    "phonetic": "ɑ:"
-  },
-  "nostalgic": {
-    "meaning": "a. 乡愁的, 怀旧的\n[医] 怀乡病的",
-    "phonetic": "nɒs'tældʒik"
-  },
-  "canned": {
-    "meaning": "a. 罐装的, 录音的, 一稿数用的, 刻板的, 被囚的\n[机] 洋铁罐的, 罐头的",
-    "phonetic": "kænd"
-  },
-  "devious": {
-    "meaning": "a. 偏僻的, 迂回的",
-    "phonetic": "'di:viәs"
-  },
-  "drizzle": {
-    "meaning": "n. 细雨\nv. 下毛毛雨",
-    "phonetic": "'drizl"
-  },
-  "puts": {
-    "meaning": "n. 卖出选择权；[计]字符串输出（put的复数）",
-    "phonetic": ""
-  },
-  "narrow": {
-    "meaning": "n. 狭窄部分, 隘路\na. 狭窄的, 仔细的, 有限的, 勉强的, 狭隘的, 手紧的\nvi. 变窄\nvt. 使变狭窄",
-    "phonetic": "'nærәu"
-  },
-  "fascist": {
-    "meaning": "n. 法西斯主义者, 法西斯党员",
-    "phonetic": "'fæʃist"
-  },
-  "manufacturer": {
-    "meaning": "n. 制造业者, 厂商\n[经] 制造人, 制造商, 制造厂",
-    "phonetic": ".mænju'fæktʃәrә"
-  },
-  "distract": {
-    "meaning": "vt. 转移, 分心, 使发狂",
-    "phonetic": "dis'trækt"
-  },
-  "limit": {
-    "meaning": "n. 界限, 边界, 限度, 极限, 限制\nvt. 限制, 限定",
-    "phonetic": "'limit"
-  },
-  "estranged": {
-    "meaning": "a. 疏远的, 分离的, 隔离的",
-    "phonetic": "i'streindʒd"
-  },
-  "ford": {
-    "meaning": "n. 浅滩, 福特汽车\nv. 涉过, 涉水",
-    "phonetic": "fɒ:d"
-  },
-  "recess": {
-    "meaning": "n. 休息, 休会, 放假, 凹进处, 深处\nvt. 使凹进\nvi. 休假, 休息",
-    "phonetic": "ri'ses"
-  },
-  "assignment": {
-    "meaning": "n. 分配, 功课, 任务, 转让, 归因, 陈述\n[计] 赋值",
-    "phonetic": "ә'sainmәnt"
-  },
-  "volatile": {
-    "meaning": "a. 挥发性的, 可变的, 不稳定的, 飞行的, 轻快的, 爆炸性的\nn. 有翅动物, 挥发物\n[计] 易失的",
-    "phonetic": "'vɒlәtail"
-  },
-  "pause": {
-    "meaning": "n. 暂停, 中止, 停顿, 间歇, 踌躇, 休止符\nvi. 暂停, 中止, 停顿, 踌躇\n[计] DOS内部命令:暂时停止批处理文件的执行",
-    "phonetic": "pɒ:z"
-  },
-  "sublime": {
-    "meaning": "a. 高尚的, 壮观的, 卓越的\nv. 提高, (使)变高尚, (使)纯化, (使)升华\nn. 庄严, 崇高, 顶点",
-    "phonetic": "sә'blaim"
-  },
-  "scale": {
-    "meaning": "n. 刻度, 衡量, 比例, 比例尺, 数值范围, 等级, 规模, 天平, 秤, 鳞, 积垢\nvt. 依比例决定, 攀登, 测量, 绘制, 刮鳞, 使生垢, 过秤\nvi. 剥落, 生水垢, 重量为, 攀登, 衡量\n[计] 刻度",
-    "phonetic": "skeil"
-  },
-  "tapestry": {
-    "meaning": "n. 挂毯, 绒绣\nvt. 用挂毯装饰",
-    "phonetic": "'tæpistri"
-  },
-  "changing": {
-    "meaning": "v. 交换；兑换；改变（change的ing形式）",
-    "phonetic": "'tʃeindʒiŋ"
-  },
-  "protection": {
-    "meaning": "n. 保护, 防卫, 贸易保护制度\n[计] 保护",
-    "phonetic": "prә'tekʃәn"
-  },
-  "herb": {
-    "meaning": "n. 药草, 香草\n[医] 草, 草本, 草药",
-    "phonetic": "hә:b"
-  },
-  "poison": {
-    "meaning": "n. 毒药, 毒, 毒物, 有毒害的事物\nvt. 毒害, 毒杀, 使中毒\nvi. 放毒, 下毒",
-    "phonetic": "'pɒizn"
-  },
-  "deciding": {
-    "meaning": "[计] 判定",
-    "phonetic": "di'saidiŋ"
-  },
-  "reluctant": {
-    "meaning": "a. 不情愿的, 勉强的\n[法] 不愿的, 勉强的, 难以处理的",
-    "phonetic": "ri'lʌktәnt"
-  },
-  "annex": {
-    "meaning": "n. 附加物, 附属建筑物\nvt. 附加, 盖(印), 并吞",
-    "phonetic": "ә'neks"
-  },
-  "lesson": {
-    "meaning": "n. 课, 课业, 教训",
-    "phonetic": "'lesn"
-  },
-  "dining": {
-    "meaning": "n. 正餐, 宴会",
-    "phonetic": "'dainiŋ"
-  },
-  "unkind": {
-    "meaning": "a. 不仁慈的, 不亲切的",
-    "phonetic": ".ʌn'kaind"
-  },
-  "examine": {
-    "meaning": "v. 检查, 调查, 考试",
-    "phonetic": "ig'zæmin"
-  },
-  "finished": {
-    "meaning": "a. 完成的, 完结的, 精巧的, 完美的",
-    "phonetic": "'finiʃt"
-  },
-  "genesis": {
-    "meaning": "n. 发生, 起源, 创世记\n[医] 生殖, 发生",
-    "phonetic": "'dʒenisis"
-  },
-  "stiffness": {
-    "meaning": "n. 坚硬, 呆板, 刻板\n[医] 强直, 僵硬",
-    "phonetic": "'stifnis"
-  },
-  "relentless": {
-    "meaning": "a. 无情的, 冷酷的, 残酷的",
-    "phonetic": "ri'lentlis"
-  },
-  "authentic": {
-    "meaning": "a. 可靠的, 可信的, 真正的\n[法] 被认证的, 确认的, 可信的",
-    "phonetic": "ɒ:'θentik"
-  },
-  "aboriginal": {
-    "meaning": "a. 原始的, 土著的\nn. 土著居民, 土生生物",
-    "phonetic": ".æbә'ridʒәnәl"
-  },
-  "gulp": {
-    "meaning": "vt. 吞, 大口大口地吸气, 吸收, 抑制\nvi. 吞咽\nn. 吞咽\n[计] 字节组",
-    "phonetic": "gʌlp"
-  },
-  "railway": {
-    "meaning": "n. 铁路, 轨道\n[经] 铁路",
-    "phonetic": "'reilwei"
-  },
-  "explanation": {
-    "meaning": "n. 解释, 说明, 辩解, 表明\n[经] 解释, 注释, 说明",
-    "phonetic": ".eksplә'neiʃәn"
-  },
-  "revolt": {
-    "meaning": "n. 叛乱, 反抗, 反感\nvi. 叛乱, 反抗, 起义, 厌恶, 反感\nvt. 使反感, 使恶心",
-    "phonetic": "ri'vәult"
-  },
-  "startle": {
-    "meaning": "n. 惊愕, 惊恐\nvt. 吃惊, 使惊愕\nvi. 惊起",
-    "phonetic": "'stɑ:tl"
-  },
-  "dictate": {
-    "meaning": "vi. 听写, 口述, 口授\nvt. 口述, 使听写, 命令\nn. 命令, 指挥, 指令",
-    "phonetic": "'dikteit"
-  },
-  "confront": {
-    "meaning": "vt. 使面对, 对抗, 遭遇, 使对质, 比较\n[法] 对证, 使对质, 比较",
-    "phonetic": "kәn'frʌnt"
-  },
-  "shortly": {
-    "meaning": "adv. 不久, 简短, 唐突地",
-    "phonetic": "'ʃɒ:tli"
-  },
-  "properly": {
-    "meaning": "adv. 适当地, 相当地",
-    "phonetic": "'prɒpәli"
-  },
-  "shot": {
-    "meaning": "n. 发射, 炮弹, 射击, 射手, 投篮, 射门, 子弹, 射程, 拍摄, 注射\nvt. 装弹, 使成颗粒状\na. 杂色的, 交织着的, 渗透的, 点焊的, 破旧的\nshoot的过去式和过去分词",
-    "phonetic": "ʃɒt"
-  },
-  "time": {
-    "meaning": "n. 时间, 时侯, 时机, 时期, 期限, 次数, 节拍, 暂停, 规定时间\nvt. 测定...的时间, 记录...的时间, 计时, 定时\na. 时间的, 记时的, 定时的, 定期的, 分期的\n[计] DOS内部命令:用于显示或设定系统的时间",
-    "phonetic": "taim"
-  },
-  "honey": {
-    "meaning": "n. 蜂蜜, 甜蜜, 爱人\na. 蜂蜜似的, 甜蜜的, 甘美的\nvt. 加蜜使甜, 对...说甜言蜜语\nvi. 说甜言蜜语, 奉承",
-    "phonetic": "'hʌni"
-  },
-  "rhetorical": {
-    "meaning": "a. 修辞学的, 符合修辞学的, 修辞的",
-    "phonetic": "ri'tɒ:rikl"
-  },
-  "renovate": {
-    "meaning": "vt. 更新, 革新, 刷新, 修复, 使恢复活力",
-    "phonetic": "'renәuveit"
-  },
-  "dresser": {
-    "meaning": "n. 化妆台, (剧团)服装师, 碗柜\n[医] 敷裹员",
-    "phonetic": "'dresә"
-  },
-  "emphasise": {
-    "meaning": "vt. 强调, 重读, 加强...的语气, 着重",
-    "phonetic": ""
-  },
-  "dioxide": {
-    "meaning": "n. 二氧化物\n[医] 二氧化物",
-    "phonetic": "dai'ɒksaid"
-  },
-  "meal": {
-    "meaning": "n. 一餐, 膳食, 粗粉\nvi. 进餐",
-    "phonetic": "mi:l"
-  },
-  "reactive": {
-    "meaning": "a. 反动的, 反应的\n[医] 反应的",
-    "phonetic": "ri'æktiv"
-  },
-  "lobby": {
-    "meaning": "n. 大厅, 休息室, 游说议员者\nvi. 游说议员, 游说\nvt. 游说",
-    "phonetic": "'lɒbi"
-  },
-  "unnecessary": {
-    "meaning": "a. 不必要的",
-    "phonetic": ".ʌn'nesәsәri"
-  },
-  "backup": {
-    "meaning": "n. 倒车, 后退, 后援, 支持, 阻塞\nvt. 做备份\na. 候补的, 支持的\n[计] 备份; DOS外部命令:通常使用于将硬磁盘上指定的文件复制到软盘上",
-    "phonetic": "'bækʌp"
-  },
-  "waive": {
-    "meaning": "vt. 不坚持要求, 放弃, 推迟考虑, 丢弃\n[经] 放弃权利, 免除, 弃权人",
-    "phonetic": "weiv"
-  },
-  "slap": {
-    "meaning": "n. 掴, 掌击, 侮辱, 拍击声\nv. 拍击, 惩罚\nadv. 正面地, 直接地, 突然地",
-    "phonetic": "slæp"
-  },
-  "modernist": {
-    "meaning": "n. 现代主义者, 现代人, 现代主义作家",
-    "phonetic": "'mɒdәnist"
-  },
-  "hill": {
-    "meaning": "n. 小山, 丘陵, 小土堆\nvt. 作成土堆, 堆成小丘",
-    "phonetic": "hil"
-  },
-  "halve": {
-    "meaning": "vt. 二等分, 对半分享, 把...减半",
-    "phonetic": "hɑ:v"
-  },
-  "sealed": {
-    "meaning": "a. 未知的, 密封的\n[法] 盖印的, 经盖章批准或证实的, 密封的",
-    "phonetic": "si:ld"
-  },
-  "jointly": {
-    "meaning": "adv. 共同地, 连带地",
-    "phonetic": "'dʒɒintli"
-  },
-  "fabrication": {
-    "meaning": "n. 制造, 建造, 虚构的谎言\n[医] 虚谈症",
-    "phonetic": ".fæbri'keiʃәn"
-  },
-  "smoked": {
-    "meaning": "a. 熏制的",
-    "phonetic": "smәukt"
-  },
-  "shoot": {
-    "meaning": "n. 射击, 狩猎, 芽, 射伤, 发射, 发芽, 急流, 推力, 摄影, 急送, 滑运道, 浪费\nvt. 射击, 射中, 损毁, 拍摄, 喷出, 投射, 挥出, 飞速行进, 挥霍, 给...注射\nvi. 射出, 射击, 发出, 拍电影, 射门, 发芽",
-    "phonetic": "ʃu:t"
-  },
-  "useful": {
-    "meaning": "a. 有用的, 有益的\n[机] 有用的, 有效的",
-    "phonetic": "'ju:sful"
-  },
-  "substantially": {
-    "meaning": "adv. 实质上, 本质上, 大体上",
-    "phonetic": "sәb'stænʃәli"
-  },
-  "consolidate": {
-    "meaning": "vt. 巩固, 使联合, 统一\nvi. 巩固\n[计] 合并计算",
-    "phonetic": "kәn'sɒlideit"
-  },
-  "until": {
-    "meaning": "prep. 直到, 在...以前\nconj. 直到...时, 在...以前",
-    "phonetic": "әn'til"
-  },
-  "retreat": {
-    "meaning": "n. 休息寓所, 撤退, 隐居, 退避\nvi. 撤退, 隐退, 向后倾\nvt. 退(棋)",
-    "phonetic": "ri'tri:t"
-  },
-  "changes": {
-    "meaning": "n. 变化, 改变（change的复数）",
-    "phonetic": ""
-  },
-  "compassion": {
-    "meaning": "n. 同情, 怜悯",
-    "phonetic": "kәm'pæʃәn"
-  },
-  "sincerity": {
-    "meaning": "n. 诚实, 真实, 诚心诚意",
-    "phonetic": "sin'serәti"
-  },
-  "humiliation": {
-    "meaning": "n. 耻辱, 丢脸, 谦卑",
-    "phonetic": "hju:.mili'eiʃәn"
-  },
-  "roast": {
-    "meaning": "n. 烤肉, 烘烤, 嘲笑\na. 烘烤的, 烤过的\nvt. 烤, 炙, 烘焙, 嘲笑\nvi. 烤, 炙, 烘焙",
-    "phonetic": "rәust"
-  },
-  "pleased": {
-    "meaning": "a. 高兴的, 喜欢的, 满足的",
-    "phonetic": "pli:zd"
-  },
-  "glaze": {
-    "meaning": "n. 釉, 上光, 光滑面\nvt. 装以玻璃, 上釉于\nvi. 变得光滑, (目光)变呆滞",
-    "phonetic": "'gleiz"
-  },
-  "later": {
-    "meaning": "adv. 以后, 随后",
-    "phonetic": "'leitә"
-  },
-  "burglar": {
-    "meaning": "n. 窃贼\n[法] 夜盗, 窃贼, 盗窃者",
-    "phonetic": "'bә:glә"
-  },
-  "every": {
-    "meaning": "a. 每一, 所有的",
-    "phonetic": "'evri"
-  },
-  "progressively": {
-    "meaning": "adv. 进步, 先进, 向前进, 不断前进, 累进, 渐进, 逐渐, 渐次, 主张进步, 进行性",
-    "phonetic": ""
-  },
-  "steep": {
-    "meaning": "n. 浸渍, 悬崖\na. 险峻的, 陡峭的, 急剧升降的, 夸大的\nv. 浸, 泡",
-    "phonetic": "sti:p"
-  },
-  "challenge": {
-    "meaning": "n. 挑战, 盘问\nvt. 向...挑战, 要求, 怀疑\nvi. 挑战, 对(证据等)表示异议",
-    "phonetic": "'tʃælindʒ"
-  },
-  "orchid": {
-    "meaning": "n. 兰花, 淡紫色\n[医] 兰科植物",
-    "phonetic": "'ɒ:kid"
-  },
-  "tremor": {
-    "meaning": "n. 震动, 颤动\n[医] 震颤",
-    "phonetic": "'tremә"
-  },
-  "salted": {
-    "meaning": "a. 盐腌的, 盐味的, 有经验的, 虚报的",
-    "phonetic": "'sɒ:ltid"
-  },
-  "murder": {
-    "meaning": "n. 谋杀\nvt. 谋杀, 损毁, 破坏\nvi. 犯杀人罪",
-    "phonetic": "'mә:dә"
-  },
-  "without": {
-    "meaning": "prep. 没有, 不, 在...之外\nadv. 在外面, 户外\nn. 外面, 外部",
-    "phonetic": "wi'ðaut"
-  },
-  "mandate": {
-    "meaning": "n. 命令, 指令, 要求\nvt. 委任统治",
-    "phonetic": "'mændeit"
-  },
-  "nest": {
-    "meaning": "n. 巢, 窝, 休息所, 隐匿处\nvi. 筑巢, 找鸟巢\nvt. 为...设窝, 使套叠\n[计] 嵌套",
-    "phonetic": "nest"
-  },
-  "stays": {
-    "meaning": "n. 停留；依靠；妇女胸衣（stay的复数）",
-    "phonetic": ""
-  },
-  "angles": {
-    "meaning": "n. 角度（angle的复数）",
-    "phonetic": "'æŋɡlz"
-  },
-  "dated": {
-    "meaning": "a. 有日期的, 陈旧的",
-    "phonetic": "'deitid"
-  },
-  "centenary": {
-    "meaning": "n. 一百年\na. 一百年的",
-    "phonetic": "sen'ti:nәri"
-  },
-  "something": {
-    "meaning": "pron. 某事, 某物",
-    "phonetic": "'sʌmθiŋ"
-  },
-  "dwindle": {
-    "meaning": "vi. 减少, 缩小, 衰落\nvt. 使缩小",
-    "phonetic": "'dwindl"
-  },
-  "easier": {
-    "meaning": "a. 更简单；较早的；容易些（easy的比较级形式）",
-    "phonetic": "'i:ziә"
-  },
-  "restrained": {
-    "meaning": "a. 限制的, 拘谨的, 克制的",
-    "phonetic": "ri'streind"
-  },
-  "serving": {
-    "meaning": "n. 服务, 招待, 上菜, 一份食物",
-    "phonetic": "'sә:viŋ"
-  },
-  "bible": {
-    "meaning": "n. 圣经",
-    "phonetic": "'baibl"
-  },
-  "supplier": {
-    "meaning": "n. 供应者, 供给国, 供应商\n[化] 承制厂; 供应厂商",
-    "phonetic": "sә'plaiә"
-  },
-  "at": {
-    "meaning": "prep. 在, 向, 对\n[计] 地址转换器, 异常传输, 自动订票",
-    "phonetic": "æt"
-  },
-  "victory": {
-    "meaning": "n. 胜利, 战胜, 克服",
-    "phonetic": "'viktәri"
-  },
-  "continual": {
-    "meaning": "a. 持续不断的, 继续的\n[建] 连续的",
-    "phonetic": "kәn'tinjuәl"
-  },
-  "industrialist": {
-    "meaning": "n. 企业家, 实业家\n[经] 实业家, 工业主义者",
-    "phonetic": "in'dʌstriәlist"
-  },
-  "byte": {
-    "meaning": "n. 字节, 位组\n[计] 字节",
-    "phonetic": "bait"
-  },
-  "wire": {
-    "meaning": "n. 电线, 电报, 电信, 铁丝网, 金属丝\nvt. 用金属丝捆扎, 拍电报\nvi. 打电报",
-    "phonetic": "'waiә"
-  },
-  "transitional": {
-    "meaning": "a. 变迁的, 过渡期的\n[医] 转变的, 过渡的; 过渡型单核白细胞",
-    "phonetic": "træn'siʒәnl"
-  },
-  "heroic": {
-    "meaning": "a. 英勇的, 英雄式的, 壮丽雄伟的\nn. 英雄诗, 史诗, 英勇行为",
-    "phonetic": "hi'rәuik"
-  },
-  "tuning": {
-    "meaning": "n. 调音, 调谐, 协调\n[计] 调整",
-    "phonetic": "'tju:niŋ"
-  },
-  "and": {
-    "meaning": "conj. 和, 与\n[计] 与",
-    "phonetic": "ænd"
-  },
-  "tenancy": {
-    "meaning": "n. 租用, 租赁\n[经] 租赁, 租回",
-    "phonetic": "'tenәnsi"
-  },
-  "inconsistency": {
-    "meaning": "n. 不一致, 易变, 前后矛盾的事物\n[法] 前后矛盾, 不一致",
-    "phonetic": ".inkәn'sistәnsi"
-  },
-  "twice": {
-    "meaning": "adv. 两次, 两倍",
-    "phonetic": "twais"
-  },
-  "however": {
-    "meaning": "adv. 然而, 无论如何, 究竟怎样\nconj. 然而, 可是",
-    "phonetic": "hau'evә"
-  },
-  "diving": {
-    "meaning": "n. 潜水, 跳水",
-    "phonetic": "'daiviŋ"
-  },
-  "publicity": {
-    "meaning": "n. 名声, 宣传, 公开场合\n[经] 宣传, 广告",
-    "phonetic": "pʌb'lisiti"
-  },
-  "pruning": {
-    "meaning": "n. 修剪, 修枝, 剪枝\n[计] 修剪",
-    "phonetic": "'pru:niŋ"
-  },
-  "evict": {
-    "meaning": "vt. 逐出, 赶出, 驱逐\n[法] 逐出, 驱逐, 没收",
-    "phonetic": "i'vikt"
-  },
-  "impatient": {
-    "meaning": "a. 不耐烦的, 着急的, 急切的",
-    "phonetic": "im'peiʃәnt"
-  },
-  "perception": {
-    "meaning": "n. 知觉, 感觉, 领悟力, 获取\n[医] 知觉",
-    "phonetic": "pә'sepʃәn"
-  },
-  "thing": {
-    "meaning": "n. 事物, 东西, 物, 用品, 事, 事件, 情况, 行为, 特征",
-    "phonetic": "θiŋ"
-  },
-  "clog": {
-    "meaning": "n. 障碍, 脚坠\nv. 障碍, 阻塞",
-    "phonetic": "klɒg"
-  },
-  "concrete": {
-    "meaning": "n. 凝结物, 混凝土\na. 具体的, 实在的, 混凝土的\nv. (使)凝结, 用混凝土浇筑",
-    "phonetic": "'kɒnkri:t"
-  },
-  "tremendously": {
-    "meaning": "adv. 极大地; 极端地; 极其; 非常",
-    "phonetic": "trə'mendəslɪ"
-  },
-  "valid": {
-    "meaning": "a. 有确实根据的, 有法律效力的, 正当的, 正确的\n[经] 有效的",
-    "phonetic": "'vælid"
-  },
-  "anyone": {
-    "meaning": "pron. 任何人",
-    "phonetic": "'eniwʌn"
-  },
-  "unfairly": {
-    "meaning": "adv. 不正当地；不公平地",
-    "phonetic": ""
-  },
-  "can": {
-    "meaning": "vt. 装罐\nn. 罐头, 容器\naux. 能, 可以\n[计] 作废字符",
-    "phonetic": "kæn"
-  },
-  "waiting": {
-    "meaning": "n. 等候\na. 等候的, 服侍的",
-    "phonetic": "'weitiŋ"
-  },
-  "gentry": {
-    "meaning": "n. 贵族们",
-    "phonetic": "'dʒentri"
-  },
-  "syntactic": {
-    "meaning": "a. 句法的, 句法上的, 按照句法规则的\n[计] 语法的, 句法的",
-    "phonetic": "sin'tæktik"
-  },
-  "quiver": {
-    "meaning": "n. 震动, 颤抖, 箭袋\nvi. 颤抖, 振动\nvt. 使颤动\na. 敏捷的",
-    "phonetic": "'kwivә"
-  },
-  "sight": {
-    "meaning": "n. 景观, 视力, 眼界, 阅读, 见解, 意见\nvt. 看见, 瞄准\nvi. 瞄准, 观看\na. 即席的, 见票即付的",
-    "phonetic": "sait"
-  },
-  "unnecessarily": {
-    "meaning": "adv. 不必要地, 多余地",
-    "phonetic": "ʌn'nesisәrili"
-  },
-  "disarmament": {
-    "meaning": "n. 裁军\n[法] 裁军, 解除军备",
-    "phonetic": "dis'ɑ:mәmәnt"
-  },
-  "articulated": {
-    "meaning": "a. 铰接式的；清晰的；组织缜密的；有关节的",
-    "phonetic": "ɑ:'tikju:leitid"
-  },
-  "fret": {
-    "meaning": "n. 烦躁, 磨损, 焦急, 网状饰物\nvi. 烦恼, 不满, 磨损\nvt. 使烦恼, 腐蚀, 使磨损, 使起波纹",
-    "phonetic": "fret"
-  },
-  "doll": {
-    "meaning": "n. 洋娃娃, 无头脑的美丽女人",
-    "phonetic": "dɒl"
-  },
-  "forcibly": {
-    "meaning": "adv. 强制地, 用力地",
-    "phonetic": "'fɒ:sәbli"
-  },
-  "pedigree": {
-    "meaning": "n. 血统, 家谱, 名门世系\n[法] 家系, 出身, 血统",
-    "phonetic": "'pedigri:"
-  },
-  "position": {
-    "meaning": "n. 位置, 地位, 身分, 形势, 姿势, 立场, 职位, 状态, 阵地\nvt. 安置, 决定...的位置\n[计] 位置",
-    "phonetic": "pә'ziʃәn"
-  },
-  "central": {
-    "meaning": "a. 中央的, 重要的\n[医] 中央的, 中心的, 中枢的",
-    "phonetic": "'sentrәl"
-  },
-  "solidly": {
-    "meaning": "adv. 坚硬地；坚固地；团结一致地",
-    "phonetic": ""
-  },
-  "formula": {
-    "meaning": "n. 客套语, 公式, 准则\n[计] 公式",
-    "phonetic": "'fɒ:mjulә"
-  },
-  "gravity": {
-    "meaning": "n. 地心引力, 重力\n[化] 重力",
-    "phonetic": "'græviti"
-  },
-  "linguistic": {
-    "meaning": "a. 语言的, 语言学的\n[计] 语言的, 语言学的",
-    "phonetic": "liŋ'^wistik"
-  },
-  "innumerable": {
-    "meaning": "a. 无数的, 数不清的",
-    "phonetic": "i'nju:mәrәbl"
-  },
-  "strive": {
-    "meaning": "vi. 努力, 奋斗, 斗争",
-    "phonetic": "straiv"
-  },
-  "madam": {
-    "meaning": "n. 女士, 夫人",
-    "phonetic": "'mædәm"
-  },
-  "interchange": {
-    "meaning": "n. 立体交叉道, 互换\nvt. 交换, 互换\nvi. 交替发生",
-    "phonetic": ".intә'tʃeindʒ"
-  },
-  "pane": {
-    "meaning": "n. 窗玻璃, 方框, 方格, 窗格\nvt. 嵌窗玻璃于\n[计] 窗格",
-    "phonetic": "pein"
-  },
-  "cornerstone": {
-    "meaning": "n. 奠基石, 基础",
-    "phonetic": "'kɔ:nәstәjn"
-  },
-  "cardiac": {
-    "meaning": "n. 心脏病患者, 强心剂, 健胃药\na. 心脏的, (胃的)贲门的",
-    "phonetic": "'kɑ:diæk"
-  },
-  "look": {
-    "meaning": "n. 一看, 神色, 样子, 面容\nvi. 看, 注意, 朝着, 显得\nvt. 打量, 看上去与...一样, 以眼色(或脸色)显示, 期待",
-    "phonetic": "luk"
-  },
-  "anatomy": {
-    "meaning": "n. 剖析, 解剖学, 骨骼, 结构\n[医] 解剖学, 解剖",
-    "phonetic": "ә'nætәmi"
-  },
-  "pronounced": {
-    "meaning": "a. 发出音的, 读出来的, 显著的, 断然的, 明显的\n[法] 显著的, 明显的, 明确的",
-    "phonetic": "prә'naunst"
-  },
-  "turkey": {
-    "meaning": "n. 火鸡, 无用的家伙, 土耳其",
-    "phonetic": "'tә:ki"
-  },
-  "facility": {
-    "meaning": "n. 容易, 灵巧, 设备\n[计] 设施; 设备; 装备",
-    "phonetic": "fә'siliti"
-  },
-  "arbitrator": {
-    "meaning": "n. 仲裁人, 公断者\n[经] 公断人, 仲裁人",
-    "phonetic": "'ɑ:bitreitә"
-  },
-  "lately": {
-    "meaning": "adv. 近来, 最近",
-    "phonetic": "'leitli"
-  },
-  "unconscious": {
-    "meaning": "a. 未意识到的, 无意识的, 无知觉的\n[医] 人事不省的, 神志丧失的; 无意识的",
-    "phonetic": ".ʌn'kɒnʃәs"
-  },
-  "footing": {
-    "meaning": "n. 站稳, 立足点, 立场, 关系\n[化] 脚子(糖浆下脚的结晶)",
-    "phonetic": "'futiŋ"
-  },
-  "revisit": {
-    "meaning": "vt. 再访, 重游, 重临\nn. 再访问",
-    "phonetic": "ri:'vizit"
-  },
-  "animation": {
-    "meaning": "n. 活泼, 生气, 激励, 卡通制作\n[计] 动画",
-    "phonetic": ".æni'meiʃәn"
-  },
-  "lucrative": {
-    "meaning": "a. 有利益的, 获利的, 合算的",
-    "phonetic": "'lu:krәtiv"
-  },
-  "uncomfortably": {
-    "meaning": "adv. 不舒适地, 不自在地, 令人不快地",
-    "phonetic": "ʌnˈkʌmftəbli"
-  },
-  "both": {
-    "meaning": "a. 两者的\nadv. 两者都\npron. 两者",
-    "phonetic": "bәuθ"
-  },
-  "drily": {
-    "meaning": "adv. 干燥地, 不加渲染地, 冷冰冰地, 枯燥地",
-    "phonetic": "'draili"
-  },
-  "petal": {
-    "meaning": "n. 花瓣\n[医] 花瓣",
-    "phonetic": "'petәl"
-  },
-  "enrolment": {
-    "meaning": "n. 登记, 注册, 入伍, 入学, 入会, 注册人数, 入学人数",
-    "phonetic": "in'rәulmәnt"
-  },
-  "bonfire": {
-    "meaning": "n. 大篝火, 营火",
-    "phonetic": "'bɒnfaiә"
-  },
-  "insulation": {
-    "meaning": "n. 绝缘；隔离, 孤立",
-    "phonetic": ".insju'leiʃәn. 'insә-"
-  },
-  "ploy": {
-    "meaning": "n. 手段, 活动, 玩乐",
-    "phonetic": "plɒi"
-  },
-  "cross": {
-    "meaning": "n. 十字架, 十字架形物件, 交叉, 十字标, 交叉路, 磨难, 杂交\na. 生气的, 交叉的, 相反的\nv. 交叉, 横过, 越过\n[计] 交叉, 十字标",
-    "phonetic": "krɒs"
-  },
-  "transition": {
-    "meaning": "n. 转变, 转换, 变迁, 过渡时期, 临时转调\n[化] 跃迁",
-    "phonetic": "træn'ziʃәn"
-  },
-  "botanical": {
-    "meaning": "a. 植物学的\nn. 植物性药材",
-    "phonetic": "bә'tænikәl"
-  },
-  "designated": {
-    "meaning": "a. 特指的；指定的",
-    "phonetic": "'deziɡ.neitid"
-  },
-  "necessarily": {
-    "meaning": "adv. 必然地, 必须地, 必要地",
-    "phonetic": "'nesisәrili"
-  },
-  "predominate": {
-    "meaning": "vt. 掌握, 控制, 支配\nvi. 占主导地位, 占优势",
-    "phonetic": "pri'dɒmineit"
-  },
-  "batch": {
-    "meaning": "n. 一次所烘的面包, 一次所制之量, 一组, 批, 成批, 分批\nv. 成批, 分批处理\n[计] 一批",
-    "phonetic": "bætʃ"
-  },
-  "mimic": {
-    "meaning": "a. 模仿的, 摹拟的\nn. 效颦者, 模仿者, 小丑, 仿制品\nvt. 模仿, 摹拟",
-    "phonetic": "'mimik"
-  },
-  "slippery": {
-    "meaning": "a. 滑的, 光滑的, 靠不住的, 圆滑的, 不稳固的\n[法] 狡猾的, 不可靠的, 不安定的",
-    "phonetic": "'slipәri"
-  },
-  "contented": {
-    "meaning": "a. 满足的, 心安的",
-    "phonetic": "kәn'tentid"
-  },
-  "second": {
-    "meaning": "n. 秒, 瞬间, 第二名, 支持者, 助手\na. 第二的, 其次的, 次要的, 附加的, 辅助的\nnum. 第二\nvt. 当...助手, 支持",
-    "phonetic": "'sekәnd"
-  },
-  "after": {
-    "meaning": "prep. 在...之后, 由于\nconj. 在...之后\nadv. 后来",
-    "phonetic": "'ɑ:ftә"
-  },
-  "glide": {
-    "meaning": "n. 滑动, 滑过, 流水\nvi. 滑动, 滑翔, 溜走, 流逝\nvt. 使滑动",
-    "phonetic": "glaid"
-  },
-  "illegitimate": {
-    "meaning": "a. 不法的, 私生的, 不合规则的, 不合理的, 不符合习惯的\nn. 无合法身份的人\nvt. 宣告...为非法, 证明...为私生",
-    "phonetic": ".ili'dʒitimәt"
-  },
-  "candy": {
-    "meaning": "n. 糖果, 冰糖\nvt. 用糖煮, 使结晶为砂糖\nvi. 结晶为砂糖",
-    "phonetic": "'kændi"
-  },
-  "exaggerate": {
-    "meaning": "v. 夸大, 夸张",
-    "phonetic": "ig'zædʒәreit"
-  },
-  "protect": {
-    "meaning": "vt. 防卫, 保护, 警戒\n[法] 庇护, 保护, 警戒",
-    "phonetic": "prә'tekt"
-  },
-  "porch": {
-    "meaning": "n. 门廊, 走廊",
-    "phonetic": "pɒ:tʃ"
-  },
-  "vegetable": {
-    "meaning": "n. 蔬菜, 植物, 无精打采之人\na. 蔬菜的, 植物的",
-    "phonetic": "'vedʒәtәbl"
-  },
-  "elementary": {
-    "meaning": "a. 初步的, 基本的\n[医] 元素的, 基础的, 初级的",
-    "phonetic": ".eli'mentәri"
-  },
-  "extensively": {
-    "meaning": "adv. 广大, 广延, 外延, 大面积(耕种), 粗放, 广博, 广泛, 广阔",
-    "phonetic": ""
-  },
-  "unmistakable": {
-    "meaning": "a. 不会弄错的, 不会被误解的, 不会搞错的, 明白无误的, 清楚明白的",
-    "phonetic": "'ʌnmis'teikәbl"
-  },
-  "enemy": {
-    "meaning": "n. 敌人, 仇敌, 敌军\na. 敌人的",
-    "phonetic": "'enimi"
-  },
-  "cleric": {
-    "meaning": "a. 牧师的, 教士的",
-    "phonetic": "'klerik"
-  },
-  "gleam": {
-    "meaning": "n. 光束, 微光, 反光\nvi. 闪烁, 隐约地闪现\nvt. 使发微光, 使闪烁",
-    "phonetic": "gli:m"
-  },
-  "condemnation": {
-    "meaning": "n. 非难, 宣告有罪, 非难的理由",
-    "phonetic": "kɒndem'neiʃәn"
-  },
-  "needs": {
-    "meaning": "adv. （只与must连用）必须地",
-    "phonetic": "ni:dz"
-  },
-  "evident": {
-    "meaning": "a. 显然的, 明显的",
-    "phonetic": "'evidәnt"
-  },
-  "front": {
-    "meaning": "n. 前面, 开头, 前线, 阵线, 态度\nvt. 面对, 朝向, 对抗\nvi. 朝向",
-    "phonetic": "frʌnt"
-  },
-  "finite": {
-    "meaning": "a. 有限的, 有穷的, 限定的\nn. 有限物",
-    "phonetic": "'fainait"
-  },
-  "diarrhoea": {
-    "meaning": "n. 腹泻",
-    "phonetic": "daiә'riә"
-  },
-  "wooden": {
-    "meaning": "a. 木制的, 呆笨的, 木然的",
-    "phonetic": "'wudn"
-  },
-  "announcement": {
-    "meaning": "n. 公告, 发表, 告知\n[经] 通告, 布告, 公告",
-    "phonetic": "ә'naunsmәnt"
-  },
-  "hatch": {
-    "meaning": "n. 孵化, 舱口\nvt. 孵, 孵出, 策划\nvi. 孵化",
-    "phonetic": "hætʃ"
-  },
-  "mitigate": {
-    "meaning": "vt. 温和, 缓和, 减轻\n[医] 缓和, 减轻",
-    "phonetic": "'mitigeit"
-  },
-  "stipulate": {
-    "meaning": "v. 规定, 保证",
-    "phonetic": "'stipjuleit"
-  },
-  "guard": {
-    "meaning": "n. 守卫者, 警戒, 护卫队, 防护装置\nvt. 保卫, 看守, 当心\nvi. 防止, 警惕, 警卫, 看守",
-    "phonetic": "gɑ:d"
-  },
-  "commuter": {
-    "meaning": "n. 乘公共车辆上下班者, 月季票乘客\n[经] 非(当地)居民",
-    "phonetic": "kә'mju:tә"
-  },
-  "socially": {
-    "meaning": "adv. 在社会上, 在社交上, 以社会生活方式",
-    "phonetic": "'sәuʃәli"
-  },
-  "feminine": {
-    "meaning": "a. 女性的, 阴性的, 柔弱的\n[医] 女性的, 雌性的",
-    "phonetic": "'feminin"
-  },
-  "completed": {
-    "meaning": "a. 完整的；完全的",
-    "phonetic": ""
-  },
-  "replica": {
-    "meaning": "n. 复制品\n[计] 目录分区复制",
-    "phonetic": "'replikә"
-  },
-  "leafy": {
-    "meaning": "a. 叶茂盛的, 多叶的, 叶状的",
-    "phonetic": "'li:fi"
-  },
-  "illustrate": {
-    "meaning": "vt. 举例说明, 作图解, 阐明\nvi. 举例说明",
-    "phonetic": "'ilәstreit"
-  },
-  "morris": {
-    "meaning": "n. 莫里斯舞",
-    "phonetic": "'mɒ:ris"
-  },
-  "accelerate": {
-    "meaning": "v. 加速, 促进",
-    "phonetic": "әk'selәreit"
-  },
-  "headteacher": {
-    "meaning": "n. 中小学的校长",
-    "phonetic": "hed'ti:tʃər"
-  },
-  "sliding": {
-    "meaning": "a. 滑行的, 变化的\n[机] 滑动",
-    "phonetic": "'slaidiŋ"
-  },
-  "blitz": {
-    "meaning": "n. 闪电战\nvt. 以闪电战攻击",
-    "phonetic": "blits"
-  },
-  "ingredient": {
-    "meaning": "n. 成分, 因素\n[化] 配合剂; 拼料; 成分; 组分",
-    "phonetic": "in'gri:diәnt"
-  },
-  "make": {
-    "meaning": "vt. 制造, 安排, 创造, 构成, 使得, 产生, 造成, 整理, 布置, 引起, 到达, 进行\nvi. 开始, 前进, 增大, 被制造, 被处理\nn. 制造, 构造, 性情",
-    "phonetic": "meik"
-  },
-  "canoe": {
-    "meaning": "n. 独木舟, 轻舟\nvi. 乘独木舟\nvt. 用独木舟运",
-    "phonetic": "kә'nu:"
-  },
-  "block": {
-    "meaning": "n. 街区, 木块, 石块, 块\nvt. 阻塞, 封锁, 使成块状\n[计] 块, 数据块",
-    "phonetic": "blɒk"
-  },
-  "lender": {
-    "meaning": "n. 出借人, 贷方\n[经] 出借者, 贷方, 贷款人",
-    "phonetic": "'lendә"
-  },
-  "emperor": {
-    "meaning": "n. 皇帝, 君主",
-    "phonetic": "'empәrә"
-  },
-  "intersect": {
-    "meaning": "vt. 贯穿, 横穿\nvi. 交错, 相交",
-    "phonetic": ".intә'sekt"
-  },
-  "sides": {
-    "meaning": "n. 边；面数；台词表（side的复数形式）",
-    "phonetic": "saidz"
-  },
-  "decorative": {
-    "meaning": "a. 装饰性的",
-    "phonetic": "'dekәreitiv"
-  },
-  "stressful": {
-    "meaning": "a. 着重, 强调, 重读, 使受应力",
-    "phonetic": ""
-  },
-  "bakery": {
-    "meaning": "n. 面包店",
-    "phonetic": "'beikәri"
-  },
-  "atmospheric": {
-    "meaning": "a. 大气的\n[医] 大气的; 大气压的",
-    "phonetic": "ætmәs'ferik"
-  },
-  "buck": {
-    "meaning": "n. 元, 雄鹿, 纨绔子弟, 鞍马, 培克(赌博时的庄家标志), 碱水, 自夸, 谈话\nvi. 马背突然拱起, 反对, 吹牛, 闲聊\nvt. 马背突然拱起将骑手摔下, 反对, 用碱水洗\na. 雄的",
-    "phonetic": "bʌk"
-  },
-  "illicit": {
-    "meaning": "a. 不法的, 不正当的, 禁止的\n[法] 违法的, 违禁的, 被禁止的",
-    "phonetic": "i'lisit"
-  },
-  "band": {
-    "meaning": "n. 带子, 队, 乐队\nv. 联合, 结合\n[计] 频带; 波段; 区",
-    "phonetic": "bænd"
-  },
-  "other": {
-    "meaning": "a. 其他的, 另外的, 从前的\npron. 其他的, 他人, 另外一个",
-    "phonetic": "'ʌðә"
-  },
-  "marginally": {
-    "meaning": "adv. 记在页边, 有旁注, 边缘, 边沿地区, 边际, 限界, 勉强够格, 无关紧要, 少量",
-    "phonetic": ""
-  },
-  "fundamentalist": {
-    "meaning": "n. 基要主义者",
-    "phonetic": ".fʌndә'mentәlist"
-  },
-  "dentist": {
-    "meaning": "n. 牙科医生\n[医] 牙医师",
-    "phonetic": "'dentist"
-  },
-  "back": {
-    "meaning": "a. 后面的\nvt. 使后退, 支持\nvi. 倒退, 背靠\nadv. 向后地\nn. 背部, 后面",
-    "phonetic": "bæk"
-  },
-  "iris": {
-    "meaning": "n. 虹膜, 鸢尾属植物, 虹, 虹彩\n[化] 可变光阑",
-    "phonetic": "'airis"
-  },
-  "floating": {
-    "meaning": "a. 漂浮的, 浮动的, 移动的\n[医] 浮动的",
-    "phonetic": "'flәutiŋ"
-  },
-  "understandably": {
-    "meaning": "adv. 可懂, 可了解, 可理解",
-    "phonetic": ""
-  },
-  "keeper": {
-    "meaning": "n. 监护人, 管理人, 看守人\n[机] 保管人, 看守人, 保持片",
-    "phonetic": "'ki:pә"
-  },
-  "broken": {
-    "meaning": "a. 坏掉的, 打破的, 断掉的\nbreak的过去分词",
-    "phonetic": "'brәukәn"
-  },
-  "afield": {
-    "meaning": "adv. 离开着, 偏离着, 在战场上",
-    "phonetic": "ә'fi:ld"
-  },
-  "steeply": {
-    "meaning": "adv. 险峻地",
-    "phonetic": "'sti:pli"
-  },
-  "sideways": {
-    "meaning": "adv. 向旁边, 向侧面地\na. 旁边的, 向侧面的",
-    "phonetic": "'saidweiz"
-  },
-  "coast": {
-    "meaning": "n. 海岸, 滑坡\nv. 沿海岸而行",
-    "phonetic": "kәust"
-  },
-  "authorization": {
-    "meaning": "n. 授权, 许可\n[经] 授权, 许可, 批准",
-    "phonetic": ".ɒ:θәrai'zeiʃәn"
-  },
-  "racer": {
-    "meaning": "n. 比赛者, 游蛇属黑蛇",
-    "phonetic": "'reisә"
-  },
-  "disposal": {
-    "meaning": "n. 丢掉, 处理, 排列, 销毁, 布置\n[医] 处理, 处置",
-    "phonetic": "dis'pәuzәl"
-  },
-  "timed": {
-    "meaning": "a. 时控的；定时的, 同步的",
-    "phonetic": "taimd"
-  },
-  "brown": {
-    "meaning": "n. 褐色\na. 褐色的\nv. (使)变褐色",
-    "phonetic": "braun"
-  },
-  "journalist": {
-    "meaning": "n. 新闻记者, 从事新闻杂志业的人",
-    "phonetic": "'dʒә:nәlist"
-  },
-  "entrust": {
-    "meaning": "vt. 信托, 交托, 委托\n[经] 委托",
-    "phonetic": "in'trʌst"
-  },
-  "gathering": {
-    "meaning": "n. 聚集, 集中, 采集\n[化] 富集",
-    "phonetic": "'gæðәriŋ"
-  },
-  "horrific": {
-    "meaning": "a. 令人毛骨悚然的, 感到恐惧的",
-    "phonetic": "hɒ'rifik"
-  },
-  "endure": {
-    "meaning": "vt. 忍受, 忍耐, 容忍, 耐\nvi. (正式)持久, 持续\n[计] 仍能工作, 继续工作",
-    "phonetic": "in'djuә"
-  },
-  "left": {
-    "meaning": "a. 左边的, 左倾的, 左侧的, 左派的\nadv. 在左面\nn. 左, 左面, 左派\nleave的过去式和过去分词",
-    "phonetic": "left"
-  },
-  "appoint": {
-    "meaning": "vt. 任命, 指定, 下令\n[法] 派, 派任, 任命",
-    "phonetic": "ә'pɒint"
-  },
-  "exempt": {
-    "meaning": "n. 免税者, 被免除义务者\na. 免除的\nvt. 使免除, 豁免",
-    "phonetic": "ig'zempt"
-  },
-  "flex": {
-    "meaning": "vt. 弯曲, 伸缩, 折曲\nvi. 弯曲\nn. 屈曲, 折曲",
-    "phonetic": "'fleks"
-  },
-  "bourgeois": {
-    "meaning": "n. 中产阶级分子, 商人, 资产阶级\na. 中产阶级的, 平庸的\nn. 九点活字",
-    "phonetic": "buә'ʒwɑ:"
-  },
-  "spotted": {
-    "meaning": "a. 有斑点的, 斑纹的, 弄污了的",
-    "phonetic": "'spɒtid"
-  },
-  "multinational": {
-    "meaning": "a. 多国的, 跨国公司的\nn. 跨国公司",
-    "phonetic": ".mʌlti'næʃәnl"
-  },
-  "annually": {
-    "meaning": "adv. 一年一次, 每年\n[经] 年度的, 每年的",
-    "phonetic": "'ænjuәli"
-  },
-  "retrieval": {
-    "meaning": "n. 取回, 恢复, 检索\n[计] 检索",
-    "phonetic": "ri'tri:vl"
-  },
-  "situation": {
-    "meaning": "n. 情形, 境遇, 位置\n[医] 情境, 处境",
-    "phonetic": ".sitju'eiʃәn"
-  },
-  "negatively": {
-    "meaning": "adv. 否定地, 消极地",
-    "phonetic": "'ne^әtivli"
-  },
-  "posit": {
-    "meaning": "vt. 假设, 安置, 布置",
-    "phonetic": "'pɒzit"
-  },
-  "symbolise": {
-    "meaning": "vt. 象征, 代表, 作为...的象征\nvt.vi. 用符号表示, 使用符号",
-    "phonetic": "'simbәlaiz"
-  },
-  "complexion": {
-    "meaning": "n. 肤色, 情况, 局面\n[医] 体质; 面色, 面容",
-    "phonetic": "kәm'plekʃn"
-  },
-  "tester": {
-    "meaning": "n. 考试人, 做试验者, 试验装置, 天盖, 华盖\n[化] 检验器; 试验仪器",
-    "phonetic": "'testә"
-  },
-  "outing": {
-    "meaning": "n. 郊游, 远足\na. 远足适用的",
-    "phonetic": "'autiŋ"
-  },
-  "creek": {
-    "meaning": "n. 小溪, 小河, 小湾",
-    "phonetic": "kri:k"
-  },
-  "temporal": {
-    "meaning": "a. 时间的, 暂时的, 现世的, 世俗的, 颞的, 太阳穴的\nn. 世间万物, 教会财产",
-    "phonetic": "'tempәrәl"
-  },
-  "rescuer": {
-    "meaning": "n. 救助者",
-    "phonetic": "'reskjuә"
-  },
-  "creates": {
-    "meaning": "[n. 创建；创立",
-    "phonetic": ""
-  },
-  "bullets": {
-    "meaning": "n. 子弹（bullet的复数形式）",
-    "phonetic": ""
-  },
-  "waver": {
-    "meaning": "n. 动摇, 踌躇, 挥动者\nvi. 摇摆, 颤抖, 摆动, 摇曳, 犹豫",
-    "phonetic": "'weivә"
-  },
-  "understanding": {
-    "meaning": "n. 理解, 谅解\n[法] 协商, 协议, 谅解",
-    "phonetic": ".ʌndә'stændiŋ"
-  },
-  "pamphlet": {
-    "meaning": "n. 小册子, 活页文选",
-    "phonetic": "'pæmflit"
-  },
-  "stare": {
-    "meaning": "vi. 注视, 凝视, 瞪视, 显眼\nvt. 盯\nn. 凝视",
-    "phonetic": "stєә"
-  },
-  "crossing": {
-    "meaning": "n. 横越, 横渡, 交叉点, 渡口\n[经] 划线",
-    "phonetic": "'krɒsiŋ"
-  },
-  "mark": {
-    "meaning": "n. 标志, 分数, 马克, 痕迹, 斑点, 靶子, 刻度, 记号, 符号, 戳记, 标准, 起跑线\nvt. 做标记于, 留意, 打分数, 表明, 标志, 记录\nvi. 作记号, 记得分\n[计] 标志; 标记; 传号",
-    "phonetic": "mɑ:k"
-  },
-  "donate": {
-    "meaning": "v. 捐赠",
-    "phonetic": "'dәuneit"
+    "phonetic": "ei",
+    "translation": "不定冠词，一个；一种"
   },
   "abundant": {
-    "meaning": "a. 丰富的, 充分的, 大量的",
-    "phonetic": "ә'bʌndәnt"
-  },
-  "restore": {
-    "meaning": "vt. 回复, 恢复, 归还, 修补, 修复\nvt. 还原\nvi. 还原\n[计] 还原; DOS外部命令:从备份盘中取回文件",
-    "phonetic": "ri'stɒ:"
-  },
-  "yearning": {
-    "meaning": "n. 渴望, 热望, 怀念\na. 热望的, 渴望的, 怀念的, 向往的",
-    "phonetic": "'jә:niŋ"
-  },
-  "whisper": {
-    "meaning": "n. 耳语, 密谈, 谣传, 沙沙声\nvi. 耳语, 密谈, 沙沙地响\nvt. 低声说",
-    "phonetic": "'hwispә"
-  },
-  "like": {
-    "meaning": "a. 相似的, 同样的\nvt. 喜欢, 愿意, 想\nvi. 喜欢, 希望\nn. 爱好, 同样的人(或物)\nprep. 象, 如同\nadv. 可能",
-    "phonetic": "laik"
-  },
-  "separate": {
-    "meaning": "n. 独立件, 抽印本\na. 分开的, 各别的, 单独的, 分隔的\nvi. 分开, 隔开, 分居\nvt. 使分离, 使分开, 区分, 使分居",
-    "phonetic": "'sepәreit"
-  },
-  "keeping": {
-    "meaning": "n. 保管, 供养, 一致\n[法] 保管, 保护, 管理",
-    "phonetic": "'ki:piŋ"
-  },
-  "aching": {
-    "meaning": "a. 疼痛的, 使人痛苦的",
-    "phonetic": "'eikiŋ"
-  },
-  "injection": {
-    "meaning": "n. 注射, 注射剂\n[化] 注入; 注射",
-    "phonetic": "in'dʒekʃәn"
-  },
-  "did": {
-    "meaning": "do的过去式",
-    "phonetic": "did"
-  },
-  "lowland": {
-    "meaning": "n. 低地, 苏格兰低地\na. 低地的",
-    "phonetic": "'lәulәnd"
-  },
-  "always": {
-    "meaning": "adv. 总是, 始终",
-    "phonetic": "'ɒ:lweiz"
-  },
-  "discerning": {
-    "meaning": "a. 有眼力的, 敏锐的, 有辨别能力的, 有洞察力的",
-    "phonetic": "di's\\\\\\\\:niŋ"
-  },
-  "sane": {
-    "meaning": "a. 神智健全的, 稳健的, 没病的, 合理的\n[医] 精神健全的",
-    "phonetic": "sein"
-  },
-  "sleeping": {
-    "meaning": "n. 睡眠\na. 睡着的",
-    "phonetic": "'sli:piŋ"
-  },
-  "exposed": {
-    "meaning": "a. 暴露的, 无掩蔽的, 易受攻击的",
-    "phonetic": "ik'spәuzd"
-  },
-  "composer": {
-    "meaning": "n. 作曲家, 作家, 调停者",
-    "phonetic": "kәm'pәuzә"
-  },
-  "dickens": {
-    "meaning": "n. 魔鬼",
-    "phonetic": "'dikinz"
-  },
-  "angle": {
-    "meaning": "n. 角, 角度, 角落\nvi. 钓鱼, 谋取, 博取, 斜向移动, 转变角度\nvt. 使转动角度, 在...钓鱼, 获取",
-    "phonetic": "'æŋgl"
-  },
-  "stereo": {
-    "meaning": "n. 铅版, 立体照片\na. 立体的, 立体感觉的",
-    "phonetic": "'stiәriәu"
-  },
-  "cholera": {
-    "meaning": "n. 霍乱\n[医] 霍乱",
-    "phonetic": "'kɒlәrә"
-  },
-  "pave": {
-    "meaning": "vt. 铺设, 安排, 铺满, 为...铺路\n[化] 铺设",
-    "phonetic": "peiv"
-  },
-  "harsh": {
-    "meaning": "a. 粗糙的, 刺耳的, 严厉的\n[法] 粗糙的, 严厉的, 苛刻的",
-    "phonetic": "hɑ:ʃ"
-  },
-  "appropriation": {
-    "meaning": "n. 拨用, 挪用, 拨款\n[经] 拨款, 挪用",
-    "phonetic": "әprәupri'eiʃәn"
-  },
-  "oblivious": {
-    "meaning": "a. 遗忘的, 健忘的, 不知不觉的\n[法] 忘却的, 健忘的, 不在意的",
-    "phonetic": "ә'bliviәs"
-  },
-  "nutritional": {
-    "meaning": "a. 营养的, 滋养的\n[医] 营养的",
-    "phonetic": "nju: 'triʃәnәl"
-  },
-  "honourable": {
-    "meaning": "a. 值得尊敬的, 荣耀的, 高贵的\n[法] 荣誉的, 正直的, 体面的",
-    "phonetic": "'ɒnәrәbl"
-  },
-  "dust": {
-    "meaning": "n. 灰尘, 尘埃, 粉末, 花粉, 土, 骚乱\nvt. 拂去灰尘, 撒, 弄成粉末\nvi. 拂去灰尘, 化为粉末",
-    "phonetic": "dʌst"
-  },
-  "dale": {
-    "meaning": "n. 小谷, 溪谷",
-    "phonetic": "deil"
-  },
-  "jeopardy": {
-    "meaning": "n. 危难, 危险\n[法] 危险, 危难, 危险处境",
-    "phonetic": "'dʒepәdi"
-  },
-  "allowance": {
-    "meaning": "n. 津贴, 零用钱, 限额, 折扣, 允许\nvt. 定量供应",
-    "phonetic": "ә'lauәns"
-  },
-  "sucker": {
-    "meaning": "n. 乳儿, 吸管\n[医] 吸盘",
-    "phonetic": "'sʌkә"
-  },
-  "watch": {
-    "meaning": "n. 观察, 手表, 看守, 守护, 监视, 值班人\nvt. 看, 注视, 照顾, 看守, 守护, 监视\nvi. 观看, 注视, 守侯",
-    "phonetic": "wɒtʃ"
-  },
-  "crown": {
-    "meaning": "n. 王冠, 王权, 顶点\nvt. 使成王, 加冕, 居...之顶",
-    "phonetic": "kraun"
-  },
-  "tyrant": {
-    "meaning": "n. 暴君\n[法] 专制君主, 暴君, 压制他人者",
-    "phonetic": "'taiәrәnt"
-  },
-  "substantial": {
-    "meaning": "n. 重要材料(或事物), 有实际价值的东西\na. 实质上的, 物质的, 有内容的, 结实的",
-    "phonetic": "sәb'stænʃәl"
-  },
-  "carry": {
-    "meaning": "n. 进位, 射程, 运载\nvt. 携带, 运送, 支持, 传送, 包含\nvi. 被携带, 能达到\n[计] 进位; 进位数",
-    "phonetic": "'kæri"
-  },
-  "guarantee": {
-    "meaning": "n. 担保, 抵押品, 保证书\nvt. 保证, 担保",
-    "phonetic": ".gærәn'ti:"
-  },
-  "parked": {
-    "meaning": "a. 已泊车的",
-    "phonetic": ""
-  },
-  "combination": {
-    "meaning": "n. 组合, 合并, 联合\n[计] 组合图",
-    "phonetic": ".kɒmbi'neiʃәn"
-  },
-  "anarchy": {
-    "meaning": "n. 无政府状态, 政治混乱\n[法] 混乱, 无秩序, 无政府状态",
-    "phonetic": "'ænәki"
-  },
-  "should": {
-    "meaning": "aux. 应该, 将要",
-    "phonetic": "ʃud"
-  },
-  "enclose": {
-    "meaning": "vt. 围绕, 圈起, 放入封套, 附上",
-    "phonetic": "in'klәuz"
-  },
-  "clench": {
-    "meaning": "n. 牢牢抓住, 钉紧, 敲弯钉尖\nvt. 紧握, 牢牢地抓住, 确定, 敲弯\nvi. 握紧, 钉牢",
-    "phonetic": "klentʃ"
-  },
-  "distrust": {
-    "meaning": "n. 不信任\nvt. 不信任",
-    "phonetic": "dis'trʌst"
-  },
-  "narrative": {
-    "meaning": "n. 叙述, 故事\na. 叙述的, 叙事的, 故事体的",
-    "phonetic": "'nærәtiv"
-  },
-  "malignant": {
-    "meaning": "a. 有恶意的, 恶性的, 有害的\n[化] 恶性的",
-    "phonetic": "mә'lignәnt"
-  },
-  "happens": {
-    "meaning": "v. 发生( happen的第三人称单数 ); 碰巧; 产生结果; （向对方表示异议或不悦等）",
-    "phonetic": "ˈhæpənz"
-  },
-  "insect": {
-    "meaning": "n. 昆虫, 卑鄙的人\n[医] 昆虫",
-    "phonetic": "'insekt"
-  },
-  "search": {
-    "meaning": "n. 搜寻, 查究\nv. 搜寻, 搜查, 探求, 调查, 搜索\n[计] 搜索, 路径检索程序",
-    "phonetic": "sә:tʃ"
-  },
-  "intense": {
-    "meaning": "a. 非常的, 强烈的, 紧张的, 热情的\n[医] 强的",
-    "phonetic": "in'tens"
-  },
-  "mandatory": {
-    "meaning": "a. 命令的, 托管的\n[经] 受托者, 命令者",
-    "phonetic": "'mændәtәri"
-  },
-  "impact": {
-    "meaning": "n. 冲击, 冲突, 影响, 效果\nvt. 挤入, 撞击, 压紧, 对...发生影响",
-    "phonetic": "'impækt"
-  },
-  "balanced": {
-    "meaning": "a. 公平的, 平衡的\n[计] 平衡的, 对称的, 均衡的",
-    "phonetic": "'bælәnst"
-  },
-  "dearly": {
-    "meaning": "adv. 深深地, 昂贵地",
-    "phonetic": "'diәli"
-  },
-  "limp": {
-    "meaning": "n. 跛行\na. 柔软的, 无力的, 软弱的\nvi. 跛行",
-    "phonetic": "limp"
-  },
-  "shocked": {
-    "meaning": "a. 震撼的；震惊的",
-    "phonetic": "ʃɔkt"
-  },
-  "objectivity": {
-    "meaning": "n. 客观, 客观现实, 客观性\n[经] 客观性",
-    "phonetic": ",ɔbdʒek'tivәti"
-  },
-  "flight": {
-    "meaning": "n. 飞行, 射程, 逃走, 飞跃, 飞机航程, 班机, 迁徙, 飞逝\nvi. 迁徙\nvt. 射击(飞禽), 为(箭)装上羽毛, 使惊飞",
-    "phonetic": "flait"
-  },
-  "perennial": {
-    "meaning": "a. 常年的, 长期的, 反复的\n[医] 多年生的",
-    "phonetic": "pә'reniәl"
-  },
-  "religion": {
-    "meaning": "n. 宗教, 信仰\n[法] 宗教, 宗教信仰, 信仰",
-    "phonetic": "ri'lidʒәn"
-  },
-  "conservationist": {
-    "meaning": "n. 自然资源保护论者",
-    "phonetic": ",kәnsә'veiʃәnist"
-  },
-  "glaring": {
-    "meaning": "a. 闪耀的, 炫目的, 瞪视的",
-    "phonetic": "'glєәriŋ"
-  },
-  "boxer": {
-    "meaning": "n. 拳师",
-    "phonetic": "'bɒksә"
-  },
-  "dissect": {
-    "meaning": "v. 解剖, 切开",
-    "phonetic": "di'sekt"
-  },
-  "vaguely": {
-    "meaning": "adv. 含糊地, 暧昧地",
-    "phonetic": "'veigli"
-  },
-  "adhere": {
-    "meaning": "vi. 依附, 粘着, 坚持, 追随, 拥护\nvt. 使粘附",
-    "phonetic": "әd'hiә"
-  },
-  "stay": {
-    "meaning": "n. 停留, 逗留, 制止, 延缓, 停止, 支柱, 支撑物, 支索\nvt. 制止, 延缓, 坚持, 支持, 支撑, 用支索固定\nvi. 停留, 逗留, 暂停, 坚持, 中止",
-    "phonetic": "stei"
-  },
-  "inspired": {
-    "meaning": "a. 得到灵感的, 有灵感的, 官方授意的",
-    "phonetic": "in'spaiәd"
-  },
-  "vocal": {
-    "meaning": "a. 嗓音的, 声音的, 有声的, 歌唱的\nn. 元音, 声乐作品",
-    "phonetic": "'vәukl"
-  },
-  "gorgeous": {
-    "meaning": "a. 华丽的, 灿烂的",
-    "phonetic": "'gɒ:dʒәs"
-  },
-  "soundtrack": {
-    "meaning": "n. 声迹, 声槽, 声带",
-    "phonetic": ""
-  },
-  "connect": {
-    "meaning": "v. 连接, 联合, 联系",
-    "phonetic": "kә'nekt"
-  },
-  "tile": {
-    "meaning": "n. 砖瓦, 瓷砖, 瓦片\nvt. 铺以瓦, 铺以瓷砖\n[计] 平铺",
-    "phonetic": "tail"
-  },
-  "requires": {
-    "meaning": "n. 需要；要求；需求（require的复数）",
-    "phonetic": ""
-  },
-  "weekday": {
-    "meaning": "n. 周日, 平日\n[计] 工作日",
-    "phonetic": "'wi:kdei"
-  },
-  "formulation": {
-    "meaning": "n. 系统陈述, 公式化, 配制\n[化] 表述; 数学表述; 数式化; 数学表述",
-    "phonetic": ".fɒ:mju'leiʃәn"
-  },
-  "heap": {
-    "meaning": "n. 堆, 许多, 累积\nvt. 堆积, 装满\n[计] 堆",
-    "phonetic": "hi:p"
-  },
-  "following": {
-    "meaning": "n. 下列各项, 部下, 追随者\na. 下列的, 其次的",
-    "phonetic": "'fɒlәuiŋ"
-  },
-  "reactor": {
-    "meaning": "n. 反应者, 反应器, 反应堆, 电抗器\n[化] 反应釜; 反应锅",
-    "phonetic": "ri'æktә"
-  },
-  "hospice": {
-    "meaning": "n. 旅客住宿处, 收容所",
-    "phonetic": "'hɒspis"
-  },
-  "notice": {
-    "meaning": "n. 注意, 布告, 通知, 预告, 短评\nvt. 注意, 通知, 评论, 提及, 关注\nvi. 注意",
-    "phonetic": "'nәutis"
-  },
-  "plausible": {
-    "meaning": "a. 貌似真实的, 貌似合理的, 说得煞有其事的\n[法] 花言巧语的, 似乎有理的",
-    "phonetic": "'plɒ:zibl"
-  },
-  "cadre": {
-    "meaning": "n. 框架, 干部\n[经] 干部",
-    "phonetic": "'kædri.'kɑ:dә"
-  },
-  "credibility": {
-    "meaning": "n. 可信用, 确实性, 可靠\n[法] 证据能力, 可信程度, 确实性",
-    "phonetic": ".kredi'biliti"
-  },
-  "nowadays": {
-    "meaning": "n. 现在, 现时, 当今\nadv. 时下, 现今",
-    "phonetic": "'nauәdeiz"
-  },
-  "motivated": {
-    "meaning": "a. 有动机的, 目的明确的",
-    "phonetic": "'mәutiveitid"
-  },
-  "howling": {
-    "meaning": "a. 咆哮的, 极大的, 荒凉的\nn. 啸声",
-    "phonetic": "'hauliŋ"
-  },
-  "muscle": {
-    "meaning": "n. 肌肉, 臂力\n[医] 肌",
-    "phonetic": "'mʌsl"
-  },
-  "improved": {
-    "meaning": "a. 改良的",
-    "phonetic": "im'pru:vd"
-  },
-  "feel": {
-    "meaning": "vt. 感觉, 觉得, 触摸, 以为\nvi. 有知觉, 摸索, 同情\nn. 感觉, 觉得, 触摸",
-    "phonetic": "fi:l"
-  },
-  "rinse": {
-    "meaning": "n. 清洗, 染发, 染发剂\nvt. 以清水冲洗, 漱, 漂清\nvi. 被漂净",
-    "phonetic": "rins"
-  },
-  "recycle": {
-    "meaning": "vt. 使再循环, 重新利用, 再制\nn. 再循环",
-    "phonetic": ".ri:'saikl"
-  },
-  "crisis": {
-    "meaning": "n. 危机, 危险期, 紧要关头\n[医] 危象; 骤退, 临界, 极期",
-    "phonetic": "'kraisis"
-  },
-  "creativity": {
-    "meaning": "n. 创造力, 创造性",
-    "phonetic": ".kri:ei'tiviti"
-  },
-  "glare": {
-    "meaning": "n. 闪耀光, 刺眼\nvi. 发眩光, 瞪视\nvt. 瞪眼表示",
-    "phonetic": "glєә"
-  },
-  "way": {
-    "meaning": "n. 路, 路线, 路途, 方法, 道路, 情形, 规模, 习惯, 行业, 方面\nadv. 远远地, 非常",
-    "phonetic": "wei"
-  },
-  "penetrate": {
-    "meaning": "vt. 穿透, 刺穿, 渗透, 看穿, 洞察, 了解, 使充溢\nvi. 刺入, 看穿, 渗透, 打进",
-    "phonetic": "'penitreit"
-  },
-  "lush": {
-    "meaning": "a. 苍翠繁茂的, 多青草的, 丰富的\nn. 酒, 酒鬼\nv. 饮",
-    "phonetic": "lʌʃ"
-  },
-  "try": {
-    "meaning": "n. 尝试, 试验, 审理, 审判\nvt. 试, 尝试, 试验, 考验, 审问, 提炼\nvi. 尝试, 试图",
-    "phonetic": "trai"
-  },
-  "psychologically": {
-    "meaning": "adv. 心理上, 从心理学角度",
-    "phonetic": ",psaikә'lɔdʒikәli"
-  },
-  "slight": {
-    "meaning": "n. 轻蔑, 怠慢\na. 轻微的, 纤细的, 脆弱的, 苗条的\nvt. 轻视, 忽略, 怠慢",
-    "phonetic": "slait"
-  },
-  "transplant": {
-    "meaning": "vt. 使移居, 移植, 使迁移\nvi. 移居, 耐移植\nn. 移居者, 移植",
-    "phonetic": "træns'plɑ:nt"
-  },
-  "discharge": {
-    "meaning": "vt. 卸下, 放出, 解雇, 拔染, 履行, 放电\nvi. 卸货, 流出\nn. 卸货, 流出, 放电",
-    "phonetic": "dis'tʃɑ:dʒ"
-  },
-  "third": {
-    "meaning": "num. 第三, 三分之一\n[机] 第三; 第三的",
-    "phonetic": "θә:d"
-  },
-  "directions": {
-    "meaning": "n. 指示；方向；用法说明书（direction的复数形式）",
-    "phonetic": ""
-  },
-  "consolidated": {
-    "meaning": "a. 整理过的；巩固的；统一的",
-    "phonetic": "kәn'sɔlideitid"
-  },
-  "realization": {
-    "meaning": "n. 实现, 领悟, 实得\n[医] 现实化, 实现",
-    "phonetic": ".riәlai'zeiʃәn"
-  },
-  "host": {
-    "meaning": "n. 主人, 旅馆老板, 节目主持人\nvt. 当主人招待, 作...节目主持人\n[计] 主机, 宿主机",
-    "phonetic": "hәust"
-  },
-  "clubhouse": {
-    "meaning": "n. 俱乐部会所",
-    "phonetic": "'klʌbhaus"
-  },
-  "leisurely": {
-    "meaning": "a. 悠闲的, 从容的\nadv. 从容地, 悠闲地",
-    "phonetic": "'li:ʒәli"
-  },
-  "embark": {
-    "meaning": "vi. 乘船, 着手, 从事, 上飞机\nvt. 使上船, 使上飞机, 使从事",
-    "phonetic": "im'bɑ:k"
-  },
-  "curve": {
-    "meaning": "n. 曲线, 弯曲, 曲线球\nvt. 弯, 使弯曲\nvi. 成曲形",
-    "phonetic": "kә:v"
-  },
-  "anew": {
-    "meaning": "adv. 重新, 再",
-    "phonetic": "ә'nju:"
-  },
-  "terrestrial": {
-    "meaning": "n. 地球上的人\na. 地球的, 陆生的, 陆地的, 人间的",
-    "phonetic": "tә'restriәl"
-  },
-  "waitress": {
-    "meaning": "n. 女侍者, 女服务员",
-    "phonetic": "'weitris"
-  },
-  "syntax": {
-    "meaning": "n. 句法, 语法, 句子构造\n[计] 句法, 语法",
-    "phonetic": "'sintæks"
-  },
-  "intolerance": {
-    "meaning": "n. 不宽容, 偏狭, 不容许相反的言论\n[医] 不耐[性]",
-    "phonetic": "in'tɒlәrәns"
-  },
-  "dolphin": {
-    "meaning": "n. 海豚",
-    "phonetic": "'dɒlfin"
-  },
-  "heterosexual": {
-    "meaning": "a. 异性的, 异性爱的\nn. 异性恋的人",
-    "phonetic": ".hetәrә'sekʃuәl"
-  },
-  "summarize": {
-    "meaning": "v. 概述, 总结",
-    "phonetic": "'sʌmәraiz"
-  },
-  "own": {
-    "meaning": "n. 自己的\na. 自己的, 嫡亲的, 同胞的\nvt. 拥有, 支配, 自认, 承认, 顺从于\nvi. 承认, 供认",
-    "phonetic": "әun"
-  },
-  "decision": {
-    "meaning": "n. 决定, 决心, 决断\n[计] 判定",
-    "phonetic": "di'siʒәn"
-  },
-  "custom": {
-    "meaning": "n. 习惯, 风俗, 海关, 自定义\na. 定制的\n[计] 定制; 自定义",
-    "phonetic": "'kʌstәm"
-  },
-  "parental": {
-    "meaning": "a. 父母亲的, 做双亲的, 作为渊源的\n[医] 父母的, 双亲的",
-    "phonetic": "pә'rentәl"
-  },
-  "amnesty": {
-    "meaning": "n. 大赦, 赦免",
-    "phonetic": "'æmnisti"
-  },
-  "to": {
-    "meaning": "prep. 到, 向, 趋于\nadv. 向前",
-    "phonetic": "tu:"
-  },
-  "imbalance": {
-    "meaning": "n. 不平衡, 不均衡\n[医] 不平衡, 失调",
-    "phonetic": "im'bælәns"
-  },
-  "dumping": {
-    "meaning": "n. 倾销\n[医] 倾倒, 倾泻, 填埋(处理垃圾的一种方法)",
-    "phonetic": "'dʌmpiŋ"
-  },
-  "descriptive": {
-    "meaning": "a. 描述的, 叙述的",
-    "phonetic": "di'skriptiv"
-  },
-  "western": {
-    "meaning": "n. 西方人, 西部片, 西部小说\na. 向西方的, 来自西方的, 西方的, 西洋的, 西部的",
-    "phonetic": "'westәn"
-  },
-  "numerical": {
-    "meaning": "a. 数字的, 数值的, 以数字表示的, 擅长于计数的\n[经] 数字的, 用数字表示的",
-    "phonetic": "nju:'merikl"
-  },
-  "eminent": {
-    "meaning": "a. 显赫的, 杰出的, 有名的",
-    "phonetic": "'eminәnt"
-  },
-  "mend": {
-    "meaning": "n. 改进, 修补, 好转\nvt. 修改, 改进, 加快, 修理\nvi. 好转, 改善",
-    "phonetic": "mend"
-  },
-  "blah": {
-    "meaning": "n. 废话",
-    "phonetic": "blɑ:"
-  },
-  "audible": {
-    "meaning": "a. 听得见的\n[电] 可闻的",
-    "phonetic": "'ɒ:dәbl"
-  },
-  "tolerance": {
-    "meaning": "n. 宽容, 忍受, 容忍, 容许量, 公差\n[计] 允许误差",
-    "phonetic": "'tɒlәrәns"
-  },
-  "river": {
-    "meaning": "n. 河, 江\n[法] 河流, 江河, 内河",
-    "phonetic": "'rivә"
-  },
-  "behalf": {
-    "meaning": "n. 利益, 方面",
-    "phonetic": "bi'hɑ:f"
-  },
-  "purple": {
-    "meaning": "n. 紫色, 帝位\na. 紫色的, 帝王的, 华而不实的\nv. (使)成紫色",
-    "phonetic": "'pә:pl"
-  },
-  "used": {
-    "meaning": "a. 使用过的, 二手的, 习惯的",
-    "phonetic": "'ju:st"
-  },
-  "disintegration": {
-    "meaning": "n. 瓦解\n[化] 破碎; 崩解; 蜕变",
-    "phonetic": "dis.inti'greiʃәn"
-  },
-  "ecclesiastical": {
-    "meaning": "a. 教会的, 神职的, 牧师的",
-    "phonetic": "i.kli:zi'æstikәl"
-  },
-  "stomach": {
-    "meaning": "n. 胃, 食欲, 欲望, 肚子\nvt. 吃下, 忍受",
-    "phonetic": "'stʌmәk"
-  },
-  "proportional": {
-    "meaning": "a. 比例的, 相称的\nn. 比例项",
-    "phonetic": "prә'pɒ:ʃәnl"
-  },
-  "in": {
-    "meaning": "prep. 在...期间, 在...之内, 处于...之中, 从事于, 按照, 穿着\nadv. 进入, 朝里, 在里面, 在屋里\na. 在里面的, 在朝的\nn. 执政者, 交情",
-    "phonetic": "in"
-  },
-  "pardon": {
-    "meaning": "n. 原谅, 赦免\nvt. 宽恕, 原谅",
-    "phonetic": "'pɑ:dn"
-  },
-  "reconsider": {
-    "meaning": "v. 再考虑, 重新考虑",
-    "phonetic": ".ri:kәn'sidә"
-  },
-  "curious": {
-    "meaning": "a. 好奇的, 求知的, 古怪的",
-    "phonetic": "'kjuәriәs"
-  },
-  "ghostly": {
-    "meaning": "a. 幽灵的, 影子似的, 精神的",
-    "phonetic": "'gәustli"
-  },
-  "intelligent": {
-    "meaning": "a. 聪明的, 智能的, 了解的",
-    "phonetic": "in'telidʒәnt"
-  },
-  "magnetic": {
-    "meaning": "a. 有磁性的, 有吸引力的, 催眠术的\n[医] 磁[性]的",
-    "phonetic": "mæg'netik"
-  },
-  "wade": {
-    "meaning": "vi. 跋涉\nvt. 涉水\nn. 跋涉, 浅滩",
-    "phonetic": "weid"
-  },
-  "homosexual": {
-    "meaning": "a. 同性恋的\nn. 同性恋者",
-    "phonetic": ".hɒmәu'sekjuәl"
-  },
-  "administrative": {
-    "meaning": "a. 管理的, 行政的\n[法] 行政的, 管理的, 遗产管理的",
-    "phonetic": "әd'ministrәtiv"
-  },
-  "rejoin": {
-    "meaning": "vt. 使再结合, 再加入, 回答\nvi. 重新聚合, 回答, 第二次答辩",
-    "phonetic": "ri'dʒɒin"
-  },
-  "cultural": {
-    "meaning": "a. 文化的, 教养的, 修养的\n[医] 培养的",
-    "phonetic": "'kʌltʃәrәl"
-  },
-  "miss": {
-    "meaning": "n. 失误, 避免, 失败, 小姐\nvt. 未得到, 未达到, 未听到, 未觉察, 逃脱, 遗漏, 错过, 思念\nvi. 失败, 击不中",
-    "phonetic": "mis"
-  },
-  "lifetime": {
-    "meaning": "n. 一生, 终生\na. 一生的, 终生的",
-    "phonetic": "'laiftaim"
-  },
-  "mortgage": {
-    "meaning": "n. 抵押, 约束性义务, 抵押借款\nvt. 抵押, 以...作担保, 把...许给",
-    "phonetic": "'mɒ:gidʒ"
-  },
-  "painful": {
-    "meaning": "a. 痛苦的, 困难的, 令人烦恼的\n[医] 疼痛的",
-    "phonetic": "'peinful"
-  },
-  "help": {
-    "meaning": "n. 帮忙, 帮助者, 补救办法, 有益的东西\nvt. 帮助, 帮忙, 接济, 治疗, 款待\nvi. 有用, 救命, 招待\n[计] 帮助, 帮助程序; DOS外部命令: DOS命令的电子文件帮助程序",
-    "phonetic": "help"
-  },
-  "counsel": {
-    "meaning": "n. 商议, 忠告, 法律顾问\nv. 商议, 劝告",
-    "phonetic": "'kaunsәl"
-  },
-  "it": {
-    "meaning": "pron. 它\n[计] 信息论, 输入终端, 智能终端, 内捕获",
-    "phonetic": "it"
-  },
-  "seems": {
-    "meaning": "v. 好像, 仿佛（ seem的第三人称单数 ）",
-    "phonetic": "si:mz"
-  },
-  "vector": {
-    "meaning": "n. 矢量, 传病媒介\nvt. (用无线电)导引, 给...导航\n[计] 矢量; 向量",
-    "phonetic": "'vektә"
-  },
-  "inflated": {
-    "meaning": "a. 膨胀的, 充了气的, 夸张的, 通货膨胀的",
-    "phonetic": "in'fleitid"
-  },
-  "communicate": {
-    "meaning": "vt. 显露, 传达, 感染\nvi. 通讯",
-    "phonetic": "kә'mju:nikeit"
-  },
-  "reluctantly": {
-    "meaning": "adv. 不情愿地, 勉强地",
-    "phonetic": "rɪ'lʌktəntlɪ"
-  },
-  "prolific": {
-    "meaning": "a. 有生殖力的, 多产的, 丰富的\n[医] 多育的, 多产的, 繁殖的",
-    "phonetic": "prәu'lifik"
-  },
-  "magic": {
-    "meaning": "n. 魔术, 魔法\na. 魔术的, 有魔力的, 不可思议的",
-    "phonetic": "'mædʒik"
-  },
-  "too": {
-    "meaning": "adv. 也, 非常, 太",
-    "phonetic": "tu:"
-  },
-  "optimism": {
-    "meaning": "n. 乐观主义, 乐观, 乐天\n[医] 乐观主义, 乐观",
-    "phonetic": "'ɒptimizm"
-  },
-  "deference": {
-    "meaning": "n. 顺从, 尊重",
-    "phonetic": "'defәrәns"
-  },
-  "tacit": {
-    "meaning": "a. 沉默寡言的, 不苟言笑的, 缄默的",
-    "phonetic": "'tæsit"
-  },
-  "errand": {
-    "meaning": "n. 任务, 差使, 使命",
-    "phonetic": "'erәnd"
-  },
-  "oversee": {
-    "meaning": "vt. 向下看, 了望, 监督, 偷看到\n[法] 监察, 监督, 俯瞰",
-    "phonetic": ".әuvә'si:"
-  },
-  "existential": {
-    "meaning": "a. 有关存在的",
-    "phonetic": ".egzis'tenʃәl"
-  },
-  "tired": {
-    "meaning": "a. 疲累的, 疲乏的, 厌倦的",
-    "phonetic": "taiәd"
-  },
-  "also": {
-    "meaning": "adv. 也, 并且, 同样地",
-    "phonetic": "'ɒ:lsәu"
-  },
-  "everything": {
-    "meaning": "pron. 每件事物, 所有事物",
-    "phonetic": "'evriθiŋ"
-  },
-  "shattered": {
-    "meaning": "a. 极度疲劳的；破碎的",
-    "phonetic": ""
-  },
-  "correction": {
-    "meaning": "n. 订正, 改正, 改正的地方\n[化] 校正",
-    "phonetic": "kә'rekʃәn"
-  },
-  "lifeboat": {
-    "meaning": "n. 救生艇",
-    "phonetic": "'laifbәjt"
-  },
-  "when": {
-    "meaning": "conj. 当...的时候\nadv. 何时, 什么时候\npron. 什么时侯\nn. 时间",
-    "phonetic": "hwen"
-  },
-  "miraculously": {
-    "meaning": "adv. 超自然, 非凡, 不可思议, 令人惊叹, 象奇迹一样, 奇迹般, 能创造奇迹",
-    "phonetic": ""
-  },
-  "electronically": {
-    "meaning": "adv. 电子地",
-    "phonetic": ""
-  },
-  "cheque": {
-    "meaning": "n. 支票",
-    "phonetic": "tʃek"
-  },
-  "tropical": {
-    "meaning": "a. 热带的, 热情的\n[医] 热带的",
-    "phonetic": "'trɒpikl"
-  },
-  "predict": {
-    "meaning": "v. 预知, 预言, 预报",
-    "phonetic": "pri'dikt"
-  },
-  "super": {
-    "meaning": "n. 跑龙套角色, 冗员, 特级品, 特大号, 管理人\na. 上等的, 特大的, 超级的, 极好的, 十分的, 过分的\nadv. 非常",
-    "phonetic": "'sju:pә"
-  },
-  "morbidity": {
-    "meaning": "n. 病态, 发病, 罹病率\n[医] 成病, 发病, 发病率",
-    "phonetic": "mɒ:'biditi"
-  },
-  "mastery": {
-    "meaning": "n. 征服, 统治权, 优势, 精通, 掌握\n[法] 统治权, 控制权, 征服",
-    "phonetic": "'mɑ:stәri"
-  },
-  "becomes": {
-    "meaning": "v. 变为, 成为( become的第三人称单数 ); 适合; 使（人）显得漂亮; 使好看",
-    "phonetic": "biˈkʌmz"
-  },
-  "transnational": {
-    "meaning": "a. 超越国界的, 跨国的\n[法] 超越国界的, 超国家的, 跨国的",
-    "phonetic": "træns'næʃәnl"
-  },
-  "run": {
-    "meaning": "n. 跑, 赛跑, 奔跑, 奔跑的路程, 趋向, 流出, 运转时间, 连续\nvi. 跑, 奔跑, 跑步, 赛跑, 竞赛, 行驶, 运转, 进行, 蔓延\nvt. 使跑, 参赛, 追究, 驾驶, 开动, 管理, 经营, 使流出, 运行\na. 熔化的, 融化的, 浇铸的\nrun的过去式和过去分词\n[计] 运行",
-    "phonetic": "rʌn"
-  },
-  "confer": {
-    "meaning": "vt. 授予, 带来\nvi. 协商",
-    "phonetic": "kәn'fә:"
-  },
-  "proprietary": {
-    "meaning": "a. 所有者的, 所有权的, 私有的\nn. 所有者, 业主, 所有权",
-    "phonetic": "prә'praiәtәri"
-  },
-  "profitable": {
-    "meaning": "a. 有利润的, 有利益的, 赚钱的\n[经] 有利(可图)的, 合算的",
-    "phonetic": "'prɒfitәbl"
-  },
-  "steamer": {
-    "meaning": "n. 汽船, 蒸汽机\n[化] 蒸汽发生器; 蒸汽机",
-    "phonetic": "'sti:mә"
-  },
-  "blinding": {
-    "meaning": "a. 使人眩目的, 使人失去判断力的\nn. 碎石子",
-    "phonetic": "'blaindiŋ"
-  },
-  "if": {
-    "meaning": "conj. 如果, 是否, 无论何时, 假设, 即使\nn. 条件\n[计] DOS批处理命令:根据所测试的条件决定是否执行另一条命令",
-    "phonetic": "if"
-  },
-  "camp": {
-    "meaning": "n. 露营, 帐篷\nvi. 露营, 扎营\nvt. 使扎营",
-    "phonetic": "kæmp"
-  },
-  "saving": {
-    "meaning": "n. 存款, 挽救, 节约\na. 搭救的, 节约的, 保留的, 补偿的\nprep. 除...之外",
-    "phonetic": "'seiviŋ"
-  },
-  "poisoned": {
-    "meaning": "a. 中毒的；遭毒害的",
-    "phonetic": ""
+    "phonetic": "ә'bʌndәnt",
+    "translation": "形容词 丰富的；充足的"
+  },
+  "access": {
+    "phonetic": "'ækses",
+    "translation": "n. 通路, 入口, 接近, 进入, 使用权, 发作\nvt. 访问, 存取, 接近, 使用\n[计] 访问, 存取"
+  },
+  "accommodate": {
+    "phonetic": "ә'kɒmәdeit",
+    "translation": "动词 容纳；为……提供空间"
+  },
+  "accumulate": {
+    "phonetic": "ә'kju:mjuleit",
+    "translation": "动词 积累；积聚"
+  },
+  "adapt": {
+    "phonetic": "ә'dæpt",
+    "translation": "动词 适应；使适合"
+  },
+  "adequate": {
+    "phonetic": "'ædikwәt",
+    "translation": "形容词 足够的；合乎需要的"
+  },
+  "after": {
+    "phonetic": "'ɑ:ftә",
+    "translation": "prep. 在...之后, 由于\nconj. 在...之后\nadv. 后来"
+  },
+  "agreed": {
+    "phonetic": "ә'ɡri:d",
+    "translation": "a. 同意的；通过协议的"
+  },
+  "allocate": {
+    "phonetic": "'ælәukeit",
+    "translation": "动词 分配；拨给"
+  },
+  "almost": {
+    "phonetic": "'ɒ:lmәust",
+    "translation": "adv. 几乎, 差不多"
+  },
+  "alternative": {
+    "phonetic": "ɒ:l'tә:nәtiv",
+    "translation": "名词 可供选择的方案"
+  },
+  "an": {
+    "phonetic": "æn",
+    "translation": "art. 一"
+  },
+  "and": {
+    "phonetic": "ænd",
+    "translation": "conj. 和, 与\n[计] 与"
+  },
+  "anticipate": {
+    "phonetic": "æn'tisipeit",
+    "translation": "动词 预料；预计"
+  },
+  "approved": {
+    "phonetic": "ә'pru:vd",
+    "translation": "a. 被认可的；经过检验的"
+  },
+  "are": {
+    "phonetic": "ɑ:",
+    "translation": "be的现在时复数或第二人称单数"
+  },
+  "area": {
+    "phonetic": "'єәriә",
+    "translation": "n. 区域, 面积, 范围, 空地\n[计] 区域"
+  },
+  "at": {
+    "phonetic": "æt",
+    "translation": "prep. 在, 向, 对\n[计] 地址转换器, 异常传输, 自动订票"
+  },
+  "avoid": {
+    "phonetic": "ә'vɒid",
+    "translation": "动词 避免"
+  },
+  "away": {
+    "phonetic": "ә'wei",
+    "translation": "adv. 离去"
+  },
+  "basket": {
+    "phonetic": "'bɑ:skit",
+    "translation": "n. 篮, 篮子\nvt. 装入篮"
+  },
+  "be": {
+    "phonetic": "bi:",
+    "translation": "v. 是, 表示, 在\n[计] 后端, 总线允许"
+  },
+  "became": {
+    "phonetic": "bi'keim",
+    "translation": "become的过去式"
+  },
+  "before": {
+    "phonetic": "bi'fɒ:",
+    "translation": "在……之前"
+  },
+  "below": {
+    "phonetic": "bi'lәu",
+    "translation": "prep. 在下面\nadv. 在下面"
+  },
+  "beneath": {
+    "phonetic": "bi'ni:θ",
+    "translation": "介词 在……下面"
+  },
+  "beside": {
+    "phonetic": "bi'said",
+    "translation": "prep. 在旁边"
+  },
+  "between": {
+    "phonetic": "bi'twi:n",
+    "translation": "prep. 在...之间"
+  },
+  "beyond": {
+    "phonetic": "bi'jɒnd",
+    "translation": "介词 在……的另一边；超出"
+  },
+  "block": {
+    "phonetic": "blɒk",
+    "translation": "n. 街区, 木块, 石块, 块\nvt. 阻塞, 封锁, 使成块状\n[计] 块, 数据块"
+  },
+  "blocked": {
+    "phonetic": "blɔkt",
+    "translation": "a. 堵塞的；被封锁的"
+  },
+  "boat": {
+    "phonetic": "bәut",
+    "translation": "n. 船\nvi. 乘船\nvt. 以船运"
+  },
+  "borrow": {
+    "phonetic": "'bɒrәu",
+    "translation": "动词 借入"
+  },
+  "both": {
+    "phonetic": "bәuθ",
+    "translation": "a. 两者的\nadv. 两者都\npron. 两者"
   },
   "bridge": {
-    "meaning": "n. 桥, 舰桥, 桥梁, 桥牌\nvt. 架桥于, 跨越\n[计] 桥, 网桥, 桥接器",
-    "phonetic": "bridʒ"
+    "phonetic": "bridʒ",
+    "translation": "n. 桥, 舰桥, 桥梁, 桥牌\nvt. 架桥于, 跨越\n[计] 桥, 网桥, 桥接器"
   },
-  "actor": {
-    "meaning": "n. 男演员, 行动者\n[医] 作用物, 反应物",
-    "phonetic": "'æktә"
+  "broken": {
+    "phonetic": "'brәukәn",
+    "translation": "a. 坏掉的, 打破的, 断掉的\nbreak的过去分词"
   },
-  "aristocracy": {
-    "meaning": "n. 贵族, 上层社会, 知识界杰出分子\n[法] 贵族政治, 贵族统治",
-    "phonetic": ".æri'stɒkrәsi"
+  "build": {
+    "phonetic": "bild",
+    "translation": "v. 建立, 建筑\nn. 构造, 体格"
   },
-  "fires": {
-    "meaning": "n. 火灾, 点火；火力",
-    "phonetic": ""
+  "busy": {
+    "phonetic": "'bizi",
+    "translation": "a. 忙碌的, 热闹的, 没空的\nvt. 使忙\nvi. 忙碌\n[计] 忙; 忙碌"
   },
-  "registered": {
-    "meaning": "a. 注册的, 登记过的, 记名的, 挂号的\n[法] 已注册的, 已登记的, 挂号的",
-    "phonetic": "'redʒistәd"
+  "but": {
+    "phonetic": "bʌt",
+    "translation": "prep. 除了\nconj. 但是\nadv. 仅仅"
   },
-  "pipe": {
-    "meaning": "n. 管, 导管, 输送管, 管状器官, 声带, 尖细的声音, 烟斗, 笛, 管乐器\nvt. 以管输送, 吹哨子, 吹奏, 尖声唱\nvi. 吹笛, 尖叫, 吹长哨发令\n[计] 管道",
-    "phonetic": "paip"
+  "by": {
+    "phonetic": "bai",
+    "translation": "prep. 被, 经, 由, 在...之旁\nadv. 经过, 在近处"
+  },
+  "calm": {
+    "phonetic": "kɑ:m",
+    "translation": "n. 平稳, 风平浪静\na. 平静的, 冷静的\nvi. 平静下来, 镇静\nvt. 使平静"
+  },
+  "can": {
+    "phonetic": "kæn",
+    "translation": "vt. 装罐\nn. 罐头, 容器\naux. 能, 可以\n[计] 作废字符"
+  },
+  "capacity": {
+    "phonetic": "kә'pæsiti",
+    "translation": "名词 容量；能力"
+  },
+  "carefully": {
+    "phonetic": "'kєәfuli",
+    "translation": "adv. 小心地, 谨慎地"
+  },
+  "change": {
+    "phonetic": "tʃeindʒ",
+    "translation": "n. 变化, 找回的零钱, 找头, 更换\nvt. 改变, 更换, 兑换"
+  },
+  "choice": {
+    "phonetic": "tʃɒis",
+    "translation": "名词 选择"
+  },
+  "clean": {
+    "phonetic": "kli:n",
+    "translation": "a. 干净的, 清白的, 简洁的\nadv. 清洁地, 完全地\nvt. 清理, 使干净, 出空\nvi. 被搞干净\nn. 打扫"
+  },
+  "close": {
+    "phonetic": "klәuz",
+    "translation": "n. 结束, 完结\na. 靠近的, 亲近的, 亲密的, 严密的, 关闭的, 狭窄的, 秘密的\nvt. 关, 结束, 使靠近, 封闭, 使接近\nvi. 关闭, 结束, 靠近\nadv. 接近地, 紧密地\n[计] 关闭"
+  },
+  "closed": {
+    "phonetic": "klәuzd",
+    "translation": "a. 关闭的, 限于少数人的\n[计] 关闭指令"
+  },
+  "color": {
+    "phonetic": "'kʌlә",
+    "translation": "n. 颜色, 面色, 颜料, 外貌\nvt. 把...涂上颜色, 粉饰, 使脸红, 歪曲\nvi. 变色"
+  },
+  "compensate": {
+    "phonetic": "'kɒmpenseit",
+    "translation": "动词 补偿；弥补"
+  },
+  "compost": {
+    "phonetic": "'kɒmpәust",
+    "translation": "n. 混合物, 堆肥\nvt. 施堆肥于"
+  },
+  "conditions": {
+    "phonetic": "",
+    "translation": "n. 形势, 情况, 环境"
+  },
+  "connect": {
+    "phonetic": "kә'nekt",
+    "translation": "v. 连接, 联合, 联系"
+  },
+  "connects": {
+    "phonetic": "kəˈnekts",
+    "translation": "v. 连接( connect的第三人称单数 ); 把…看作有关联; 由…联想到; 给…接通电话"
+  },
+  "consensus": {
+    "phonetic": "kәn'sensәs",
+    "translation": "名词 共识；一致意见"
+  },
+  "consequence": {
+    "phonetic": "'kɒnsikwәns",
+    "translation": "名词 后果；结果"
+  },
+  "consistent": {
+    "phonetic": "kәn'sistәnt",
+    "translation": "形容词 一致的；始终如一的"
+  },
+  "consolidate": {
+    "phonetic": "kәn'sɒlideit",
+    "translation": "动词 巩固；合并"
+  },
+  "constraint": {
+    "phonetic": "kәn'streint",
+    "translation": "名词 限制；约束条件"
+  },
+  "contingency": {
+    "phonetic": "kәn'tindʒәnsi",
+    "translation": "名词 可能发生的意外事件"
+  },
+  "cost": {
+    "phonetic": "kɒst",
+    "translation": "n. 代价, 价值, 费用\nvi. 花费\nvt. 使失去, 值, 使花费"
+  },
+  "cottage": {
+    "phonetic": "'kɒtidʒ",
+    "translation": "n. 小屋, 茅舍"
+  },
+  "covered": {
+    "phonetic": "'kʌvәd",
+    "translation": "a. 隐蔽着的, 掩藏着的, 有屋顶的\n[建] 涂抹了的, 覆盖了的, 掩盖了的"
+  },
+  "cut": {
+    "phonetic": "kʌt",
+    "translation": "n. 切口, 割伤, 降低, 切, 割, 砍, 削, 伤口, 削减, 缩短, 删节, 通路\na. 经切割的, 缩减的\nvt. 切, 割, 减少, 刺痛, 开辟, 雕刻, 删节, 缩短, 停止, 排斥, 切断, 关, 显出\nvi. 切, 割, 砍, 刺痛, 相交, 抄近路, 剪辑\n[计] 剪切"
+  },
+  "damp": {
+    "phonetic": "dæmp",
+    "translation": "n. 潮湿, 湿气\na. 潮湿的\nvt. 使潮湿, 使阻尼, 抑止\nvi. 变潮湿, 衰减"
+  },
+  "delay": {
+    "phonetic": "di'lei",
+    "translation": "n. 耽搁, 迟滞\nv. 耽搁, 延迟\n[计] 延迟, 延时"
+  },
+  "deliberately": {
+    "phonetic": "di'libәrәtli",
+    "translation": "副词 故意地；有意地"
+  },
+  "deliver": {
+    "phonetic": "di'livә",
+    "translation": "动词 递送；交付"
+  },
+  "deteriorate": {
+    "phonetic": "di'tiәriәreit",
+    "translation": "动词 恶化；变坏"
+  },
+  "did": {
+    "phonetic": "did",
+    "translation": "do的过去式"
+  },
+  "difference": {
+    "phonetic": "'difәrәns",
+    "translation": "n. 不同, 差异\n[计] 差分"
+  },
+  "different": {
+    "phonetic": "'difәrәnt",
+    "translation": "a. 不同的\n[机] 差动, 微分的, 差速器"
+  },
+  "discrepancy": {
+    "phonetic": "dis'krepәnsi",
+    "translation": "名词 差异；不一致"
+  },
+  "distance": {
+    "phonetic": "'distәns",
+    "translation": "名词 距离"
+  },
+  "distinguish": {
+    "phonetic": "dis'tiŋgwiʃ",
+    "translation": "动词 区分；辨别"
+  },
+  "down": {
+    "phonetic": "daun",
+    "translation": "a. 向下的\nadv. 下, 下去, 降下\nprep. 往下, 沿着\nn. 丘陵, 软毛, 开阔的高地\n[计] 向下, 退下命令"
+  },
+  "drain": {
+    "phonetic": "drein",
+    "translation": "n. 排水沟, 消耗, 排水\nvt. 排出, 喝光, 耗尽\nvi. 排水, 流干"
+  },
+  "dry": {
+    "phonetic": "drai",
+    "translation": "a. 干的, 无酒的, 枯燥无味的, 干燥的\nvt. 把...弄干\nvi. 变干\nn. 干, 干涸"
+  },
+  "easily": {
+    "phonetic": "'i:zili",
+    "translation": "adv. 容易地, 轻易地, 流利地"
+  },
+  "effects": {
+    "phonetic": "",
+    "translation": "n. 财物, 个人财产\n[经] 动产, 财物"
+  },
+  "efficient": {
+    "phonetic": "i'fiʃәnt",
+    "translation": "形容词 效率高的"
+  },
+  "effort": {
+    "phonetic": "'efәt",
+    "translation": "名词 努力；力气"
+  },
+  "empty": {
+    "phonetic": "'empti",
+    "translation": "形容词 空的"
+  },
+  "enough": {
+    "phonetic": "i'nʌf",
+    "translation": "n. 充足, 够, 很多\na. 充足的, 足够\nadv. 足够\ninterj. 够了"
+  },
+  "escape": {
+    "phonetic": "i'skeip",
+    "translation": "n. 逃亡, 避难设备, 逃跑\nvi. 逃脱, 避开, 溜走\nvt. 逃避, 避免, 被...忘掉"
+  },
+  "essential": {
+    "phonetic": "i'senʃәl",
+    "translation": "形容词 必不可少的"
   },
   "estimate": {
-    "meaning": "n. 估计, 判断\nvt. 估计, 评价, 判断\nvi. 估计",
-    "phonetic": "'estimeit"
+    "phonetic": "'estimeit",
+    "translation": "动词 估计；估算"
   },
-  "prostitute": {
-    "meaning": "n. 妓女, 男娼\nvt. 使沦为妓女\na. 卖淫的, 堕落的",
-    "phonetic": "'prɒstitju:t"
+  "eventually": {
+    "phonetic": "i'ventʃuәli",
+    "translation": "副词 最终；终于"
   },
-  "wither": {
-    "meaning": "vt. 使凋谢, 使消亡, 使畏缩\nvi. 枯萎, 衰退",
-    "phonetic": "'wiðә"
+  "every": {
+    "phonetic": "'evri",
+    "translation": "a. 每一, 所有的"
   },
-  "choose": {
-    "meaning": "vt. 选择, 宁愿, 欲\nvi. 作出选择, 愿意\n[计] 选取",
-    "phonetic": "tʃu:z"
+  "evidence": {
+    "phonetic": "'evidәns",
+    "translation": "名词 证据"
   },
-  "mistake": {
-    "meaning": "n. 错误, 误会\nvi. 犯错, 误认\nvt. 误解, 弄错\n[计] 错误",
-    "phonetic": "mis'teik"
+  "expand": {
+    "phonetic": "ik'spænd",
+    "translation": "动词 扩大；扩展"
   },
-  "budgetary": {
-    "meaning": "a. 预算的\n[法] 预算的",
-    "phonetic": "'bʌdʒitәri"
+  "explanation": {
+    "phonetic": ".eksplә'neiʃәn",
+    "translation": "n. 解释, 说明, 辩解, 表明\n[经] 解释, 注释, 说明"
   },
-  "flatten": {
-    "meaning": "vi. 使...不活跃, 变平\nvt. 弄平, 打倒, 使失去光泽",
-    "phonetic": "'flætn"
+  "extra": {
+    "phonetic": "'ekstrә",
+    "translation": "n. 额外的事物, 另外的收费\na. 额外的, 特别的\nadv. 额外地, 特别地, 非常地"
   },
-  "flourish": {
-    "meaning": "vi. 繁荣, 茂盛, 活跃, 手舞足蹈\nvt. 挥舞, 夸耀\nn. 挥舞, 炫耀, 茂盛, 兴旺, 华丽词藻",
-    "phonetic": "'flʌriʃ"
+  "facilitate": {
+    "phonetic": "fә'siliteit",
+    "translation": "动词 促进；使便利"
   },
-  "housekeeper": {
-    "meaning": "n. 主妇, 女管家",
-    "phonetic": "'hauski:pә"
+  "feasible": {
+    "phonetic": "'fi:zәbl",
+    "translation": "形容词 可行的"
   },
-  "not": {
-    "meaning": "adv. 不, 非, 未\n[计] 非",
-    "phonetic": "nɒt"
+  "fence": {
+    "phonetic": "fens",
+    "translation": "n. 围墙, 栅栏, 买卖赃物的人, 剑术\nvt. 用篱笆围住, 练习剑术, 防护\nvi. 击剑, 搪塞"
   },
-  "apricot": {
-    "meaning": "n. 杏子, 杏树, 杏黄色\na. 杏黄色的",
-    "phonetic": "'eiprikɒt"
+  "finished": {
+    "phonetic": "'finiʃt",
+    "translation": "a. 完成的, 完结的, 精巧的, 完美的"
   },
-  "nationwide": {
-    "meaning": "a. 全国性的\n[法] 全国的, 全国范围的",
-    "phonetic": "'neiʃәnwaid"
+  "flexible": {
+    "phonetic": "'fleksәbl",
+    "translation": "a. 易曲的, 灵活的, 柔顺的, 能变形的, 可通融的\n[医] 能屈的"
   },
-  "keenly": {
-    "meaning": "adv. 锐利地, 敏捷地, 激烈地",
-    "phonetic": "'ki:nli"
+  "flooding": {
+    "phonetic": "'flʌdiŋ",
+    "translation": "n. 充溢, 泛滥, 血崩\n[计] 满屏幕; 扩散式路由选择"
   },
-  "queer": {
-    "meaning": "n. 怪人, 同性恋者\na. 奇怪的, 不舒服的, 可疑的\nvt. 搞糟",
-    "phonetic": "kwiә"
+  "fluctuate": {
+    "phonetic": "'flʌktʃueit",
+    "translation": "动词 波动；起伏"
   },
-  "luxury": {
-    "meaning": "n. 奢侈, 豪华\na. 奢侈的, 豪华的",
-    "phonetic": "'lʌkʃәri"
+  "for": {
+    "phonetic": "fɒ:",
+    "translation": "prep. 为, 因为, 至于\nconj. 因为\n[计] DOS批处理命令:对一组参数重复执行指定的命令"
   },
-  "instant": {
-    "meaning": "n. 立即, 瞬间\na. 紧急的, 立即的, 即时的",
-    "phonetic": "'instәnt"
+  "forest": {
+    "phonetic": "'fɒrist",
+    "translation": "n. 森林, 林区\nvt. 植树于"
   },
-  "scotsman": {
-    "meaning": "n. 苏格兰人",
-    "phonetic": "'skɔtsmәn"
+  "four": {
+    "phonetic": "fɒ:",
+    "translation": "num. 四, 四个\n[机] 四冲程循环"
+  },
+  "fragile": {
+    "phonetic": "'frædʒail",
+    "translation": "形容词 易碎的；脆弱的"
+  },
+  "frame": {
+    "phonetic": "freim",
+    "translation": "n. 框, 结构, 体格\nvt. 构成, 设计, 制定, 使适合, 陷害\n[计] 框架, 图文框, 帧"
+  },
+  "freely": {
+    "phonetic": "'fri:li",
+    "translation": "adv. 自由地, 随意地, 无拘束地, 直率地, 坦白地, 慷慨地, 免费地, 大量地\n[计] 浮动地"
+  },
+  "fresh": {
+    "phonetic": "freʃ",
+    "translation": "a. 新鲜的, 新奇的, 另外的, 淡的, 精神饱满的, 冒失的\nadv. 最新地, 刚刚\nn. 开始, 泛滥"
+  },
+  "from": {
+    "phonetic": "frɒm",
+    "translation": "prep. 从, 来自, 根据"
+  },
+  "frost": {
+    "phonetic": "frɒst",
+    "translation": "n. 霜, 冰冻, 冷漠\nvt. 覆着霜, 冻结, 结霜\nvi. 受冻, 起霜"
+  },
+  "garden": {
+    "phonetic": "'gɑ:dn",
+    "translation": "n. 花园, 果园, 菜园\nvi. 栽培花木\nvt. 造园\na. 花园的, 普通的"
+  },
+  "gate": {
+    "phonetic": "geit",
+    "translation": "n. 门, 牌楼, 大门, 通道, 闸\nvt. 装门于\n[计] 门; 栅"
+  },
+  "gather": {
+    "phonetic": "'gæðә",
+    "translation": "动词 收集；聚集"
+  },
+  "glass": {
+    "phonetic": "glɑ:s",
+    "translation": "n. 玻璃, 玻璃杯, 透镜\nvt. 装玻璃于, 反射, 反映\nvi. 成玻璃状"
+  },
+  "gradual": {
+    "phonetic": "'grædʒuәl",
+    "translation": "形容词 逐渐的；渐进的"
+  },
+  "grew": {
+    "phonetic": "gru:",
+    "translation": "grow的过去式"
+  },
+  "grow": {
+    "phonetic": "grәu",
+    "translation": "vt. 种植, 使长满\nvi. 生长, 变成, 发展"
+  },
+  "handle": {
+    "phonetic": "hændl",
+    "translation": "n. 柄, 把手, 把柄, 柄状物, 手感\nvt. 触摸, 运用, 买卖, 处理, 操作\nvi. 搬运, 易于操纵\nn. 句柄\n[计] 句柄"
+  },
+  "has": {
+    "phonetic": "hæz",
+    "translation": "have的第三人称单数现在式"
+  },
+  "have": {
+    "phonetic": "hæv",
+    "translation": "vt. 有, 怀有, 拿, 进行\naux. 已经"
+  },
+  "he": {
+    "phonetic": "hi:",
+    "translation": "pron. 他\nn. 男孩, 男人, 雄性动物"
+  },
+  "health": {
+    "phonetic": "'helθ",
+    "translation": "n. 健康, 卫生, 蓬勃, 健康状态\n[医] 健康"
+  },
+  "heat": {
+    "phonetic": "hi:t",
+    "translation": "n. 热, 热度, 体温, 高潮\nvi. 加热, 激昂, 加剧\nvt. 把...加热, 使激动"
+  },
+  "heavy": {
+    "phonetic": "'hevi",
+    "translation": "a. 重的, 巨大的, 沉重的, 笨重的, 过度的\nadv. 沉重地\nn. 重物, 严肃角色"
+  },
+  "here": {
+    "phonetic": "hiә",
+    "translation": "adv. 在这里, 此时, 这里\nn. 这里"
+  },
+  "hill": {
+    "phonetic": "hil",
+    "translation": "n. 小山, 丘陵, 小土堆\nvt. 作成土堆, 堆成小丘"
+  },
+  "hope": {
+    "phonetic": "hәup",
+    "translation": "n. 希望, 信心, 期待\nv. 希望, 期望, 信赖"
+  },
+  "hour": {
+    "phonetic": "auә",
+    "translation": "n. 小时, 钟头, 时间, ...点钟, 课时"
+  },
+  "house": {
+    "phonetic": "haus",
+    "translation": "n. 房子, 住宅, 机构, 议院, 家族, 家庭\nvt. 给...房子住, 收藏\nvi. 住, 躲藏"
+  },
+  "houses": {
+    "phonetic": "'hauziz",
+    "translation": "n. 住宅；房子的总称；家园；洋房 （house的复数）"
+  },
+  "how": {
+    "phonetic": "hau",
+    "translation": "adv. 如何, 怎样, 多少, 多么\nn. 方式"
+  },
+  "i": {
+    "phonetic": "ai",
+    "translation": "pron. 我\n[计] 电流, 中断, 指令, 指示符"
+  },
+  "improve": {
+    "phonetic": "im'pru:v",
+    "translation": "动词 改善；提高"
+  },
+  "in": {
+    "phonetic": "in",
+    "translation": "prep. 在...期间, 在...之内, 处于...之中, 从事于, 按照, 穿着\nadv. 进入, 朝里, 在里面, 在屋里\na. 在里面的, 在朝的\nn. 执政者, 交情"
+  },
+  "inadvertently": {
+    "phonetic": "ˌɪnədˈvɜ:təntli",
+    "translation": "副词 无意地；不经意地"
+  },
+  "incentive": {
+    "phonetic": "in'sentiv",
+    "translation": "名词 激励；诱因"
+  },
+  "inevitable": {
+    "phonetic": "in'evitәbl",
+    "translation": "形容词 不可避免的"
+  },
+  "inherently": {
+    "phonetic": "in'hiәrәntli",
+    "translation": "副词 本质上；固有地"
+  },
+  "instead": {
+    "phonetic": "in'sted",
+    "translation": "副词 代替；反而"
+  },
+  "insulation": {
+    "phonetic": ".insju'leiʃәn. 'insә-",
+    "translation": "n. 绝缘；隔离, 孤立"
+  },
+  "intricate": {
+    "phonetic": "'intrikit",
+    "translation": "形容词 错综复杂的；精细的"
+  },
+  "is": {
+    "phonetic": "iz",
+    "translation": "be的现在式第三人称\n[计] 加下标次序, 信息系统, 国际标准, 中间系统"
+  },
+  "island": {
+    "phonetic": "'ailәnd",
+    "translation": "n. 岛, 岛屿, 孤立地区, 安全岛\nvt. 使成岛状, 孤立"
+  },
+  "it": {
+    "phonetic": "it",
+    "translation": "pron. 它\n[计] 信息论, 输入终端, 智能终端, 内捕获"
+  },
+  "its": {
+    "phonetic": "its",
+    "translation": "它的"
+  },
+  "keep": {
+    "phonetic": "ki:p",
+    "translation": "n. 生计, 维持, 保持\nvt. 保持, 保存, 遵守, 看守, 整理, 维持, 履行, 经营, 拘留, 记帐\nvi. 保持, 继续不断"
+  },
+  "lake": {
+    "phonetic": "leik",
+    "translation": "n. 湖, 池, 色淀\nv. (使)血球溶解"
+  },
+  "land": {
+    "phonetic": "lænd",
+    "translation": "n. 陆地, 地面, 地界, 地产, 国土, 土地\nvi. 登陆, 登岸, 到达\nvt. 使上岸, 使登陆, 使到达\n[计] 连接盘; 焊盘"
+  },
+  "landing": {
+    "phonetic": "'lændiŋ",
+    "translation": "n. 登陆, 码头, 降落\n[经] 上岸, 登陆, 降落"
+  },
+  "large": {
+    "phonetic": "lɑ:dʒ",
+    "translation": "a. 大的, 大量的, 宽大的, 广博的\nadv. 大大地, 夸大地"
+  },
+  "leak": {
+    "phonetic": "li:k",
+    "translation": "n. 漏洞, 漏处, 漏出, 泄漏\nvi. 漏, 泄漏\nvt. 使渗漏"
+  },
+  "leaves": {
+    "phonetic": "li:vz",
+    "translation": "pl. 树叶, 花瓣"
+  },
+  "leaving": {
+    "phonetic": "'li:viŋ",
+    "translation": "n. 离开；残余；渣滓"
+  },
+  "left": {
+    "phonetic": "left",
+    "translation": "a. 左边的, 左倾的, 左侧的, 左派的\nadv. 在左面\nn. 左, 左面, 左派\nleave的过去式和过去分词"
+  },
+  "let": {
+    "phonetic": "let",
+    "translation": "vt. 让, 假设, 出租, 排放, 妨碍\nvi. 出租, 被承包\nn. 出租屋, 障碍"
+  },
+  "levels": {
+    "phonetic": "",
+    "translation": "n. 色阶调整；控制色阶；水平, 标准（level复数形式）"
+  },
+  "like": {
+    "phonetic": "laik",
+    "translation": "a. 相似的, 同样的\nvt. 喜欢, 愿意, 想\nvi. 喜欢, 希望\nn. 爱好, 同样的人(或物)\nprep. 象, 如同\nadv. 可能"
+  },
+  "limited": {
+    "phonetic": "'limitid",
+    "translation": "a. 有限制的, 有限的, 有限责任的\nn. 特别快车"
+  },
+  "location": {
+    "phonetic": "lәu'keiʃәn",
+    "translation": "n. 位置, 场所, 特定区域\n[计] 位置"
+  },
+  "looks": {
+    "phonetic": "",
+    "translation": "n. 美貌"
+  },
+  "lot": {
+    "phonetic": "lɒt",
+    "translation": "n. 运气, 签, 抽签, 份额, 许多, 一堆\nvt. 划分\nvi. 抽签, 抓阄"
+  },
+  "lower": {
+    "phonetic": "'lәuә",
+    "translation": "a. 低的, 下级的, 下层的\nvi. 降低, 跌落, 减弱\nvt. 放下, 降下, 减弱, 贬低"
+  },
+  "machine": {
+    "phonetic": "mә'ʃi:n",
+    "translation": "n. 机器, 机械装置, 机构, 自动售货机, 机械般工作的人\nvt. 以机器制造"
+  },
+  "main": {
+    "phonetic": "mein",
+    "translation": "n. 主要部分, 干线, 体力, 力量, 主群组\na. 主要的, 重要的, 全力的\n[计] 主群组"
+  },
+  "material": {
+    "phonetic": "mә'tiәriәl",
+    "translation": "n. 材料, 物资, 素材, 布料, 资料\na. 物质的, 肉体的, 重要的"
   },
   "may": {
-    "meaning": "n. 五月\naux. 愿能, 可以, 愿意",
-    "phonetic": "mei"
+    "phonetic": "mei",
+    "translation": "n. 五月\naux. 愿能, 可以, 愿意"
   },
-  "dormitory": {
-    "meaning": "n. 宿舍",
-    "phonetic": "'dɒ:mitәri"
+  "meadow": {
+    "phonetic": "'medәu",
+    "translation": "n. 草地, 牧场"
   },
-  "turning": {
-    "meaning": "n. 旋转, 转弯处, 车削工作\n[化] 车削",
-    "phonetic": "'tә:niŋ"
+  "measure": {
+    "phonetic": "'meʒә",
+    "translation": "n. 尺寸, 量度器, 量度标准, 测量, 量具, 程度, 范围, 限度, 分寸, 措施, 方法\nvt. 测量, 测度, 估量, 权衡, 调节, 拿(自己或自己的力量等)作较量\nvi. 度量"
   },
-  "your": {
-    "meaning": "pron. 你的, 你们的",
-    "phonetic": "juә"
+  "measurements": {
+    "phonetic": "",
+    "translation": "n. 测量值, 尺寸（measurement的复数）"
   },
-  "clinic": {
-    "meaning": "n. 诊所, 临床教学\n[医] 诊所(门诊部); 临床(讲解); 临床(学)科",
-    "phonetic": "'klinik"
+  "meticulous": {
+    "phonetic": "mә'tikjulәs",
+    "translation": "形容词 一丝不苟的；细致的"
   },
-  "than": {
-    "meaning": "conj. 比, 除...外\nprep. 比",
-    "phonetic": "ðæn"
+  "mill": {
+    "phonetic": "mil",
+    "translation": "n. 压榨机, 磨坊, 制造厂\nvt. 碾磨, 磨细, 搅拌, 使乱转\nvi. 乱转, 被碾磨"
   },
-  "promotion": {
-    "meaning": "n. 晋级, 创建, 增进\n[经] 推广, 推销, 促进",
-    "phonetic": "prәu'mәuʃәn"
+  "mitigate": {
+    "phonetic": "'mitigeit",
+    "translation": "动词 减轻；缓和"
   },
-  "maid": {
-    "meaning": "n. 少女, 未婚女子, 女仆",
-    "phonetic": "meid"
+  "model": {
+    "phonetic": "'mɒdәl",
+    "translation": "n. 模型, 模范, 模特儿\na. 模范的, 作模型用的\nvi. 做模型, 做模特儿\nvt. 使模仿, 塑造\n[计] 模型"
   },
-  "historian": {
-    "meaning": "n. 历史学家, 记事者",
-    "phonetic": "hi'stɒ:riәn"
+  "more": {
+    "phonetic": "mɒ:",
+    "translation": "n. 更多\na. 多的, 程度较大的, 更大的\nadv. 多, 更多, 进一步\n[计] DOS外部命令:显示满屏后自动暂停, 并显示:\"--More--\", 按任意键继续"
   },
-  "advance": {
-    "meaning": "n. 前进, 进展, 行过的路程\nvi. 前进, 进展, 提高, 上涨\nvt. 使前进, 促进, 提出, 提高, 使提前, 预付\na. 前面的, 预先的",
-    "phonetic": "әd'vɑ:ns"
+  "much": {
+    "phonetic": "mʌtʃ",
+    "translation": "n. 大量, 许多, 重要的事\na. 很多的, 重要的\nadv. 多, 甚, 几乎"
   },
-  "butcher": {
-    "meaning": "n. 屠夫, 肉商, 小贩\nvt. 屠宰, 屠杀",
-    "phonetic": "'butʃә"
+  "must": {
+    "phonetic": "mʌst",
+    "translation": "n. 必须, 未发酵葡萄汁, 绝对必要的事物\naux. 必须"
   },
-  "highlight": {
-    "meaning": "n. 加亮区, 精彩场面\nvt. 加亮, 使显著, 以强光照射, 突出\n[计] 突出",
-    "phonetic": "'hailait"
+  "narrow": {
+    "phonetic": "'nærәu",
+    "translation": "n. 狭窄部分, 隘路\na. 狭窄的, 仔细的, 有限的, 勉强的, 狭隘的, 手紧的\nvi. 变窄\nvt. 使变狭窄"
   },
-  "recruitment": {
-    "meaning": "n. 新兵征召\n[医] 募集[反应], 募集[现象](生理), 复聪(耳科)",
-    "phonetic": "ri'kru:tmәnt"
+  "nearly": {
+    "phonetic": "'niәli",
+    "translation": "副词 几乎；差不多"
   },
-  "action": {
-    "meaning": "n. 行动, 活动, 动作, 作用, 战斗, 行为, 诉讼\nvt. 对...起诉\n[计] 方式",
-    "phonetic": "'ækʃәn"
+  "need": {
+    "phonetic": "ni:d",
+    "translation": "n. 需要, 必须, 缺乏\nvt. 需要, 必需\nvi. 贫困, 有必要\naux. 需要"
   },
-  "utter": {
-    "meaning": "a. 全然的, 绝对的, 完全的\nvt. 发出声音, 做声, 发表, 发射, 流通",
-    "phonetic": "'ʌtә"
+  "needs": {
+    "phonetic": "ni:dz",
+    "translation": "adv. （只与must连用）必须地"
   },
-  "red": {
-    "meaning": "a. 红的, 红色的, 红肿的, 流血的\nn. 红色, 红颜料, 赤字\n[计] 简化, 减少",
-    "phonetic": "red"
+  "negligible": {
+    "phonetic": "'neglidʒәbl",
+    "translation": "形容词 微不足道的；可忽略的"
   },
-  "operating": {
-    "meaning": "a. 操作的, 工作的, 营业上的, 业务的, 关于收支的, 关于损益的, 外科手术的\n[机] 运转费用",
-    "phonetic": "'ɔpәreitiŋ"
+  "nevertheless": {
+    "phonetic": ".nevәðә'les",
+    "translation": "副词 然而；尽管如此"
   },
-  "three": {
-    "meaning": "num. 三, 三个",
-    "phonetic": "θri:"
+  "new": {
+    "phonetic": "nju:",
+    "translation": "a. 新的, 陌生的, 最近的, 不熟悉的\n[法] 新发现的, 新的, 重新开始的"
+  },
+  "night": {
+    "phonetic": "nait",
+    "translation": "n. 夜, 夜晚, 晚上, 黑暗, 夜晚的工作\n[法] 夜, 黑夜, 黑暗"
+  },
+  "northern": {
+    "phonetic": "'nɒ:ðәn",
+    "translation": "n. 北方人\na. 北方的, 向北的, 自北方来的"
+  },
+  "notice": {
+    "phonetic": "'nәutis",
+    "translation": "动词 注意到；察觉"
+  },
+  "noticed": {
+    "phonetic": "'nəʊtɪst",
+    "translation": "v. 注意（ notice的过去式和过去分词 ）; 觉察"
+  },
+  "obtain": {
+    "phonetic": "әb'tein",
+    "translation": "动词 获得"
+  },
+  "occasionally": {
+    "phonetic": "ә'keiʒәnli",
+    "translation": "副词 偶尔"
+  },
+  "of": {
+    "phonetic": "ɒv",
+    "translation": "prep. 的, 属于"
+  },
+  "offers": {
+    "phonetic": "",
+    "translation": "n. 提议；出价；求婚；试图（offer的复数）"
+  },
+  "old": {
+    "phonetic": "әuld",
+    "translation": "n. 以前, 往昔\na. 老的, 旧的, 古老的, 年长的, 老练的"
+  },
+  "on": {
+    "phonetic": "ɒn",
+    "translation": "prep. 在...之上\nadv. ...上去\na. 正起作用的\n[计] 打开"
+  },
+  "one": {
+    "phonetic": "wʌn",
+    "translation": "n. 一(个)\npron. 一, 任何人\nnum. 一, 一个\na. 一致的, 完整的"
+  },
+  "only": {
+    "phonetic": "'әunli",
+    "translation": "a. 唯一的, 仅有的, 最佳的\nadv. 只有, 仅仅, 只能\nconj. 但是, 不过"
+  },
+  "onto": {
+    "phonetic": "'ɒntu:",
+    "translation": "prep. 在...之上"
+  },
+  "open": {
+    "phonetic": "'әupәn",
+    "translation": "n. 公开, 户外, 空旷\na. 开着的, 开放的, 开阔的, 营业着的, 公开的, 悬而未决的\nvt. 打开, 公开, 开放\nvi. 展开, 开始, 展现\n[计] 打开指令; 打开语句"
+  },
+  "opening": {
+    "phonetic": "'әupәniŋ",
+    "translation": "n. 开始, 口子, 穴, 揭幕\na. 开始的"
   },
   "ordinary": {
-    "meaning": "a. 平常的, 普通的, 平凡的\nn. 平常的人(或事)",
-    "phonetic": "'ɒ:dinәri"
-  },
-  "differ": {
-    "meaning": "vi. 不一致, 不同\n[机] 差异, 不同",
-    "phonetic": "'difә"
-  },
-  "detriment": {
-    "meaning": "n. 损害, 损害物\n[法] 损害, 伤害, 危害",
-    "phonetic": "'detrimәnt"
-  },
-  "unpopular": {
-    "meaning": "a. 不得人心的, 不受欢迎的, 不流行的",
-    "phonetic": "'ʌn'pɔpjulә"
-  },
-  "bad": {
-    "meaning": "a. 坏的\nn. 坏\nadv. 坏地",
-    "phonetic": "bæd"
-  },
-  "enjoyable": {
-    "meaning": "a. 可从中得到乐趣的, 令人愉快的",
-    "phonetic": "in'dʒɒiәbl"
-  },
-  "mentality": {
-    "meaning": "n. 精神力, 智力, 头脑作用, 心态\n[医] 智力",
-    "phonetic": "men'tæliti"
-  },
-  "rick": {
-    "meaning": "n. 草堆\nvt. 把...堆成垛",
-    "phonetic": "rik"
-  },
-  "protects": {
-    "meaning": "v. 保护( protect的第三人称单数 ); 防护; 投保; 关税保护",
-    "phonetic": "prəˈtekts"
-  },
-  "incoming": {
-    "meaning": "a. 进来的, 刚开始的, 新来的\nn. 进来",
-    "phonetic": "'inkʌmiŋ"
-  },
-  "leave": {
-    "meaning": "n. 许可, 告别, 请假, 休假\nvt. 离开, 剩下, 遗忘, 委托, 丢弃\nvi. 出发, 离开, 生叶",
-    "phonetic": "li:v"
-  },
-  "theology": {
-    "meaning": "n. 神学",
-    "phonetic": "θi'ɒlәdʒi"
-  },
-  "scurry": {
-    "meaning": "vi. 急赶, 急跑, 急转\nn. 急赶, 急跑, 急转, 阵雪, 阵雨",
-    "phonetic": "'skʌri"
-  },
-  "multiparty": {
-    "meaning": "a. 多党的,包括多党的,包含多党党员的, 导致多党并存的选举(或政治)制度的",
-    "phonetic": ",mʌlti'pɑ:ti"
-  },
-  "disparity": {
-    "meaning": "n. 不一致\n[医] 差异, 不等",
-    "phonetic": "dis'pæriti"
-  },
-  "romeo": {
-    "meaning": "n. 一种男式室内便鞋",
-    "phonetic": "'rәumiәu"
-  },
-  "wean": {
-    "meaning": "vt. 使断奶, 使丢弃, 使断念\nn. 小儿",
-    "phonetic": "wi:n"
-  },
-  "caterer": {
-    "meaning": "n. 备办食物者, 备办宴席者",
-    "phonetic": "'keitәrә"
-  },
-  "tableau": {
-    "meaning": "n. 生动场面, 戏剧性局面",
-    "phonetic": "'tæblәu"
-  },
-  "atlas": {
-    "meaning": "n. 地图集, 图表集\n[计] 自动测试和负载分析系统",
-    "phonetic": "'ætlәs"
-  },
-  "uplift": {
-    "meaning": "n. 抬起, 道德的向上, 精神的高涨\nvt. 提高, 抬起\nvi. 上升",
-    "phonetic": "ʌp'lift"
-  },
-  "excitedly": {
-    "meaning": "adv. 兴奋地",
-    "phonetic": "ik'saitidli"
-  },
-  "sarcasm": {
-    "meaning": "n. 挖苦, 讽刺, 讽刺话, 讽刺性",
-    "phonetic": "'sɑ:kæzm"
-  },
-  "crossword": {
-    "meaning": "n. 纵横填字游戏, 纵横填字字谜\n[计] 纵横组字",
-    "phonetic": "'krɔswә:d"
-  },
-  "ascot": {
-    "meaning": "n. 领巾状领带；（大写）英国阿斯科特赛马会",
-    "phonetic": "'æskәt"
-  },
-  "lombard": {
-    "meaning": "n. 银行家, 当铺, 银行, 放款者",
-    "phonetic": "'lɔmbәd, 'lʌmbәd"
-  },
-  "shipyard": {
-    "meaning": "n. 造船厂\n[经] 船坞, 造船厂, 修船厂",
-    "phonetic": "'ʃipjɑ:d"
-  },
-  "hale": {
-    "meaning": "a. 强壮的, 矍铄的, 健壮的\nvt. 猛拉, 拖曳",
-    "phonetic": "heil"
-  },
-  "goodman": {
-    "meaning": "n. 家长, 丈夫, 父亲",
-    "phonetic": "'gudmәn"
-  },
-  "coalfield": {
-    "meaning": "n. 煤田",
-    "phonetic": "'kәulfi:ld"
-  },
-  "pheasant": {
-    "meaning": "n. 雉鸡, 野鸡, 雉科鸟",
-    "phonetic": "'feznt"
-  },
-  "interviewee": {
-    "meaning": "n. 被接见者, 被采访者, 被面试者",
-    "phonetic": ".intәvju:'i:"
-  },
-  "sixpence": {
-    "meaning": "n. 六便士硬币, 六便士",
-    "phonetic": "'sikspәns"
-  },
-  "idly": {
-    "meaning": "adv. 懒惰地, 空闲地",
-    "phonetic": "'aidli"
-  },
-  "collusion": {
-    "meaning": "n. 共谋, 勾结\n[经] 勾结, 串通, 串同舞弊",
-    "phonetic": "kә'lu:ʃәn"
-  },
-  "yoghurt": {
-    "meaning": "n. 酸乳, 酸奶",
-    "phonetic": "'jәugә:t"
-  },
-  "parapet": {
-    "meaning": "n. 栏杆, 扶手, 女儿墙, 胸墙",
-    "phonetic": "'pærәpit"
-  },
-  "pawn": {
-    "meaning": "n. 典当, 抵押物, 人质, (象棋)兵, 马前卒, 工具\nvt. 当掉, 以...担保",
-    "phonetic": "pɒ:n"
-  },
-  "inwardly": {
-    "meaning": "adv. 在内部, 向中心, 向内, 内里, 在心灵深处, 精神上, 思想上, 暗自地\n[机] 向内的, 向内里",
-    "phonetic": "'inwәdli"
-  },
-  "bombardment": {
-    "meaning": "n. 炮击\n[化] 轰击",
-    "phonetic": "bɒm'bɑ:dmәnt"
-  },
-  "volt": {
-    "meaning": "n. 伏特\n[化] 伏特",
-    "phonetic": "vәult"
-  },
-  "loudspeaker": {
-    "meaning": "n. 扩音器, 喇叭\n[电] 扬声器",
-    "phonetic": "'laud'spi:kә"
-  },
-  "arduous": {
-    "meaning": "a. 费力的, 努力的, 险峻的",
-    "phonetic": "'ɑ:djuәs"
-  },
-  "recoverable": {
-    "meaning": "a. 可回复的, 可痊愈的, 可收回的\n[经] 可收回的, 可补偿的",
-    "phonetic": "ri'kʌvәrәbl"
-  },
-  "adaptable": {
-    "meaning": "a. 能适应的, 适合的, 可修改的",
-    "phonetic": "ә'dæptәbl"
-  },
-  "crystallize": {
-    "meaning": "vt. 使结晶, 使具体化\nvi. 结晶, 具体化",
-    "phonetic": "'kristәlaiz"
-  },
-  "repress": {
-    "meaning": "vt. 镇压, 抑制, 压制\nvi. 压制",
-    "phonetic": "ri'pres"
-  },
-  "swathe": {
-    "meaning": "vt. 绑, 裹, 包围\nn. 带子, 绷带",
-    "phonetic": "sweiθ"
-  },
-  "lucid": {
-    "meaning": "a. 明晰的, 清澈的, 透明的, 透彻的\n[医] 清明的, 透明的, 清醒的",
-    "phonetic": "'lu:sid"
-  },
-  "recklessly": {
-    "meaning": "adv. 不注意, 粗心大意, 不在乎, 鲁莽, 不顾后果, 不顾一切, 妄动",
-    "phonetic": ""
-  },
-  "capacitor": {
-    "meaning": "n. 电容器\n[化] 电容器",
-    "phonetic": "kә'pæsitә"
-  },
-  "insufficiently": {
-    "meaning": "adv. 不够地, 不能胜任地",
-    "phonetic": "ˌɪnsə'fɪʃntlɪ"
-  },
-  "illustrious": {
-    "meaning": "a. 著名的, 辉煌的, 明亮的",
-    "phonetic": "i'lʌstriәs"
-  },
-  "upkeep": {
-    "meaning": "n. 维持, 维修费\n[经] 维修费, 养护费, 保养",
-    "phonetic": "'ʌpki:p"
-  },
-  "metropolis": {
-    "meaning": "n. 大都市, 重要中心, 首府\n[医] 产地, 生地",
-    "phonetic": "mi'trɒpәlis"
-  },
-  "intersperse": {
-    "meaning": "vt. 散布, 点缀",
-    "phonetic": ".intә'spә:s"
-  },
-  "extravagance": {
-    "meaning": "n. 奢侈, 浪费, 放肆的言行",
-    "phonetic": "ik'strævәgәns"
-  },
-  "harrier": {
-    "meaning": "n. 越野赛马者, 抢劫者, 蹂躏者",
-    "phonetic": "'hæriә(r)"
-  },
-  "clamour": {
-    "meaning": "n. 喧闹\nv. 大声地要求",
-    "phonetic": "'klæmә"
-  },
-  "spinster": {
-    "meaning": "n. 未婚女人, 老处女",
-    "phonetic": "'spinstә"
-  },
-  "underwriting": {
-    "meaning": "n. 保险业\n[经] (海上)保险业, 证券包销",
-    "phonetic": "'ʌndә.raitiŋ"
-  },
-  "intricacy": {
-    "meaning": "n. 纷乱, 复杂, 错综",
-    "phonetic": "'intrikәsi"
-  },
-  "verity": {
-    "meaning": "n. 真实, 真理, 忠诚\n[法] 真实性, 真理, 事实",
-    "phonetic": "'veriti"
-  },
-  "pungent": {
-    "meaning": "a. 刺激性的, 尖刻的, 苦痛的\n[医] 冲味的, 刺激味的",
-    "phonetic": "'pʌndʒәnt"
-  },
-  "proverbial": {
-    "meaning": "a. 谚语的, 谚语式的, 闻名的",
-    "phonetic": "prә'vә:biәl"
-  },
-  "distinguishable": {
-    "meaning": "a. 区别得出的, 辩认得出的, 可辨别的",
-    "phonetic": "dis'tiŋ^wiʃәbl"
-  },
-  "ontological": {
-    "meaning": "a. 存在论的, 本体论的, 实体论的",
-    "phonetic": ".ɒntә'lɒdʒikl"
-  },
-  "dignitary": {
-    "meaning": "n. 高贵的人, 高官, 高僧, 要人",
-    "phonetic": "'dignitәri"
-  },
-  "hindrance": {
-    "meaning": "n. 妨害, 障碍, 阻碍物",
-    "phonetic": "'hindrәns"
-  },
-  "regrettable": {
-    "meaning": "a. 可悲的, 可惜的, 抱歉的",
-    "phonetic": "ri'gretәbl"
-  },
-  "hydrocarbon": {
-    "meaning": "n. 碳氢化合物\n[化] 烃; 碳氢化合物",
-    "phonetic": ".haidrәu'kɑ:bәn"
-  },
-  "pester": {
-    "meaning": "vt. 不断打扰, 纠缠",
-    "phonetic": "'pestә"
-  },
-  "stubble": {
-    "meaning": "n. 残株, 茬",
-    "phonetic": "'stʌbl"
-  },
-  "cinderella": {
-    "meaning": "n. 灰姑娘",
-    "phonetic": "sindә'relә"
-  },
-  "fanciful": {
-    "meaning": "a. 奇怪的, 稀奇的, 想像的",
-    "phonetic": "'fænsiful"
-  },
-  "expound": {
-    "meaning": "v. 详细说明, 解释",
-    "phonetic": "ik'spaund"
-  },
-  "shyness": {
-    "meaning": "n. 羞怯, 胆怯",
-    "phonetic": "'ʃainis"
-  },
-  "segmentation": {
-    "meaning": "n. 分割, 割断, 细胞分裂\n[计] 分段; 分割; 段式调度; 分段法",
-    "phonetic": ".segmәn'teiʃәn"
-  },
-  "hapless": {
-    "meaning": "a. 倒霉的, 不幸的",
-    "phonetic": "'hæplis"
-  },
-  "clarinet": {
-    "meaning": "n. 竖笛, 单簧管, 黑管",
-    "phonetic": "klæri'net"
-  },
-  "communicator": {
-    "meaning": "n. 传播者, 通信装置, 列车内通话装置",
-    "phonetic": "kә'mju:nikeitә"
-  },
-  "sparrow": {
-    "meaning": "n. 麻雀",
-    "phonetic": "'spærәu"
-  },
-  "cessation": {
-    "meaning": "n. 停止\n[法] 中止, 中断, 停止",
-    "phonetic": "se'seiʃәn"
-  },
-  "fondness": {
-    "meaning": "n. 溺爱；爱好",
-    "phonetic": "'fɔndnis"
-  },
-  "supposition": {
-    "meaning": "n. 想像, 推测, 推想\n[法] 假定, 推定, 推测",
-    "phonetic": ".sʌpә'ziʃәn"
-  },
-  "admirably": {
-    "meaning": "adv. 极好地, 美好地",
-    "phonetic": "'ædmәrәbli"
-  },
-  "frailty": {
-    "meaning": "n. 弱点, 脆弱, 意志薄弱\n[法] 虚弱, 意志薄弱, 因意志薄弱而犯的错误",
-    "phonetic": "'freilti"
-  },
-  "presupposition": {
-    "meaning": "n. 预想, 假定, 预先推测",
-    "phonetic": ".pri:sʌpә'ziʃәn"
-  },
-  "nonconformist": {
-    "meaning": "n. 不相信英国国教的人, 不符合通常准则的人, 不落俗套的人\na. 违反准则的, 不落俗套的, 违反规范的",
-    "phonetic": "'nɔnkәn'fɔmist"
-  },
-  "unchecked": {
-    "meaning": "a. 未加抑制的, 未经检查的\n[计] 未选中的",
-    "phonetic": ".ʌn'tʃekt"
-  },
-  "brownie": {
-    "meaning": "n. 界仁巧克力饼",
-    "phonetic": "'brauni"
-  },
-  "trespass": {
-    "meaning": "n. 擅自进入, 非法侵入, 侵害\nvi. 侵害, 侵入, 打扰, 冒犯",
-    "phonetic": "'trespәs"
-  },
-  "inactivity": {
-    "meaning": "n. 不活动, 不活泼, 休止状态\n[经] 商业呆滞",
-    "phonetic": ".inæk'tiviti"
-  },
-  "detest": {
-    "meaning": "vt. 厌恶, 憎恨",
-    "phonetic": "di'test"
-  },
-  "batty": {
-    "meaning": "a. 疯癫的, 古怪的, 蝙蝠的",
-    "phonetic": "'bæti"
-  },
-  "entangle": {
-    "meaning": "vt. 使纠缠, 卷入, 使混乱",
-    "phonetic": "in'tæŋgl"
-  },
-  "preamble": {
-    "meaning": "n. 引言, 序文, 前言\n[计] 前同步; 前同步信号",
-    "phonetic": "'pri:æmbl"
-  },
-  "camouflage": {
-    "meaning": "vt. 伪装, 掩饰\nn. 伪装, 伪装物, 幌子",
-    "phonetic": "'kæmuflɑ:ʒ"
-  },
-  "pendulum": {
-    "meaning": "n. 钟摆, 摇锤, 摇摆不定的事态(或局面)\n[化] 摆",
-    "phonetic": "'pendʒәlәm"
-  },
-  "avail": {
-    "meaning": "vi. 有用, 有利\nvt. 有利于\nn. 效用, 利益",
-    "phonetic": "ә'veil"
-  },
-  "outwardly": {
-    "meaning": "adv. 表面上, 在外, 外表上",
-    "phonetic": "'ajtwәdli"
-  },
-  "upshot": {
-    "meaning": "n. 结果, 结局, (论证的)要点",
-    "phonetic": "'ʌpʃɒt"
-  },
-  "nova": {
-    "meaning": "n. 新星\n[计] 诺瓦计算机",
-    "phonetic": "'nәuvә"
-  },
-  "tempest": {
-    "meaning": "n. 暴风雨, 骚动\nvt. 使受大风暴影响, 使骚动, 使激动",
-    "phonetic": "'tempist"
-  },
-  "browny": {
-    "meaning": "a. 带褐色的",
-    "phonetic": "'brajni"
-  },
-  "senna": {
-    "meaning": "n. 山扁豆, 番泻叶, 轻泻剂\n[化] 番泻叶",
-    "phonetic": "'senә"
-  },
-  "unproductive": {
-    "meaning": "a. 不生产的, 无出产的, 不毛的\n[经] 非生意性的, 浪费的",
-    "phonetic": ".ʌnprә'dʌktiv"
-  },
-  "toughness": {
-    "meaning": "n. 有粘性, 强硬, 强健\n[化] 韧性",
-    "phonetic": "'tʌfnis"
-  },
-  "trump": {
-    "meaning": "n. 王牌, 法宝, 喇叭\nvt. 打出王牌赢, 胜过\nvi. 出王牌, 吹喇叭",
-    "phonetic": "trʌmp"
-  },
-  "decentralization": {
-    "meaning": "n. 分散, 权力分散, 权力下放\n[经] 分散化, 分权化, 疏散",
-    "phonetic": "di:,sentrәlai'zeiʃәn"
-  },
-  "incontinence": {
-    "meaning": "n. 无节制, 荒淫, 失禁\n[医] 失禁, 无节制",
-    "phonetic": "in'kɒntinәns"
-  },
-  "eastwards": {
-    "meaning": "adv. 向东方地",
-    "phonetic": "'i:stwәdz"
-  },
-  "underwriter": {
-    "meaning": "n. 保险业者, 证券包销者\n[法] 承保人, 保险人, 保险商",
-    "phonetic": "'ʌndә.raitә"
-  },
-  "trustworthy": {
-    "meaning": "a. 可信赖的\n[法] 可信任的, 可靠的, 可信赖的",
-    "phonetic": "'trʌst.wә:ði"
-  },
-  "adjudication": {
-    "meaning": "n. 判决, 裁定, 宣告\n[经] 判决, 裁决",
-    "phonetic": "ә.dʒu:di'keiʃәn"
-  },
-  "astute": {
-    "meaning": "a. 敏锐的, 狡猾的",
-    "phonetic": "ә'stju:t"
-  },
-  "entrenched": {
-    "meaning": "a. 牢固的, 根深蒂固的",
-    "phonetic": ""
-  },
-  "liberally": {
-    "meaning": "adv. 宽大地, 大方地, 自由地",
-    "phonetic": "'libәrәli"
-  },
-  "congested": {
-    "meaning": "a. 拥挤的, 堵塞的\n[医] 充血的",
-    "phonetic": "kәn'dʒestid"
-  },
-  "immaterial": {
-    "meaning": "a. 非物质的, 无形的, 精神的\n[法] 非物质的, 无形的, 非实质的",
-    "phonetic": ".imә'tiәriәl"
-  },
-  "sonnet": {
-    "meaning": "n. 十四行诗",
-    "phonetic": "'sɒnit"
-  },
-  "oceanic": {
-    "meaning": "a. 海洋的, 产于海洋的, 在海洋中生活的, 广阔的",
-    "phonetic": ".әuʃi'ænik"
-  },
-  "disillusion": {
-    "meaning": "n. 觉醒, 幻灭\nvt. 使醒悟, 使幻想破灭",
-    "phonetic": ".disi'lu:ʒәn"
+    "phonetic": "'ɒ:dinәri",
+    "translation": "形容词 普通的"
+  },
+  "otherwise": {
+    "phonetic": "'ʌðәwaiz",
+    "translation": "副词 否则；不然"
+  },
+  "our": {
+    "phonetic": "'auә",
+    "translation": "pron. 我们的"
+  },
+  "path": {
+    "phonetic": "pɑ:θ",
+    "translation": "n. 路径, 小路, 道路, 途径, 路线, 轨道\n[计] 路径; DOS内部命令:设定DOS读取程序的路径"
+  },
+  "patient": {
+    "phonetic": "'peiʃәnt",
+    "translation": "形容词 有耐心的"
+  },
+  "people": {
+    "phonetic": "'pi:pl",
+    "translation": "n. 人, 人民, 民族, 平民\nvt. 使住满人, 居住于"
+  },
+  "pipe": {
+    "phonetic": "paip",
+    "translation": "n. 管, 导管, 输送管, 管状器官, 声带, 尖细的声音, 烟斗, 笛, 管乐器\nvt. 以管输送, 吹哨子, 吹奏, 尖声唱\nvi. 吹笛, 尖叫, 吹长哨发令\n[计] 管道"
+  },
+  "place": {
+    "phonetic": "pleis",
+    "translation": "n. 地方, 地点, 位置, 住所, 座位, 地位, 处境, 特权, 空间, 余地, 职务, 位\nvt. 放置, 寄予, 认出, 评定, 任命\nvi. 名次列前"
+  },
+  "plan": {
+    "phonetic": "plæn",
+    "translation": "n. 计划, 方案, 策略, 方法, 进度表, 程序表, 平面图, 设计图, 轮廓, 示意图\nvt. 计划, 设计, 意欲\nvi. 订计划"
+  },
+  "planning": {
+    "phonetic": "",
+    "translation": "n. 计划的制订, 策划, 设计, 规划\n[计] 计划, 规划"
+  },
+  "plans": {
+    "phonetic": "",
+    "translation": "n. 计划；规划（plan的复数）"
+  },
+  "plants": {
+    "phonetic": "",
+    "translation": "n. 植物；工厂（plant的复数形式）"
+  },
+  "plausible": {
+    "phonetic": "'plɒ:zibl",
+    "translation": "形容词 貌似合理的；说得通的"
+  },
+  "poor": {
+    "phonetic": "puә. pɒ:",
+    "translation": "a. 贫穷的, 贫乏的, 不幸的, 可怜的, 拙劣的, 卑鄙的\n[经] 低劣的, 不良的"
+  },
+  "power": {
+    "phonetic": "'pauә",
+    "translation": "n. 力, 体力, 力量, 势力, 动力, 权力, 强国, 乘方, 强度, 幂, 功率\nvt. 使...有力量, 供以动力, 激励\n[计] 乘幂; DOS外部命令:能控制许多电池电源计算机上的电源管理特性"
+  },
+  "pragmatic": {
+    "phonetic": "præ^'mætik",
+    "translation": "形容词 务实的；讲求实际的"
+  },
+  "predominantly": {
+    "phonetic": "prɪˈdɑːmɪnəntli",
+    "translation": "副词 主要地；占主导地"
+  },
+  "preserve": {
+    "phonetic": "pri'zә:v",
+    "translation": "动词 保护；保存"
+  },
+  "priority": {
+    "phonetic": "prai'ɒriti",
+    "translation": "名词 优先事项"
+  },
+  "problem": {
+    "phonetic": "'prɒblәm",
+    "translation": "n. 问题, 难题\na. 成问题的, 难处理的"
+  },
+  "project": {
+    "phonetic": "'prɒdʒekt",
+    "translation": "n. 计划, 设计, 事业\nvt. 计划, 设计, 投掷, 发射, 使凸出, 放映\nvi. 凸出"
+  },
+  "proportion": {
+    "phonetic": "prә'pɒ:ʃәn",
+    "translation": "名词 比例；部分"
+  },
+  "provides": {
+    "phonetic": "prəˈvaidz",
+    "translation": "v. 提供, 供给, 供应( provide的第三人称单数 ); 规定; 提供[(+for)]; 装备"
   },
   "provisionally": {
-    "meaning": "adv. 临时地, 暂时地",
-    "phonetic": ""
-  },
-  "mayhem": {
-    "meaning": "n. 蓄意的破坏, 故意的伤害罪\n[医] 伤残, 残废",
-    "phonetic": "'meihem"
-  },
-  "footwear": {
-    "meaning": "n. 鞋类, 靴类",
-    "phonetic": "'fjtweә(r)"
-  },
-  "disentangle": {
-    "meaning": "vi. 解开纠结, 松开, 解决\nvt. 解开, 松开",
-    "phonetic": ".disin'tængl"
-  },
-  "bandwagon": {
-    "meaning": "n. 乐队彩车, 流行",
-    "phonetic": "'bænd.wægәn"
-  },
-  "aggie": {
-    "meaning": "n. 农业学校；农科大学生",
-    "phonetic": "'æɡi"
-  },
-  "spec": {
-    "meaning": "n. 投机, 投机事业, 规格, 说明书, 专业人员\n[化] 加工单",
-    "phonetic": "spek"
-  },
-  "fragmentary": {
-    "meaning": "a. 碎片的, 碎屑的, 片断的, 断片的, 碎块的, 不完全的, 不连续的, 不完整的",
-    "phonetic": "'fræ^mәntәri"
-  },
-  "regenerate": {
-    "meaning": "vt. 使再生, 重建, 革新\nvi. 新生, 再生\na. 新生的, 再生的\n[计] 再生; 重写",
-    "phonetic": "ri'dʒenәreit"
-  },
-  "successively": {
-    "meaning": "adv. 接连着地；相继地",
-    "phonetic": ""
-  },
-  "scone": {
-    "meaning": "n. 烤饼",
-    "phonetic": "skәun"
-  },
-  "bray": {
-    "meaning": "n. 驴叫声, 喇叭声\nv. 叫, 嘶叫",
-    "phonetic": "brei"
-  },
-  "cavalier": {
-    "meaning": "n. 骑士, 骑手",
-    "phonetic": ".kævә'liә"
-  },
-  "breech": {
-    "meaning": "n. 后膛, 臀部\nvt. 给...装上炮尾, 给...穿上裤子",
-    "phonetic": "bri:tʃ"
-  },
-  "standardise": {
-    "meaning": "vt. 使与标准比较, 用标准校验, 使符合标准, 使统一, 使标准化",
-    "phonetic": ""
-  },
-  "potty": {
-    "meaning": "a. 微小的, 不足道的\nn. 便壶",
-    "phonetic": "'pɒti"
-  },
-  "warlord": {
-    "meaning": "n. 军阀, 军阀式领袖",
-    "phonetic": "'wɒ:lɒ:d"
-  },
-  "authorship": {
-    "meaning": "n. 原作者, 根源, 原创造者",
-    "phonetic": "'ɔ:θәʃip"
-  },
-  "currant": {
-    "meaning": "n. 葡萄干\n[建] 红醋药",
-    "phonetic": "'kʌrәnt"
-  },
-  "mercenary": {
-    "meaning": "n. 唯利是图者, 雇佣兵\na. 为钱而工作的, 被雇的, 图利的",
-    "phonetic": "'mә:sinәri"
-  },
-  "obstructive": {
-    "meaning": "a. 引起阻塞的, 阻碍的, 妨碍的\nn. 妨碍物",
-    "phonetic": "әb'strʌktiv"
-  },
-  "bairn": {
-    "meaning": "n. 小孩",
-    "phonetic": "bєәn"
-  },
-  "lichen": {
-    "meaning": "n. 青苔, 地衣, 苔藓病\n[医] 地衣, 苔癣",
-    "phonetic": "'laikәn"
-  },
-  "terracotta": {
-    "meaning": "n. 赤土, 赤陶器, 赤陶, 赤褐色, 一种带褐色的柑子",
-    "phonetic": "terә'kɔtә"
-  },
-  "wrongful": {
-    "meaning": "a. 不正当的, 不法的, 不讲道理的\n[法] 错误的, 不正当的, 伤害的",
-    "phonetic": "'rɒŋful"
-  },
-  "phosphorus": {
-    "meaning": "n. 启明星, 金星, 磷, 磷光体\n[化] 磷P",
-    "phonetic": "'fɒsfәrәs"
-  },
-  "mauve": {
-    "meaning": "n. 苯胺紫, 淡紫色\na. 淡紫色的",
-    "phonetic": "mәuv"
-  },
-  "caustic": {
-    "meaning": "n. 腐蚀剂\na. 腐蚀性的",
-    "phonetic": "'kɒ:stik"
-  },
-  "acton": {
-    "meaning": "n. 铠衣",
-    "phonetic": "'æktәn"
-  },
-  "snuggle": {
-    "meaning": "vi. 偎依\nvt. 使舒适温暖, 紧抱",
-    "phonetic": "'snʌgl"
-  },
-  "orally": {
-    "meaning": "adv. 口头, 口语, 口述, 口, 用口发声, 口部",
-    "phonetic": ""
-  },
-  "indeterminate": {
-    "meaning": "a. 不明确的, 不确定的, 含混的\n[法] 不明确的, 无定期的, 不确定的",
-    "phonetic": ".indi'tә:minәt"
-  },
-  "chide": {
-    "meaning": "v. 斥责, 责骂",
-    "phonetic": "tʃaid"
-  },
-  "insolvent": {
-    "meaning": "a. 无力偿还的, 破产的\nn. 无力偿还者, 破产者",
-    "phonetic": "in'sɒlvәnt"
-  },
-  "puzzlement": {
-    "meaning": "n. 迷惑",
-    "phonetic": "'pʌzlmәnt"
-  },
-  "peregrine": {
-    "meaning": "a. 流浪的, 移居的, 漫游的, 外国的, 异样的, 异国风味的, 外来的\nn. 寄居外国的人",
-    "phonetic": "'peri^rin"
-  },
-  "disallow": {
-    "meaning": "vt. 不许, 不准, 驳回\n[法] 拒绝接受, 拒绝承认, 不允许",
-    "phonetic": ".disә'lau"
-  },
-  "marketable": {
-    "meaning": "a. 可销售的, 销路好的, 市场的\n[经] 有销路的, 可销售的",
-    "phonetic": "'mɑ:kitәbl"
-  },
-  "dialectical": {
-    "meaning": "a. 辩证的, 辩证法的",
-    "phonetic": ",daiә'lektikәl"
-  },
-  "cryptic": {
-    "meaning": "a. 神秘的, 含义模糊的, 隐藏的\n[医] 隐蔽的",
-    "phonetic": "'kriptik"
-  },
-  "genteel": {
-    "meaning": "a. 有教养的, 上流的, 优雅的",
-    "phonetic": "dʒen'ti:l"
-  },
-  "warp": {
-    "meaning": "n. 变形, 弯曲, 歪曲, 乖僻, 偏差, 偏见\nvt. 使变形, 弄歪, 使翘曲, 使不正常, 歪曲, 使有偏见\nvi. 变弯, 变歪",
-    "phonetic": "wɒ:p"
-  },
-  "hogan": {
-    "meaning": "n. 泥盖木屋",
-    "phonetic": "'hәuɡәn"
-  },
-  "tawny": {
-    "meaning": "a. 黄褐色的, 茶色的\nn. 黄褐色",
-    "phonetic": "'tɒ:ni"
-  },
-  "panoramic": {
-    "meaning": "a. 全景的",
-    "phonetic": ".pænә'ræmik"
-  },
-  "fang": {
-    "meaning": "n. 尖牙, 犬牙\n[医] 牙根, 尖牙, 蛇类毒牙",
-    "phonetic": "'fæŋ"
-  },
-  "equator": {
-    "meaning": "n. 赤道\n[医] 赤道, 中纬线",
-    "phonetic": "i'kweitә"
-  },
-  "marquess": {
-    "meaning": "n. 侯爵, 侯爵长子的尊称",
-    "phonetic": "'mɑ:kwis"
-  },
-  "macabre": {
-    "meaning": "a. 以死亡为主题的, 可怕的",
-    "phonetic": "mә'kɑ:brә"
-  },
-  "buoyancy": {
-    "meaning": "n. 浮力, 弹性, 快活, 轻快, (股票市场)保持高价\n[化] 浮力; 浮扬性",
-    "phonetic": "'bɔiәnsi"
-  },
-  "viaduct": {
-    "meaning": "n. 高架桥",
-    "phonetic": "'vaiәdʌkt"
-  },
-  "chieftain": {
-    "meaning": "n. 酋长, 首领",
-    "phonetic": "'tʃi:ftәn"
-  },
-  "decomposition": {
-    "meaning": "n. 分解, 腐败, 变质\n[化] 分解; 裂解",
-    "phonetic": ".di:kɒmpә'ziʃәn"
-  },
-  "nymph": {
-    "meaning": "n. 居于山林水泽的仙女, 蛹, 美丽的少女\n[医] 稚虫, 若虫, 蝻",
-    "phonetic": "nimf"
-  },
-  "maturation": {
-    "meaning": "n. 化脓, 成熟\n[医] 成熟, 化脓",
-    "phonetic": ".mætʃu'reiʃәn"
-  },
-  "mane": {
-    "meaning": "n. 鬃毛",
-    "phonetic": "mein"
-  },
-  "trespasser": {
-    "meaning": "n. 侵害者, 违反者, 侵入者",
-    "phonetic": "'trespәsә"
-  },
-  "shoemaker": {
-    "meaning": "n. 鞋店营业员, 皮鞋匠",
-    "phonetic": "'ʃu:.meikә"
-  },
-  "moray": {
-    "meaning": "n. 海鳝",
-    "phonetic": "'mɒ:rei"
-  },
-  "adjournment": {
-    "meaning": "n. 延期, 休会, 休会期间\n[法] 休庭, 休会, 延期",
-    "phonetic": "ә'dʒә:nmәnt"
-  },
-  "garth": {
-    "meaning": "n. 中庭, 庭院",
-    "phonetic": "gɑ:θ"
-  },
-  "ritz": {
-    "meaning": "n. 豪华旅馆",
-    "phonetic": "rits"
-  },
-  "docker": {
-    "meaning": "n. 码头工人",
-    "phonetic": "'dɒkә"
-  },
-  "bridesmaid": {
-    "meaning": "n. 女傧相",
-    "phonetic": "'braidzmeid"
-  },
-  "sternly": {
-    "meaning": "adv. 严格地, 严肃地, 严厉地",
-    "phonetic": "'stә:nli"
-  },
-  "fleck": {
-    "meaning": "n. 斑点, 雀斑, 斑纹\nvt. 使起斑点, 使有斑纹, 使有斑驳",
-    "phonetic": "flek"
-  },
-  "hundredth": {
-    "meaning": "a. 第一百的",
-    "phonetic": "'hʌndrәdθ"
-  },
-  "incredulous": {
-    "meaning": "a. 怀疑的, 不轻信的",
-    "phonetic": "in'kredjulәs"
-  },
-  "stammer": {
-    "meaning": "v. 口吃, 结结巴巴地说\nn. 口吃, 结巴",
-    "phonetic": "'stæmә"
-  },
-  "terminally": {
-    "meaning": "adv. 在末端, 末尾, 每期",
-    "phonetic": "'tә:minәli"
-  },
-  "migraine": {
-    "meaning": "n. 严重的周期性偏头痛\n[医] 偏头痛",
-    "phonetic": "'mi:^rein, 'mai-"
-  },
-  "blackbird": {
-    "meaning": "n. 黑鸟",
-    "phonetic": "'blækbә:d"
-  },
-  "craze": {
-    "meaning": "n. 狂热, 大流行\nv. (使)发狂, (使)开裂",
-    "phonetic": "kreiz"
-  },
-  "crucifixion": {
-    "meaning": "n. 在十字架上钉死的刑罚, 酷刑, 苦难, 折磨",
-    "phonetic": ",krusi'fikʃәn"
-  },
-  "ideologically": {
-    "meaning": "adv. 思想上, 思想体系, 意识形态, 观念形态",
-    "phonetic": ""
-  },
-  "viennese": {
-    "meaning": "a. 维也纳的；维也纳人的；维也纳式的",
-    "phonetic": "viә'ni:z"
-  },
-  "standardisation": {
-    "meaning": "n. 标准化",
-    "phonetic": ",stændədai'zeiʃən, -di'z-"
-  },
-  "cloister": {
-    "meaning": "n. 修道院, 回廊\nvt. 使与尘世隔绝",
-    "phonetic": "'klɒistә"
-  },
-  "dainty": {
-    "meaning": "a. 秀丽的；美味的；讲究的；挑剔的",
-    "phonetic": "'deinti"
-  },
-  "evangelist": {
-    "meaning": "n. 福音传道者, 圣经新约福音书的作者",
-    "phonetic": "i'vændʒilist"
-  },
-  "monolithic": {
-    "meaning": "a. 独石的, 完全统一的, 整体的\n[化] 整体(铸,烧结)的; 龟甲网衬里; 单片; 单块",
-    "phonetic": ".mɒnәu'liθik"
-  },
-  "bodice": {
-    "meaning": "n. 女服的紧身上衣",
-    "phonetic": "'bɒdis"
-  },
-  "consensual": {
-    "meaning": "a. 在两方愿意下成立的, 交感的\n[医] 同感的, 交感的",
-    "phonetic": "kәn'sensjuәl"
-  },
-  "waken": {
-    "meaning": "vt. 唤醒, 使觉醒, 激发\nvi. 觉醒, 醒来",
-    "phonetic": "'weikn"
-  },
-  "preponderance": {
-    "meaning": "n. 优势, 多数\n[医] 优势",
-    "phonetic": "pri'pɒndәrәns"
-  },
-  "armpit": {
-    "meaning": "n. 腋窝\n[医] 腋, 腋窝",
-    "phonetic": "'ɑ:mpit"
-  },
-  "instrumentation": {
-    "meaning": "n. 乐器法, 仪器制造学, 仪表化\n[医] 器械用法, 器械操作法",
-    "phonetic": ".instrumen'teiʃәn"
-  },
-  "searchlight": {
-    "meaning": "n. 探照灯",
-    "phonetic": "'sә:tʃlait"
-  },
-  "inferiority": {
-    "meaning": "n. 自卑, 次等\n[医] 下位, 下级, 次级, 劣等",
-    "phonetic": "in.fiәri'ɒriti"
-  },
-  "renege": {
-    "meaning": "vi. 违例出牌, 食言, 毁约\nvt. 否认, 放弃, 拒绝\nn. 出牌违例",
-    "phonetic": "ri'ni:g"
-  },
-  "provenance": {
-    "meaning": "n. 起源, 出处",
-    "phonetic": "'prɒvәnәns"
-  },
-  "snub": {
-    "meaning": "n. 冷落, 怠慢, 斥责, 制止\na. 制动用的, 短而扁的\nvt. 冷落, 怠慢, 制止, 使...停住, 掐灭",
-    "phonetic": "snʌb"
-  },
-  "standby": {
-    "meaning": "n. 可依靠的人, 被喜爱的食品, 备用品, 准备发报, 准备收报\n[电] 备用的",
-    "phonetic": "'stændbai"
-  },
-  "renunciation": {
-    "meaning": "n. 放弃, 废弃, 弃权, 脱离关系\n[法] 放弃, 抛弃, 脱离关系",
-    "phonetic": "ri.nʌnsi'eiʃәn"
-  },
-  "alder": {
-    "meaning": "n. 桤木\n[机] 赤杨木",
-    "phonetic": "'ɒ:ldә"
-  },
-  "impromptu": {
-    "meaning": "n. 即席演出, 即兴曲\na. 即席的\nadv. 即席",
-    "phonetic": "im'prɒmptju:"
-  },
-  "bayonet": {
-    "meaning": "n. 刺刀",
-    "phonetic": "'beiәnit"
-  },
-  "cloakroom": {
-    "meaning": "n. 寄物间",
-    "phonetic": "'klәukrum"
-  },
-  "snout": {
-    "meaning": "n. 鼻口部, 鼻子, 口吻状物, 烟草",
-    "phonetic": "snaut"
-  },
-  "tang": {
-    "meaning": "n. 强烈味道, 特殊的气味, 特性, 柄脚, 当的一声, 墨角藻\nvt. 使发气味, 装刀柄于, 使发出当的一声\nvi. 发出当的一声",
-    "phonetic": "tæŋ"
-  },
-  "indent": {
-    "meaning": "n. 契约, 订货单, 凹痕\nvi. 切割成锯齿状\nvt. 缩排, 定货, 印凹痕\n[计] 缩进",
-    "phonetic": "in'dent"
-  },
-  "antagonistic": {
-    "meaning": "a. 对抗的, 敌对的\n[化] 拮抗药",
-    "phonetic": "æn.tægә'nistik"
-  },
-  "predominance": {
-    "meaning": "n. 主导地位, 优势",
-    "phonetic": "pri'dɒminәns"
-  },
-  "implausible": {
-    "meaning": "a. 难以置信的, 不象真实的",
-    "phonetic": "im'plɒ:zәbl"
-  },
-  "foreboding": {
-    "meaning": "n. 预感, 先兆, 预兆",
-    "phonetic": "fɒ:'bәudiŋ"
-  },
-  "yeoman": {
-    "meaning": "n. 自由民, 自耕农\n[法] 小地主, 自耕农, 自由民",
-    "phonetic": "'jәumәn"
-  },
-  "interrelated": {
-    "meaning": "a. 相关的",
-    "phonetic": ".intәri'leitid"
-  },
-  "extricate": {
-    "meaning": "vt. 使解脱, 救出",
-    "phonetic": "'ekstrikeit"
-  },
-  "forefinger": {
-    "meaning": "n. 食指\n[医] 食指, 示指",
-    "phonetic": "'fɒ:fiŋgә"
-  },
-  "educationalist": {
-    "meaning": "n. 教育家",
-    "phonetic": ",edju(:)'keiʃәnәlist"
-  },
-  "sodden": {
-    "meaning": "a. 浑身湿透的, 饱含的, (因沉湎于酒而)迷糊的\nvt. 拿水浸, 使变呆\nvi. 被浸湿",
-    "phonetic": "'sɒdn"
-  },
-  "potentiality": {
-    "meaning": "n. 潜在性, 可能性",
-    "phonetic": "pәu.tenʃi'æliti"
-  },
-  "scamper": {
-    "meaning": "n. 蹦跳, 奔跑, 浏览\nvi. 蹦跳, 奔跑, 浏览",
-    "phonetic": "'skæmpә"
-  },
-  "brat": {
-    "meaning": "n. 乳臭未干的小孩, 小孩\n[机] 不煤, 原煤",
-    "phonetic": "bræt"
-  },
-  "anchorage": {
-    "meaning": "n. 下锚, 锚地, 停泊税\n[化] 固着; 固定; 锚定",
-    "phonetic": "'æŋkәridʒ"
-  },
-  "sash": {
-    "meaning": "n. 框格, 肩带, 腰带\nvt. 装以窗框, 系上腰带",
-    "phonetic": "sæʃ"
-  },
-  "geometrical": {
-    "meaning": "a. 几何学的, 几何的\n[机] 几何学的",
-    "phonetic": ".dʒiәu'metrikl"
+    "phonetic": "prəˈvɪʒənəli",
+    "translation": "副词 暂时地；临时地"
+  },
+  "pump": {
+    "phonetic": "pʌmp",
+    "translation": "n. 抽水机, 打气筒, 泵, 抽吸\nvt. 用唧筒抽水, 打气, 盘问, 倾注, 使疲惫\nvi. 抽水, 上下(或往复)运动"
+  },
+  "pumps": {
+    "phonetic": "",
+    "translation": "n. 泵；抽运器；无带轻便舞鞋；脉动（pump的复数）"
+  },
+  "purpose": {
+    "phonetic": "'pә:pәs",
+    "translation": "名词 目的；用途"
+  },
+  "quiet": {
+    "phonetic": "'kwaiәt",
+    "translation": "n. 安静, 闲适, 平静\na. 安静的, 静止的, 寂静的, 朴素的, 从容的, 暗中的\nvi. 平静下来\nvt. 使平静, 使平息, 使安心, 安慰"
+  },
+  "rain": {
+    "phonetic": "rein",
+    "translation": "n. 雨, 下雨, 雨天\nvi. 下雨\nvt. 使大量落下"
+  },
+  "rather": {
+    "phonetic": "'ræðә",
+    "translation": "相当；宁可；rather than：而不是"
+  },
+  "reach": {
+    "phonetic": "ri:tʃ",
+    "translation": "n. 伸出, 延伸, 区域, 范围, 流域, 岬\nvt. 到达, 达到, 伸出, 延伸, 影响\nvi. 达到, 延伸, 伸出手, 传到"
+  },
+  "reached": {
+    "phonetic": "ri:tʃt",
+    "translation": "v. 到达( reach的过去式和过去分词 ); 联络; 伸出手臂, 延伸"
+  },
+  "ready": {
+    "phonetic": "'redi",
+    "translation": "n. 预备好的状态, 现款\na. 准备好的, 备用的, 可以使用的\nadv. 预先, 迅速\nvt. 使准备好"
+  },
+  "recent": {
+    "phonetic": "'ri:snt",
+    "translation": "a. 最近的, 近代的, 最新的\n[经] 最近的, 新进的"
+  },
+  "reconcile": {
+    "phonetic": "'rekәnsail",
+    "translation": "动词 调和；使一致"
+  },
+  "reduce": {
+    "phonetic": "ri'dju:s",
+    "translation": "动词 减少；降低"
+  },
+  "redundant": {
+    "phonetic": "ri'dʌndәnt",
+    "translation": "形容词 多余的；不再需要的"
+  },
+  "reinforce": {
+    "phonetic": ".ri:in'fɒ:s",
+    "translation": "动词 加固；加强"
+  },
+  "reliable": {
+    "phonetic": "ri'laiәbl",
+    "translation": "形容词 可靠的"
+  },
+  "reluctant": {
+    "phonetic": "ri'lʌktәnt",
+    "translation": "形容词 不情愿的"
+  },
+  "remain": {
+    "phonetic": "ri'mein",
+    "translation": "动词 仍然是；留在"
+  },
+  "repair": {
+    "phonetic": "ri'pєә",
+    "translation": "动词 修理；修复"
+  },
+  "repairing": {
+    "phonetic": "",
+    "translation": "v. 修理；修复（repair的ing形式）"
+  },
+  "replace": {
+    "phonetic": "ri'pleis",
+    "translation": "动词 替换；更换"
+  },
+  "replaceable": {
+    "phonetic": "ri'pleisәbl",
+    "translation": "形容词 可替换的"
+  },
+  "replenish": {
+    "phonetic": "ri'pleniʃ",
+    "translation": "动词 补充；重新装满"
+  },
+  "required": {
+    "phonetic": "ri'kwaiәd",
+    "translation": "a. 必需的"
+  },
+  "requires": {
+    "phonetic": "",
+    "translation": "n. 需要；要求；需求（require的复数）"
+  },
+  "resilient": {
+    "phonetic": "ri'ziliәnt",
+    "translation": "形容词 有恢复力的；有韧性的"
+  },
+  "resource": {
+    "phonetic": "ri'sɒ:s",
+    "translation": "名词 资源"
+  },
+  "restore": {
+    "phonetic": "ri'stɒ:",
+    "translation": "动词 恢复；修复到原状"
+  },
+  "restored": {
+    "phonetic": "",
+    "translation": "a. 精力充沛的；精力恢复的"
+  },
+  "restrict": {
+    "phonetic": "ri'strikt",
+    "translation": "动词 限制"
+  },
+  "restricts": {
+    "phonetic": "risˈtrikts",
+    "translation": "v. （以法规）限制( restrict的第三人称单数 ); 约束; 束缚"
+  },
+  "results": {
+    "phonetic": "",
+    "translation": "n. 结果；成绩（result的复数）"
+  },
+  "retain": {
+    "phonetic": "ri'tein",
+    "translation": "动词 保留；保持"
+  },
+  "road": {
+    "phonetic": "rәud",
+    "translation": "n. 路, 道路, 公路, 途径, 方法\n[法] 公路, 道路, 行车道"
+  },
+  "roof": {
+    "phonetic": "ru:f",
+    "translation": "n. 屋顶, 室顶\nvt. 给...盖屋顶, 遮蔽"
+  },
+  "roughly": {
+    "phonetic": "'rʌfli",
+    "translation": "副词 大约；粗略地"
+  },
+  "route": {
+    "phonetic": "ru:t",
+    "translation": "n. 路径, 途径, 路线\nvt. 确定路线, 按规定路线发送\n[计] 传递, 路由设定程序"
+  },
+  "routes": {
+    "phonetic": "",
+    "translation": "n. 线路；路由, 路径"
+  },
+  "sails": {
+    "phonetic": "",
+    "translation": "n. 帆；航行（sail的复数）"
+  },
+  "scarce": {
+    "phonetic": "skɑ:s",
+    "translation": "形容词 稀缺的；不足的"
+  },
+  "scattered": {
+    "phonetic": "'skætәd",
+    "translation": "a. 分散的, 散乱的\n[计] 分散的"
+  },
+  "schedule": {
+    "phonetic": "'skedʒuәl",
+    "translation": "n. 时间表, 一览表, 计划表, 议事日程\nvt. 预定, 编制目录, 制...表, 安排"
+  },
+  "seeds": {
+    "phonetic": "",
+    "translation": "n. 种子；种子状物；子孙后代；[体]种子选手（seed的复数）"
+  },
+  "send": {
+    "phonetic": "send",
+    "translation": "vt. 发送, 使进入, 寄, 派遣, 发射, 使陷于\nvi. 寄信, 派人, 播送\nn. (船的)上升运动\n[计] 发送"
+  },
+  "shape": {
+    "phonetic": "ʃeip",
+    "translation": "n. 形状, 形态, 外形, 形式, 身材\nvt. 定形, 使成形, 塑造, 计划, 使符合\nvi. 成形, 形成, 成长\n[计] 形状"
+  },
+  "sheep": {
+    "phonetic": "ʃi:p",
+    "translation": "n. 羊, 胆小者"
+  },
+  "shelter": {
+    "phonetic": "'ʃeltә",
+    "translation": "n. 庇护所, 避难所, 庇护, 隐蔽处, 掩蔽\nvt. 庇护, 保护, 隐匿\nvi. 躲避"
+  },
+  "shore": {
+    "phonetic": "ʃɒ:",
+    "translation": "n. 海岸, 海滨, 斜撑柱\nvt. 把...送上岸, 支撑, 支持"
+  },
+  "short": {
+    "phonetic": "ʃɒ:t",
+    "translation": "a. 短的, 近的, 矮的, 短期的, 简短的, 少量的\nadv. 简短地, 突然\nn. 扼要, 短片, 缺乏\nvt. 故意少给, 使短路"
+  },
+  "shorter": {
+    "phonetic": "",
+    "translation": "a. 较短的；更短的；更矮的（short的比较级）"
+  },
+  "should": {
+    "phonetic": "ʃud",
+    "translation": "aux. 应该, 将要"
+  },
+  "simultaneously": {
+    "phonetic": "simәl'teiniәsly; (?@) saim-",
+    "translation": "副词 同时地"
+  },
+  "small": {
+    "phonetic": "smɒ:l",
+    "translation": "a. 小的, 少的, 小型的, 低微的, 小气的, 细微的\nadv. 些微地\nn. 狭小部分"
+  },
+  "smooth": {
+    "phonetic": "smu:ð",
+    "translation": "形容词 平滑的；顺畅的"
+  },
+  "so": {
+    "phonetic": "sәu",
+    "translation": "adv. 如此, 如是, 如...那样\nconj. 所以, 因此\npron. 这样"
+  },
+  "soil": {
+    "phonetic": "sɒil",
+    "translation": "n. 土壤, 土地, 国家, 国土, 温床, 污物, 粪便, 水池\nvt. 弄脏, 污辱\nvi. 变脏"
+  },
+  "solution": {
+    "phonetic": "sә'lu:ʃәn",
+    "translation": "n. 解决, 解答, 溶液\n[化] 溶液"
+  },
+  "some": {
+    "phonetic": "sʌm",
+    "translation": "pron. 一些, 一部分, 若干\nadv. 大约\na. 一些的, 少许的, 某一的"
+  },
+  "source": {
+    "phonetic": "sɒ:s",
+    "translation": "n. 来源, 水源, 根源, 原始资料, 源\n[计] 来源, 源程序"
+  },
+  "space": {
+    "phonetic": "speis",
+    "translation": "n. 位置, 空间, 距离, 太空, 空白, 间隔, (期刊等的)篇幅\nvt. 隔开, 分隔\nvi. 留间隔\n[计] 空白, 空格校验"
+  },
+  "spilling": {
+    "phonetic": "'spiliŋ",
+    "translation": "v. 跌下；溢漏, 泄漏（spill的现在分词）"
+  },
+  "started": {
+    "phonetic": "s'tɑ:tɪd",
+    "translation": "v. 出发, 启程( start的过去式和过去分词 ); 起动; 提出（问题）; 开办"
+  },
+  "stone": {
+    "phonetic": "stәun",
+    "translation": "n. 石头, 宝石, 果核, 纪念碑, 结石\nvt. 投扔石子, 铺石头\na. 石的, 石制的, 完全的"
+  },
+  "storm": {
+    "phonetic": "stɒ:m",
+    "translation": "n. 暴风雨, 骚动, 风波, 风暴, 猛攻\nvi. 起风, 猛冲, 怒吼\nvt. 猛攻"
+  },
+  "stream": {
+    "phonetic": "stri:m",
+    "translation": "n. 水流, 小河, 流出, 趋势, 人潮\nvt. 流出, 流动, 展开\nvi. 流, 涌, 飘扬\n[计] 流"
+  },
+  "strong": {
+    "phonetic": "strɒŋ",
+    "translation": "a. 强壮的, 坚固的, 坚强的, 强烈的, 有力的, 优良的\nadv. 强劲地, 有力地, 猛烈地"
+  },
+  "subsequently": {
+    "phonetic": "'sʌbsikwәntli",
+    "translation": "副词 随后；后来"
+  },
+  "substantial": {
+    "phonetic": "sәb'stænʃәl",
+    "translation": "形容词 大量的；重大的"
+  },
+  "sunlight": {
+    "phonetic": "'sʌnlait",
+    "translation": "n. 日光\n[医] 日光, 太阳光"
+  },
+  "sunset": {
+    "phonetic": "'sʌnset",
+    "translation": "n. 日落, 晚年"
+  },
+  "supplies": {
+    "phonetic": "",
+    "translation": "n. 供应品, 日用必需品, 生活用品, (储备)物质, 存货, 补给品, 生活费用\n[化] 辅助材料"
+  },
+  "surface": {
+    "phonetic": "'sә:fis",
+    "translation": "名词 表面"
+  },
+  "survived": {
+    "phonetic": "səˈvaivd",
+    "translation": "v. 幸存, 活下来( survive的过去式和过去分词 ); 比…活得长, 经历…之后还存在; 幸免于难; 挺过"
+  },
+  "susceptible": {
+    "phonetic": "sә'septәbl",
+    "translation": "形容词 易受影响的"
+  },
+  "sustain": {
+    "phonetic": "sә'stein",
+    "translation": "动词 维持；支撑"
+  },
+  "table": {
+    "phonetic": "'teibl",
+    "translation": "n. 桌子, 餐桌, 工作台, 铭文, 表格, 表, 高原, 平地层\nvt. 搁置, 嵌合, 制表, 把...列入议事日程\n[计] 表格, 模拟运算表"
+  },
+  "takes": {
+    "phonetic": "",
+    "translation": "vt. 取走, 预备动作（take第三人称单数）"
+  },
+  "tall": {
+    "phonetic": "tɒ:l",
+    "translation": "a. 高的, 长的, 夸大的\nadv. 夸大地"
+  },
+  "tank": {
+    "phonetic": "tæŋk",
+    "translation": "n. 槽, 箱, 柜, 罐, 池塘, 储水池, 坦克\nvt. 储于箱中"
+  },
+  "team": {
+    "phonetic": "ti:m",
+    "translation": "n. 队, 组\nvt. 把马(牛)套在同一辆车上, 把...编成一组\nvi. 驾驶卡车, 协作"
+  },
+  "temporary": {
+    "phonetic": "'tempәrәri",
+    "translation": "形容词 临时的；暂时的"
+  },
+  "tentative": {
+    "phonetic": "'tentәtiv",
+    "translation": "形容词 暂定的；试探性的"
+  },
+  "than": {
+    "phonetic": "ðæn",
+    "translation": "conj. 比, 除...外\nprep. 比"
+  },
+  "that": {
+    "phonetic": "ðæt",
+    "translation": "a. 那, 那个\nconj. 以致, 因为\npron. 那\nadv. 那么, 那样"
+  },
+  "the": {
+    "phonetic": "ðә",
+    "translation": "定冠词，指特定或双方已知的人、事物"
+  },
+  "then": {
+    "phonetic": "ðen",
+    "translation": "adv. 然后, 当时\nconj. 然后, 当时\nn. 那时"
+  },
+  "there": {
+    "phonetic": "ðєә",
+    "translation": "adv. 在那里"
+  },
+  "these": {
+    "phonetic": "ði:z",
+    "translation": "pron. 这些"
+  },
+  "they": {
+    "phonetic": "ðei",
+    "translation": "pron. 他们, 它们"
+  },
+  "thin": {
+    "phonetic": "θin",
+    "translation": "a. 薄的, 细的, 瘦的, 稀疏的, 稀薄的, 淡的, 弱的, 空洞的\nvt. 使变薄, 使变细, 使稀少, 使淡\nvi. 变薄, 变细, 变少, 变淡\nadv. 薄地, 稀疏地, 微弱地\nn. 细小部分"
+  },
+  "this": {
+    "phonetic": "θis",
+    "translation": "pron. 这, 本\na. 这, 本\nadv. 这么"
+  },
+  "throughout": {
+    "phonetic": "θru:'aut",
+    "translation": "adv. 到处, 贯穿全部地, 自始至终\nprep. 遍及, 在各处\n[计] 吞吐量"
+  },
+  "timber": {
+    "phonetic": "'timbә",
+    "translation": "n. 木材, 木料\nvt. 用木材建造"
+  },
+  "time": {
+    "phonetic": "taim",
+    "translation": "n. 时间, 时侯, 时机, 时期, 期限, 次数, 节拍, 暂停, 规定时间\nvt. 测定...的时间, 记录...的时间, 计时, 定时\na. 时间的, 记时的, 定时的, 定期的, 分期的\n[计] DOS内部命令:用于显示或设定系统的时间"
+  },
+  "to": {
+    "phonetic": "tu:",
+    "translation": "表示方向、对象，或用于动词不定式"
+  },
+  "tomorrow": {
+    "phonetic": "tә'mɒ:rәu",
+    "translation": "n. 明天, 未来\nadv. 明天, 未来地"
+  },
+  "took": {
+    "phonetic": "tuk",
+    "translation": "take的过去式"
+  },
+  "tool": {
+    "phonetic": "tu:l",
+    "translation": "n. 工具, 机床, 傀儡\nvt. 用工具加工\nvi. 使用工具"
+  },
+  "tools": {
+    "phonetic": "tu:lz",
+    "translation": "n. 工具, 工具菜单；工具箱（tool的复数形式）"
+  },
+  "town": {
+    "phonetic": "taun",
+    "translation": "n. 城镇, 市, 镇\n[法] 城镇, 城市, 闹市"
+  },
+  "travel": {
+    "phonetic": "'trævl",
+    "translation": "n. 旅行, 游历, 行进\nvi. 旅行, 行进, 移动, 被传播\nvt. 旅行, 通过, 使移动"
+  },
+  "tree": {
+    "phonetic": "tri:",
+    "translation": "n. 树, 木料, 树状物\nvt. 把...赶上树\n[计] 树; DOS外部命令:显示指定磁盘驱动器的目录结构"
+  },
+  "trees": {
+    "phonetic": "",
+    "translation": "n. 树木；乔木；树状结构（tree的复数）"
+  },
+  "trip": {
+    "phonetic": "trip",
+    "translation": "n. 旅行, 绊倒, 摔倒, 失足, 差错, 旅程\nvt. 使跌倒, 使犯错, 使失败\nvi. 轻快地走, 绊倒, 失误, 犯错, 结巴, 旅行, 远足"
+  },
+  "turn": {
+    "phonetic": "tә:n",
+    "translation": "n. 转弯, 转动, 旋转, 翻转, 一圈, 顺次, 改动, 变化, 性格, 特色, 形状, 转折\nvt. 使旋转, 转弯, 转动, 使转向, 驱赶, 阻挡, 兑换, 改写, 使作对, 绕过, 使流通\nvi. 转动, 转弯, 转向, 翻转, 回转, 改变, 转身, 变成, 变质, 晕眩, 易脱手"
+  },
+  "two": {
+    "phonetic": "tu:",
+    "translation": "num. 二, 二个"
+  },
+  "types": {
+    "phonetic": "",
+    "translation": "v. 打字（type的第三人称单数形式）"
+  },
+  "untouched": {
+    "phonetic": ".ʌn'tʌtʃt",
+    "translation": "a. 未触摸过的, 未改变的, 未受影响的"
+  },
+  "us": {
+    "phonetic": "ʌs",
+    "translation": "我们（宾格）"
+  },
+  "valuable": {
+    "phonetic": "'væljuәbl",
+    "translation": "a. 有价值的, 贵重的, 宝贵的, 可估价的\n[经] 有价值的, 可估价的, 贵重的"
+  },
+  "valve": {
+    "phonetic": "vælv",
+    "translation": "n. 活瓣, 阀, 活门\nv. 装阀, 用阀调节"
+  },
+  "versatile": {
+    "phonetic": "'vә:sәtail",
+    "translation": "形容词 多用途的；多才多艺的"
+  },
+  "village": {
+    "phonetic": "'vilidʒ",
+    "translation": "n. 村庄\na. 乡村的, 村庄的"
+  },
+  "villagers": {
+    "phonetic": "",
+    "translation": "n. 村民；乡下人（villager的复数）"
+  },
+  "visit": {
+    "phonetic": "'vizit",
+    "translation": "n. 拜访, 访问, 游览, 视察\nvt. 拜访, 访问, 参观, 视察, 降临\nvi. 访问, 参观, 闲谈"
+  },
+  "walk": {
+    "phonetic": "wɒ:k",
+    "translation": "n. 走, 散步, 步行, 行走的路程, 竞走, 散步场所\nvi. 走路, 步行, 处世\nvt. 走过, 遛, 使走, 护送...走"
+  },
+  "walls": {
+    "phonetic": "",
+    "translation": "n. 墙壁；墙体（wall的复数）"
+  },
+  "was": {
+    "phonetic": "wɒz",
+    "translation": "be的过去式"
+  },
+  "water": {
+    "phonetic": "'wɒ:tә",
+    "translation": "水"
+  },
+  "we": {
+    "phonetic": "wi:",
+    "translation": "pron. 我们"
+  },
+  "weather": {
+    "phonetic": "'weðә",
+    "translation": "n. 天气, 气象, 处境\na. 迎风的\nvt. 使受风吹雨打, 侵蚀, 使风化, 经受住\nvi. 风化, 受侵蚀, 经受风雨"
+  },
+  "weight": {
+    "phonetic": "weit",
+    "translation": "n. 重, 重量, 体重, 砝码, 重大, 影响, 力量\nvt. 加重量于, 压迫, 使加权, 称重量\n[计] 粗细"
+  },
+  "well": {
+    "phonetic": "wel",
+    "translation": "n. 井, 泉水, 源泉, 好\nv. 涌出\na. 健康的, 良好的, 适宜的, 恰当的\nadv. 很好地, 适当地, 好意地, 很, 完全\ninterj. 好啦"
+  },
+  "western": {
+    "phonetic": "'westәn",
+    "translation": "n. 西方人, 西部片, 西部小说\na. 向西方的, 来自西方的, 西方的, 西洋的, 西部的"
+  },
+  "what": {
+    "phonetic": "hwɒt",
+    "translation": "pron. 什么\ninterj. 怎么, 多么\na. 什么的\nadv. 到什么程度"
+  },
+  "while": {
+    "phonetic": "hwail",
+    "translation": "n. 一会儿, (一段)时间\nconj. 当...的时候, 虽然\nvt. 消磨"
+  },
+  "will": {
+    "phonetic": "wil",
+    "translation": "n. 意志, 决心, 意愿, 意向, 干劲, 遗嘱\nvt. 用意志的力量驱使, 决意, 愿意, 立遗嘱\nvi. 下决心, 愿意\naux. 将, 愿意, 必须"
+  },
+  "wind": {
+    "phonetic": "wind",
+    "translation": "n. 风, 气息, 气味, 呼吸, 风声, 趋势, 空谈, 卷绕, 弯曲\nvt. 使通风, 嗅出, 使喘气, 吹号角, 上发条, 缠绕, 包, 绞起, 吊起, 使弯曲, 使迂回\nvi. 嗅出猎物, 吹响号角, 卷曲, 蜿蜒, 迂回, 缠绕"
+  },
+  "windmill": {
+    "phonetic": "'windmil",
+    "translation": "n. 风车"
+  },
+  "window": {
+    "phonetic": "'windәu",
+    "translation": "n. 窗户, 窗子, 窗口\nvt. 给...开窗\n[计] 窗口"
+  },
+  "winds": {
+    "phonetic": "'waɪndz",
+    "translation": "n. 风( wind的名词复数 ); 呼吸; （随食物或饮料）吞下的气; （管弦乐团的）管乐器\nv. 缠绕( wind的第三人称单数 ); 卷绕; 转动（把手）; 给…上发条"
+  },
+  "with": {
+    "phonetic": "wið",
+    "translation": "prep. 和...在一起, 以, 由于"
+  },
+  "withstand": {
+    "phonetic": "wið'stænd",
+    "translation": "动词 承受；经受住"
+  },
+  "wood": {
+    "phonetic": "wud",
+    "translation": "木材；木头"
+  },
+  "wooden": {
+    "phonetic": "'wudn",
+    "translation": "a. 木制的, 呆笨的, 木然的"
+  },
+  "working": {
+    "phonetic": "'wә:kiŋ",
+    "translation": "n. 工作, 运转, 劳动\na. 工作的, 劳动的, 经营的, 抽搐的, 运转的"
+  },
+  "workshop": {
+    "phonetic": "'wә:kʃɒp",
+    "translation": "n. 工场, 车间, 研讨会\n[计] 讨论会; 专题研究组"
+  },
+  "year": {
+    "phonetic": "jiә",
+    "translation": "n. 年, 年度, 年龄\n[经] 年度"
+  },
+  "you": {
+    "phonetic": "ju:",
+    "translation": "pron. 你, 你们"
+  },
+  "young": {
+    "phonetic": "jʌŋ",
+    "translation": "a. 年轻的, 无经验的, 朝气蓬勃的\nn. 青年们, 幼小动物, 崽"
+  },
+  "your": {
+    "phonetic": "juә",
+    "translation": "pron. 你的, 你们的"
   }
 }

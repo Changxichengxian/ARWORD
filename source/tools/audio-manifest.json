@@ -1,62 +1,497 @@
 [
   {
-    "id": "brief0_0",
-    "text": "The guard fires three shots before reloading. During the reload, it steps back and cannot fire. Stay behind cover until the third shot, then move sideways and attack. The red barrel can hurt anyone nearby, including you. Keep your distance before you shoot it.",
-    "path": "audio/brief0_0.mp3"
+    "id": "gather",
+    "text": "gather",
+    "path": "audio/word_gather.mp3"
   },
   {
-    "id": "brief0_1",
-    "text": "The outpost guard looks dangerous, but its weapon has a limit. It fires three shots before it must reload. During that pause, the guard steps back and cannot fire. You can use a crate as cover while counting the shots. After the third one, move sideways to find a clear angle. A red fuel barrel stands near the enemy position. Destroying it can damage nearby guards, but the blast can hurt you too. This is a chance to change the fight without standing in the open. The important thing is to notice the pause and choose your moment.",
-    "path": "audio/brief0_1.mp3"
+    "id": "repair",
+    "text": "repair",
+    "path": "audio/word_repair.mp3"
   },
   {
-    "id": "brief1_0",
-    "text": "The central bridge is the shortest route, but the guards can watch it easily. A second crossing lies to the east. Once you repair it, you can approach from the side. The new route does not remove the enemy. It gives you another angle and a choice.",
-    "path": "audio/brief1_0.mp3"
+    "id": "deliver",
+    "text": "deliver",
+    "path": "audio/word_deliver.mp3"
   },
   {
-    "id": "brief1_1",
-    "text": "A narrow bridge connects the camp to the outpost. It is a quick route, but it also puts you directly in front of the guards. The broken crossing to the east could offer a different approach. Repairing it requires timber from a completed fight. Once the work is finished, the crossing stays open. On later visits, you can reach the outpost from the side and make the guards turn away from their original position. The bridge does not make your weapon stronger or guarantee a victory. Its value is the extra choice: you can change where the fight begins.",
-    "path": "audio/brief1_1.mp3"
+    "id": "borrow",
+    "text": "borrow",
+    "path": "audio/word_borrow.mp3"
   },
   {
-    "id": "brief2_0",
-    "text": "The red raider likes to chase. If you run straight away, it will follow. Use a solid rock to break its line of sight, then change direction. It must search for you before it can aim again. A retreat can create an opening, but running blindly into the river will not help.",
-    "path": "audio/brief2_0.mp3"
+    "id": "reduce",
+    "text": "reduce",
+    "path": "audio/word_reduce.mp3"
   },
   {
-    "id": "brief2_1",
-    "text": "The red raider is more willing to chase than the other guards. Its speed can make you feel rushed, but the pursuit also creates an opportunity. A solid rock blocks both bullets and the raider's view. If you move behind it and turn, the enemy must search for your new position. Watch where it expects you to appear. You may be able to attack from a different angle while it is turning. Retreating is useful when it changes the situation. Simply running in a straight line gives the pursuer an easy path and may lead you toward an unbuilt crossing.",
-    "path": "audio/brief2_1.mp3"
+    "id": "replace",
+    "text": "replace",
+    "path": "audio/word_replace.mp3"
   },
   {
-    "id": "brief3_0",
-    "text": "The purple guard does not always move straight toward you. It tries to find an angle beside your cover. If you stare only at the closest enemy, you may miss it. Move before both guards can fire from different directions. Your dash can carry you through a bullet, but it needs time to recover.",
-    "path": "audio/brief3_0.mp3"
+    "id": "notice",
+    "text": "notice",
+    "path": "audio/word_notice.mp3"
   },
   {
-    "id": "brief3_1",
-    "text": "Two guards can be more dangerous than one even when their weapons are the same. The purple guard looks for a route beside your cover instead of always following the shortest path. Meanwhile, another guard may keep your attention in front. When their firing angles separate, a single crate may no longer protect you from both. Check the sides and move before the situation becomes difficult. A well-timed dash briefly protects you as you cross a bullet's path. However, the dash needs time to recover. Spending it too early can leave you without a way out when the second guard arrives.",
-    "path": "audio/brief3_1.mp3"
+    "id": "avoid",
+    "text": "avoid",
+    "path": "audio/word_avoid.mp3"
   },
   {
-    "id": "brief4_0",
-    "text": "A wooden crate blocks bullets, but enough hits will destroy it. Breaking the enemy's cover may give you a clear shot. Breaking your own cover may leave you exposed. Before firing at a crate, check who is using it. A useful object can become a problem when the positions change.",
-    "path": "audio/brief4_0.mp3"
+    "id": "improve",
+    "text": "improve",
+    "path": "audio/word_improve.mp3"
   },
   {
-    "id": "brief4_1",
-    "text": "You notice a wooden crate between two firing positions. At first, it seems like an obstacle that should be removed. Yet its value depends on who is standing behind it. When an enemy uses the crate, destroying it opens a path for your next shot. When you need it to block incoming bullets, destroying it removes your own protection. The same object can help either side as the fight moves around the outpost. Before shooting, look at the positions rather than treating every breakable object as a target. Keeping one piece of cover may give you the time needed to reload safely.",
-    "path": "audio/brief4_1.mp3"
+    "id": "remain",
+    "text": "remain",
+    "path": "audio/word_remain.mp3"
   },
   {
-    "id": "brief5_0",
-    "text": "After a failed attack, look for one decision you can change. Perhaps you left cover before the guard reloaded. Perhaps you used your dash before you needed it. Try one different approach on the next run. A useful lesson explains what happened and suggests an action you can test.",
-    "path": "audio/brief5_0.mp3"
+    "id": "purpose",
+    "text": "purpose",
+    "path": "audio/word_purpose.mp3"
   },
   {
-    "id": "brief5_1",
-    "text": "A failed attack can feel like wasted effort, especially when the same mistake happens twice. Instead of changing everything at once, choose one decision to examine. Did you leave cover while the guard still had ammunition? Did you chase an enemy into a second firing line? Or did you spend your dash before the dangerous moment? Pick one explanation and test a different action on the next run. The result may support your idea or show that you missed something. Progress becomes easier to notice when you can connect an outcome to a choice you made. That is more useful than simply deciding that you are bad at the game.",
-    "path": "audio/brief5_1.mp3"
+    "id": "surface",
+    "text": "surface",
+    "path": "audio/word_surface.mp3"
+  },
+  {
+    "id": "distance",
+    "text": "distance",
+    "path": "audio/word_distance.mp3"
+  },
+  {
+    "id": "effort",
+    "text": "effort",
+    "path": "audio/word_effort.mp3"
+  },
+  {
+    "id": "choice",
+    "text": "choice",
+    "path": "audio/word_choice.mp3"
+  },
+  {
+    "id": "patient",
+    "text": "patient",
+    "path": "audio/word_patient.mp3"
+  },
+  {
+    "id": "empty",
+    "text": "empty",
+    "path": "audio/word_empty.mp3"
+  },
+  {
+    "id": "smooth",
+    "text": "smooth",
+    "path": "audio/word_smooth.mp3"
+  },
+  {
+    "id": "reliable",
+    "text": "reliable",
+    "path": "audio/word_reliable.mp3"
+  },
+  {
+    "id": "ordinary",
+    "text": "ordinary",
+    "path": "audio/word_ordinary.mp3"
+  },
+  {
+    "id": "beyond",
+    "text": "beyond",
+    "path": "audio/word_beyond.mp3"
+  },
+  {
+    "id": "beneath",
+    "text": "beneath",
+    "path": "audio/word_beneath.mp3"
+  },
+  {
+    "id": "instead",
+    "text": "instead",
+    "path": "audio/word_instead.mp3"
+  },
+  {
+    "id": "nearly",
+    "text": "nearly",
+    "path": "audio/word_nearly.mp3"
+  },
+  {
+    "id": "retain",
+    "text": "retain",
+    "path": "audio/word_retain.mp3"
+  },
+  {
+    "id": "obtain",
+    "text": "obtain",
+    "path": "audio/word_obtain.mp3"
+  },
+  {
+    "id": "expand",
+    "text": "expand",
+    "path": "audio/word_expand.mp3"
+  },
+  {
+    "id": "restore",
+    "text": "restore",
+    "path": "audio/word_restore.mp3"
+  },
+  {
+    "id": "adapt",
+    "text": "adapt",
+    "path": "audio/word_adapt.mp3"
+  },
+  {
+    "id": "estimate",
+    "text": "estimate",
+    "path": "audio/word_estimate.mp3"
+  },
+  {
+    "id": "preserve",
+    "text": "preserve",
+    "path": "audio/word_preserve.mp3"
+  },
+  {
+    "id": "restrict",
+    "text": "restrict",
+    "path": "audio/word_restrict.mp3"
+  },
+  {
+    "id": "replaceable",
+    "text": "replaceable",
+    "path": "audio/word_replaceable.mp3"
+  },
+  {
+    "id": "scarce",
+    "text": "scarce",
+    "path": "audio/word_scarce.mp3"
+  },
+  {
+    "id": "abundant",
+    "text": "abundant",
+    "path": "audio/word_abundant.mp3"
+  },
+  {
+    "id": "gradual",
+    "text": "gradual",
+    "path": "audio/word_gradual.mp3"
+  },
+  {
+    "id": "temporary",
+    "text": "temporary",
+    "path": "audio/word_temporary.mp3"
+  },
+  {
+    "id": "essential",
+    "text": "essential",
+    "path": "audio/word_essential.mp3"
+  },
+  {
+    "id": "efficient",
+    "text": "efficient",
+    "path": "audio/word_efficient.mp3"
+  },
+  {
+    "id": "fragile",
+    "text": "fragile",
+    "path": "audio/word_fragile.mp3"
+  },
+  {
+    "id": "capacity",
+    "text": "capacity",
+    "path": "audio/word_capacity.mp3"
+  },
+  {
+    "id": "priority",
+    "text": "priority",
+    "path": "audio/word_priority.mp3"
+  },
+  {
+    "id": "resource",
+    "text": "resource",
+    "path": "audio/word_resource.mp3"
+  },
+  {
+    "id": "evidence",
+    "text": "evidence",
+    "path": "audio/word_evidence.mp3"
+  },
+  {
+    "id": "occasionally",
+    "text": "occasionally",
+    "path": "audio/word_occasionally.mp3"
+  },
+  {
+    "id": "eventually",
+    "text": "eventually",
+    "path": "audio/word_eventually.mp3"
+  },
+  {
+    "id": "otherwise",
+    "text": "otherwise",
+    "path": "audio/word_otherwise.mp3"
+  },
+  {
+    "id": "roughly",
+    "text": "roughly",
+    "path": "audio/word_roughly.mp3"
+  },
+  {
+    "id": "allocate",
+    "text": "allocate",
+    "path": "audio/word_allocate.mp3"
+  },
+  {
+    "id": "sustain",
+    "text": "sustain",
+    "path": "audio/word_sustain.mp3"
+  },
+  {
+    "id": "reinforce",
+    "text": "reinforce",
+    "path": "audio/word_reinforce.mp3"
+  },
+  {
+    "id": "anticipate",
+    "text": "anticipate",
+    "path": "audio/word_anticipate.mp3"
+  },
+  {
+    "id": "compensate",
+    "text": "compensate",
+    "path": "audio/word_compensate.mp3"
+  },
+  {
+    "id": "distinguish",
+    "text": "distinguish",
+    "path": "audio/word_distinguish.mp3"
+  },
+  {
+    "id": "accumulate",
+    "text": "accumulate",
+    "path": "audio/word_accumulate.mp3"
+  },
+  {
+    "id": "accommodate",
+    "text": "accommodate",
+    "path": "audio/word_accommodate.mp3"
+  },
+  {
+    "id": "feasible",
+    "text": "feasible",
+    "path": "audio/word_feasible.mp3"
+  },
+  {
+    "id": "adequate",
+    "text": "adequate",
+    "path": "audio/word_adequate.mp3"
+  },
+  {
+    "id": "reluctant",
+    "text": "reluctant",
+    "path": "audio/word_reluctant.mp3"
+  },
+  {
+    "id": "consistent",
+    "text": "consistent",
+    "path": "audio/word_consistent.mp3"
+  },
+  {
+    "id": "resilient",
+    "text": "resilient",
+    "path": "audio/word_resilient.mp3"
+  },
+  {
+    "id": "substantial",
+    "text": "substantial",
+    "path": "audio/word_substantial.mp3"
+  },
+  {
+    "id": "inevitable",
+    "text": "inevitable",
+    "path": "audio/word_inevitable.mp3"
+  },
+  {
+    "id": "versatile",
+    "text": "versatile",
+    "path": "audio/word_versatile.mp3"
+  },
+  {
+    "id": "constraint",
+    "text": "constraint",
+    "path": "audio/word_constraint.mp3"
+  },
+  {
+    "id": "consequence",
+    "text": "consequence",
+    "path": "audio/word_consequence.mp3"
+  },
+  {
+    "id": "proportion",
+    "text": "proportion",
+    "path": "audio/word_proportion.mp3"
+  },
+  {
+    "id": "alternative",
+    "text": "alternative",
+    "path": "audio/word_alternative.mp3"
+  },
+  {
+    "id": "simultaneously",
+    "text": "simultaneously",
+    "path": "audio/word_simultaneously.mp3"
+  },
+  {
+    "id": "nevertheless",
+    "text": "nevertheless",
+    "path": "audio/word_nevertheless.mp3"
+  },
+  {
+    "id": "predominantly",
+    "text": "predominantly",
+    "path": "audio/word_predominantly.mp3"
+  },
+  {
+    "id": "deliberately",
+    "text": "deliberately",
+    "path": "audio/word_deliberately.mp3"
+  },
+  {
+    "id": "mitigate",
+    "text": "mitigate",
+    "path": "audio/word_mitigate.mp3"
+  },
+  {
+    "id": "reconcile",
+    "text": "reconcile",
+    "path": "audio/word_reconcile.mp3"
+  },
+  {
+    "id": "fluctuate",
+    "text": "fluctuate",
+    "path": "audio/word_fluctuate.mp3"
+  },
+  {
+    "id": "deteriorate",
+    "text": "deteriorate",
+    "path": "audio/word_deteriorate.mp3"
+  },
+  {
+    "id": "replenish",
+    "text": "replenish",
+    "path": "audio/word_replenish.mp3"
+  },
+  {
+    "id": "consolidate",
+    "text": "consolidate",
+    "path": "audio/word_consolidate.mp3"
+  },
+  {
+    "id": "withstand",
+    "text": "withstand",
+    "path": "audio/word_withstand.mp3"
+  },
+  {
+    "id": "facilitate",
+    "text": "facilitate",
+    "path": "audio/word_facilitate.mp3"
+  },
+  {
+    "id": "meticulous",
+    "text": "meticulous",
+    "path": "audio/word_meticulous.mp3"
+  },
+  {
+    "id": "redundant",
+    "text": "redundant",
+    "path": "audio/word_redundant.mp3"
+  },
+  {
+    "id": "tentative",
+    "text": "tentative",
+    "path": "audio/word_tentative.mp3"
+  },
+  {
+    "id": "intricate",
+    "text": "intricate",
+    "path": "audio/word_intricate.mp3"
+  },
+  {
+    "id": "pragmatic",
+    "text": "pragmatic",
+    "path": "audio/word_pragmatic.mp3"
+  },
+  {
+    "id": "negligible",
+    "text": "negligible",
+    "path": "audio/word_negligible.mp3"
+  },
+  {
+    "id": "plausible",
+    "text": "plausible",
+    "path": "audio/word_plausible.mp3"
+  },
+  {
+    "id": "susceptible",
+    "text": "susceptible",
+    "path": "audio/word_susceptible.mp3"
+  },
+  {
+    "id": "discrepancy",
+    "text": "discrepancy",
+    "path": "audio/word_discrepancy.mp3"
+  },
+  {
+    "id": "incentive",
+    "text": "incentive",
+    "path": "audio/word_incentive.mp3"
+  },
+  {
+    "id": "contingency",
+    "text": "contingency",
+    "path": "audio/word_contingency.mp3"
+  },
+  {
+    "id": "consensus",
+    "text": "consensus",
+    "path": "audio/word_consensus.mp3"
+  },
+  {
+    "id": "inadvertently",
+    "text": "inadvertently",
+    "path": "audio/word_inadvertently.mp3"
+  },
+  {
+    "id": "inherently",
+    "text": "inherently",
+    "path": "audio/word_inherently.mp3"
+  },
+  {
+    "id": "subsequently",
+    "text": "subsequently",
+    "path": "audio/word_subsequently.mp3"
+  },
+  {
+    "id": "provisionally",
+    "text": "provisionally",
+    "path": "audio/word_provisionally.mp3"
+  },
+  {
+    "id": "letter0",
+    "text": "The new cottage needs a quiet place. Keep it away from the busy landing area. The western meadow has enough space, and a short path connects it to the forest. Let us build the cottage there.",
+    "path": "audio/letter0.mp3"
+  },
+  {
+    "id": "letter1",
+    "text": "The trees can block the wind. To keep the mill working, place it on the open hill rather than beneath the tall trees. Its sails need enough space to turn freely. The garden can remain below.",
+    "path": "audio/letter1.mp3"
+  },
+  {
+    "id": "letter2",
+    "text": "The garden is almost ready, but its soil is dry. The windmill can power a small water pump. Connect the pump to the garden before opening the valve. Then the water will reach the plants instead of spilling onto the path.",
+    "path": "audio/letter2.mp3"
   }
 ]

@@ -42,14 +42,13 @@ public class TouchRunner extends Instrumentation {
         Bundle result=new Bundle();
         try{
             if(args.containsKey("seed")){
-                // Explicit test fixture; does not run in or ship with the game APK.
-                File data=new File(getTargetContext().getFilesDir(),"frontier3d.json");
-                try(FileOutputStream out=new FileOutputStream(data)){
-                    out.write(("{\"version\":1,\"wood\":"+Integer.parseInt(args.getString("seed"))+",\"bridge\":false,\"wins\":0,\"band\":3,\"words\":{},\"checks\":[],\"sound\":true,\"read_words\":0,\"listen_count\":0,\"challenge\":1,\"next_lesson\":0}").getBytes("UTF-8"));
-                }
+                JSONObject fixture=new JSONObject(args.getString("seed"));
+                if(fixture.getInt("version")!=4)throw new RuntimeException("Unexpected fixture version");
+                File data=new File(getTargetContext().getFilesDir(),"island4.json");
+                try(FileOutputStream out=new FileOutputStream(data)){out.write(fixture.toString().getBytes("UTF-8"));}
             }
             if(!args.getString("launch","true").equals("false")){
-                Intent launch=new Intent().setClassName("com.wordfrontier.frontier3d","com.godot.game.GodotApp").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent launch=new Intent().setClassName("com.wordfrontier.planet","com.godot.game.GodotApp").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getTargetContext().startActivity(launch);
             }
             JSONArray seq=new JSONArray(args.getString("seq","[]"));
@@ -65,7 +64,7 @@ public class TouchRunner extends Instrumentation {
                 }
                 else throw new RuntimeException("Unknown action "+kind);
             }
-            File data=new File(getTargetContext().getFilesDir(),"frontier3d.json");
+            File data=new File(getTargetContext().getFilesDir(),"island4.json");
             String state="no internal save";
             if(data.isFile())try(FileInputStream in=new FileInputStream(data)){byte[] b=new byte[(int)data.length()];in.read(b);state=new String(b,"UTF-8");}
             result.putString("stream","\nANDROID_TOUCH_SEQUENCE_OK "+seq.length()+" actions\nSAVE "+state+"\n");finish(Activity.RESULT_OK,result);

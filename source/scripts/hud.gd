@@ -1,165 +1,132 @@
 extends Control
-class_name FrontierHUD
+class_name IslandHUD
 
+const INK=Color("284852")
+const CREAM=Color("FFF5DF")
+const GREEN=Color("287C69")
 var game
+var card:PanelContainer
+var body:VBoxContainer
 var overlay:ColorRect
-var panel_box:VBoxContainer
-var health:Label
-var status:Label
-var objective:Label
+var goal:Label
+var bar:ProgressBar
 var toast_label:Label
-var camp_buttons:HBoxContainer
-var left_id=-1
-var right_id=-1
-var move=Vector2.ZERO
-var aim=Vector2.ZERO
-var fire=false
-var toast_time=0.0
-var stick_left=Vector2.ZERO
-var stick_right=Vector2.ZERO
-var menu_button:Button
-var dictionary_button:Button
-var paused=false
+var toast_timer=0.0
+var answers:Array=[]
+var word_label:Label
+var progress_label:Label
+var tag:Label
 var screen=""
-const INK=Color("17313d")
-const NAVY=Color("203c49")
-const YELLOW=Color("ffd56a")
+var top:HBoxContainer
+var stars:Array=[]
+
+func skin(color:Color,radius=20)->StyleBoxFlat:
+	var s=StyleBoxFlat.new();s.bg_color=color;s.set_corner_radius_all(radius)
+	s.content_margin_left=18;s.content_margin_right=18;s.content_margin_top=13;s.content_margin_bottom=13
+	s.shadow_color=Color(0.02,.07,.10,.22);s.shadow_size=7;s.shadow_offset=Vector2(0,4);return s
+func style_button(b:Button,primary=false):
+	b.add_theme_stylebox_override("normal",skin(Color("E8F0E5") if not primary else Color("F3C671"),14))
+	b.add_theme_stylebox_override("pressed",skin(Color("BFD9CE") if not primary else Color("DBAC56"),14))
+	b.add_theme_stylebox_override("hover",skin(Color("EFF7EE") if not primary else Color("FFDA8E"),14))
+	b.add_theme_stylebox_override("disabled",skin(Color("E6E4D6"),14))
+	b.add_theme_color_override("font_color",INK);b.add_theme_color_override("font_hover_color",INK);b.add_theme_color_override("font_pressed_color",INK);b.add_theme_color_override("font_disabled_color",Color("657B72"))
+	b.add_theme_font_size_override("font_size",20);b.focus_mode=Control.FOCUS_NONE
+func button(parent:Node,value:String,action:Callable,primary=false,height=50)->Button:
+	var b=Button.new();b.text=value;b.custom_minimum_size=Vector2(0,height);b.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	style_button(b,primary);parent.add_child(b);b.pressed.connect(action);return b
+func text(parent:Node,value:String,font_size=21,color=INK)->Label:
+	var l=Label.new();l.text=value;l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;l.add_theme_font_size_override("font_size",font_size);l.add_theme_color_override("font_color",color);parent.add_child(l);return l
+func row(parent:Node)->HBoxContainer:
+	var r=HBoxContainer.new();r.add_theme_constant_override("separation",9);parent.add_child(r);return r
+func spacer(parent:Node,height:int):
+	var c=Control.new();c.custom_minimum_size.y=height;parent.add_child(c)
 
 func _ready():
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter=Control.MOUSE_FILTER_IGNORE
-	var theme_new=Theme.new();theme_new.default_font=game.font;theme_new.default_font_size=22;theme=theme_new
-	health=label_at(Vector2(26,19),24)
-	status=label_at(Vector2(26,90),19)
-	objective=label_at(Vector2(0,22),23);objective.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	objective.anchor_left=.35;objective.anchor_right=.65;objective.offset_left=0;objective.offset_right=0
-	toast_label=label_at(Vector2(0,110),26);toast_label.anchor_left=.2;toast_label.anchor_right=.8;toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	menu_button=Button.new();menu_button.text="Ⅱ";add_child(menu_button);menu_button.anchor_left=1;menu_button.anchor_right=1
-	menu_button.offset_left=-76;menu_button.offset_right=-22;menu_button.offset_top=20;menu_button.offset_bottom=68;style_button(menu_button,false)
-	menu_button.pressed.connect(game.pause_menu)
-	dictionary_button=Button.new();dictionary_button.text="Aa";add_child(dictionary_button);dictionary_button.anchor_left=1;dictionary_button.anchor_right=1
-	dictionary_button.offset_left=-146;dictionary_button.offset_right=-88;dictionary_button.offset_top=20;dictionary_button.offset_bottom=68;style_button(dictionary_button,false)
-	dictionary_button.pressed.connect(game.learning_menu)
-	camp_buttons=HBoxContainer.new();add_child(camp_buttons);camp_buttons.anchor_left=.5;camp_buttons.anchor_right=.5;camp_buttons.anchor_top=1;camp_buttons.anchor_bottom=1
-	camp_buttons.offset_left=-245;camp_buttons.offset_right=245;camp_buttons.offset_top=-98;camp_buttons.offset_bottom=-34;camp_buttons.add_theme_constant_override("separation",12)
-	button(camp_buttons,"出发交锋",game.show_brief,true)
-	button(camp_buttons,"修建侧桥",game.build_menu,false)
-	overlay=ColorRect.new();overlay.color=Color(0.025,.08,.12,.67);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
-	move_child(toast_label,-1);toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
-
-func label_at(p:Vector2,font_size:int) -> Label:
-	var l=Label.new();add_child(l);l.position=p;l.add_theme_font_size_override("font_size",font_size);l.add_theme_color_override("font_color",Color("fff6de"))
-	l.add_theme_color_override("font_shadow_color",Color(.04,.12,.15,.7));l.add_theme_constant_override("shadow_offset_y",2);return l
-
-func skin(color:Color,border:Color,width=2) -> StyleBoxFlat:
-	var s=StyleBoxFlat.new();s.bg_color=color;s.border_color=border;s.set_border_width_all(width);s.set_corner_radius_all(14)
-	s.content_margin_left=17;s.content_margin_right=17;s.content_margin_top=10;s.content_margin_bottom=10
-	s.shadow_color=Color(0,.04,.06,.18);s.shadow_size=4;s.shadow_offset=Vector2(0,3)
-	return s
-
-func style_button(b:Button,primary:bool):
-	b.add_theme_stylebox_override("normal",skin(YELLOW if primary else Color("e5f1ee"),Color("c89433") if primary else Color("b1ceca")))
-	b.add_theme_stylebox_override("pressed",skin(Color("f0b844") if primary else Color("b5d7d1"),Color("638c8d")))
-	b.add_theme_stylebox_override("hover",skin(Color("ffe193") if primary else Color("f4fcf7"),Color("b1ceca")))
-	b.add_theme_color_override("font_color",INK);b.add_theme_color_override("font_pressed_color",INK);b.add_theme_color_override("font_hover_color",INK)
-	b.add_theme_font_size_override("font_size",22)
-	b.focus_mode=Control.FOCUS_NONE
-
-func button(parent:Node,text:String,action:Callable,primary=false) -> Button:
-	var b=Button.new();b.text=text;b.custom_minimum_size=Vector2(0,52);b.size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	style_button(b,primary);parent.add_child(b);b.pressed.connect(action);return b
-
-func text(parent:Node,value:String,font_size=23,color=INK) -> Label:
-	var l=Label.new();l.text=value;l.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;l.add_theme_font_size_override("font_size",font_size);l.add_theme_color_override("font_color",color);parent.add_child(l);return l
-
-func row(parent:Node) -> HBoxContainer:
-	var r=HBoxContainer.new();r.add_theme_constant_override("separation",10);parent.add_child(r);return r
-
-func card(title:String) -> VBoxContainer:
-	clear_input()
-	screen=""
-	# Keep the clicked control in the tree until input dispatch finishes.
-	for c in overlay.get_children():c.hide();c.queue_free()
-	overlay.show()
-	var center=CenterContainer.new();center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.add_child(center)
-	var panel=PanelContainer.new();panel.custom_minimum_size=Vector2(minf(840,size.x-56),0);panel.add_theme_stylebox_override("panel",skin(Color("f6f2df"),Color("d4dfcb"),3));center.add_child(panel)
-	panel_box=VBoxContainer.new();panel_box.add_theme_constant_override("separation",12);panel.add_child(panel_box)
-	text(panel_box,title,29)
-	return panel_box
-
-func close():
-	overlay.hide();clear_input();game.resume_after_menu()
-
-func english(parent:Node,value:String,height=205):
-	var rich=RichTextLabel.new();rich.bbcode_enabled=true;rich.custom_minimum_size=Vector2(0,minf(height,size.y*.34));rich.scroll_active=true
-	rich.meta_underlined=false
-	rich.add_theme_color_override("default_color",INK);rich.add_theme_font_size_override("normal_font_size",24)
-	var regex=RegEx.new();regex.compile("[A-Za-z]+(?:'[A-Za-z]+)?")
-	var result="";var last=0
-	for m in regex.search_all(value):
-		result+=value.substr(last,m.get_start()-last)+"[url="+m.get_string().to_lower()+"]"+m.get_string()+"[/url]";last=m.get_end()
-	result+=value.substr(last);rich.text=result
-	rich.meta_clicked.connect(func(meta):game.word_card(str(meta)))
-	parent.add_child(rich)
-
-func toast(value:String):toast_label.text=value;toast_time=2.3
-
-func clear_input():
-	left_id=-1;right_id=-1;move=Vector2.ZERO;aim=Vector2.ZERO;fire=false
-
-func _process(dt):
-	stick_left=Vector2(126,size.y-130);stick_right=Vector2(size.x-145,size.y-130)
-	if game.player and is_instance_valid(game.player):
-		var p=game.player
-		health.text="耐久  %d / 100"%ceili(p.hp)
-		status.text="换弹 %.1f"%p.reload_left if p.reload_left>0 else "弹药  "+str(p.ammo)+" / 6"
-	objective.text=("据点  %d / 3"%(3-game.living_enemies())) if game.phase=="battle" else "河谷前哨   ·   木料 "+str(game.save_data.get("wood",0))
-	camp_buttons.visible=game.phase=="camp" and not overlay.visible
-	toast_time=maxf(0,toast_time-dt);toast_label.modulate.a=minf(1,toast_time*2)
-	queue_redraw()
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);mouse_filter=Control.MOUSE_FILTER_IGNORE
+	var theme_new=Theme.new();theme_new.default_font=game.font;theme_new.default_font_size=21;theme=theme_new
+	var rng=RandomNumberGenerator.new();rng.seed=704
+	for i in range(55):stars.append(Vector3(rng.randf(),rng.randf(),rng.randf_range(.7,1.7)))
+	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=34
+	top=row(header);var titles=VBoxContainer.new();titles.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(titles)
+	text(titles,"词屿  /  LITTLE TIDE",12,Color("A6C6C6"));text(titles,"青芽星",29,CREAM)
+	for pair in [["听",game.toggle_listen],["信",game.letters_menu],["···",game.settings]]:
+		var icon_button=button(top,pair[0],pair[1],false,44);icon_button.custom_minimum_size.x=46;icon_button.size_flags_horizontal=0
+	var goal_panel=PanelContainer.new();add_child(goal_panel);goal_panel.anchor_right=1;goal_panel.offset_left=22;goal_panel.offset_right=-22;goal_panel.offset_top=111
+	goal_panel.add_theme_stylebox_override("panel",skin(Color(.08,.20,.26,.83),16))
+	var box=VBoxContainer.new();box.add_theme_constant_override("separation",7);goal_panel.add_child(box)
+	var gr=row(box);goal=text(gr,"",19,CREAM);goal.size_flags_horizontal=Control.SIZE_EXPAND_FILL;progress_label=text(gr,"",17,Color("F2CB7B"))
+	progress_label.custom_minimum_size.x=63;progress_label.autowrap_mode=TextServer.AUTOWRAP_OFF;progress_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
+	bar=ProgressBar.new();bar.show_percentage=false;bar.custom_minimum_size.y=5;bar.max_value=1
+	var track=skin(Color("2C5260"),3);var fill=skin(Color("EBC673"),3)
+	for s in [track,fill]:s.content_margin_left=0;s.content_margin_right=0;s.content_margin_top=0;s.content_margin_bottom=0;s.shadow_size=0
+	bar.add_theme_stylebox_override("background",track);bar.add_theme_stylebox_override("fill",fill);box.add_child(bar)
+	toast_label=text(self,"",20,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.07;toast_label.anchor_right=.93;toast_label.offset_top=190;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	card=PanelContainer.new();add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_top=-435;card.offset_bottom=-20
+	card.add_theme_stylebox_override("panel",skin(CREAM,26));body=VBoxContainer.new();body.add_theme_constant_override("separation",7);card.add_child(body)
+	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
+	sync_goal()
 
 func _draw():
-	if not game or not is_instance_valid(game.player):return
-	var hp=maxf(0,game.player.hp/100)
-	draw_style_box(skin(Color("173943"),Color("557e7c")),Rect2(22,59,204,15))
-	draw_rect(Rect2(26,63,196*hp,7),Color("8bdb8d") if hp>.3 else Color("ff946c"))
-	if overlay.visible:return
-	for center in [stick_left,stick_right]:
-		draw_circle(center,67,Color(.04,.15,.19,.32));draw_arc(center,67,0,TAU,48,Color(.81,.94,.86,.55),2,true)
-	draw_circle(stick_left+move*38,27,Color(.89,.96,.86,.68))
-	draw_circle(stick_right+aim*36,29,Color(1,.78,.31,.85))
-	draw_string(game.font,stick_left+Vector2(-23,6),"移动",HORIZONTAL_ALIGNMENT_LEFT,-1,19,INK)
-	draw_string(game.font,stick_right+Vector2(-23,6),"射击",HORIZONTAL_ALIGNMENT_LEFT,-1,19,INK)
-	var dash=Vector2(size.x-142,size.y-280)
-	draw_circle(dash,41,Color(.08,.23,.28,.67))
-	var ready=1-game.player.dash_cooldown/1.55
-	draw_arc(dash,41,-PI/2,-PI/2+TAU*ready,40,YELLOW,3,true)
-	draw_string(game.font,dash+Vector2(-22,7),"闪避",HORIZONTAL_ALIGNMENT_LEFT,-1,20,Color("fff2cf"))
-	var reload_center=Vector2(size.x-270,size.y-200)
-	draw_circle(reload_center,33,Color(.08,.23,.28,.67));draw_arc(reload_center,33,0,TAU,36,Color("b4d9cd"),2,true)
-	draw_string(game.font,reload_center+Vector2(-20,7),"换弹",HORIZONTAL_ALIGNMENT_LEFT,-1,18,Color("fff2cf"))
-	if game.phase=="battle":
-		for enemy in game.enemies:
-			if not is_instance_valid(enemy) or enemy.hp<=0:continue
-			if game.camera.is_position_behind(enemy.position):continue
-			var p=game.camera.unproject_position(enemy.position+Vector3.UP*1.97)
-			draw_rect(Rect2(p-Vector2(29,0),Vector2(58,5)),Color(.10,.16,.17,.7))
-			draw_rect(Rect2(p-Vector2(29,0),Vector2(58*enemy.hp/enemy.max_hp,5)),Color("ff9b66"))
+	for p in stars:draw_circle(Vector2(p.x*size.x,p.y*size.y*.8),p.z,Color(.65,.83,.87,.25))
 
-func touch(event:InputEvent):
-	if overlay.visible:return
-	if event is InputEventScreenTouch:
-		if event.pressed:
-			if event.position.distance_to(Vector2(size.x-270,size.y-200))<39:
-				game.player.reload();return
-			if event.position.distance_to(Vector2(size.x-142,size.y-280))<48:
-				game.do_dash();return
-			if event.position.distance_to(stick_left)<100 and left_id<0:left_id=event.index
-			elif event.position.distance_to(stick_right)<100 and right_id<0:right_id=event.index;fire=true
-		else:
-			if event.index==left_id:left_id=-1;move=Vector2.ZERO
-			if event.index==right_id:right_id=-1;aim=Vector2.ZERO;fire=false
-	if event is InputEventScreenDrag or (event is InputEventScreenTouch and event.pressed):
-		if event.index==left_id:move=((event.position-stick_left)/58).limit_length(1)
-		if event.index==right_id:aim=((event.position-stick_right)/58).limit_length(1)
+func clear_body():
+	for child in body.get_children():child.hide();child.queue_free()
+	answers.clear()
+
+func sync_goal():
+	var a=int(game.learning.data.active);var value=int(game.learning.data.build[a]);var done=game.learning.completed()
+	goal.text="小岛已安顿 · 自由照料" if done else ["木屋 · 收拢第一批木材","风车 · 让叶片转起来","花园 · 种下一片生机"][a]
+	progress_label.text="3 / 3" if done else str(value)+" / "+str(IslandLearning.NEEDS[a])
+	bar.value=float(value)/IslandLearning.NEEDS[a]
+
+func show_word():
+	clear_body();screen="word";card.show()
+	var q=game.current;var r=row(body)
+	tag=text(r,("听音采集" if game.learning.data.listen else "林间回忆")+"  ·  "+str(int(game.learning.data.actions)%6+1)+" / 6",15,GREEN);tag.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	var listen_button=button(r,"音",game.speak_word,false,38);listen_button.custom_minimum_size.x=47;listen_button.size_flags_horizontal=0
+	var save_button=button(r,"藏" if not game.learning.data.bookmarks.has(q.id) else "已藏",game.bookmark,false,38);save_button.custom_minimum_size.x=57;save_button.size_flags_horizontal=0
+	word_label=text(body,"听一听这个词" if game.learning.data.listen else str(q.word),34);word_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var subtitle=str(q.pos) if game.learning.data.listen else (str(q.phonetic)+"   ·   "+str(q.pos))
+	var phon=text(body,subtitle,15,Color("6A827E"));phon.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",10);grid.add_theme_constant_override("v_separation",10);body.add_child(grid)
+	for i in range(4):
+		var answer=game.order[i];var b=button(grid,str(q.options[answer]),game.answer.bind(answer),false,57);b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)
+	var foot=row(body);var helper=button(foot,"想不起来 · 看一眼",game.reveal,false,42);helper.add_theme_font_size_override("font_size",16)
+	button(foot,"看看星球",game.explore,false,42).add_theme_font_size_override("font_size",16)
+	if game.learning.data.listen or game.learning.data.speech:game.call_deferred("speak_word")
+
+func show_help():
+	clear_body();screen="help";var q=game.current
+	var r=row(body);text(r,q.word,32).size_flags_horizontal=Control.SIZE_EXPAND_FILL;button(r,"听发音",game.speak_word,false,42)
+	text(body,q.pos+" · "+q.zh,23,GREEN)
+	text(body,q.example,20)
+	text(body,q.translation,17,Color("74837A"))
+	spacer(body,5);button(body,"遮住释义，再想一次",game.retry,true,48)
+	text(body,"这次有提示，稍后再遇见它。",14,Color("7E8C7D"))
+
+func feedback(answer:int):
+	for i in range(answers.size()):
+		answers[i].disabled=true
+		if game.order[i]==answer:answers[i].add_theme_stylebox_override("disabled",skin(Color("B6DDAC"),14))
+
+func modal(title:String)->VBoxContainer:
+	for child in overlay.get_children():child.hide();child.queue_free()
+	overlay.show()
+	var center=CenterContainer.new();center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.add_child(center)
+	var panel=PanelContainer.new();panel.custom_minimum_size.x=maxf(280,size.x-36);panel.add_theme_stylebox_override("panel",skin(CREAM,24));center.add_child(panel)
+	var box=VBoxContainer.new();box.add_theme_constant_override("separation",12);panel.add_child(box);text(box,title,27);return box
+
+func close():overlay.hide();screen="help" if game.help_visible else "word"
+
+func reading(parent:Node,value:String,height=235):
+	var rich=RichTextLabel.new();rich.bbcode_enabled=true;rich.custom_minimum_size.y=height;rich.scroll_active=true;rich.meta_underlined=false
+	rich.add_theme_color_override("default_color",INK);rich.add_theme_font_size_override("normal_font_size",22)
+	var regex=RegEx.new();regex.compile("[A-Za-z]+(?:'[A-Za-z]+)?");var result="";var last=0
+	for m in regex.search_all(value):
+		result+=value.substr(last,m.get_start()-last)+"[url="+m.get_string().to_lower()+"]"+m.get_string()+"[/url]";last=m.get_end()
+	rich.text=result+value.substr(last);parent.add_child(rich);rich.meta_clicked.connect(func(word):game.lookup(str(word)))
+
+func toast(value:String):toast_label.text=value;toast_timer=3.0
+func _process(dt):
+	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
+	queue_redraw()

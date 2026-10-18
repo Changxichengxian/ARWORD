@@ -1,20 +1,21 @@
 import bpy,math
 from mathutils import Vector
 from pathlib import Path
-root=Path(__file__).resolve().parents[1]
-bpy.ops.wm.open_mainfile(filepath=str(root/'art-source/ranger.blend'))
-scene=bpy.context.scene;scene.render.engine='CYCLES';scene.cycles.samples=32
-scene.render.resolution_x=512;scene.render.resolution_y=512;scene.render.resolution_percentage=100
-scene.world.color=(.23,.35,.39)
-def material(name,color):
-    m=bpy.data.materials.new(name);m.diffuse_color=(*color,1);return m
-bpy.ops.mesh.primitive_cylinder_add(vertices=8,radius=1.2,depth=.28,location=(0,0,-.18));bpy.context.object.data.materials.append(material('Moss',(.10,.37,.19)))
-bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,-.35));bpy.context.object.data.materials.append(material('Backdrop',(.035,.21,.28)))
-for pos,power,size in [((3,4,7),500,5),((-4,0,4),350,4),((0,-4,3),220,3)]:
-    bpy.ops.object.light_add(type='AREA',location=pos);o=bpy.context.object;o.data.energy=power;o.data.shape='DISK';o.data.size=size;o.rotation_euler=(Vector((0,0,1))-o.location).to_track_quat('-Z','Y').to_euler()
-bpy.ops.object.camera_add(location=(3.4,5,3.6));cam=bpy.context.object;cam.rotation_euler=(Vector((0,0,.8))-cam.location).to_track_quat('-Z','Y').to_euler();cam.data.type='ORTHO';cam.data.ortho_scale=3.15;scene.camera=cam
-scene.view_settings.view_transform='AgX';scene.render.image_settings.file_format='PNG';scene.render.filepath=str(root/'assets/icon.png')
-bpy.ops.render.render(write_still=True)
-scene.render.film_transparent=True;bpy.data.objects['Plane'].hide_render=True
-cam.data.ortho_scale=3.8;scene.render.filepath=str(root/'assets/icon-foreground.png')
-bpy.ops.render.render(write_still=True)
+R=Path(__file__).resolve().parents[1]
+bpy.ops.wm.open_mainfile(filepath=str(R/'art-source/planet.blend'))
+def add_model(name,x,y,scale):
+    with bpy.data.libraries.load(str(R/'art-source'/(name+'.blend')),link=False) as (data,target):target.objects=data.objects
+    objects=[o for o in target.objects if o]
+    for o in objects:bpy.context.collection.objects.link(o)
+    root=[o for o in objects if not o.parent][0]
+    p=Vector((x,y,math.sqrt(4.84**2-x*x-y*y)));root.location=p;root.rotation_euler=Vector((0,0,1)).rotation_difference(p.normalized()).to_euler();root.scale=(scale,)*3
+for name,x,y,s in [('cottage',-1.8,0,.95),('windmill',1,-1,.9),('garden',1.6,1.7,.8),('oak',-2.6,-1.7,.85),('oak',-.4,-2.8,.7),('oak',2.7,-.6,.72),('oak',-2.4,1.8,.7)]:add_model(name,x,y,s)
+scene=bpy.context.scene;scene.render.engine='CYCLES';scene.cycles.samples=32;scene.render.resolution_x=512;scene.render.resolution_y=512;scene.render.resolution_percentage=100
+scene.world.color=(.15,.25,.34)
+for p,power,size in [((3,-5,12),1800,8),((-7,-3,7),1000,7)]:
+    bpy.ops.object.light_add(type='AREA',location=p);o=bpy.context.object;o.data.energy=power;o.data.shape='DISK';o.data.size=size;o.rotation_euler=(-o.location).to_track_quat('-Z','Y').to_euler()
+bpy.ops.object.camera_add(location=(9,-13,13));cam=bpy.context.object;cam.rotation_euler=(Vector((0,0,.6))-cam.location).to_track_quat('-Z','Y').to_euler();cam.data.type='ORTHO';cam.data.ortho_scale=12.6;scene.camera=cam
+scene.view_settings.view_transform='AgX';scene.render.image_settings.file_format='PNG';scene.render.film_transparent=False
+scene.render.filepath=str(R/'assets/icon.png');bpy.ops.render.render(write_still=True)
+scene.render.film_transparent=True;cam.data.ortho_scale=15.4;scene.render.filepath=str(R/'assets/icon-foreground.png');bpy.ops.render.render(write_still=True)
+print('PLANET_ICON_COMPLETE')
