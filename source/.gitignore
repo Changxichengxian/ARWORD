@@ -1,0 +1,10 @@
+.gradle/
+**/build/
+local.properties
+signing.properties
+signing/
+*.jks
+*.keystore
+tests/classes/
+**/__pycache__/
+tools/speech-temp.wav
