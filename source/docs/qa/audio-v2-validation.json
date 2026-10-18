@@ -1,0 +1,11 @@
+{
+  "clips": 1428,
+  "decodedSeconds": 2825.57,
+  "maxClipSeconds": 42.96,
+  "sampleRate": 24000,
+  "channels": 1,
+  "textHashMatches": 1428,
+  "unusedClipsRemovedFromApk": [
+    "x_honda.mp3"
+  ]
+}

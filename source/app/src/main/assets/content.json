@@ -1,0 +1,5294 @@
+{
+  "questions": [
+    {
+      "id": "v000",
+      "skill": 0,
+      "level": 0,
+      "word": "arrive",
+      "kind": "verb",
+      "text": "The first visitors arrive before noon.",
+      "zh": "到达",
+      "prompt": "在这句话里，arrive 是什么意思？",
+      "options": [
+        "选择",
+        "准备",
+        "到达",
+        "邀请"
+      ],
+      "correct": 2,
+      "audio": "audio/v000.mp3",
+      "explain": "arrive：到达。"
+    },
+    {
+      "id": "v001",
+      "skill": 0,
+      "level": 0,
+      "word": "borrow",
+      "kind": "verb",
+      "text": "May I borrow your map for a day?",
+      "zh": "借入",
+      "prompt": "在这句话里，borrow 是什么意思？",
+      "options": [
+        "决定",
+        "聚集",
+        "停留",
+        "借入"
+      ],
+      "correct": 3,
+      "audio": "audio/v001.mp3",
+      "explain": "borrow：借入。"
+    },
+    {
+      "id": "v002",
+      "skill": 0,
+      "level": 0,
+      "word": "carry",
+      "kind": "verb",
+      "text": "We can carry the small boxes together.",
+      "zh": "携带",
+      "prompt": "在这句话里，carry 是什么意思？",
+      "options": [
+        "返回",
+        "聚集",
+        "决定",
+        "携带"
+      ],
+      "correct": 3,
+      "audio": "audio/v002.mp3",
+      "explain": "carry：携带。"
+    },
+    {
+      "id": "v003",
+      "skill": 0,
+      "level": 0,
+      "word": "choose",
+      "kind": "verb",
+      "text": "Choose a dry place for the tent.",
+      "zh": "选择",
+      "prompt": "在这句话里，choose 是什么意思？",
+      "options": [
+        "修理",
+        "注意到",
+        "选择",
+        "准备"
+      ],
+      "correct": 2,
+      "audio": "audio/v003.mp3",
+      "explain": "choose：选择。"
+    },
+    {
+      "id": "v004",
+      "skill": 0,
+      "level": 0,
+      "word": "corner",
+      "kind": "noun",
+      "text": "A small lamp stands in the corner.",
+      "zh": "角落",
+      "prompt": "在这句话里，corner 是什么意思？",
+      "options": [
+        "旅程",
+        "空间",
+        "角落",
+        "天气"
+      ],
+      "correct": 2,
+      "audio": "audio/v004.mp3",
+      "explain": "corner：角落。"
+    },
+    {
+      "id": "v005",
+      "skill": 0,
+      "level": 0,
+      "word": "decide",
+      "kind": "verb",
+      "text": "We must decide which road to take.",
+      "zh": "决定",
+      "prompt": "在这句话里，decide 是什么意思？",
+      "options": [
+        "跟随",
+        "离开",
+        "决定",
+        "停留"
+      ],
+      "correct": 2,
+      "audio": "audio/v005.mp3",
+      "explain": "decide：决定。"
+    },
+    {
+      "id": "v006",
+      "skill": 0,
+      "level": 0,
+      "word": "empty",
+      "kind": "adjective",
+      "text": "The basket is empty after lunch.",
+      "zh": "空的",
+      "prompt": "在这句话里，empty 是什么意思？",
+      "options": [
+        "足够的",
+        "简单的",
+        "强壮的",
+        "空的"
+      ],
+      "correct": 3,
+      "audio": "audio/v006.mp3",
+      "explain": "empty：空的。"
+    },
+    {
+      "id": "v007",
+      "skill": 0,
+      "level": 0,
+      "word": "enough",
+      "kind": "adjective",
+      "text": "There is enough water for everyone.",
+      "zh": "足够的",
+      "prompt": "在这句话里，enough 是什么意思？",
+      "options": [
+        "足够的",
+        "新鲜的",
+        "轻柔的",
+        "木制的"
+      ],
+      "correct": 0,
+      "audio": "audio/v007.mp3",
+      "explain": "enough：足够的。"
+    },
+    {
+      "id": "v008",
+      "skill": 0,
+      "level": 0,
+      "word": "follow",
+      "kind": "verb",
+      "text": "Follow the path beside the river.",
+      "zh": "跟随",
+      "prompt": "在这句话里，follow 是什么意思？",
+      "options": [
+        "准备",
+        "离开",
+        "分享",
+        "跟随"
+      ],
+      "correct": 3,
+      "audio": "audio/v008.mp3",
+      "explain": "follow：跟随。"
+    },
+    {
+      "id": "v009",
+      "skill": 0,
+      "level": 0,
+      "word": "fresh",
+      "kind": "adjective",
+      "text": "She brings fresh bread every morning.",
+      "zh": "新鲜的",
+      "prompt": "在这句话里，fresh 是什么意思？",
+      "options": [
+        "新鲜的",
+        "轻柔的",
+        "安静的",
+        "强壮的"
+      ],
+      "correct": 0,
+      "audio": "audio/v009.mp3",
+      "explain": "fresh：新鲜的。"
+    },
+    {
+      "id": "v010",
+      "skill": 0,
+      "level": 0,
+      "word": "gather",
+      "kind": "verb",
+      "text": "The travelers gather near the fire.",
+      "zh": "聚集",
+      "prompt": "在这句话里，gather 是什么意思？",
+      "options": [
+        "携带",
+        "聚集",
+        "担心",
+        "主动提供"
+      ],
+      "correct": 1,
+      "audio": "audio/v010.mp3",
+      "explain": "gather：聚集。"
+    },
+    {
+      "id": "v011",
+      "skill": 0,
+      "level": 0,
+      "word": "gentle",
+      "kind": "adjective",
+      "text": "A gentle wind moves through the grass.",
+      "zh": "轻柔的",
+      "prompt": "在这句话里，gentle 是什么意思？",
+      "options": [
+        "安静的",
+        "有用的",
+        "轻柔的",
+        "简单的"
+      ],
+      "correct": 2,
+      "audio": "audio/v011.mp3",
+      "explain": "gentle：轻柔的。"
+    },
+    {
+      "id": "v012",
+      "skill": 0,
+      "level": 0,
+      "word": "improve",
+      "kind": "verb",
+      "text": "Practice can improve your listening.",
+      "zh": "改善",
+      "prompt": "在这句话里，improve 是什么意思？",
+      "options": [
+        "改善",
+        "邀请",
+        "离开",
+        "停留"
+      ],
+      "correct": 0,
+      "audio": "audio/v012.mp3",
+      "explain": "improve：改善。"
+    },
+    {
+      "id": "v013",
+      "skill": 0,
+      "level": 0,
+      "word": "invite",
+      "kind": "verb",
+      "text": "We invite our neighbors to dinner.",
+      "zh": "邀请",
+      "prompt": "在这句话里，invite 是什么意思？",
+      "options": [
+        "邀请",
+        "返回",
+        "到达",
+        "携带"
+      ],
+      "correct": 0,
+      "audio": "audio/v013.mp3",
+      "explain": "invite：邀请。"
+    },
+    {
+      "id": "v014",
+      "skill": 0,
+      "level": 0,
+      "word": "journey",
+      "kind": "noun",
+      "text": "The journey takes three days.",
+      "zh": "旅程",
+      "prompt": "在这句话里，journey 是什么意思？",
+      "options": [
+        "旅程",
+        "村庄",
+        "角落",
+        "暴风雨"
+      ],
+      "correct": 0,
+      "audio": "audio/v014.mp3",
+      "explain": "journey：旅程。"
+    },
+    {
+      "id": "v015",
+      "skill": 0,
+      "level": 0,
+      "word": "leave",
+      "kind": "verb",
+      "text": "We leave the village after breakfast.",
+      "zh": "离开",
+      "prompt": "在这句话里，leave 是什么意思？",
+      "options": [
+        "注意到",
+        "改善",
+        "离开",
+        "邀请"
+      ],
+      "correct": 2,
+      "audio": "audio/v015.mp3",
+      "explain": "leave：离开。"
+    },
+    {
+      "id": "v016",
+      "skill": 0,
+      "level": 0,
+      "word": "notice",
+      "kind": "verb",
+      "text": "Did you notice the broken window?",
+      "zh": "注意到",
+      "prompt": "在这句话里，notice 是什么意思？",
+      "options": [
+        "分享",
+        "选择",
+        "注意到",
+        "担心"
+      ],
+      "correct": 2,
+      "audio": "audio/v016.mp3",
+      "explain": "notice：注意到。"
+    },
+    {
+      "id": "v017",
+      "skill": 0,
+      "level": 0,
+      "word": "offer",
+      "kind": "verb",
+      "text": "They offer us a place to sleep.",
+      "zh": "主动提供",
+      "prompt": "在这句话里，offer 是什么意思？",
+      "options": [
+        "担心",
+        "浪费",
+        "主动提供",
+        "注意到"
+      ],
+      "correct": 2,
+      "audio": "audio/v017.mp3",
+      "explain": "offer：主动提供。"
+    },
+    {
+      "id": "v018",
+      "skill": 0,
+      "level": 0,
+      "word": "prepare",
+      "kind": "verb",
+      "text": "We prepare a hot meal for the team.",
+      "zh": "准备",
+      "prompt": "在这句话里，prepare 是什么意思？",
+      "options": [
+        "改善",
+        "准备",
+        "浪费",
+        "跟随"
+      ],
+      "correct": 1,
+      "audio": "audio/v018.mp3",
+      "explain": "prepare：准备。"
+    },
+    {
+      "id": "v019",
+      "skill": 0,
+      "level": 0,
+      "word": "quiet",
+      "kind": "adjective",
+      "text": "The street is quiet at night.",
+      "zh": "安静的",
+      "prompt": "在这句话里，quiet 是什么意思？",
+      "options": [
+        "有用的",
+        "木制的",
+        "简单的",
+        "安静的"
+      ],
+      "correct": 3,
+      "audio": "audio/v019.mp3",
+      "explain": "quiet：安静的。"
+    },
+    {
+      "id": "v020",
+      "skill": 0,
+      "level": 0,
+      "word": "reach",
+      "kind": "verb",
+      "text": "Can we reach the bridge before dark?",
+      "zh": "到达",
+      "prompt": "在这句话里，reach 是什么意思？",
+      "options": [
+        "等待",
+        "聚集",
+        "到达",
+        "分享"
+      ],
+      "correct": 2,
+      "audio": "audio/v020.mp3",
+      "explain": "reach：到达。"
+    },
+    {
+      "id": "v021",
+      "skill": 0,
+      "level": 0,
+      "word": "repair",
+      "kind": "verb",
+      "text": "He can repair the old wooden chair.",
+      "zh": "修理",
+      "prompt": "在这句话里，repair 是什么意思？",
+      "options": [
+        "修理",
+        "浪费",
+        "离开",
+        "决定"
+      ],
+      "correct": 0,
+      "audio": "audio/v021.mp3",
+      "explain": "repair：修理。"
+    },
+    {
+      "id": "v022",
+      "skill": 0,
+      "level": 0,
+      "word": "return",
+      "kind": "verb",
+      "text": "Please return before the rain starts.",
+      "zh": "返回",
+      "prompt": "在这句话里，return 是什么意思？",
+      "options": [
+        "注意到",
+        "跟随",
+        "聚集",
+        "返回"
+      ],
+      "correct": 3,
+      "audio": "audio/v022.mp3",
+      "explain": "return：返回。"
+    },
+    {
+      "id": "v023",
+      "skill": 0,
+      "level": 0,
+      "word": "share",
+      "kind": "verb",
+      "text": "We share our food with the visitors.",
+      "zh": "分享",
+      "prompt": "在这句话里，share 是什么意思？",
+      "options": [
+        "主动提供",
+        "担心",
+        "分享",
+        "修理"
+      ],
+      "correct": 2,
+      "audio": "audio/v023.mp3",
+      "explain": "share：分享。"
+    },
+    {
+      "id": "v024",
+      "skill": 0,
+      "level": 0,
+      "word": "simple",
+      "kind": "adjective",
+      "text": "The plan is simple and easy to follow.",
+      "zh": "简单的",
+      "prompt": "在这句话里，simple 是什么意思？",
+      "options": [
+        "宽阔的",
+        "足够的",
+        "安静的",
+        "简单的"
+      ],
+      "correct": 3,
+      "audio": "audio/v024.mp3",
+      "explain": "simple：简单的。"
+    },
+    {
+      "id": "v025",
+      "skill": 0,
+      "level": 0,
+      "word": "slowly",
+      "kind": "adverb",
+      "text": "The boat moves slowly across the lake.",
+      "zh": "缓慢地",
+      "prompt": "在这句话里，slowly 是什么意思？",
+      "options": [
+        "缓慢地",
+        "轻轻地",
+        "一起",
+        "也许"
+      ],
+      "correct": 0,
+      "audio": "audio/v025.mp3",
+      "explain": "slowly：缓慢地。"
+    },
+    {
+      "id": "v026",
+      "skill": 0,
+      "level": 0,
+      "word": "space",
+      "kind": "noun",
+      "text": "There is space for one more tent.",
+      "zh": "空间",
+      "prompt": "在这句话里，space 是什么意思？",
+      "options": [
+        "角落",
+        "空间",
+        "旅程",
+        "暴风雨"
+      ],
+      "correct": 1,
+      "audio": "audio/v026.mp3",
+      "explain": "space：空间。"
+    },
+    {
+      "id": "v027",
+      "skill": 0,
+      "level": 0,
+      "word": "stay",
+      "kind": "verb",
+      "text": "You can stay here until tomorrow.",
+      "zh": "停留",
+      "prompt": "在这句话里，stay 是什么意思？",
+      "options": [
+        "跟随",
+        "选择",
+        "主动提供",
+        "停留"
+      ],
+      "correct": 3,
+      "audio": "audio/v027.mp3",
+      "explain": "stay：停留。"
+    },
+    {
+      "id": "v028",
+      "skill": 0,
+      "level": 0,
+      "word": "storm",
+      "kind": "noun",
+      "text": "The storm keeps everyone indoors.",
+      "zh": "暴风雨",
+      "prompt": "在这句话里，storm 是什么意思？",
+      "options": [
+        "旅程",
+        "惊喜",
+        "暴风雨",
+        "角落"
+      ],
+      "correct": 2,
+      "audio": "audio/v028.mp3",
+      "explain": "storm：暴风雨。"
+    },
+    {
+      "id": "v029",
+      "skill": 0,
+      "level": 0,
+      "word": "strong",
+      "kind": "adjective",
+      "text": "A strong horse pulls the heavy cart.",
+      "zh": "强壮的",
+      "prompt": "在这句话里，strong 是什么意思？",
+      "options": [
+        "足够的",
+        "新鲜的",
+        "强壮的",
+        "安静的"
+      ],
+      "correct": 2,
+      "audio": "audio/v029.mp3",
+      "explain": "strong：强壮的。"
+    },
+    {
+      "id": "v030",
+      "skill": 0,
+      "level": 0,
+      "word": "surprise",
+      "kind": "noun",
+      "text": "The birthday cake is a lovely surprise.",
+      "zh": "惊喜",
+      "prompt": "在这句话里，surprise 是什么意思？",
+      "options": [
+        "惊喜",
+        "空间",
+        "天气",
+        "旅程"
+      ],
+      "correct": 0,
+      "audio": "audio/v030.mp3",
+      "explain": "surprise：惊喜。"
+    },
+    {
+      "id": "v031",
+      "skill": 0,
+      "level": 0,
+      "word": "together",
+      "kind": "adverb",
+      "text": "We finish the work together.",
+      "zh": "一起",
+      "prompt": "在这句话里，together 是什么意思？",
+      "options": [
+        "轻轻地",
+        "一起",
+        "也许",
+        "逐渐地"
+      ],
+      "correct": 1,
+      "audio": "audio/v031.mp3",
+      "explain": "together：一起。"
+    },
+    {
+      "id": "v032",
+      "skill": 0,
+      "level": 0,
+      "word": "useful",
+      "kind": "adjective",
+      "text": "This little tool is very useful.",
+      "zh": "有用的",
+      "prompt": "在这句话里，useful 是什么意思？",
+      "options": [
+        "新鲜的",
+        "空的",
+        "有用的",
+        "木制的"
+      ],
+      "correct": 2,
+      "audio": "audio/v032.mp3",
+      "explain": "useful：有用的。"
+    },
+    {
+      "id": "v033",
+      "skill": 0,
+      "level": 0,
+      "word": "village",
+      "kind": "noun",
+      "text": "The village lies beside a wide river.",
+      "zh": "村庄",
+      "prompt": "在这句话里，village 是什么意思？",
+      "options": [
+        "村庄",
+        "暴风雨",
+        "天气",
+        "角落"
+      ],
+      "correct": 0,
+      "audio": "audio/v033.mp3",
+      "explain": "village：村庄。"
+    },
+    {
+      "id": "v034",
+      "skill": 0,
+      "level": 0,
+      "word": "wait",
+      "kind": "verb",
+      "text": "Please wait here for the next boat.",
+      "zh": "等待",
+      "prompt": "在这句话里，wait 是什么意思？",
+      "options": [
+        "离开",
+        "等待",
+        "选择",
+        "改善"
+      ],
+      "correct": 1,
+      "audio": "audio/v034.mp3",
+      "explain": "wait：等待。"
+    },
+    {
+      "id": "v035",
+      "skill": 0,
+      "level": 0,
+      "word": "waste",
+      "kind": "verb",
+      "text": "Do not waste the clean water.",
+      "zh": "浪费",
+      "prompt": "在这句话里，waste 是什么意思？",
+      "options": [
+        "分享",
+        "担心",
+        "浪费",
+        "跟随"
+      ],
+      "correct": 2,
+      "audio": "audio/v035.mp3",
+      "explain": "waste：浪费。"
+    },
+    {
+      "id": "v036",
+      "skill": 0,
+      "level": 0,
+      "word": "weather",
+      "kind": "noun",
+      "text": "The weather changes quickly here.",
+      "zh": "天气",
+      "prompt": "在这句话里，weather 是什么意思？",
+      "options": [
+        "惊喜",
+        "角落",
+        "天气",
+        "旅程"
+      ],
+      "correct": 2,
+      "audio": "audio/v036.mp3",
+      "explain": "weather：天气。"
+    },
+    {
+      "id": "v037",
+      "skill": 0,
+      "level": 0,
+      "word": "wide",
+      "kind": "adjective",
+      "text": "The road is wide enough for two carts.",
+      "zh": "宽阔的",
+      "prompt": "在这句话里，wide 是什么意思？",
+      "options": [
+        "新鲜的",
+        "安静的",
+        "空的",
+        "宽阔的"
+      ],
+      "correct": 3,
+      "audio": "audio/v037.mp3",
+      "explain": "wide：宽阔的。"
+    },
+    {
+      "id": "v038",
+      "skill": 0,
+      "level": 0,
+      "word": "wooden",
+      "kind": "adjective",
+      "text": "They build a wooden table for the hall.",
+      "zh": "木制的",
+      "prompt": "在这句话里，wooden 是什么意思？",
+      "options": [
+        "宽阔的",
+        "木制的",
+        "安静的",
+        "有用的"
+      ],
+      "correct": 1,
+      "audio": "audio/v038.mp3",
+      "explain": "wooden：木制的。"
+    },
+    {
+      "id": "v039",
+      "skill": 0,
+      "level": 0,
+      "word": "worry",
+      "kind": "verb",
+      "text": "Do not worry about making a mistake.",
+      "zh": "担心",
+      "prompt": "在这句话里，worry 是什么意思？",
+      "options": [
+        "担心",
+        "注意到",
+        "分享",
+        "返回"
+      ],
+      "correct": 0,
+      "audio": "audio/v039.mp3",
+      "explain": "worry：担心。"
+    },
+    {
+      "id": "v040",
+      "skill": 0,
+      "level": 1,
+      "word": "avoid",
+      "kind": "verb",
+      "text": "We avoid the narrow road during heavy rain.",
+      "zh": "避免",
+      "prompt": "在这句话里，avoid 是什么意思？",
+      "options": [
+        "减少",
+        "信任",
+        "解释",
+        "避免"
+      ],
+      "correct": 3,
+      "audio": "audio/v040.mp3",
+      "explain": "avoid：避免。"
+    },
+    {
+      "id": "v041",
+      "skill": 0,
+      "level": 1,
+      "word": "balance",
+      "kind": "noun",
+      "text": "Try to keep a balance between work and rest.",
+      "zh": "平衡",
+      "prompt": "在这句话里，balance 是什么意思？",
+      "options": [
+        "努力",
+        "材料",
+        "弱点",
+        "平衡"
+      ],
+      "correct": 3,
+      "audio": "audio/v041.mp3",
+      "explain": "balance：平衡。"
+    },
+    {
+      "id": "v042",
+      "skill": 0,
+      "level": 1,
+      "word": "benefit",
+      "kind": "noun",
+      "text": "One benefit of walking is better sleep.",
+      "zh": "益处",
+      "prompt": "在这句话里，benefit 是什么意思？",
+      "options": [
+        "益处",
+        "弱点",
+        "庇护处",
+        "补给品"
+      ],
+      "correct": 0,
+      "audio": "audio/v042.mp3",
+      "explain": "benefit：益处。"
+    },
+    {
+      "id": "v043",
+      "skill": 0,
+      "level": 1,
+      "word": "compare",
+      "kind": "verb",
+      "text": "Compare the two maps before you choose.",
+      "zh": "比较",
+      "prompt": "在这句话里，compare 是什么意思？",
+      "options": [
+        "比较",
+        "解释",
+        "避免",
+        "替换"
+      ],
+      "correct": 0,
+      "audio": "audio/v043.mp3",
+      "explain": "compare：比较。"
+    },
+    {
+      "id": "v044",
+      "skill": 0,
+      "level": 1,
+      "word": "complete",
+      "kind": "verb",
+      "text": "We hope to complete the bridge this week.",
+      "zh": "完成",
+      "prompt": "在这句话里，complete 是什么意思？",
+      "options": [
+        "减少",
+        "防守",
+        "避免",
+        "完成"
+      ],
+      "correct": 3,
+      "audio": "audio/v044.mp3",
+      "explain": "complete：完成。"
+    },
+    {
+      "id": "v045",
+      "skill": 0,
+      "level": 1,
+      "word": "consider",
+      "kind": "verb",
+      "text": "Please consider the risks before leaving.",
+      "zh": "考虑",
+      "prompt": "在这句话里，consider 是什么意思？",
+      "options": [
+        "减少",
+        "解释",
+        "替换",
+        "考虑"
+      ],
+      "correct": 3,
+      "audio": "audio/v045.mp3",
+      "explain": "consider：考虑。"
+    },
+    {
+      "id": "v046",
+      "skill": 0,
+      "level": 1,
+      "word": "defend",
+      "kind": "verb",
+      "text": "Two guards stay behind to defend the gate.",
+      "zh": "防守",
+      "prompt": "在这句话里，defend 是什么意思？",
+      "options": [
+        "考虑",
+        "完成",
+        "防守",
+        "信任"
+      ],
+      "correct": 2,
+      "audio": "audio/v046.mp3",
+      "explain": "defend：防守。"
+    },
+    {
+      "id": "v047",
+      "skill": 0,
+      "level": 1,
+      "word": "delay",
+      "kind": "verb",
+      "text": "The rain may delay our trip by an hour.",
+      "zh": "延迟",
+      "prompt": "在这句话里，delay 是什么意思？",
+      "options": [
+        "延迟",
+        "考虑",
+        "逃脱",
+        "比较"
+      ],
+      "correct": 0,
+      "audio": "audio/v047.mp3",
+      "explain": "delay：延迟。"
+    },
+    {
+      "id": "v048",
+      "skill": 0,
+      "level": 1,
+      "word": "depend",
+      "kind": "verb",
+      "text": "The village depends on the river for water.",
+      "zh": "依赖",
+      "prompt": "在这句话里，depend 是什么意思？",
+      "options": [
+        "仍然处于；留下",
+        "考虑",
+        "依赖",
+        "防守"
+      ],
+      "correct": 2,
+      "audio": "audio/v048.mp3",
+      "explain": "depend：依赖。"
+    },
+    {
+      "id": "v049",
+      "skill": 0,
+      "level": 1,
+      "word": "discover",
+      "kind": "verb",
+      "text": "We discover a small garden behind the house.",
+      "zh": "发现",
+      "prompt": "在这句话里，discover 是什么意思？",
+      "options": [
+        "发现",
+        "设法完成",
+        "依赖",
+        "延迟"
+      ],
+      "correct": 0,
+      "audio": "audio/v049.mp3",
+      "explain": "discover：发现。"
+    },
+    {
+      "id": "v050",
+      "skill": 0,
+      "level": 1,
+      "word": "effort",
+      "kind": "noun",
+      "text": "The team puts a lot of effort into the project.",
+      "zh": "努力",
+      "prompt": "在这句话里，effort 是什么意思？",
+      "options": [
+        "对手",
+        "努力",
+        "益处",
+        "庇护处"
+      ],
+      "correct": 1,
+      "audio": "audio/v050.mp3",
+      "explain": "effort：努力。"
+    },
+    {
+      "id": "v051",
+      "skill": 0,
+      "level": 1,
+      "word": "escape",
+      "kind": "verb",
+      "text": "The animals escape through a hole in the fence.",
+      "zh": "逃脱",
+      "prompt": "在这句话里，escape 是什么意思？",
+      "options": [
+        "预料",
+        "逃脱",
+        "避免",
+        "防守"
+      ],
+      "correct": 1,
+      "audio": "audio/v051.mp3",
+      "explain": "escape：逃脱。"
+    },
+    {
+      "id": "v052",
+      "skill": 0,
+      "level": 1,
+      "word": "expect",
+      "kind": "verb",
+      "text": "We expect the visitors to arrive this evening.",
+      "zh": "预料",
+      "prompt": "在这句话里，expect 是什么意思？",
+      "options": [
+        "逃脱",
+        "防守",
+        "预料",
+        "减少"
+      ],
+      "correct": 2,
+      "audio": "audio/v052.mp3",
+      "explain": "expect：预料。"
+    },
+    {
+      "id": "v053",
+      "skill": 0,
+      "level": 1,
+      "word": "explain",
+      "kind": "verb",
+      "text": "Can you explain why the path is closed?",
+      "zh": "解释",
+      "prompt": "在这句话里，explain 是什么意思？",
+      "options": [
+        "解释",
+        "仍然处于；留下",
+        "预料",
+        "信任"
+      ],
+      "correct": 0,
+      "audio": "audio/v053.mp3",
+      "explain": "explain：解释。"
+    },
+    {
+      "id": "v054",
+      "skill": 0,
+      "level": 1,
+      "word": "familiar",
+      "kind": "adjective",
+      "text": "Her voice sounds familiar to me.",
+      "zh": "熟悉的",
+      "prompt": "在这句话里，familiar 是什么意思？",
+      "options": [
+        "频繁的",
+        "准确的",
+        "熟悉的",
+        "高效的"
+      ],
+      "correct": 2,
+      "audio": "audio/v054.mp3",
+      "explain": "familiar：熟悉的。"
+    },
+    {
+      "id": "v055",
+      "skill": 0,
+      "level": 1,
+      "word": "gently",
+      "kind": "adverb",
+      "text": "Place the glass gently on the table.",
+      "zh": "轻轻地",
+      "prompt": "在这句话里，gently 是什么意思？",
+      "options": [
+        "也许",
+        "逐渐地",
+        "一起",
+        "轻轻地"
+      ],
+      "correct": 3,
+      "audio": "audio/v055.mp3",
+      "explain": "gently：轻轻地。"
+    },
+    {
+      "id": "v056",
+      "skill": 0,
+      "level": 1,
+      "word": "gradually",
+      "kind": "adverb",
+      "text": "The empty field gradually becomes a garden.",
+      "zh": "逐渐地",
+      "prompt": "在这句话里，gradually 是什么意思？",
+      "options": [
+        "轻轻地",
+        "一起",
+        "逐渐地",
+        "也许"
+      ],
+      "correct": 2,
+      "audio": "audio/v056.mp3",
+      "explain": "gradually：逐渐地。"
+    },
+    {
+      "id": "v057",
+      "skill": 0,
+      "level": 1,
+      "word": "harvest",
+      "kind": "noun",
+      "text": "The farmers celebrate a good harvest.",
+      "zh": "收获",
+      "prompt": "在这句话里，harvest 是什么意思？",
+      "options": [
+        "益处",
+        "收获",
+        "对手",
+        "材料"
+      ],
+      "correct": 1,
+      "audio": "audio/v057.mp3",
+      "explain": "harvest：收获。"
+    },
+    {
+      "id": "v058",
+      "skill": 0,
+      "level": 1,
+      "word": "instead",
+      "kind": "connector",
+      "text": "It is raining, so we will read indoors instead.",
+      "zh": "代替；反而",
+      "prompt": "在这句话里，instead 是什么意思？",
+      "options": [
+        "然而；相比之下",
+        "代替；反而",
+        "尽管如此",
+        "除非"
+      ],
+      "correct": 1,
+      "audio": "audio/v058.mp3",
+      "explain": "instead：代替；反而。"
+    },
+    {
+      "id": "v059",
+      "skill": 0,
+      "level": 1,
+      "word": "manage",
+      "kind": "verb",
+      "text": "We manage to fix the roof before the storm.",
+      "zh": "设法完成",
+      "prompt": "在这句话里，manage 是什么意思？",
+      "options": [
+        "信任",
+        "设法完成",
+        "预料",
+        "考虑"
+      ],
+      "correct": 1,
+      "audio": "audio/v059.mp3",
+      "explain": "manage：设法完成。"
+    },
+    {
+      "id": "v060",
+      "skill": 0,
+      "level": 1,
+      "word": "material",
+      "kind": "noun",
+      "text": "Wood is the main material used for the bridge.",
+      "zh": "材料",
+      "prompt": "在这句话里，material 是什么意思？",
+      "options": [
+        "目的",
+        "材料",
+        "收获",
+        "路线"
+      ],
+      "correct": 1,
+      "audio": "audio/v060.mp3",
+      "explain": "material：材料。"
+    },
+    {
+      "id": "v061",
+      "skill": 0,
+      "level": 1,
+      "word": "meanwhile",
+      "kind": "connector",
+      "text": "I will cook; meanwhile, you can set the table.",
+      "zh": "与此同时",
+      "prompt": "在这句话里，meanwhile 是什么意思？",
+      "options": [
+        "然而；相比之下",
+        "代替；反而",
+        "与此同时",
+        "除非"
+      ],
+      "correct": 2,
+      "audio": "audio/v061.mp3",
+      "explain": "meanwhile：与此同时。"
+    },
+    {
+      "id": "v062",
+      "skill": 0,
+      "level": 1,
+      "word": "opponent",
+      "kind": "noun",
+      "text": "Our opponent often attacks from the left.",
+      "zh": "对手",
+      "prompt": "在这句话里，opponent 是什么意思？",
+      "options": [
+        "材料",
+        "路线",
+        "对手",
+        "信号"
+      ],
+      "correct": 2,
+      "audio": "audio/v062.mp3",
+      "explain": "opponent：对手。"
+    },
+    {
+      "id": "v063",
+      "skill": 0,
+      "level": 1,
+      "word": "patient",
+      "kind": "adjective",
+      "text": "Be patient while the young plants grow.",
+      "zh": "耐心的",
+      "prompt": "在这句话里，patient 是什么意思？",
+      "options": [
+        "耐心的",
+        "空的",
+        "新鲜的",
+        "简单的"
+      ],
+      "correct": 0,
+      "audio": "audio/v063.mp3",
+      "explain": "patient：耐心的。"
+    },
+    {
+      "id": "v064",
+      "skill": 0,
+      "level": 1,
+      "word": "perhaps",
+      "kind": "adverb",
+      "text": "Perhaps the other road is safer.",
+      "zh": "也许",
+      "prompt": "在这句话里，perhaps 是什么意思？",
+      "options": [
+        "轻轻地",
+        "也许",
+        "一起",
+        "缓慢地"
+      ],
+      "correct": 1,
+      "audio": "audio/v064.mp3",
+      "explain": "perhaps：也许。"
+    },
+    {
+      "id": "v065",
+      "skill": 0,
+      "level": 1,
+      "word": "protect",
+      "kind": "verb",
+      "text": "The walls protect the garden from the wind.",
+      "zh": "保护",
+      "prompt": "在这句话里，protect 是什么意思？",
+      "options": [
+        "延迟",
+        "逃脱",
+        "发现",
+        "保护"
+      ],
+      "correct": 3,
+      "audio": "audio/v065.mp3",
+      "explain": "protect：保护。"
+    },
+    {
+      "id": "v066",
+      "skill": 0,
+      "level": 1,
+      "word": "purpose",
+      "kind": "noun",
+      "text": "The purpose of this room is to store food.",
+      "zh": "目的",
+      "prompt": "在这句话里，purpose 是什么意思？",
+      "options": [
+        "材料",
+        "资源",
+        "目的",
+        "信号"
+      ],
+      "correct": 2,
+      "audio": "audio/v066.mp3",
+      "explain": "purpose：目的。"
+    },
+    {
+      "id": "v067",
+      "skill": 0,
+      "level": 1,
+      "word": "reduce",
+      "kind": "verb",
+      "text": "Better tools can reduce the time we need.",
+      "zh": "减少",
+      "prompt": "在这句话里，reduce 是什么意思？",
+      "options": [
+        "减少",
+        "比较",
+        "发现",
+        "逃脱"
+      ],
+      "correct": 0,
+      "audio": "audio/v067.mp3",
+      "explain": "reduce：减少。"
+    },
+    {
+      "id": "v068",
+      "skill": 0,
+      "level": 1,
+      "word": "regular",
+      "kind": "adjective",
+      "text": "Regular practice is better than one long session.",
+      "zh": "有规律的",
+      "prompt": "在这句话里，regular 是什么意思？",
+      "options": [
+        "有价值的",
+        "有规律的",
+        "空的",
+        "简短的"
+      ],
+      "correct": 1,
+      "audio": "audio/v068.mp3",
+      "explain": "regular：有规律的。"
+    },
+    {
+      "id": "v069",
+      "skill": 0,
+      "level": 1,
+      "word": "remain",
+      "kind": "verb",
+      "text": "Please remain inside until the storm ends.",
+      "zh": "仍然处于；留下",
+      "prompt": "在这句话里，remain 是什么意思？",
+      "options": [
+        "仍然处于；留下",
+        "避免",
+        "逃脱",
+        "依赖"
+      ],
+      "correct": 0,
+      "audio": "audio/v069.mp3",
+      "explain": "remain：仍然处于；留下。"
+    },
+    {
+      "id": "v070",
+      "skill": 0,
+      "level": 1,
+      "word": "replace",
+      "kind": "verb",
+      "text": "We need to replace the broken wheel.",
+      "zh": "替换",
+      "prompt": "在这句话里，replace 是什么意思？",
+      "options": [
+        "替换",
+        "仍然处于；留下",
+        "减少",
+        "发现"
+      ],
+      "correct": 0,
+      "audio": "audio/v070.mp3",
+      "explain": "replace：替换。"
+    },
+    {
+      "id": "v071",
+      "skill": 0,
+      "level": 1,
+      "word": "resource",
+      "kind": "noun",
+      "text": "Clean water is a valuable resource.",
+      "zh": "资源",
+      "prompt": "在这句话里，resource 是什么意思？",
+      "options": [
+        "收获",
+        "资源",
+        "对手",
+        "贸易"
+      ],
+      "correct": 1,
+      "audio": "audio/v071.mp3",
+      "explain": "resource：资源。"
+    },
+    {
+      "id": "v072",
+      "skill": 0,
+      "level": 1,
+      "word": "route",
+      "kind": "noun",
+      "text": "This route follows the coast for several miles.",
+      "zh": "路线",
+      "prompt": "在这句话里，route 是什么意思？",
+      "options": [
+        "庇护处",
+        "对手",
+        "路线",
+        "益处"
+      ],
+      "correct": 2,
+      "audio": "audio/v072.mp3",
+      "explain": "route：路线。"
+    },
+    {
+      "id": "v073",
+      "skill": 0,
+      "level": 1,
+      "word": "shelter",
+      "kind": "noun",
+      "text": "We find shelter in an old stone house.",
+      "zh": "庇护处",
+      "prompt": "在这句话里，shelter 是什么意思？",
+      "options": [
+        "庇护处",
+        "信号",
+        "平衡",
+        "贸易"
+      ],
+      "correct": 0,
+      "audio": "audio/v073.mp3",
+      "explain": "shelter：庇护处。"
+    },
+    {
+      "id": "v074",
+      "skill": 0,
+      "level": 1,
+      "word": "signal",
+      "kind": "noun",
+      "text": "A raised flag is the signal to move.",
+      "zh": "信号",
+      "prompt": "在这句话里，signal 是什么意思？",
+      "options": [
+        "益处",
+        "信号",
+        "材料",
+        "补给品"
+      ],
+      "correct": 1,
+      "audio": "audio/v074.mp3",
+      "explain": "signal：信号。"
+    },
+    {
+      "id": "v075",
+      "skill": 0,
+      "level": 1,
+      "word": "supply",
+      "kind": "noun",
+      "text": "The cart carries a supply of food and medicine.",
+      "zh": "补给品",
+      "prompt": "在这句话里，supply 是什么意思？",
+      "options": [
+        "庇护处",
+        "补给品",
+        "益处",
+        "平衡"
+      ],
+      "correct": 1,
+      "audio": "audio/v075.mp3",
+      "explain": "supply：补给品。"
+    },
+    {
+      "id": "v076",
+      "skill": 0,
+      "level": 1,
+      "word": "trade",
+      "kind": "noun",
+      "text": "Trade brings new goods into the village.",
+      "zh": "贸易",
+      "prompt": "在这句话里，trade 是什么意思？",
+      "options": [
+        "弱点",
+        "对手",
+        "材料",
+        "贸易"
+      ],
+      "correct": 3,
+      "audio": "audio/v076.mp3",
+      "explain": "trade：贸易。"
+    },
+    {
+      "id": "v077",
+      "skill": 0,
+      "level": 1,
+      "word": "trust",
+      "kind": "verb",
+      "text": "I trust her because she keeps her promises.",
+      "zh": "信任",
+      "prompt": "在这句话里，trust 是什么意思？",
+      "options": [
+        "信任",
+        "考虑",
+        "替换",
+        "仍然处于；留下"
+      ],
+      "correct": 0,
+      "audio": "audio/v077.mp3",
+      "explain": "trust：信任。"
+    },
+    {
+      "id": "v078",
+      "skill": 0,
+      "level": 1,
+      "word": "unless",
+      "kind": "connector",
+      "text": "We will leave now unless you need more time.",
+      "zh": "除非",
+      "prompt": "在这句话里，unless 是什么意思？",
+      "options": [
+        "代替；反而",
+        "然而；相比之下",
+        "与此同时",
+        "除非"
+      ],
+      "correct": 3,
+      "audio": "audio/v078.mp3",
+      "explain": "unless：除非。"
+    },
+    {
+      "id": "v079",
+      "skill": 0,
+      "level": 1,
+      "word": "weakness",
+      "kind": "noun",
+      "text": "The wall has a weakness near the old gate.",
+      "zh": "弱点",
+      "prompt": "在这句话里，weakness 是什么意思？",
+      "options": [
+        "弱点",
+        "材料",
+        "补给品",
+        "庇护处"
+      ],
+      "correct": 0,
+      "audio": "audio/v079.mp3",
+      "explain": "weakness：弱点。"
+    },
+    {
+      "id": "v080",
+      "skill": 0,
+      "level": 2,
+      "word": "accurate",
+      "kind": "adjective",
+      "text": "We need an accurate map of the valley.",
+      "zh": "准确的",
+      "prompt": "在这句话里，accurate 是什么意思？",
+      "options": [
+        "频繁的",
+        "准确的",
+        "不确定的",
+        "可靠的"
+      ],
+      "correct": 1,
+      "audio": "audio/v080.mp3",
+      "explain": "accurate：准确的。"
+    },
+    {
+      "id": "v081",
+      "skill": 0,
+      "level": 2,
+      "word": "adapt",
+      "kind": "verb",
+      "text": "The team must adapt to the changing weather.",
+      "zh": "适应",
+      "prompt": "在这句话里，adapt 是什么意思？",
+      "options": [
+        "说服",
+        "适应",
+        "估计",
+        "使暴露"
+      ],
+      "correct": 1,
+      "audio": "audio/v081.mp3",
+      "explain": "adapt：适应。"
+    },
+    {
+      "id": "v082",
+      "skill": 0,
+      "level": 2,
+      "word": "advance",
+      "kind": "verb",
+      "text": "The soldiers advance slowly through the mist.",
+      "zh": "前进",
+      "prompt": "在这句话里，advance 是什么意思？",
+      "options": [
+        "适应",
+        "前进",
+        "预测",
+        "恢复"
+      ],
+      "correct": 1,
+      "audio": "audio/v082.mp3",
+      "explain": "advance：前进。"
+    },
+    {
+      "id": "v083",
+      "skill": 0,
+      "level": 2,
+      "word": "alternative",
+      "kind": "noun",
+      "text": "Walking is a good alternative to waiting for a cart.",
+      "zh": "替代选择",
+      "prompt": "在这句话里，alternative 是什么意思？",
+      "options": [
+        "机会",
+        "对比",
+        "威胁",
+        "替代选择"
+      ],
+      "correct": 3,
+      "audio": "audio/v083.mp3",
+      "explain": "alternative：替代选择。"
+    },
+    {
+      "id": "v084",
+      "skill": 0,
+      "level": 2,
+      "word": "approach",
+      "kind": "verb",
+      "text": "As we approach the village, we hear music.",
+      "zh": "接近",
+      "prompt": "在这句话里，approach 是什么意思？",
+      "options": [
+        "预测",
+        "扩大",
+        "揭示",
+        "接近"
+      ],
+      "correct": 3,
+      "audio": "audio/v084.mp3",
+      "explain": "approach：接近。"
+    },
+    {
+      "id": "v085",
+      "skill": 0,
+      "level": 2,
+      "word": "assume",
+      "kind": "verb",
+      "text": "Do not assume that every quiet road is safe.",
+      "zh": "假定",
+      "prompt": "在这句话里，assume 是什么意思？",
+      "options": [
+        "前进",
+        "犹豫",
+        "使暴露",
+        "假定"
+      ],
+      "correct": 3,
+      "audio": "audio/v085.mp3",
+      "explain": "assume：假定。"
+    },
+    {
+      "id": "v086",
+      "skill": 0,
+      "level": 2,
+      "word": "brief",
+      "kind": "adjective",
+      "text": "He gives a brief account of the journey.",
+      "zh": "简短的",
+      "prompt": "在这句话里，brief 是什么意思？",
+      "options": [
+        "高效的",
+        "有价值的",
+        "准确的",
+        "简短的"
+      ],
+      "correct": 3,
+      "audio": "audio/v086.mp3",
+      "explain": "brief：简短的。"
+    },
+    {
+      "id": "v087",
+      "skill": 0,
+      "level": 2,
+      "word": "capacity",
+      "kind": "noun",
+      "text": "The new tank has twice the capacity of the old one.",
+      "zh": "容量",
+      "prompt": "在这句话里，capacity 是什么意思？",
+      "options": [
+        "容量",
+        "优先事项",
+        "替代选择",
+        "后果"
+      ],
+      "correct": 0,
+      "audio": "audio/v087.mp3",
+      "explain": "capacity：容量。"
+    },
+    {
+      "id": "v088",
+      "skill": 0,
+      "level": 2,
+      "word": "consequence",
+      "kind": "noun",
+      "text": "Think about the consequence of leaving the gate open.",
+      "zh": "后果",
+      "prompt": "在这句话里，consequence 是什么意思？",
+      "options": [
+        "机会",
+        "后果",
+        "优先事项",
+        "威胁"
+      ],
+      "correct": 1,
+      "audio": "audio/v088.mp3",
+      "explain": "consequence：后果。"
+    },
+    {
+      "id": "v089",
+      "skill": 0,
+      "level": 2,
+      "word": "constant",
+      "kind": "adjective",
+      "text": "The constant noise makes it difficult to rest.",
+      "zh": "持续的",
+      "prompt": "在这句话里，constant 是什么意思？",
+      "options": [
+        "持续的",
+        "频繁的",
+        "不确定的",
+        "有价值的"
+      ],
+      "correct": 0,
+      "audio": "audio/v089.mp3",
+      "explain": "constant：持续的。"
+    },
+    {
+      "id": "v090",
+      "skill": 0,
+      "level": 2,
+      "word": "contrast",
+      "kind": "noun",
+      "text": "There is a clear contrast between the two plans.",
+      "zh": "对比",
+      "prompt": "在这句话里，contrast 是什么意思？",
+      "options": [
+        "替代选择",
+        "对比",
+        "后果",
+        "容量"
+      ],
+      "correct": 1,
+      "audio": "audio/v090.mp3",
+      "explain": "contrast：对比。"
+    },
+    {
+      "id": "v091",
+      "skill": 0,
+      "level": 2,
+      "word": "convince",
+      "kind": "verb",
+      "text": "We convince the driver to take a safer route.",
+      "zh": "说服",
+      "prompt": "在这句话里，convince 是什么意思？",
+      "options": [
+        "说服",
+        "预测",
+        "承受",
+        "适应"
+      ],
+      "correct": 0,
+      "audio": "audio/v091.mp3",
+      "explain": "convince：说服。"
+    },
+    {
+      "id": "v092",
+      "skill": 0,
+      "level": 2,
+      "word": "decline",
+      "kind": "verb",
+      "text": "The number of visitors begins to decline in winter.",
+      "zh": "下降",
+      "prompt": "在这句话里，decline 是什么意思？",
+      "options": [
+        "识别",
+        "扩大",
+        "下降",
+        "获得"
+      ],
+      "correct": 2,
+      "audio": "audio/v092.mp3",
+      "explain": "decline：下降。"
+    },
+    {
+      "id": "v093",
+      "skill": 0,
+      "level": 2,
+      "word": "efficient",
+      "kind": "adjective",
+      "text": "This new stove is more efficient than the old one.",
+      "zh": "高效的",
+      "prompt": "在这句话里，efficient 是什么意思？",
+      "options": [
+        "高效的",
+        "简短的",
+        "可靠的",
+        "有价值的"
+      ],
+      "correct": 0,
+      "audio": "audio/v093.mp3",
+      "explain": "efficient：高效的。"
+    },
+    {
+      "id": "v094",
+      "skill": 0,
+      "level": 2,
+      "word": "estimate",
+      "kind": "verb",
+      "text": "Can you estimate how long the repairs will take?",
+      "zh": "估计",
+      "prompt": "在这句话里，estimate 是什么意思？",
+      "options": [
+        "估计",
+        "获得",
+        "犹豫",
+        "预测"
+      ],
+      "correct": 0,
+      "audio": "audio/v094.mp3",
+      "explain": "estimate：估计。"
+    },
+    {
+      "id": "v095",
+      "skill": 0,
+      "level": 2,
+      "word": "evidence",
+      "kind": "noun",
+      "text": "The broken branches are evidence that someone passed here.",
+      "zh": "证据",
+      "prompt": "在这句话里，evidence 是什么意思？",
+      "options": [
+        "容量",
+        "对比",
+        "证据",
+        "优先事项"
+      ],
+      "correct": 2,
+      "audio": "audio/v095.mp3",
+      "explain": "evidence：证据。"
+    },
+    {
+      "id": "v096",
+      "skill": 0,
+      "level": 2,
+      "word": "expand",
+      "kind": "verb",
+      "text": "We plan to expand the garden next spring.",
+      "zh": "扩大",
+      "prompt": "在这句话里，expand 是什么意思？",
+      "options": [
+        "承受",
+        "使暴露",
+        "扩大",
+        "接近"
+      ],
+      "correct": 2,
+      "audio": "audio/v096.mp3",
+      "explain": "expand：扩大。"
+    },
+    {
+      "id": "v097",
+      "skill": 0,
+      "level": 2,
+      "word": "expose",
+      "kind": "verb",
+      "text": "Removing the fence would expose the plants to strong winds.",
+      "zh": "使暴露",
+      "prompt": "在这句话里，expose 是什么意思？",
+      "options": [
+        "使暴露",
+        "假定",
+        "扩大",
+        "转移"
+      ],
+      "correct": 0,
+      "audio": "audio/v097.mp3",
+      "explain": "expose：使暴露。"
+    },
+    {
+      "id": "v098",
+      "skill": 0,
+      "level": 2,
+      "word": "flexible",
+      "kind": "adjective",
+      "text": "A flexible plan is useful when the weather changes.",
+      "zh": "灵活的",
+      "prompt": "在这句话里，flexible 是什么意思？",
+      "options": [
+        "简短的",
+        "灵活的",
+        "有价值的",
+        "准确的"
+      ],
+      "correct": 1,
+      "audio": "audio/v098.mp3",
+      "explain": "flexible：灵活的。"
+    },
+    {
+      "id": "v099",
+      "skill": 0,
+      "level": 2,
+      "word": "frequent",
+      "kind": "adjective",
+      "text": "Frequent rain makes the path difficult to use.",
+      "zh": "频繁的",
+      "prompt": "在这句话里，frequent 是什么意思？",
+      "options": [
+        "频繁的",
+        "不情愿的",
+        "简短的",
+        "高效的"
+      ],
+      "correct": 0,
+      "audio": "audio/v099.mp3",
+      "explain": "frequent：频繁的。"
+    },
+    {
+      "id": "v100",
+      "skill": 0,
+      "level": 2,
+      "word": "hesitate",
+      "kind": "verb",
+      "text": "She does not hesitate to help a stranger.",
+      "zh": "犹豫",
+      "prompt": "在这句话里，hesitate 是什么意思？",
+      "options": [
+        "说服",
+        "犹豫",
+        "估计",
+        "预测"
+      ],
+      "correct": 1,
+      "audio": "audio/v100.mp3",
+      "explain": "hesitate：犹豫。"
+    },
+    {
+      "id": "v101",
+      "skill": 0,
+      "level": 2,
+      "word": "identify",
+      "kind": "verb",
+      "text": "Can you identify the bird by its song?",
+      "zh": "识别",
+      "prompt": "在这句话里，identify 是什么意思？",
+      "options": [
+        "说服",
+        "识别",
+        "假定",
+        "维持"
+      ],
+      "correct": 1,
+      "audio": "audio/v101.mp3",
+      "explain": "identify：识别。"
+    },
+    {
+      "id": "v102",
+      "skill": 0,
+      "level": 2,
+      "word": "maintain",
+      "kind": "verb",
+      "text": "We need to maintain a steady supply of water.",
+      "zh": "维持",
+      "prompt": "在这句话里，maintain 是什么意思？",
+      "options": [
+        "使暴露",
+        "接近",
+        "维持",
+        "撤退"
+      ],
+      "correct": 2,
+      "audio": "audio/v102.mp3",
+      "explain": "maintain：维持。"
+    },
+    {
+      "id": "v103",
+      "skill": 0,
+      "level": 2,
+      "word": "nevertheless",
+      "kind": "connector",
+      "text": "The work is difficult; nevertheless, they continue.",
+      "zh": "尽管如此",
+      "prompt": "在这句话里，nevertheless 是什么意思？",
+      "options": [
+        "尽管如此",
+        "然而；相比之下",
+        "除非",
+        "与此同时"
+      ],
+      "correct": 0,
+      "audio": "audio/v103.mp3",
+      "explain": "nevertheless：尽管如此。"
+    },
+    {
+      "id": "v104",
+      "skill": 0,
+      "level": 2,
+      "word": "obtain",
+      "kind": "verb",
+      "text": "Travelers can obtain fresh water at the station.",
+      "zh": "获得",
+      "prompt": "在这句话里，obtain 是什么意思？",
+      "options": [
+        "犹豫",
+        "预测",
+        "转移",
+        "获得"
+      ],
+      "correct": 3,
+      "audio": "audio/v104.mp3",
+      "explain": "obtain：获得。"
+    },
+    {
+      "id": "v105",
+      "skill": 0,
+      "level": 2,
+      "word": "opportunity",
+      "kind": "noun",
+      "text": "The quiet afternoon is an opportunity to repair the roof.",
+      "zh": "机会",
+      "prompt": "在这句话里，opportunity 是什么意思？",
+      "options": [
+        "优先事项",
+        "机会",
+        "威胁",
+        "对比"
+      ],
+      "correct": 1,
+      "audio": "audio/v105.mp3",
+      "explain": "opportunity：机会。"
+    },
+    {
+      "id": "v106",
+      "skill": 0,
+      "level": 2,
+      "word": "predict",
+      "kind": "verb",
+      "text": "It is difficult to predict the next storm.",
+      "zh": "预测",
+      "prompt": "在这句话里，predict 是什么意思？",
+      "options": [
+        "假定",
+        "预测",
+        "前进",
+        "估计"
+      ],
+      "correct": 1,
+      "audio": "audio/v106.mp3",
+      "explain": "predict：预测。"
+    },
+    {
+      "id": "v107",
+      "skill": 0,
+      "level": 2,
+      "word": "priority",
+      "kind": "noun",
+      "text": "Keeping everyone warm is our first priority.",
+      "zh": "优先事项",
+      "prompt": "在这句话里，priority 是什么意思？",
+      "options": [
+        "证据",
+        "优先事项",
+        "机会",
+        "后果"
+      ],
+      "correct": 1,
+      "audio": "audio/v107.mp3",
+      "explain": "priority：优先事项。"
+    },
+    {
+      "id": "v108",
+      "skill": 0,
+      "level": 2,
+      "word": "recover",
+      "kind": "verb",
+      "text": "The plants recover after a few days of rain.",
+      "zh": "恢复",
+      "prompt": "在这句话里，recover 是什么意思？",
+      "options": [
+        "转移",
+        "说服",
+        "识别",
+        "恢复"
+      ],
+      "correct": 3,
+      "audio": "audio/v108.mp3",
+      "explain": "recover：恢复。"
+    },
+    {
+      "id": "v109",
+      "skill": 0,
+      "level": 2,
+      "word": "reluctant",
+      "kind": "adjective",
+      "text": "He is reluctant to leave his comfortable home.",
+      "zh": "不情愿的",
+      "prompt": "在这句话里，reluctant 是什么意思？",
+      "options": [
+        "不情愿的",
+        "持续的",
+        "有价值的",
+        "可靠的"
+      ],
+      "correct": 0,
+      "audio": "audio/v109.mp3",
+      "explain": "reluctant：不情愿的。"
+    },
+    {
+      "id": "v110",
+      "skill": 0,
+      "level": 2,
+      "word": "reliable",
+      "kind": "adjective",
+      "text": "We need a reliable source of news.",
+      "zh": "可靠的",
+      "prompt": "在这句话里，reliable 是什么意思？",
+      "options": [
+        "可靠的",
+        "临时的",
+        "不情愿的",
+        "灵活的"
+      ],
+      "correct": 0,
+      "audio": "audio/v110.mp3",
+      "explain": "reliable：可靠的。"
+    },
+    {
+      "id": "v111",
+      "skill": 0,
+      "level": 2,
+      "word": "reveal",
+      "kind": "verb",
+      "text": "The letter may reveal the reason for her journey.",
+      "zh": "揭示",
+      "prompt": "在这句话里，reveal 是什么意思？",
+      "options": [
+        "获得",
+        "识别",
+        "揭示",
+        "适应"
+      ],
+      "correct": 2,
+      "audio": "audio/v111.mp3",
+      "explain": "reveal：揭示。"
+    },
+    {
+      "id": "v112",
+      "skill": 0,
+      "level": 2,
+      "word": "temporary",
+      "kind": "adjective",
+      "text": "They put up a temporary shelter near the road.",
+      "zh": "临时的",
+      "prompt": "在这句话里，temporary 是什么意思？",
+      "options": [
+        "准确的",
+        "持续的",
+        "临时的",
+        "不确定的"
+      ],
+      "correct": 2,
+      "audio": "audio/v112.mp3",
+      "explain": "temporary：临时的。"
+    },
+    {
+      "id": "v113",
+      "skill": 0,
+      "level": 2,
+      "word": "threat",
+      "kind": "noun",
+      "text": "Flooding is the biggest threat to the village.",
+      "zh": "威胁",
+      "prompt": "在这句话里，threat 是什么意思？",
+      "options": [
+        "对比",
+        "机会",
+        "证据",
+        "威胁"
+      ],
+      "correct": 3,
+      "audio": "audio/v113.mp3",
+      "explain": "threat：威胁。"
+    },
+    {
+      "id": "v114",
+      "skill": 0,
+      "level": 2,
+      "word": "transfer",
+      "kind": "verb",
+      "text": "We transfer the food to a dry room.",
+      "zh": "转移",
+      "prompt": "在这句话里，transfer 是什么意思？",
+      "options": [
+        "转移",
+        "假定",
+        "使暴露",
+        "恢复"
+      ],
+      "correct": 0,
+      "audio": "audio/v114.mp3",
+      "explain": "transfer：转移。"
+    },
+    {
+      "id": "v115",
+      "skill": 0,
+      "level": 2,
+      "word": "uncertain",
+      "kind": "adjective",
+      "text": "The date of their return is still uncertain.",
+      "zh": "不确定的",
+      "prompt": "在这句话里，uncertain 是什么意思？",
+      "options": [
+        "灵活的",
+        "有价值的",
+        "不确定的",
+        "简短的"
+      ],
+      "correct": 2,
+      "audio": "audio/v115.mp3",
+      "explain": "uncertain：不确定的。"
+    },
+    {
+      "id": "v116",
+      "skill": 0,
+      "level": 2,
+      "word": "valuable",
+      "kind": "adjective",
+      "text": "Her advice is especially valuable to new travelers.",
+      "zh": "有价值的",
+      "prompt": "在这句话里，valuable 是什么意思？",
+      "options": [
+        "灵活的",
+        "可靠的",
+        "临时的",
+        "有价值的"
+      ],
+      "correct": 3,
+      "audio": "audio/v116.mp3",
+      "explain": "valuable：有价值的。"
+    },
+    {
+      "id": "v117",
+      "skill": 0,
+      "level": 2,
+      "word": "whereas",
+      "kind": "connector",
+      "text": "The north road is short, whereas the south road is safe.",
+      "zh": "然而；相比之下",
+      "prompt": "在这句话里，whereas 是什么意思？",
+      "options": [
+        "尽管如此",
+        "然而；相比之下",
+        "与此同时",
+        "代替；反而"
+      ],
+      "correct": 1,
+      "audio": "audio/v117.mp3",
+      "explain": "whereas：然而；相比之下。"
+    },
+    {
+      "id": "v118",
+      "skill": 0,
+      "level": 2,
+      "word": "withdraw",
+      "kind": "verb",
+      "text": "The guards withdraw when they see the larger force.",
+      "zh": "撤退",
+      "prompt": "在这句话里，withdraw 是什么意思？",
+      "options": [
+        "犹豫",
+        "估计",
+        "撤退",
+        "恢复"
+      ],
+      "correct": 2,
+      "audio": "audio/v118.mp3",
+      "explain": "withdraw：撤退。"
+    },
+    {
+      "id": "v119",
+      "skill": 0,
+      "level": 2,
+      "word": "withstand",
+      "kind": "verb",
+      "text": "The new roof can withstand heavy snow.",
+      "zh": "承受",
+      "prompt": "在这句话里，withstand 是什么意思？",
+      "options": [
+        "适应",
+        "承受",
+        "假定",
+        "估计"
+      ],
+      "correct": 1,
+      "audio": "audio/v119.mp3",
+      "explain": "withstand：承受。"
+    },
+    {
+      "id": "v120",
+      "skill": 0,
+      "level": 3,
+      "word": "ambiguous",
+      "kind": "adjective",
+      "text": "The message is ambiguous, so we ask for more detail.",
+      "zh": "含糊的",
+      "prompt": "在这句话里，ambiguous 是什么意思？",
+      "options": [
+        "根本的",
+        "易受攻击的",
+        "可信的",
+        "含糊的"
+      ],
+      "correct": 3,
+      "audio": "audio/v120.mp3",
+      "explain": "ambiguous：含糊的。"
+    },
+    {
+      "id": "v121",
+      "skill": 0,
+      "level": 3,
+      "word": "anticipate",
+      "kind": "verb",
+      "text": "We anticipate greater demand for water in summer.",
+      "zh": "预期",
+      "prompt": "在这句话里，anticipate 是什么意思？",
+      "options": [
+        "保留；保护",
+        "补偿",
+        "协商",
+        "预期"
+      ],
+      "correct": 3,
+      "audio": "audio/v121.mp3",
+      "explain": "anticipate：预期。"
+    },
+    {
+      "id": "v122",
+      "skill": 0,
+      "level": 3,
+      "word": "apparent",
+      "kind": "adjective",
+      "text": "There is no apparent damage to the bridge.",
+      "zh": "明显的",
+      "prompt": "在这句话里，apparent 是什么意思？",
+      "options": [
+        "合理可信的",
+        "易受攻击的",
+        "明显的",
+        "随后的"
+      ],
+      "correct": 2,
+      "audio": "audio/v122.mp3",
+      "explain": "apparent：明显的。"
+    },
+    {
+      "id": "v123",
+      "skill": 0,
+      "level": 3,
+      "word": "compensate",
+      "kind": "verb",
+      "text": "The extra supplies compensate for the late delivery.",
+      "zh": "补偿",
+      "prompt": "在这句话里，compensate 是什么意思？",
+      "options": [
+        "暗示",
+        "整合",
+        "补偿",
+        "区分"
+      ],
+      "correct": 2,
+      "audio": "audio/v123.mp3",
+      "explain": "compensate：补偿。"
+    },
+    {
+      "id": "v124",
+      "skill": 0,
+      "level": 3,
+      "word": "compromise",
+      "kind": "noun",
+      "text": "They reach a compromise that gives each group some space.",
+      "zh": "折中方案",
+      "prompt": "在这句话里，compromise 是什么意思？",
+      "options": [
+        "折中方案",
+        "推断",
+        "激励因素",
+        "限制条件"
+      ],
+      "correct": 0,
+      "audio": "audio/v124.mp3",
+      "explain": "compromise：折中方案。"
+    },
+    {
+      "id": "v125",
+      "skill": 0,
+      "level": 3,
+      "word": "conceal",
+      "kind": "verb",
+      "text": "Thick branches conceal the entrance to the path.",
+      "zh": "隐藏",
+      "prompt": "在这句话里，conceal 是什么意思？",
+      "options": [
+        "隐藏",
+        "区分",
+        "暗示",
+        "保留"
+      ],
+      "correct": 0,
+      "audio": "audio/v125.mp3",
+      "explain": "conceal：隐藏。"
+    },
+    {
+      "id": "v126",
+      "skill": 0,
+      "level": 3,
+      "word": "consistent",
+      "kind": "adjective",
+      "text": "Her report is consistent with what the scouts saw.",
+      "zh": "一致的",
+      "prompt": "在这句话里，consistent 是什么意思？",
+      "options": [
+        "可行的",
+        "一致的",
+        "客观的",
+        "不可避免的"
+      ],
+      "correct": 1,
+      "audio": "audio/v126.mp3",
+      "explain": "consistent：一致的。"
+    },
+    {
+      "id": "v127",
+      "skill": 0,
+      "level": 3,
+      "word": "constraint",
+      "kind": "noun",
+      "text": "Limited time is the main constraint on our plan.",
+      "zh": "限制条件",
+      "prompt": "在这句话里，constraint 是什么意思？",
+      "options": [
+        "推断",
+        "激励因素",
+        "权衡取舍",
+        "限制条件"
+      ],
+      "correct": 3,
+      "audio": "audio/v127.mp3",
+      "explain": "constraint：限制条件。"
+    },
+    {
+      "id": "v128",
+      "skill": 0,
+      "level": 3,
+      "word": "coordinate",
+      "kind": "verb",
+      "text": "We coordinate the deliveries so that nothing is wasted.",
+      "zh": "协调",
+      "prompt": "在这句话里，coordinate 是什么意思？",
+      "options": [
+        "协调",
+        "扰乱",
+        "区分",
+        "整合"
+      ],
+      "correct": 0,
+      "audio": "audio/v128.mp3",
+      "explain": "coordinate：协调。"
+    },
+    {
+      "id": "v129",
+      "skill": 0,
+      "level": 3,
+      "word": "credible",
+      "kind": "adjective",
+      "text": "We need a credible explanation for the missing goods.",
+      "zh": "可信的",
+      "prompt": "在这句话里，credible 是什么意思？",
+      "options": [
+        "相互的",
+        "有意的",
+        "可信的",
+        "有恢复力的"
+      ],
+      "correct": 2,
+      "audio": "audio/v129.mp3",
+      "explain": "credible：可信的。"
+    },
+    {
+      "id": "v130",
+      "skill": 0,
+      "level": 3,
+      "word": "deliberate",
+      "kind": "adjective",
+      "text": "The delay is deliberate, intended to avoid the storm.",
+      "zh": "有意的",
+      "prompt": "在这句话里，deliberate 是什么意思？",
+      "options": [
+        "客观的",
+        "合理可信的",
+        "详尽的",
+        "有意的"
+      ],
+      "correct": 3,
+      "audio": "audio/v130.mp3",
+      "explain": "deliberate：有意的。"
+    },
+    {
+      "id": "v131",
+      "skill": 0,
+      "level": 3,
+      "word": "disrupt",
+      "kind": "verb",
+      "text": "A sudden flood could disrupt the supply route.",
+      "zh": "扰乱",
+      "prompt": "在这句话里，disrupt 是什么意思？",
+      "options": [
+        "整合",
+        "预期",
+        "隐藏",
+        "扰乱"
+      ],
+      "correct": 3,
+      "audio": "audio/v131.mp3",
+      "explain": "disrupt：扰乱。"
+    },
+    {
+      "id": "v132",
+      "skill": 0,
+      "level": 3,
+      "word": "distinguish",
+      "kind": "verb",
+      "text": "It is hard to distinguish a real warning from a rumor.",
+      "zh": "区分",
+      "prompt": "在这句话里，distinguish 是什么意思？",
+      "options": [
+        "保留",
+        "区分",
+        "波动",
+        "隐藏"
+      ],
+      "correct": 1,
+      "audio": "audio/v132.mp3",
+      "explain": "distinguish：区分。"
+    },
+    {
+      "id": "v133",
+      "skill": 0,
+      "level": 3,
+      "word": "divert",
+      "kind": "verb",
+      "text": "We divert the water into a smaller channel.",
+      "zh": "使转向",
+      "prompt": "在这句话里，divert 是什么意思？",
+      "options": [
+        "维持",
+        "使转向",
+        "补偿",
+        "加固"
+      ],
+      "correct": 1,
+      "audio": "audio/v133.mp3",
+      "explain": "divert：使转向。"
+    },
+    {
+      "id": "v134",
+      "skill": 0,
+      "level": 3,
+      "word": "elaborate",
+      "kind": "adjective",
+      "text": "The captain has an elaborate plan with several stages.",
+      "zh": "详尽的",
+      "prompt": "在这句话里，elaborate 是什么意思？",
+      "options": [
+        "可行的",
+        "相互的",
+        "含糊的",
+        "详尽的"
+      ],
+      "correct": 3,
+      "audio": "audio/v134.mp3",
+      "explain": "elaborate：详尽的。"
+    },
+    {
+      "id": "v135",
+      "skill": 0,
+      "level": 3,
+      "word": "emerge",
+      "kind": "verb",
+      "text": "A new problem begins to emerge during construction.",
+      "zh": "出现",
+      "prompt": "在这句话里，emerge 是什么意思？",
+      "options": [
+        "出现",
+        "协调",
+        "加固",
+        "整合"
+      ],
+      "correct": 0,
+      "audio": "audio/v135.mp3",
+      "explain": "emerge：出现。"
+    },
+    {
+      "id": "v136",
+      "skill": 0,
+      "level": 3,
+      "word": "feasible",
+      "kind": "adjective",
+      "text": "The smaller bridge is a feasible solution.",
+      "zh": "可行的",
+      "prompt": "在这句话里，feasible 是什么意思？",
+      "options": [
+        "可行的",
+        "稀缺的",
+        "合理可信的",
+        "有恢复力的"
+      ],
+      "correct": 0,
+      "audio": "audio/v136.mp3",
+      "explain": "feasible：可行的。"
+    },
+    {
+      "id": "v137",
+      "skill": 0,
+      "level": 3,
+      "word": "fluctuate",
+      "kind": "verb",
+      "text": "Water levels fluctuate throughout the year.",
+      "zh": "波动",
+      "prompt": "在这句话里，fluctuate 是什么意思？",
+      "options": [
+        "整合",
+        "波动",
+        "加固",
+        "使转向"
+      ],
+      "correct": 1,
+      "audio": "audio/v137.mp3",
+      "explain": "fluctuate：波动。"
+    },
+    {
+      "id": "v138",
+      "skill": 0,
+      "level": 3,
+      "word": "imply",
+      "kind": "verb",
+      "text": "Dark clouds imply that a storm may be near.",
+      "zh": "暗示",
+      "prompt": "在这句话里，imply 是什么意思？",
+      "options": [
+        "暗示",
+        "加固",
+        "坚持",
+        "保留"
+      ],
+      "correct": 0,
+      "audio": "audio/v138.mp3",
+      "explain": "imply：暗示。"
+    },
+    {
+      "id": "v139",
+      "skill": 0,
+      "level": 3,
+      "word": "incentive",
+      "kind": "noun",
+      "text": "A safer road is an incentive for travelers to return.",
+      "zh": "激励因素",
+      "prompt": "在这句话里，incentive 是什么意思？",
+      "options": [
+        "限制条件",
+        "激励因素",
+        "推断",
+        "权衡取舍"
+      ],
+      "correct": 1,
+      "audio": "audio/v139.mp3",
+      "explain": "incentive：激励因素。"
+    },
+    {
+      "id": "v140",
+      "skill": 0,
+      "level": 3,
+      "word": "inevitable",
+      "kind": "adjective",
+      "text": "Some delays are inevitable in such bad weather.",
+      "zh": "不可避免的",
+      "prompt": "在这句话里，inevitable 是什么意思？",
+      "options": [
+        "不可避免的",
+        "含糊的",
+        "有意的",
+        "可信的"
+      ],
+      "correct": 0,
+      "audio": "audio/v140.mp3",
+      "explain": "inevitable：不可避免的。"
+    },
+    {
+      "id": "v141",
+      "skill": 0,
+      "level": 3,
+      "word": "inference",
+      "kind": "noun",
+      "text": "Her conclusion is an inference based on several clues.",
+      "zh": "推断",
+      "prompt": "在这句话里，inference 是什么意思？",
+      "options": [
+        "激励因素",
+        "推断",
+        "权衡取舍",
+        "限制条件"
+      ],
+      "correct": 1,
+      "audio": "audio/v141.mp3",
+      "explain": "inference：推断。"
+    },
+    {
+      "id": "v142",
+      "skill": 0,
+      "level": 3,
+      "word": "initiative",
+      "kind": "noun",
+      "text": "A quick response allows our team to take the initiative.",
+      "zh": "主动权",
+      "prompt": "在这句话里，initiative 是什么意思？",
+      "options": [
+        "推断",
+        "激励因素",
+        "主动权",
+        "折中方案"
+      ],
+      "correct": 2,
+      "audio": "audio/v142.mp3",
+      "explain": "initiative：主动权。"
+    },
+    {
+      "id": "v143",
+      "skill": 0,
+      "level": 3,
+      "word": "integrate",
+      "kind": "verb",
+      "text": "We integrate the new garden into the existing village.",
+      "zh": "整合",
+      "prompt": "在这句话里，integrate 是什么意思？",
+      "options": [
+        "维持",
+        "整合",
+        "保留；保护",
+        "扰乱"
+      ],
+      "correct": 1,
+      "audio": "audio/v143.mp3",
+      "explain": "integrate：整合。"
+    },
+    {
+      "id": "v144",
+      "skill": 0,
+      "level": 3,
+      "word": "mutual",
+      "kind": "adjective",
+      "text": "The agreement depends on mutual trust.",
+      "zh": "相互的",
+      "prompt": "在这句话里，mutual 是什么意思？",
+      "options": [
+        "相互的",
+        "稀缺的",
+        "详尽的",
+        "易受攻击的"
+      ],
+      "correct": 0,
+      "audio": "audio/v144.mp3",
+      "explain": "mutual：相互的。"
+    },
+    {
+      "id": "v145",
+      "skill": 0,
+      "level": 3,
+      "word": "negotiate",
+      "kind": "verb",
+      "text": "The two villages negotiate the cost of the bridge.",
+      "zh": "协商",
+      "prompt": "在这句话里，negotiate 是什么意思？",
+      "options": [
+        "预期",
+        "协商",
+        "保留",
+        "维持"
+      ],
+      "correct": 1,
+      "audio": "audio/v145.mp3",
+      "explain": "negotiate：协商。"
+    },
+    {
+      "id": "v146",
+      "skill": 0,
+      "level": 3,
+      "word": "objective",
+      "kind": "adjective",
+      "text": "Try to give an objective account of what happened.",
+      "zh": "客观的",
+      "prompt": "在这句话里，objective 是什么意思？",
+      "options": [
+        "可行的",
+        "合理可信的",
+        "精确的",
+        "客观的"
+      ],
+      "correct": 3,
+      "audio": "audio/v146.mp3",
+      "explain": "objective：客观的。"
+    },
+    {
+      "id": "v147",
+      "skill": 0,
+      "level": 3,
+      "word": "persist",
+      "kind": "verb",
+      "text": "They persist despite several unsuccessful attempts.",
+      "zh": "坚持",
+      "prompt": "在这句话里，persist 是什么意思？",
+      "options": [
+        "暗示",
+        "坚持",
+        "波动",
+        "区分"
+      ],
+      "correct": 1,
+      "audio": "audio/v147.mp3",
+      "explain": "persist：坚持。"
+    },
+    {
+      "id": "v148",
+      "skill": 0,
+      "level": 3,
+      "word": "plausible",
+      "kind": "adjective",
+      "text": "The broken wheel is a plausible reason for the delay.",
+      "zh": "合理可信的",
+      "prompt": "在这句话里，plausible 是什么意思？",
+      "options": [
+        "详尽的",
+        "易受攻击的",
+        "精确的",
+        "合理可信的"
+      ],
+      "correct": 3,
+      "audio": "audio/v148.mp3",
+      "explain": "plausible：合理可信的。"
+    },
+    {
+      "id": "v149",
+      "skill": 0,
+      "level": 3,
+      "word": "precise",
+      "kind": "adjective",
+      "text": "We need precise measurements before cutting the wood.",
+      "zh": "精确的",
+      "prompt": "在这句话里，precise 是什么意思？",
+      "options": [
+        "不可避免的",
+        "精确的",
+        "根本的",
+        "可行的"
+      ],
+      "correct": 1,
+      "audio": "audio/v149.mp3",
+      "explain": "precise：精确的。"
+    },
+    {
+      "id": "v150",
+      "skill": 0,
+      "level": 3,
+      "word": "preserve",
+      "kind": "verb",
+      "text": "The village hopes to preserve its old meeting hall.",
+      "zh": "保留；保护",
+      "prompt": "在这句话里，preserve 是什么意思？",
+      "options": [
+        "保留；保护",
+        "协商",
+        "补偿",
+        "整合"
+      ],
+      "correct": 0,
+      "audio": "audio/v150.mp3",
+      "explain": "preserve：保留；保护。"
+    },
+    {
+      "id": "v151",
+      "skill": 0,
+      "level": 3,
+      "word": "reinforce",
+      "kind": "verb",
+      "text": "Workers reinforce the wall with additional stone.",
+      "zh": "加固",
+      "prompt": "在这句话里，reinforce 是什么意思？",
+      "options": [
+        "整合",
+        "使转向",
+        "加固",
+        "补偿"
+      ],
+      "correct": 2,
+      "audio": "audio/v151.mp3",
+      "explain": "reinforce：加固。"
+    },
+    {
+      "id": "v152",
+      "skill": 0,
+      "level": 3,
+      "word": "resilient",
+      "kind": "adjective",
+      "text": "These plants are resilient and recover after dry weather.",
+      "zh": "有恢复力的",
+      "prompt": "在这句话里，resilient 是什么意思？",
+      "options": [
+        "含糊的",
+        "有恢复力的",
+        "可行的",
+        "明显的"
+      ],
+      "correct": 1,
+      "audio": "audio/v152.mp3",
+      "explain": "resilient：有恢复力的。"
+    },
+    {
+      "id": "v153",
+      "skill": 0,
+      "level": 3,
+      "word": "retain",
+      "kind": "verb",
+      "text": "The rebuilt house retains its original front door.",
+      "zh": "保留",
+      "prompt": "在这句话里，retain 是什么意思？",
+      "options": [
+        "协商",
+        "暗示",
+        "使转向",
+        "保留"
+      ],
+      "correct": 3,
+      "audio": "audio/v153.mp3",
+      "explain": "retain：保留。"
+    },
+    {
+      "id": "v154",
+      "skill": 0,
+      "level": 3,
+      "word": "scarce",
+      "kind": "adjective",
+      "text": "Fresh vegetables are scarce during the cold months.",
+      "zh": "稀缺的",
+      "prompt": "在这句话里，scarce 是什么意思？",
+      "options": [
+        "含糊的",
+        "稀缺的",
+        "一致的",
+        "可行的"
+      ],
+      "correct": 1,
+      "audio": "audio/v154.mp3",
+      "explain": "scarce：稀缺的。"
+    },
+    {
+      "id": "v155",
+      "skill": 0,
+      "level": 3,
+      "word": "subsequent",
+      "kind": "adjective",
+      "text": "The subsequent report provides more reliable details.",
+      "zh": "随后的",
+      "prompt": "在这句话里，subsequent 是什么意思？",
+      "options": [
+        "易受攻击的",
+        "随后的",
+        "相互的",
+        "含糊的"
+      ],
+      "correct": 1,
+      "audio": "audio/v155.mp3",
+      "explain": "subsequent：随后的。"
+    },
+    {
+      "id": "v156",
+      "skill": 0,
+      "level": 3,
+      "word": "sustain",
+      "kind": "verb",
+      "text": "A small garden cannot sustain the entire village.",
+      "zh": "维持",
+      "prompt": "在这句话里，sustain 是什么意思？",
+      "options": [
+        "暗示",
+        "区分",
+        "维持",
+        "预期"
+      ],
+      "correct": 2,
+      "audio": "audio/v156.mp3",
+      "explain": "sustain：维持。"
+    },
+    {
+      "id": "v157",
+      "skill": 0,
+      "level": 3,
+      "word": "trade-off",
+      "kind": "noun",
+      "text": "There is a trade-off between speed and safety.",
+      "zh": "权衡取舍",
+      "prompt": "在这句话里，trade-off 是什么意思？",
+      "options": [
+        "限制条件",
+        "权衡取舍",
+        "激励因素",
+        "主动权"
+      ],
+      "correct": 1,
+      "audio": "audio/v157.mp3",
+      "explain": "trade-off：权衡取舍。"
+    },
+    {
+      "id": "v158",
+      "skill": 0,
+      "level": 3,
+      "word": "underlying",
+      "kind": "adjective",
+      "text": "We must understand the underlying cause of the problem.",
+      "zh": "根本的",
+      "prompt": "在这句话里，underlying 是什么意思？",
+      "options": [
+        "易受攻击的",
+        "有意的",
+        "合理可信的",
+        "根本的"
+      ],
+      "correct": 3,
+      "audio": "audio/v158.mp3",
+      "explain": "underlying：根本的。"
+    },
+    {
+      "id": "v159",
+      "skill": 0,
+      "level": 3,
+      "word": "vulnerable",
+      "kind": "adjective",
+      "text": "Without a wall, the camp is vulnerable to attacks.",
+      "zh": "易受攻击的",
+      "prompt": "在这句话里，vulnerable 是什么意思？",
+      "options": [
+        "客观的",
+        "易受攻击的",
+        "一致的",
+        "明显的"
+      ],
+      "correct": 1,
+      "audio": "audio/v159.mp3",
+      "explain": "vulnerable：易受攻击的。"
+    },
+    {
+      "id": "r000",
+      "skill": 1,
+      "level": 0,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The red team is on the main road. They run toward our gate. No one stays behind the trees. They want to get here fast.",
+      "zh": "红队在主路上，正跑向营门，没有人在树林后停留。他们想迅速抵达。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "原地固守",
+        "正面突击",
+        "侧翼迂回"
+      ],
+      "correct": 1,
+      "explain": "红队在主路上，正跑向营门，没有人在树林后停留。他们想迅速抵达。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r001",
+      "skill": 1,
+      "level": 0,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "The guards stop beside a stone wall. They put their shields in front of them. They do not follow our scout. They plan to wait here.",
+      "zh": "卫兵在石墙边停下，把盾牌放在身前，没有追赶侦察兵。他们打算在这里等待。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "侧翼迂回",
+        "原地固守",
+        "正面突击"
+      ],
+      "correct": 1,
+      "explain": "卫兵在石墙边停下，把盾牌放在身前，没有追赶侦察兵。他们打算在这里等待。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r002",
+      "skill": 1,
+      "level": 0,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The front road is empty. We see two riders near the trees on our left. They are moving around the camp. Watch the side path.",
+      "zh": "正面道路空了。两名骑手出现在左侧树林附近，正绕着营地移动。留意侧路。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 1,
+      "explain": "正面道路空了。两名骑手出现在左侧树林附近，正绕着营地移动。留意侧路。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r003",
+      "skill": 1,
+      "level": 0,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "A horn sounds near the river. The other team leaves its safe place. All of them move straight toward us. Their leader wants a quick fight.",
+      "zh": "河边响起号角。对方离开安全位置，全部径直向我们移动，领队想速战速决。",
+      "prompt": "对方领队希望这场战斗怎样进行？",
+      "options": [
+        "一直等到明天",
+        "快速打完",
+        "完全避免交战"
+      ],
+      "correct": 1,
+      "explain": "河边响起号角。对方离开安全位置，全部径直向我们移动，领队想速战速决。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r004",
+      "skill": 1,
+      "level": 0,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "It is quiet at the old gate. The other team has food and water there. They sit behind their shields. They are not coming out yet.",
+      "zh": "旧门处很安静。对方备有食物和水，待在盾后，暂时不打算出来。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 2,
+      "explain": "旧门处很安静。对方备有食物和水，待在盾后，暂时不打算出来。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r005",
+      "skill": 1,
+      "level": 0,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "Our scout finds fresh tracks beside the river. The tracks go around the wall, not through the gate. Someone wants to reach us from the side.",
+      "zh": "侦察兵发现河边有新足迹，足迹绕过城墙，没有穿过大门。有人想从侧面接近。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 0,
+      "explain": "侦察兵发现河边有新足迹，足迹绕过城墙，没有穿过大门。有人想从侧面接近。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r006",
+      "skill": 1,
+      "level": 0,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The captain points at our camp. Her team picks up its weapons and leaves the hill. They take the shortest road. They will meet us from the front.",
+      "zh": "队长指向营地。队员拿起武器离开山坡，走最短的路，要从正面与我们交战。",
+      "prompt": "队伍选择了哪条路？",
+      "options": [
+        "河流另一岸的路",
+        "最短的路",
+        "最隐蔽的长路"
+      ],
+      "correct": 1,
+      "explain": "队长指向营地。队员拿起武器离开山坡，走最短的路，要从正面与我们交战。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r007",
+      "skill": 1,
+      "level": 0,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "The bridge is narrow. The other team stays at the far end. They build a small wall from old boxes. They want us to come to them.",
+      "zh": "桥很窄。对方留在远端，用旧箱子垒起矮墙，等我们过去。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 2,
+      "explain": "桥很窄。对方留在远端，用旧箱子垒起矮墙，等我们过去。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r008",
+      "skill": 1,
+      "level": 0,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "A bird flies up from the right-hand woods. Then we see a blue flag there. Most of the other team has left the main road. They are taking a side route.",
+      "zh": "右侧树林惊起飞鸟，随后出现一面蓝旗。对方大部离开主路，走了侧路。",
+      "prompt": "蓝旗出现在哪里？",
+      "options": [
+        "旧桥下方",
+        "右侧树林里",
+        "营地中央"
+      ],
+      "correct": 1,
+      "explain": "右侧树林惊起飞鸟，随后出现一面蓝旗。对方大部离开主路，走了侧路。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r009",
+      "skill": 1,
+      "level": 1,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The guards have been waiting all morning, but their captain is losing patience. He orders them to leave the wooden fence and take the direct route to our camp. They carry light equipment so that they can reach us quickly.",
+      "zh": "卫兵等了一上午，队长渐渐失去耐心。他命令大家离开木栅栏，沿直路赶来，轻装行动以求快速接近。",
+      "prompt": "队长为什么不再继续等候？",
+      "options": [
+        "他想等我方先主动出击",
+        "他已经失去耐心",
+        "轻装装备还没有送到"
+      ],
+      "correct": 1,
+      "explain": "卫兵等了一上午，队长渐渐失去耐心。他命令大家离开木栅栏，沿直路赶来，轻装行动以求快速接近。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r010",
+      "skill": 1,
+      "level": 1,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "Our scout waves a flag from the hill, hoping to draw the other team forward. They notice it but remain behind the broken cart. Their leader checks the shields and tells everyone to protect the narrow entrance.",
+      "zh": "侦察兵挥旗试图引对手前进。对方看到了，却仍待在坏车后。领队检查盾牌，吩咐守住狭窄入口。",
+      "prompt": "我方侦察兵挥旗的目的是什么？",
+      "options": [
+        "引对方离开阵地前进",
+        "召回我方正在渡河的骑手",
+        "示意对方从侧路绕行"
+      ],
+      "correct": 0,
+      "explain": "侦察兵挥旗试图引对手前进。对方看到了，却仍待在坏车后。领队检查盾牌，吩咐守住狭窄入口。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r011",
+      "skill": 1,
+      "level": 1,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The main path looks quiet, although we can hear footsteps beyond the garden. A traveler reports that several guards borrowed a small boat. They plan to cross the stream and approach our camp from the west.",
+      "zh": "主路安静，但菜园外能听到脚步。旅人说几名卫兵借了小船，准备渡溪从西侧接近营地。",
+      "prompt": "几名卫兵借用了什么？",
+      "options": [
+        "一套修桥工具",
+        "一条小船",
+        "一辆马车"
+      ],
+      "correct": 1,
+      "explain": "主路安静，但菜园外能听到脚步。旅人说几名卫兵借了小船，准备渡溪从西侧接近营地。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r012",
+      "skill": 1,
+      "level": 1,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "Rain is starting to fall, and the other team does not want a long battle. Their captain sends everyone down the middle of the valley. They leave their spare supplies on the hill and aim to break through before the weather gets worse.",
+      "zh": "雨开始落下，对方不愿久战。队长让全队走谷地中央，把备用补给留在山坡，力图在天气恶化前突破。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "原地固守",
+        "正面突击",
+        "侧翼迂回"
+      ],
+      "correct": 1,
+      "explain": "雨开始落下，对方不愿久战。队长让全队走谷地中央，把备用补给留在山坡，力图在天气恶化前突破。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r013",
+      "skill": 1,
+      "level": 1,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "The workers have placed heavy logs across the road. Behind them, the opposing team is preparing a safe position. Instead of chasing our riders, they share water and wait. Their plan depends on making us attack first.",
+      "zh": "工人把重木横在路上，对方在后面准备安全阵地。他们不追骑手，分水等待，计划让我们先攻。",
+      "prompt": "对方为什么不追我方骑手？",
+      "options": [
+        "准备沿侧路主动出击",
+        "希望让我们先发起进攻",
+        "急着在天黑前渡河"
+      ],
+      "correct": 1,
+      "explain": "工人把重木横在路上，对方在后面准备安全阵地。他们不追骑手，分水等待，计划让我们先攻。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r014",
+      "skill": 1,
+      "level": 1,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "We expected the other team to use the bridge. Instead, they are following a narrow track behind the houses. The track reaches the back of our camp. Only one guard remains near the bridge to keep our attention there.",
+      "zh": "我们原以为对方会走桥，他们却沿房屋后的窄路走向营地后方，只留一名卫兵在桥边吸引注意。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 1,
+      "explain": "我们原以为对方会走桥，他们却沿房屋后的窄路走向营地后方，只留一名卫兵在桥边吸引注意。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r015",
+      "skill": 1,
+      "level": 1,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "A messenger tells us that the captain has changed her plan. She no longer wants to wait for extra supplies. Her team forms a line on the main road and moves directly toward our position. Speed is now her priority.",
+      "zh": "信使说队长改了计划，不再等补给。她的队伍在主路列队，径直赶来，现在速度优先。",
+      "prompt": "队长决定不再等待什么？",
+      "options": [
+        "额外补给",
+        "我方的投降消息",
+        "侧路侦察兵的返回"
+      ],
+      "correct": 0,
+      "explain": "信使说队长改了计划，不再等补给。她的队伍在主路列队，径直赶来，现在速度优先。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r016",
+      "skill": 1,
+      "level": 1,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "The opposing team reaches a low wall before sunset. Their scout suggests following us, but the leader refuses. They repair a gap in the wall and prepare to spend the night there. The position is easy to defend.",
+      "zh": "对方日落前到达矮墙。侦察兵提议追赶，领队拒绝，修补墙缝准备过夜。这个位置易守。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 1,
+      "explain": "对方日落前到达矮墙。侦察兵提议追赶，领队拒绝，修补墙缝准备过夜。这个位置易守。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r017",
+      "skill": 1,
+      "level": 1,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The front gate is still watched, but most of the footsteps are moving away from it. Our scout sees the team turning into an orchard. They can use that route to appear beside our supply cart without crossing the open road.",
+      "zh": "正门仍有人盯着，大部分脚步却远离了它。侦察兵看见队伍拐入果园，可借此接近补给车侧面，避开开阔道路。",
+      "prompt": "果园路线能帮助对方做到什么？",
+      "options": [
+        "从正门直接穿过开阔道路",
+        "避开开阔道路，接近补给车侧面",
+        "让全队留在原地守桥"
+      ],
+      "correct": 1,
+      "explain": "正门仍有人盯着，大部分脚步却远离了它。侦察兵看见队伍拐入果园，可借此接近补给车侧面，避开开阔道路。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r018",
+      "skill": 1,
+      "level": 2,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The opposing captain knows that our supplies will arrive by evening. If she waits, our position will become stronger. She therefore abandons the shelter of the ruined mill and orders a rapid advance along the open road. Her scouts stay close to the main group rather than searching for another route.",
+      "zh": "对方队长知道我们的补给傍晚到达，拖延会让我们更强。因此她放弃旧磨坊的掩护，下令沿开阔道路迅速前进，侦察兵紧跟主队，没有寻找别的路线。",
+      "prompt": "对方为什么不愿等到傍晚？",
+      "options": [
+        "他们的援军到时会先发起进攻",
+        "我方补给将到达，阵地会更强",
+        "磨坊会在傍晚停止提供掩护"
+      ],
+      "correct": 1,
+      "explain": "对方队长知道我们的补给傍晚到达，拖延会让我们更强。因此她放弃旧磨坊的掩护，下令沿开阔道路迅速前进，侦察兵紧跟主队，没有寻找别的路线。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r019",
+      "skill": 1,
+      "level": 2,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "Our riders have made several attempts to attract attention near the stream. The opposing commander refuses to follow them. He has limited supplies, but his stone position offers excellent protection. For the moment, he prefers to maintain that advantage and force us to cross the exposed ground ourselves.",
+      "zh": "我方骑手数次在溪边诱敌，对方指挥官拒绝追击。虽然补给有限，石质阵地提供了良好保护。他宁愿守住优势，让我们自行穿越暴露地带。",
+      "prompt": "指挥官看重现有位置的什么优势？",
+      "options": [
+        "从这里能更快追上我方骑手",
+        "石质阵地提供良好保护",
+        "原地有充足补给可长期使用"
+      ],
+      "correct": 1,
+      "explain": "我方骑手数次在溪边诱敌，对方指挥官拒绝追击。虽然补给有限，石质阵地提供了良好保护。他宁愿守住优势，让我们自行穿越暴露地带。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r020",
+      "skill": 1,
+      "level": 2,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "A small group is making considerable noise near the front gate. Meanwhile, our second scout reports movement behind the eastern ridge. The commander appears to be using the noisy group to hold our attention while the larger force takes a longer but less exposed route toward our right side.",
+      "zh": "小队在正门制造噪声，同时另一名侦察兵发现东侧山脊后的动静。指挥官似乎借小队吸引注意，让主力走更长但较隐蔽的路线接近右侧。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "原地固守",
+        "正面突击",
+        "侧翼迂回"
+      ],
+      "correct": 2,
+      "explain": "小队在正门制造噪声，同时另一名侦察兵发现东侧山脊后的动静。指挥官似乎借小队吸引注意，让主力走更长但较隐蔽的路线接近右侧。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r021",
+      "skill": 1,
+      "level": 2,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The weather forecast gives the other team only a brief opportunity to cross the valley. Their commander considers a sheltered route, then rejects it because it would take too long. The entire group leaves cover and advances toward our central position before the rain can turn the road into mud.",
+      "zh": "天气只给对方短暂的穿谷机会。指挥官因耗时太久放弃隐蔽路线，全队离开掩体，赶在雨把路变成泥潭前直进我方中央。",
+      "prompt": "更隐蔽的路线为什么被放弃？",
+      "options": [
+        "走那条路会花太长时间",
+        "那条路比中央路线更加暴露",
+        "指挥官希望等雨停以后再走"
+      ],
+      "correct": 0,
+      "explain": "天气只给对方短暂的穿谷机会。指挥官因耗时太久放弃隐蔽路线，全队离开掩体，赶在雨把路变成泥潭前直进我方中央。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r022",
+      "skill": 1,
+      "level": 2,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "The defenders have enough food to remain where they are, and they know our team must eventually pass through the gate. Although several younger guards want to pursue us, the captain keeps them behind the reinforced barrier. She intends to let the difficult ground do part of the work.",
+      "zh": "守军粮食充足，也知道我们终将通过大门。尽管年轻卫兵想追击，队长仍将其留在加固屏障后，准备利用地形。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 2,
+      "explain": "守军粮食充足，也知道我们终将通过大门。尽管年轻卫兵想追击，队长仍将其留在加固屏障后，准备利用地形。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r023",
+      "skill": 1,
+      "level": 2,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The bridge seems like the obvious approach, which is exactly why the opposing captain avoids it. She sends two guards there as a distraction, while the rest follow a shallow channel hidden by reeds. That channel joins the road just behind our position, where we have fewer supplies and less cover.",
+      "zh": "桥是明显的接近路线，因此对方反而避开它。两名卫兵在桥上佯动，其余沿芦苇遮住的浅渠行进，浅渠通向我方后侧，那里补给和掩护较少。",
+      "prompt": "留在桥边的两名卫兵主要有什么作用？",
+      "options": [
+        "吸引我方注意",
+        "保护正在桥上转移的主力",
+        "为浅水道寻找新的入口"
+      ],
+      "correct": 0,
+      "explain": "桥是明显的接近路线，因此对方反而避开它。两名卫兵在桥上佯动，其余沿芦苇遮住的浅渠行进，浅渠通向我方后侧，那里补给和掩护较少。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r024",
+      "skill": 1,
+      "level": 2,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The opposing team has discovered that our central barrier is still under repair. Their captain decides that waiting would waste this advantage. Rather than dividing the group, she gathers everyone on the main track and commits to an immediate attack on the unfinished entrance.",
+      "zh": "对方发现我方中央屏障尚在修缮，队长认为不能错失机会。她不分兵，将全队集中在主路，立即进攻未完工入口。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 1,
+      "explain": "对方发现我方中央屏障尚在修缮，队长认为不能错失机会。她不分兵，将全队集中在主路，立即进攻未完工入口。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r025",
+      "skill": 1,
+      "level": 2,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "Our scout reports that the other team has stopped beside the abandoned storehouse. They are reinforcing the doors and moving their supplies inside. A few riders appear ready to chase us, but the commander calls them back. His priority is to hold a reliable position rather than gain ground quickly.",
+      "zh": "对方停在旧仓库旁，加固门并搬入补给。几名骑手想追来，却被叫回。指挥官优先守住可靠阵地，不急于抢地。",
+      "prompt": "指挥官的优先事项是什么？",
+      "options": [
+        "守住可靠位置",
+        "立即离开整个河谷",
+        "尽快追上我方骑手"
+      ],
+      "correct": 0,
+      "explain": "对方停在旧仓库旁，加固门并搬入补给。几名骑手想追来，却被叫回。指挥官优先守住可靠阵地，不急于抢地。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r026",
+      "skill": 1,
+      "level": 2,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The opposing commander has watched us strengthen the front entrance all morning. She knows that another direct attempt would be costly. After leaving a visible flag near the main road, she leads the greater part of her team through a dry riverbed toward the unguarded side of the camp.",
+      "zh": "对方指挥官看我们加固正门一上午，知道再次直攻代价很高。她在主路留一面显眼旗帜，带大部沿干河床接近无人把守的侧面。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 1,
+      "explain": "对方指挥官看我们加固正门一上午，知道再次直攻代价很高。她在主路留一面显眼旗帜，带大部沿干河床接近无人把守的侧面。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r027",
+      "skill": 1,
+      "level": 3,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The scouts initially interpreted the quiet road as evidence of a withdrawal. A subsequent report, however, mentions that the opposing commander has abandoned all reserve positions and concentrated her forces at the valley entrance. Given that her supplies are running low and our reinforcements are expected tomorrow, she appears willing to accept immediate losses in exchange for a decisive breakthrough at the center.",
+      "zh": "侦察兵起初把安静道路当成撤退证据，但后续报告说对方放弃预备阵地，将兵力集中在谷口。鉴于其补给不足、我方援军明日抵达，她似乎愿意承受眼前损失，以换取中央决定性突破。",
+      "prompt": "哪些情况使对方愿意立即冒险？",
+      "options": [
+        "我方补给不足，而对方援军明日到达",
+        "对方补给将到达，主力准备继续等待",
+        "补给不足，而我方援军明日到达"
+      ],
+      "correct": 2,
+      "explain": "侦察兵起初把安静道路当成撤退证据，但后续报告说对方放弃预备阵地，将兵力集中在谷口。鉴于其补给不足、我方援军明日抵达，她似乎愿意承受眼前损失，以换取中央决定性突破。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r028",
+      "skill": 1,
+      "level": 3,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "Several banners have appeared beyond the wall, creating the impression that the defenders are preparing to advance. Yet no supply carts have left the courtyard, and workers continue to reinforce the entrance. The more plausible interpretation is that the movement is intended to discourage our approach while the commander preserves her defensive advantage. She has little incentive to abandon such a reliable position.",
+      "zh": "墙外旗帜让人以为守军准备前进，但补给车未出院落，工人还在加固入口。更合理的解释是，这些动作旨在阻止我们靠近，同时保住防御优势。她没有多少理由放弃可靠阵地。",
+      "prompt": "什么细节不支持“对方即将前进”的表象？",
+      "options": [
+        "墙外出现了旗帜",
+        "补给车未离开，工人还在加固入口",
+        "我方能看见部分守军"
+      ],
+      "correct": 1,
+      "explain": "墙外旗帜让人以为守军准备前进，但补给车未出院落，工人还在加固入口。更合理的解释是，这些动作旨在阻止我们靠近，同时保住防御优势。她没有多少理由放弃可靠阵地。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r029",
+      "skill": 1,
+      "level": 3,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The message describes a deliberate increase in activity at the main gate, but it also notes that most experienced riders are absent from that position. Tracks recently discovered behind the orchard suggest an alternative approach. Taken together, these details imply that the visible activity is a diversion, allowing the main force to exploit the less protected route along our flank.",
+      "zh": "正门活动有意增加，但老练骑手大多不在场。果园后的新足迹暗示另一条路线。综合来看，显眼活动用于诱导注意，让主力利用我方侧翼较少保护的通路。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 2,
+      "explain": "正门活动有意增加，但老练骑手大多不在场。果园后的新足迹暗示另一条路线。综合来看，显眼活动用于诱导注意，让主力利用我方侧翼较少保护的通路。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r030",
+      "skill": 1,
+      "level": 3,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The commander has rejected two proposals that would have preserved her forces: waiting for additional supplies and circling through the northern woods. Both options would delay the encounter, allowing our engineers to finish the central defenses. Her remaining decision is therefore consistent with a rapid frontal commitment, despite the risk of exposing the group on open ground.",
+      "zh": "指挥官拒绝了等补给和绕北林两种保全兵力的方案，因为两者都会拖延，让我方工兵完成中央防御。因此剩下的决策指向快速正面投入，尽管全队有暴露于开阔地的风险。",
+      "prompt": "等待和绕路两种方案有什么共同问题？",
+      "options": [
+        "都会让对方更快到达中央入口",
+        "都会给我方完成防御的时间",
+        "都会让对方立即暴露在开阔地上"
+      ],
+      "correct": 1,
+      "explain": "指挥官拒绝了等补给和绕北林两种保全兵力的方案，因为两者都会拖延，让我方工兵完成中央防御。因此剩下的决策指向快速正面投入，尽管全队有暴露于开阔地的风险。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r031",
+      "skill": 1,
+      "level": 3,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "A captured schedule indicates that the opposing team has arranged regular food deliveries to its current position for the next three days. Although individual riders occasionally emerge to provoke a response, there is no evidence of preparations for a sustained advance. The logistics are more consistent with holding the existing barrier and encouraging us to exhaust ourselves against it.",
+      "zh": "一份日程显示，对方已为现阵地安排未来三天的固定送粮。虽有骑手出来挑衅，却无持续推进准备。后勤安排更符合守住现有屏障、诱使我方消耗力量的打算。",
+      "prompt": "三天的固定送粮安排更支持哪种判断？",
+      "options": [
+        "对方已准备立即持续向前推进",
+        "对方打算留在当前阵地",
+        "对方正在完全撤离当前阵地"
+      ],
+      "correct": 1,
+      "explain": "一份日程显示，对方已为现阵地安排未来三天的固定送粮。虽有骑手出来挑衅，却无持续推进准备。后勤安排更符合守住现有屏障、诱使我方消耗力量的打算。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r032",
+      "skill": 1,
+      "level": 3,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The opposing leader has repeatedly emphasized the importance of the central bridge in messages that could easily be intercepted. Meanwhile, supplies have quietly been transferred to the western bank, where a narrow trail reaches our rear. The discrepancy suggests that her public emphasis is meant to conceal the actual approach rather than reveal it. The less visible movement deserves greater attention.",
+      "zh": "对方反复在易被截获的信息中强调中央桥梁，同时补给却悄悄转向西岸，那里的窄路通往我方后方。这种不一致提示公开强调是在掩盖真实路线，应更注意不显眼的动向。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 2,
+      "explain": "对方反复在易被截获的信息中强调中央桥梁，同时补给却悄悄转向西岸，那里的窄路通往我方后方。这种不一致提示公开强调是在掩盖真实路线，应更注意不显眼的动向。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r033",
+      "skill": 1,
+      "level": 3,
+      "signal": 0,
+      "title": "前线侦察记录",
+      "text": "The latest report contradicts the assumption that the enemy will conserve its strength. Reserve units are joining the central formation, while equipment that would slow their movement has been left behind. Combined with the approaching storm, which will soon make the main road impassable, these preparations point toward an attempt to force a direct engagement within the remaining window.",
+      "zh": "最新报告与对方将保留实力的假设矛盾。预备队加入中央队形，拖慢速度的装备被丢下。风暴将使主路无法通行，这些准备指向在窗口关闭前强行正面接战。",
+      "prompt": "对方为什么丢下部分装备？",
+      "options": [
+        "利用这些装备长期加固原阵地",
+        "把装备留给即将到来的我方援军",
+        "避免这些装备拖慢移动"
+      ],
+      "correct": 2,
+      "explain": "最新报告与对方将保留实力的假设矛盾。预备队加入中央队形，拖慢速度的装备被丢下。风暴将使主路无法通行，这些准备指向在窗口关闭前强行正面接战。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r034",
+      "skill": 1,
+      "level": 3,
+      "signal": 1,
+      "title": "前线侦察记录",
+      "text": "Our repeated retreats have failed to draw the commander out of the old fort. Her refusal is not necessarily hesitation: the fort controls the only reliable source of water, and leaving it would surrender that advantage. The additional shields now being carried inside reinforce the inference that she intends to make us approach on her terms.",
+      "zh": "多次后退都未诱出旧堡指挥官。这未必是犹豫，因为堡垒控制唯一可靠水源，离开就会放弃优势。新增盾牌被搬入，进一步支持她要我们按其条件靠近的推断。",
+      "prompt": "根据这份报告，侦察时对方主要在做什么？",
+      "options": [
+        "原地固守",
+        "正面突击",
+        "侧翼迂回"
+      ],
+      "correct": 0,
+      "explain": "多次后退都未诱出旧堡指挥官。这未必是犹豫，因为堡垒控制唯一可靠水源，离开就会放弃优势。新增盾牌被搬入，进一步支持她要我们按其条件靠近的推断。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "r035",
+      "skill": 1,
+      "level": 3,
+      "signal": 2,
+      "title": "前线侦察记录",
+      "text": "The front line remains conspicuous, yet its movements have become unusually repetitive. A second observer reports that the supply trail has shifted toward a concealed passage around the hill. This combination is consistent with a small force sustaining the appearance of a direct confrontation while the principal group moves to a position from which it can threaten our side.",
+      "zh": "正面队伍依然显眼，动作却异常重复。另一个观察者报告补给路线转向绕山的隐蔽通道。这符合小部队维持正面对峙表象、主力转向威胁我方侧面的情况。",
+      "prompt": "主力转移时，显眼的小部队在做什么？",
+      "options": [
+        "维持正面对峙的表象",
+        "放弃正面对峙并全部转向侧面",
+        "带领主力沿正面路线突破"
+      ],
+      "correct": 0,
+      "explain": "正面队伍依然显眼，动作却异常重复。另一个观察者报告补给路线转向绕山的隐蔽通道。这符合小部队维持正面对峙表象、主力转向威胁我方侧面的情况。\n这是侦察时的动向；交锋前对手仍可能变招。"
+    },
+    {
+      "id": "l000",
+      "skill": 2,
+      "level": 0,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "They are coming down the main road. Get ready at the gate.",
+      "zh": "他们正沿主路赶来，在门口做好准备。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 2,
+      "audio": "audio/l000.mp3",
+      "explain": "他们正沿主路赶来，在门口做好准备。"
+    },
+    {
+      "id": "l001",
+      "skill": 2,
+      "level": 0,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "They have stopped behind the wall. They are waiting for us.",
+      "zh": "他们停在墙后，正在等我们。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 2,
+      "audio": "audio/l001.mp3",
+      "explain": "他们停在墙后，正在等我们。"
+    },
+    {
+      "id": "l002",
+      "skill": 2,
+      "level": 0,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "Look to your left. They are moving through the trees.",
+      "zh": "看左侧，他们正在树林里移动。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 1,
+      "audio": "audio/l002.mp3",
+      "explain": "看左侧，他们正在树林里移动。"
+    },
+    {
+      "id": "l003",
+      "skill": 2,
+      "level": 0,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "The whole team is running straight toward our camp.",
+      "zh": "全队正径直跑向营地。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 0,
+      "audio": "audio/l003.mp3",
+      "explain": "全队正径直跑向营地。"
+    },
+    {
+      "id": "l004",
+      "skill": 2,
+      "level": 0,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "Their shields are up. No one is leaving the old bridge.",
+      "zh": "他们举起了盾，没有人离开旧桥。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 2,
+      "audio": "audio/l004.mp3",
+      "explain": "他们举起了盾，没有人离开旧桥。"
+    },
+    {
+      "id": "l005",
+      "skill": 2,
+      "level": 0,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "The main road is empty. They are taking the path on our right.",
+      "zh": "主路空了，他们正走我们右侧的小道。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "正面突击",
+        "侧翼迂回"
+      ],
+      "correct": 2,
+      "audio": "audio/l005.mp3",
+      "explain": "主路空了，他们正走我们右侧的小道。"
+    },
+    {
+      "id": "l006",
+      "skill": 2,
+      "level": 1,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "The captain does not want to wait. She is bringing everyone down the center.",
+      "zh": "队长不想等了，正带全队沿中央前进。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 1,
+      "audio": "audio/l006.mp3",
+      "explain": "队长不想等了，正带全队沿中央前进。"
+    },
+    {
+      "id": "l007",
+      "skill": 2,
+      "level": 1,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "They noticed our scout, but they did not follow him. They are staying behind the fence.",
+      "zh": "他们发现侦察兵却没有追，仍待在栅栏后。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 2,
+      "audio": "audio/l007.mp3",
+      "explain": "他们发现侦察兵却没有追，仍待在栅栏后。"
+    },
+    {
+      "id": "l008",
+      "skill": 2,
+      "level": 1,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "Two guards are watching the bridge. The others are going around the hill to our left.",
+      "zh": "两名卫兵盯着桥，其余正绕山到我们的左侧。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "原地固守",
+        "正面突击"
+      ],
+      "correct": 0,
+      "audio": "audio/l008.mp3",
+      "explain": "两名卫兵盯着桥，其余正绕山到我们的左侧。"
+    },
+    {
+      "id": "l009",
+      "skill": 2,
+      "level": 1,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "They have left their supplies behind so they can move faster. Expect a direct attack.",
+      "zh": "他们丢下补给以便加速，预计会直接进攻。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 0,
+      "audio": "audio/l009.mp3",
+      "explain": "他们丢下补给以便加速，预计会直接进攻。"
+    },
+    {
+      "id": "l010",
+      "skill": 2,
+      "level": 1,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "The other team is repairing the barrier. It looks like they want us to attack first.",
+      "zh": "对方正在修屏障，看起来想让我们先攻。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "原地固守",
+        "正面突击"
+      ],
+      "correct": 1,
+      "audio": "audio/l010.mp3",
+      "explain": "对方正在修屏障，看起来想让我们先攻。"
+    },
+    {
+      "id": "l011",
+      "skill": 2,
+      "level": 1,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "Keep watching the side road. Their riders have crossed the river behind the garden.",
+      "zh": "继续留意侧路，他们的骑手已在菜园后渡河。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 1,
+      "audio": "audio/l011.mp3",
+      "explain": "继续留意侧路，他们的骑手已在菜园后渡河。"
+    },
+    {
+      "id": "l012",
+      "skill": 2,
+      "level": 2,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "The commander has abandoned the safer route. She is concentrating the entire group at the center for a quick breakthrough.",
+      "zh": "指挥官放弃了更安全的路线，将全队集中在中央寻求快速突破。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 0,
+      "audio": "audio/l012.mp3",
+      "explain": "指挥官放弃了更安全的路线，将全队集中在中央寻求快速突破。"
+    },
+    {
+      "id": "l013",
+      "skill": 2,
+      "level": 2,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "Our attempt to draw them out has failed. They remain in cover and continue to reinforce their position.",
+      "zh": "诱敌失败了，他们留在掩体中，继续加固阵地。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 0,
+      "audio": "audio/l013.mp3",
+      "explain": "诱敌失败了，他们留在掩体中，继续加固阵地。"
+    },
+    {
+      "id": "l014",
+      "skill": 2,
+      "level": 2,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "The noise at the gate is a distraction. Most of their team is following the dry stream toward our right flank.",
+      "zh": "门口的噪声用来分散注意，主力正沿干溪向我方右翼行进。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "原地固守",
+        "正面突击"
+      ],
+      "correct": 0,
+      "audio": "audio/l014.mp3",
+      "explain": "门口的噪声用来分散注意，主力正沿干溪向我方右翼行进。"
+    },
+    {
+      "id": "l015",
+      "skill": 2,
+      "level": 2,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "They know our supplies will arrive tonight. Rather than give us time to prepare, they are advancing along the main road now.",
+      "zh": "他们知道补给今晚到达，不愿给我们准备时间，现在正沿主路前进。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "侧翼迂回",
+        "原地固守"
+      ],
+      "correct": 0,
+      "audio": "audio/l015.mp3",
+      "explain": "他们知道补给今晚到达，不愿给我们准备时间，现在正沿主路前进。"
+    },
+    {
+      "id": "l016",
+      "skill": 2,
+      "level": 2,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "Although their riders look ready to move, the commander has ordered them to hold the narrow entrance and wait.",
+      "zh": "骑手虽看似准备移动，指挥官却命令他们守住窄入口等待。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "正面突击",
+        "原地固守",
+        "侧翼迂回"
+      ],
+      "correct": 1,
+      "audio": "audio/l016.mp3",
+      "explain": "骑手虽看似准备移动，指挥官却命令他们守住窄入口等待。"
+    },
+    {
+      "id": "l017",
+      "skill": 2,
+      "level": 2,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "Only a small group remains in sight. Fresh tracks suggest the others have taken the longer route behind our camp.",
+      "zh": "视野中只剩小队，新足迹表明其余人走了营地后方的长路。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 0,
+      "audio": "audio/l017.mp3",
+      "explain": "视野中只剩小队，新足迹表明其余人走了营地后方的长路。"
+    },
+    {
+      "id": "l018",
+      "skill": 2,
+      "level": 3,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "Despite earlier reports of a possible withdrawal, their reserve units are joining the central formation. A direct commitment now seems the most plausible interpretation.",
+      "zh": "虽先前有可能撤退的报告，预备队却正加入中央队形。现在正面投入是最合理的解释。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "原地固守",
+        "正面突击"
+      ],
+      "correct": 2,
+      "audio": "audio/l018.mp3",
+      "explain": "虽先前有可能撤退的报告，预备队却正加入中央队形。现在正面投入是最合理的解释。"
+    },
+    {
+      "id": "l019",
+      "skill": 2,
+      "level": 3,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "Their repeated movements outside the wall appear intended to provoke us. The supplies and reinforced doors suggest they plan to retain their defensive advantage.",
+      "zh": "墙外反复的动作像是挑衅，补给和加固的门表明他们打算保留防御优势。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 0,
+      "audio": "audio/l019.mp3",
+      "explain": "墙外反复的动作像是挑衅，补给和加固的门表明他们打算保留防御优势。"
+    },
+    {
+      "id": "l020",
+      "skill": 2,
+      "level": 3,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "Only a small force remains near the bridge. Meanwhile, equipment is being transferred along the concealed western trail, consistent with an attempt to reach our side.",
+      "zh": "只有少量兵力留在桥边，装备同时沿隐蔽西路转移，符合接近我方侧面的企图。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "正面突击",
+        "侧翼迂回"
+      ],
+      "correct": 2,
+      "audio": "audio/l020.mp3",
+      "explain": "只有少量兵力留在桥边，装备同时沿隐蔽西路转移，符合接近我方侧面的企图。"
+    },
+    {
+      "id": "l021",
+      "skill": 2,
+      "level": 3,
+      "signal": 0,
+      "title": "斥候来讯",
+      "text": "Their commander has rejected any further delay. Equipment that might slow the group has been discarded, and every unit is now approaching through the central valley.",
+      "zh": "指挥官拒绝继续拖延，拖慢速度的装备已丢弃，全部队伍正从中央谷地接近。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 2,
+      "audio": "audio/l021.mp3",
+      "explain": "指挥官拒绝继续拖延，拖慢速度的装备已丢弃，全部队伍正从中央谷地接近。"
+    },
+    {
+      "id": "l022",
+      "skill": 2,
+      "level": 3,
+      "signal": 1,
+      "title": "斥候来讯",
+      "text": "The apparent hesitation may be deliberate. Their current position controls the water supply, so abandoning it would sacrifice their most reliable advantage.",
+      "zh": "表面上的犹豫可能是有意的，现阵地控制水源，放弃它就会失去最可靠的优势。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "侧翼迂回",
+        "正面突击",
+        "原地固守"
+      ],
+      "correct": 2,
+      "audio": "audio/l022.mp3",
+      "explain": "表面上的犹豫可能是有意的，现阵地控制水源，放弃它就会失去最可靠的优势。"
+    },
+    {
+      "id": "l023",
+      "skill": 2,
+      "level": 3,
+      "signal": 2,
+      "title": "斥候来讯",
+      "text": "The emphasis on the main bridge conflicts with the latest supply movements. Those movements indicate that the principal force is circling toward our less protected flank.",
+      "zh": "对主桥的强调与最新补给动向矛盾，后者表明主力正绕向我方保护较少的侧翼。",
+      "prompt": "先听消息：对方的主要动向是什么？",
+      "options": [
+        "原地固守",
+        "侧翼迂回",
+        "正面突击"
+      ],
+      "correct": 1,
+      "audio": "audio/l023.mp3",
+      "explain": "对主桥的强调与最新补给动向矛盾，后者表明主力正绕向我方保护较少的侧翼。"
+    },
+    {
+      "id": "o000",
+      "skill": 3,
+      "level": 0,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "They are coming toward the gate.",
+      "zh": "他们正向大门而来。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "They",
+        "the",
+        "coming",
+        "are",
+        "toward",
+        "gate."
+      ],
+      "explain": "他们正向大门而来。",
+      "options": [],
+      "alternatives": [
+        "Toward the gate they are coming."
+      ]
+    },
+    {
+      "id": "o001",
+      "skill": 3,
+      "level": 0,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "They are waiting behind the wall.",
+      "zh": "他们正在墙后等待。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "are",
+        "wall.",
+        "behind",
+        "the",
+        "They",
+        "waiting"
+      ],
+      "explain": "他们正在墙后等待。",
+      "options": [],
+      "alternatives": [
+        "Behind the wall they are waiting."
+      ]
+    },
+    {
+      "id": "o002",
+      "skill": 3,
+      "level": 0,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "They are moving around our camp.",
+      "zh": "他们正在绕着营地移动。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "They",
+        "camp.",
+        "our",
+        "moving",
+        "around",
+        "are"
+      ],
+      "explain": "他们正在绕着营地移动。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o003",
+      "skill": 3,
+      "level": 0,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "The riders are taking the main road.",
+      "zh": "骑手正走主路。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "main",
+        "road.",
+        "the",
+        "are",
+        "taking",
+        "riders",
+        "The"
+      ],
+      "explain": "骑手正走主路。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o004",
+      "skill": 3,
+      "level": 0,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "The guards will stay at the bridge.",
+      "zh": "卫兵将留在桥边。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "at",
+        "bridge.",
+        "stay",
+        "will",
+        "The",
+        "the",
+        "guards"
+      ],
+      "explain": "卫兵将留在桥边。",
+      "options": [],
+      "alternatives": [
+        "At the bridge the guards will stay."
+      ]
+    },
+    {
+      "id": "o005",
+      "skill": 3,
+      "level": 0,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "Their team is turning to the left.",
+      "zh": "他们的队伍正转向左侧。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "left.",
+        "turning",
+        "Their",
+        "the",
+        "team",
+        "is",
+        "to"
+      ],
+      "explain": "他们的队伍正转向左侧。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o006",
+      "skill": 3,
+      "level": 1,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "They plan to attack before the rain starts.",
+      "zh": "他们计划在下雨前进攻。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "the",
+        "rain",
+        "before",
+        "plan",
+        "starts.",
+        "to",
+        "attack",
+        "They"
+      ],
+      "explain": "他们计划在下雨前进攻。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o007",
+      "skill": 3,
+      "level": 1,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "Their captain wants them to defend the gate.",
+      "zh": "他们的队长想让他们守住大门。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "defend",
+        "wants",
+        "to",
+        "Their",
+        "the",
+        "gate.",
+        "them",
+        "captain"
+      ],
+      "explain": "他们的队长想让他们守住大门。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o008",
+      "skill": 3,
+      "level": 1,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "They are using the trees to hide their approach.",
+      "zh": "他们正利用树木隐蔽接近。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "are",
+        "hide",
+        "They",
+        "to",
+        "their",
+        "approach.",
+        "the",
+        "using",
+        "trees"
+      ],
+      "explain": "他们正利用树木隐蔽接近。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o009",
+      "skill": 3,
+      "level": 1,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "They have decided to advance along the main road.",
+      "zh": "他们已决定沿主路前进。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "the",
+        "have",
+        "road.",
+        "main",
+        "They",
+        "advance",
+        "along",
+        "decided",
+        "to"
+      ],
+      "explain": "他们已决定沿主路前进。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o010",
+      "skill": 3,
+      "level": 1,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "They will remain behind the wall until we approach.",
+      "zh": "他们将留在墙后直到我们靠近。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "remain",
+        "approach.",
+        "wall",
+        "will",
+        "behind",
+        "the",
+        "we",
+        "until",
+        "They"
+      ],
+      "explain": "他们将留在墙后直到我们靠近。",
+      "options": [],
+      "alternatives": [
+        "Until we approach they will remain behind the wall."
+      ]
+    },
+    {
+      "id": "o011",
+      "skill": 3,
+      "level": 1,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "Most of their team is crossing the river on our right.",
+      "zh": "他们大部分队员正在我们右侧渡河。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "crossing",
+        "river",
+        "of",
+        "Most",
+        "is",
+        "on",
+        "team",
+        "their",
+        "the",
+        "right.",
+        "our"
+      ],
+      "explain": "他们大部分队员正在我们右侧渡河。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o012",
+      "skill": 3,
+      "level": 2,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "Rather than wait for supplies, they intend to attack immediately.",
+      "zh": "他们打算立即进攻，不再等待补给。（以 Rather 开头）",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "Rather",
+        "immediately.",
+        "attack",
+        "supplies,",
+        "for",
+        "they",
+        "to",
+        "intend",
+        "wait",
+        "than"
+      ],
+      "explain": "他们打算立即进攻，不再等待补给。（以 Rather 开头）",
+      "options": [],
+      "alternatives": [
+        "Rather than wait for supplies they intend immediately to attack."
+      ]
+    },
+    {
+      "id": "o013",
+      "skill": 3,
+      "level": 2,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "Although the gate is open, they refuse to leave their position.",
+      "zh": "虽然大门开着，他们仍拒绝离开阵地。（以 Although 开头）",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "refuse",
+        "position.",
+        "is",
+        "their",
+        "leave",
+        "gate",
+        "to",
+        "the",
+        "Although",
+        "they",
+        "open,"
+      ],
+      "explain": "虽然大门开着，他们仍拒绝离开阵地。（以 Although 开头）",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o014",
+      "skill": 3,
+      "level": 2,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "They are circling the hill in order to reach our flank.",
+      "zh": "他们正绕山行进，以便接近我方侧翼。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "circling",
+        "our",
+        "to",
+        "in",
+        "order",
+        "They",
+        "are",
+        "hill",
+        "flank.",
+        "the",
+        "reach"
+      ],
+      "explain": "他们正绕山行进，以便接近我方侧翼。",
+      "options": [],
+      "alternatives": [
+        "In order to reach our flank they are circling the hill."
+      ]
+    },
+    {
+      "id": "o015",
+      "skill": 3,
+      "level": 2,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "The commander has ordered a rapid advance through the center.",
+      "zh": "指挥官已下令从中央迅速推进。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "has",
+        "The",
+        "a",
+        "ordered",
+        "rapid",
+        "advance",
+        "the",
+        "center.",
+        "commander",
+        "through"
+      ],
+      "explain": "指挥官已下令从中央迅速推进。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o016",
+      "skill": 3,
+      "level": 2,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "Their supplies allow them to maintain a defensive position.",
+      "zh": "补给使他们能够保持防御阵地。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "maintain",
+        "Their",
+        "to",
+        "allow",
+        "them",
+        "a",
+        "defensive",
+        "supplies",
+        "position."
+      ],
+      "explain": "补给使他们能够保持防御阵地。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o017",
+      "skill": 3,
+      "level": 2,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "While the guards distract us, the riders approach from the side.",
+      "zh": "卫兵分散我们注意时，骑手从侧面接近。（以 While 开头）",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "riders",
+        "us,",
+        "While",
+        "the",
+        "approach",
+        "guards",
+        "from",
+        "side.",
+        "the",
+        "distract",
+        "the"
+      ],
+      "explain": "卫兵分散我们注意时，骑手从侧面接近。（以 While 开头）",
+      "options": [],
+      "alternatives": [
+        "The riders approach from the side while the guards distract us."
+      ]
+    },
+    {
+      "id": "o018",
+      "skill": 3,
+      "level": 3,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "Their decision to abandon cover suggests an imminent frontal attack.",
+      "zh": "他们放弃掩护的决定暗示正面进攻迫在眉睫。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "abandon",
+        "decision",
+        "to",
+        "Their",
+        "attack.",
+        "an",
+        "imminent",
+        "suggests",
+        "cover",
+        "frontal"
+      ],
+      "explain": "他们放弃掩护的决定暗示正面进攻迫在眉睫。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o019",
+      "skill": 3,
+      "level": 3,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "The reinforced entrance indicates that they intend to preserve their advantage.",
+      "zh": "加固的入口表明他们打算保住优势。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "entrance",
+        "reinforced",
+        "that",
+        "advantage.",
+        "intend",
+        "to",
+        "The",
+        "they",
+        "preserve",
+        "their",
+        "indicates"
+      ],
+      "explain": "加固的入口表明他们打算保住优势。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o020",
+      "skill": 3,
+      "level": 3,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "The visible activity is intended to conceal their approach along our flank.",
+      "zh": "显眼的活动意在掩盖他们沿我方侧翼接近的行动。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "activity",
+        "intended",
+        "our",
+        "visible",
+        "approach",
+        "is",
+        "to",
+        "flank.",
+        "their",
+        "The",
+        "conceal",
+        "along"
+      ],
+      "explain": "显眼的活动意在掩盖他们沿我方侧翼接近的行动。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o021",
+      "skill": 3,
+      "level": 3,
+      "signal": 0,
+      "title": "整理侦察报告",
+      "text": "Despite the risk of exposure, they have committed to a direct advance.",
+      "zh": "尽管有暴露风险，他们已经决定直接推进。（以 Despite 开头）",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "the",
+        "a",
+        "of",
+        "to",
+        "committed",
+        "have",
+        "risk",
+        "advance.",
+        "exposure,",
+        "direct",
+        "they",
+        "Despite"
+      ],
+      "explain": "尽管有暴露风险，他们已经决定直接推进。（以 Despite 开头）",
+      "options": [],
+      "alternatives": [
+        "They have committed to a direct advance despite the risk of exposure."
+      ]
+    },
+    {
+      "id": "o022",
+      "skill": 3,
+      "level": 3,
+      "signal": 1,
+      "title": "整理侦察报告",
+      "text": "They are reluctant to surrender a position that controls the water supply.",
+      "zh": "他们不愿放弃控制水源的阵地。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "water",
+        "reluctant",
+        "position",
+        "surrender",
+        "supply.",
+        "the",
+        "controls",
+        "They",
+        "are",
+        "to",
+        "a",
+        "that"
+      ],
+      "explain": "他们不愿放弃控制水源的阵地。",
+      "options": [],
+      "alternatives": []
+    },
+    {
+      "id": "o023",
+      "skill": 3,
+      "level": 3,
+      "signal": 2,
+      "title": "整理侦察报告",
+      "text": "Their movements are consistent with an attempt to exploit our unprotected side.",
+      "zh": "他们的动向符合利用我方无防护侧面的企图。",
+      "prompt": "把词块排成这句报告。标点留在原词块上。",
+      "tokens": [
+        "attempt",
+        "are",
+        "movements",
+        "an",
+        "side.",
+        "our",
+        "Their",
+        "exploit",
+        "consistent",
+        "with",
+        "unprotected",
+        "to"
+      ],
+      "explain": "他们的动向符合利用我方无防护侧面的企图。",
+      "options": [],
+      "alternatives": []
+    }
+  ],
+  "stories": [
+    {
+      "id": "s00_0",
+      "skill": 1,
+      "level": 0,
+      "title": "一张留给后来者的地图",
+      "text": "A traveler leaves a map at our camp. It shows where to find clean water, not where to find gold. \"The next person may be tired,\" she says. We put the map near the door so everyone can use it.",
+      "zh": "旅人补充了地图上的水源，留在门边给后来者使用。地图有用之处在于满足人的实际需要。",
+      "prompt": "她主要补充了什么？",
+      "options": [
+        "敌军的数量",
+        "寻找饮水的地点",
+        "藏黄金的地点"
+      ],
+      "correct": 1,
+      "explain": "旅人补充了地图上的水源，留在门边给后来者使用。地图有用之处在于满足人的实际需要。",
+      "audio": "audio/s00_0.mp3"
+    },
+    {
+      "id": "s00_1",
+      "skill": 1,
+      "level": 2,
+      "title": "一张留给后来者的地图",
+      "text": "When Mara arrived, she asked for neither a bed nor a meal. She wanted a pencil. Her old map showed the hills clearly, but it said nothing about the places where a tired traveler could find clean water. She spent the evening adding those details. Before leaving, she placed the map beside the door. \"A useful map tells people what they need,\" she said, \"not just what is there.\" We have kept a pencil beside it ever since.",
+      "zh": "旅人补充了地图上的水源，留在门边给后来者使用。地图有用之处在于满足人的实际需要。",
+      "prompt": "她主要补充了什么？",
+      "options": [
+        "敌军的数量",
+        "藏黄金的地点",
+        "寻找饮水的地点"
+      ],
+      "correct": 2,
+      "explain": "旅人补充了地图上的水源，留在门边给后来者使用。地图有用之处在于满足人的实际需要。",
+      "audio": "audio/s00_1.mp3"
+    },
+    {
+      "id": "s01_0",
+      "skill": 1,
+      "level": 0,
+      "title": "第一顿共同的晚饭",
+      "text": "We have only one large pot, but six people want to cook. At first, everyone talks at once. Then we choose one simple dish. Two people cut vegetables, two bring water, and the others make a fire. Dinner is late, but nobody eats alone.",
+      "zh": "大家一开始争论菜谱，后来选择人人都能参与的一道菜。共同完成比选出最完美的菜更重要。",
+      "prompt": "让晚饭顺利进行的改变是什么？",
+      "options": [
+        "分工做一道共同的菜",
+        "让一个人做完所有工作",
+        "购买六个新锅"
+      ],
+      "correct": 0,
+      "explain": "大家一开始争论菜谱，后来选择人人都能参与的一道菜。共同完成比选出最完美的菜更重要。",
+      "audio": "audio/s01_0.mp3"
+    },
+    {
+      "id": "s01_1",
+      "skill": 1,
+      "level": 2,
+      "title": "第一顿共同的晚饭",
+      "text": "The first shared dinner nearly failed before anyone lit the fire. Six people had six recipes and only one pot. Arguing about the best dish took longer than preparing it would have. Finally, Jin suggested that they choose a meal everyone could help make. It was not anyone's favorite, but it gave each person a useful task. By the time they sat down, the food was almost beside the point: the strangers had learned how to work together.",
+      "zh": "大家一开始争论菜谱，后来选择人人都能参与的一道菜。共同完成比选出最完美的菜更重要。",
+      "prompt": "让晚饭顺利进行的改变是什么？",
+      "options": [
+        "购买六个新锅",
+        "让一个人做完所有工作",
+        "分工做一道共同的菜"
+      ],
+      "correct": 2,
+      "explain": "大家一开始争论菜谱，后来选择人人都能参与的一道菜。共同完成比选出最完美的菜更重要。",
+      "audio": "audio/s01_1.mp3"
+    },
+    {
+      "id": "s02_0",
+      "skill": 1,
+      "level": 0,
+      "title": "会休息的菜园",
+      "text": "The garden looks empty today. We picked the last vegetables yesterday. Our neighbor says the soil needs time to rest. We cover it with leaves instead of planting again at once. An empty field can still be part of a good plan.",
+      "zh": "收获后给土壤休养的时间。暂时空着并不等于计划失败。",
+      "prompt": "为什么暂时不立即再种？",
+      "options": [
+        "为了把菜园改成道路",
+        "让土壤恢复",
+        "因为大家不再需要食物"
+      ],
+      "correct": 1,
+      "explain": "收获后给土壤休养的时间。暂时空着并不等于计划失败。",
+      "audio": "audio/s02_0.mp3"
+    },
+    {
+      "id": "s02_1",
+      "skill": 1,
+      "level": 2,
+      "title": "会休息的菜园",
+      "text": "After the harvest, I wanted to plant every empty patch immediately. A garden full of green leaves seemed more successful than bare soil. Our neighbor disagreed. She explained that the previous crop had used many of the nutrients that the next one would need. We covered part of the ground with fallen leaves and left it alone. For a while, progress looked like doing less. The following season helped me understand why waiting had been part of the work.",
+      "zh": "收获后给土壤休养的时间。暂时空着并不等于计划失败。",
+      "prompt": "为什么暂时不立即再种？",
+      "options": [
+        "让土壤恢复",
+        "因为大家不再需要食物",
+        "为了把菜园改成道路"
+      ],
+      "correct": 0,
+      "explain": "收获后给土壤休养的时间。暂时空着并不等于计划失败。",
+      "audio": "audio/s02_1.mp3"
+    },
+    {
+      "id": "s03_0",
+      "skill": 1,
+      "level": 0,
+      "title": "走慢一点的快路",
+      "text": "There are two roads to the village. The short road has deep mud. The longer one is dry. We choose the dry road and arrive before the other cart. Distance is not the only thing that makes a journey long.",
+      "zh": "雨后捷径泥泞，较长的干路反而更快。判断不能只看地图距离。",
+      "prompt": "较长的路为什么更快？",
+      "options": [
+        "路面干燥，能持续前进",
+        "马匹会飞",
+        "地图把距离写反了"
+      ],
+      "correct": 0,
+      "explain": "雨后捷径泥泞，较长的干路反而更快。判断不能只看地图距离。",
+      "audio": "audio/s03_0.mp3"
+    },
+    {
+      "id": "s03_1",
+      "skill": 1,
+      "level": 2,
+      "title": "走慢一点的快路",
+      "text": "The driver was embarrassed to choose the longer road. On the map, it looked like an unnecessary detour, and the other travelers laughed when he turned away from the shortcut. But the recent rain had changed the calculation. While the first cart struggled through deep mud, ours kept moving at a steady pace. We reached the village with daylight to spare. The experience reminded us that the shortest route on paper is not always the quickest route in practice.",
+      "zh": "雨后捷径泥泞，较长的干路反而更快。判断不能只看地图距离。",
+      "prompt": "较长的路为什么更快？",
+      "options": [
+        "马匹会飞",
+        "地图把距离写反了",
+        "路面干燥，能持续前进"
+      ],
+      "correct": 2,
+      "explain": "雨后捷径泥泞，较长的干路反而更快。判断不能只看地图距离。",
+      "audio": "audio/s03_1.mp3"
+    },
+    {
+      "id": "s04_0",
+      "skill": 1,
+      "level": 0,
+      "title": "一次没被嘲笑的错误",
+      "text": "I use the wrong English word when I ask for a bowl. My friend looks confused, then shows me the word I need. We laugh together. Later, I use it again without help. The mistake becomes a small part of a real conversation.",
+      "zh": "说错单词后，朋友用实物帮助理解。真实语境中的再次使用，让词更容易被想起。",
+      "prompt": "后来单词更容易想起，与什么有关？",
+      "options": [
+        "从此不再说话",
+        "把错误完全藏起来",
+        "在真实情境中再次使用"
+      ],
+      "correct": 2,
+      "explain": "说错单词后，朋友用实物帮助理解。真实语境中的再次使用，让词更容易被想起。",
+      "audio": "audio/s04_0.mp3"
+    },
+    {
+      "id": "s04_1",
+      "skill": 1,
+      "level": 2,
+      "title": "一次没被嘲笑的错误",
+      "text": "I had practiced the sentence in my head, yet the wrong word came out when I finally spoke. For a moment, I considered pretending that I had meant something else. My friend simply picked up a bowl and said its name. There was no test to fail and no score to lose. Later that evening, I needed the same word again. This time it arrived more easily. What I remembered was not a rule on a page, but the moment when someone understood me.",
+      "zh": "说错单词后，朋友用实物帮助理解。真实语境中的再次使用，让词更容易被想起。",
+      "prompt": "后来单词更容易想起，与什么有关？",
+      "options": [
+        "在真实情境中再次使用",
+        "从此不再说话",
+        "把错误完全藏起来"
+      ],
+      "correct": 0,
+      "explain": "说错单词后，朋友用实物帮助理解。真实语境中的再次使用，让词更容易被想起。",
+      "audio": "audio/s04_1.mp3"
+    },
+    {
+      "id": "s05_0",
+      "skill": 1,
+      "level": 0,
+      "title": "借来的工具",
+      "text": "Our hammer breaks, so we borrow one from the next camp. We return it the following day. A week later, they ask for our saw. Soon we build a small shelf for shared tools. We do not need to own everything ourselves.",
+      "zh": "邻里借工具逐渐发展为共享制度，付出一些协调成本，换来更丰富的可用工具。",
+      "prompt": "共享工具的主要好处是什么？",
+      "options": [
+        "能使用各家不必单独买齐的工具",
+        "不需要任何协调",
+        "从此工具不会损坏"
+      ],
+      "correct": 0,
+      "explain": "邻里借工具逐渐发展为共享制度，付出一些协调成本，换来更丰富的可用工具。",
+      "audio": "audio/s05_0.mp3"
+    },
+    {
+      "id": "s05_1",
+      "skill": 1,
+      "level": 2,
+      "title": "借来的工具",
+      "text": "At first, every household planned to buy a complete set of tools. The cost was high, and most tools would have remained unused for weeks. A broken hammer led to a different arrangement. After borrowing a replacement, we began keeping a list of what each neighbor could share. There were occasional delays, and someone had to maintain the list, but the system gave everyone access to more equipment than they could have afforded alone.",
+      "zh": "邻里借工具逐渐发展为共享制度，付出一些协调成本，换来更丰富的可用工具。",
+      "prompt": "共享工具的主要好处是什么？",
+      "options": [
+        "能使用各家不必单独买齐的工具",
+        "从此工具不会损坏",
+        "不需要任何协调"
+      ],
+      "correct": 0,
+      "explain": "邻里借工具逐渐发展为共享制度，付出一些协调成本，换来更丰富的可用工具。",
+      "audio": "audio/s05_1.mp3"
+    },
+    {
+      "id": "s06_0",
+      "skill": 1,
+      "level": 0,
+      "title": "没有数字的进步",
+      "text": "Last month, I could not read the notice at the gate. Today, I understand most of it. There is no prize, and nobody is watching. I still stop for a moment and smile. Something that once blocked my way has become useful.",
+      "zh": "真正的变化是原本难懂的告示现在能读懂大意，不一定需要外部奖品来证明。",
+      "prompt": "文中进步体现在哪里？",
+      "options": [
+        "告示被换成中文",
+        "更能读懂同一则告示",
+        "获得一个新皮肤"
+      ],
+      "correct": 1,
+      "explain": "真正的变化是原本难懂的告示现在能读懂大意，不一定需要外部奖品来证明。",
+      "audio": "audio/s06_0.mp3"
+    },
+    {
+      "id": "s06_1",
+      "skill": 1,
+      "level": 2,
+      "title": "没有数字的进步",
+      "text": "The notice had been on the gate for weeks. On my first visit, its long sentences had looked like a wall of unfamiliar shapes. I took a photograph and forgot about it. When I returned, I could follow the main message without opening a dictionary. I still missed two details, but the difference was real. No level appeared above my head. The reward was that a piece of the world had become easier to understand.",
+      "zh": "真正的变化是原本难懂的告示现在能读懂大意，不一定需要外部奖品来证明。",
+      "prompt": "文中进步体现在哪里？",
+      "options": [
+        "更能读懂同一则告示",
+        "获得一个新皮肤",
+        "告示被换成中文"
+      ],
+      "correct": 0,
+      "explain": "真正的变化是原本难懂的告示现在能读懂大意，不一定需要外部奖品来证明。",
+      "audio": "audio/s06_1.mp3"
+    },
+    {
+      "id": "s07_0",
+      "skill": 1,
+      "level": 0,
+      "title": "雨天的来信",
+      "text": "A letter arrives after three days of rain. Our friend cannot visit this week because the river is too high. She sends a story instead. We read it together by the fire. The visit is delayed, but the friendship is not.",
+      "zh": "河水过高使拜访延期，朋友寄来故事，让联系得以继续。",
+      "prompt": "朋友没能来访的直接原因是什么？",
+      "options": [
+        "不想再联系",
+        "河水过高，渡河不安全",
+        "营地没有准备床"
+      ],
+      "correct": 1,
+      "explain": "河水过高使拜访延期，朋友寄来故事，让联系得以继续。",
+      "audio": "audio/s07_0.mp3"
+    },
+    {
+      "id": "s07_1",
+      "skill": 1,
+      "level": 2,
+      "title": "雨天的来信",
+      "text": "We had prepared an extra bed before the rain began. Three days later, a messenger arrived with a letter explaining that the river was no longer safe to cross. Our friend apologized for changing the plan and included a story from her own village. We read it aloud after dinner. The empty bed still reminded us of the visit we had expected, but the letter gave us something different to share. A postponed plan did not have to become a lost connection.",
+      "zh": "河水过高使拜访延期，朋友寄来故事，让联系得以继续。",
+      "prompt": "朋友没能来访的直接原因是什么？",
+      "options": [
+        "不想再联系",
+        "营地没有准备床",
+        "河水过高，渡河不安全"
+      ],
+      "correct": 2,
+      "explain": "河水过高使拜访延期，朋友寄来故事，让联系得以继续。",
+      "audio": "audio/s07_1.mp3"
+    },
+    {
+      "id": "s08_0",
+      "skill": 1,
+      "level": 0,
+      "title": "修好的旧门",
+      "text": "The hall has a new roof and new windows. We keep the old front door. It is not perfect, but many visitors wrote their names on it. The building is better now, and it still remembers the people who helped us begin.",
+      "zh": "旧门留着建设者的名字。修补而保留它，是效率与记忆之间的取舍。",
+      "prompt": "大家为什么保留旧门？",
+      "options": [
+        "它完全没有缺点",
+        "没有任何木材",
+        "它记录了参与建设的人"
+      ],
+      "correct": 2,
+      "explain": "旧门留着建设者的名字。修补而保留它，是效率与记忆之间的取舍。",
+      "audio": "audio/s08_0.mp3"
+    },
+    {
+      "id": "s08_1",
+      "skill": 1,
+      "level": 2,
+      "title": "修好的旧门",
+      "text": "During the repairs, someone suggested replacing the old front door. A new one would fit the frame more neatly and keep out a little more wind. Yet the old wood carried the names of nearly everyone who had helped establish the camp. We repaired its weakest parts and kept it. The decision was a small compromise between efficiency and memory. Improving a place did not require removing every sign of the work that had made it possible.",
+      "zh": "旧门留着建设者的名字。修补而保留它，是效率与记忆之间的取舍。",
+      "prompt": "大家为什么保留旧门？",
+      "options": [
+        "没有任何木材",
+        "它完全没有缺点",
+        "它记录了参与建设的人"
+      ],
+      "correct": 2,
+      "explain": "旧门留着建设者的名字。修补而保留它，是效率与记忆之间的取舍。",
+      "audio": "audio/s08_1.mp3"
+    },
+    {
+      "id": "s09_0",
+      "skill": 1,
+      "level": 0,
+      "title": "一次只改一个地方",
+      "text": "Our bread is too hard. We change the flour, the water, and the cooking time. The next loaf is better, but we do not know why. After that, we change only one thing each time. Learning becomes slower to start and easier to trust.",
+      "zh": "同时改许多因素会难以判断原因，一次改变一个因素更便于获得可靠经验。",
+      "prompt": "为什么后来一次只改一个因素？",
+      "options": [
+        "更容易判断是什么造成变化",
+        "避免记录任何数据",
+        "保证每次都成功"
+      ],
+      "correct": 0,
+      "explain": "同时改许多因素会难以判断原因，一次改变一个因素更便于获得可靠经验。",
+      "audio": "audio/s09_0.mp3"
+    },
+    {
+      "id": "s09_1",
+      "skill": 1,
+      "level": 2,
+      "title": "一次只改一个地方",
+      "text": "The first successful loaf caused an argument. One cook credited the new flour, another the extra water, and a third the shorter baking time. Because we had changed everything at once, none of us had convincing evidence. For the next few attempts, we kept careful notes and changed one part of the recipe at a time. This approach felt less exciting than trying a completely new recipe, but it gave us knowledge that could be used again.",
+      "zh": "同时改许多因素会难以判断原因，一次改变一个因素更便于获得可靠经验。",
+      "prompt": "为什么后来一次只改一个因素？",
+      "options": [
+        "更容易判断是什么造成变化",
+        "避免记录任何数据",
+        "保证每次都成功"
+      ],
+      "correct": 0,
+      "explain": "同时改许多因素会难以判断原因，一次改变一个因素更便于获得可靠经验。",
+      "audio": "audio/s09_1.mp3"
+    },
+    {
+      "id": "s10_0",
+      "skill": 1,
+      "level": 0,
+      "title": "够用的一天",
+      "text": "The roof is repaired. There is food for dinner and wood for the fire. We could keep working, but we choose to stop. Tomorrow has its own tasks. Tonight, we sit outside and enjoy the place we have made.",
+      "zh": "仍有能改进的地方，不影响今天的目标已经完成。建设成果也值得被使用和享受。",
+      "prompt": "为什么大家决定休息？",
+      "options": [
+        "当天约定的目标已完成",
+        "他们决定永久放弃营地",
+        "所有事物都已完美"
+      ],
+      "correct": 0,
+      "explain": "仍有能改进的地方，不影响今天的目标已经完成。建设成果也值得被使用和享受。",
+      "audio": "audio/s10_0.mp3"
+    },
+    {
+      "id": "s10_1",
+      "skill": 1,
+      "level": 2,
+      "title": "够用的一天",
+      "text": "By late afternoon, the final leak had been fixed. Someone pointed out that the fence could still be straighter and the shelves could still be larger. Those observations were true, but they did not make the day incomplete. We had finished what we set out to do. Instead of opening another project immediately, we carried our chairs into the yard. For once, the camp was not a list of future improvements. It was a place where we could live.",
+      "zh": "仍有能改进的地方，不影响今天的目标已经完成。建设成果也值得被使用和享受。",
+      "prompt": "为什么大家决定休息？",
+      "options": [
+        "他们决定永久放弃营地",
+        "当天约定的目标已完成",
+        "所有事物都已完美"
+      ],
+      "correct": 1,
+      "explain": "仍有能改进的地方，不影响今天的目标已经完成。建设成果也值得被使用和享受。",
+      "audio": "audio/s10_1.mp3"
+    },
+    {
+      "id": "s11_0",
+      "skill": 1,
+      "level": 0,
+      "title": "第一辆经过的商车",
+      "text": "The bridge is ready. A cart crosses it slowly, carrying books, cloth, and tea. The driver stops to thank us. Until today, the bridge was our project. Now it is part of someone else's journey. We watch the cart disappear down the road.",
+      "zh": "第一辆商车通过后，桥从建设任务变成真正帮助他人的道路。工程完成，价值开始兑现。",
+      "prompt": "商车通过使大家意识到什么？",
+      "options": [
+        "必须立即拆桥重建",
+        "只有建造过程有意义",
+        "桥的价值在实际使用中体现"
+      ],
+      "correct": 2,
+      "explain": "第一辆商车通过后，桥从建设任务变成真正帮助他人的道路。工程完成，价值开始兑现。",
+      "audio": "audio/s11_0.mp3"
+    },
+    {
+      "id": "s11_1",
+      "skill": 1,
+      "level": 2,
+      "title": "第一辆经过的商车",
+      "text": "We had spent so much time measuring, carrying, and repairing that the bridge had become a collection of tasks in our minds. Then the first cart arrived. Its driver knew nothing about the arguments over the design or the afternoon when a wheel had broken. He simply crossed the river, stopped to thank us, and continued toward the next village. Watching him leave changed the meaning of the work. The bridge was finished, and its usefulness had only just begun.",
+      "zh": "第一辆商车通过后，桥从建设任务变成真正帮助他人的道路。工程完成，价值开始兑现。",
+      "prompt": "商车通过使大家意识到什么？",
+      "options": [
+        "只有建造过程有意义",
+        "桥的价值在实际使用中体现",
+        "必须立即拆桥重建"
+      ],
+      "correct": 1,
+      "explain": "第一辆商车通过后，桥从建设任务变成真正帮助他人的道路。工程完成，价值开始兑现。",
+      "audio": "audio/s11_1.mp3"
+    }
+  ],
+  "visits": [
+    {
+      "id": "e00_0",
+      "event": 0,
+      "skill": 1,
+      "level": 0,
+      "title": "路过的木匠",
+      "text": "A carpenter stops beside your tent. She has two spare boards and a bag of bread. She can leave the boards for your first building, or give you food for your next journey. She can spare one gift today. What would help you more?",
+      "zh": "木匠可以留下两块备用木板，帮助你开始建设；也可以给你一袋面包，为下次出行准备行粮。她只能送其中一样，你按眼前的需要来选。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Take the boards for building.",
+        "Accept the bread for the journey."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "拿木板来建设。",
+        "收下面包，准备出行。"
+      ],
+      "outcomes": [
+        "木匠把两块木板靠在帐篷边。“等我再路过，这里会是什么样呢？”",
+        "她把面包包好放进你的背包。“路还很长，先吃饱再走。”"
+      ],
+      "audio": "audio/e00_0.mp3"
+    },
+    {
+      "id": "e00_1",
+      "event": 0,
+      "skill": 1,
+      "level": 2,
+      "title": "路过的木匠",
+      "text": "The carpenter is on her way to a village beyond the hills. Before leaving, she offers a choice. Two spare boards could help turn your temporary camp into a more comfortable place. A bag of bread, on the other hand, would be useful when you next set out. She cannot spare both, but neither choice will disappoint her. You look at the unfinished ground and the road ahead. Which need matters more to you now?",
+      "zh": "木匠可以留下两块备用木板，帮助你开始建设；也可以给你一袋面包，为下次出行准备行粮。她只能送其中一样，你按眼前的需要来选。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Take the boards for building.",
+        "Accept the bread for the journey."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "拿木板来建设。",
+        "收下面包，准备出行。"
+      ],
+      "outcomes": [
+        "木匠把两块木板靠在帐篷边。“等我再路过，这里会是什么样呢？”",
+        "她把面包包好放进你的背包。“路还很长，先吃饱再走。”"
+      ],
+      "audio": "audio/e00_1.mp3"
+    },
+    {
+      "id": "e01_0",
+      "event": 1,
+      "skill": 1,
+      "level": 0,
+      "title": "菜园边的邻居",
+      "text": "Your neighbor brings an extra bag of grain. He has also saved some wood from an old fence. He can help you gather the wood, or leave the grain so you can make food for a journey. You do not need to repay him today.",
+      "zh": "邻居有多余的谷物，也有拆旧栅栏留下的木材。你可以请他帮忙搬木材，继续建设；也可以留下谷物，做一份出行的食物。这份帮助没有限期。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Ask for help carrying the wood.",
+        "Keep the grain for travel food."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "请他帮忙搬木材。",
+        "留下谷物，做行粮。"
+      ],
+      "outcomes": [
+        "你们把木材搬到河岸。原来需要一个人来回跑的路，现在两趟就走完了。",
+        "邻居留下谷物，还画了一张简单的做饼说明。下一次出发有了准备。"
+      ],
+      "audio": "audio/e01_0.mp3"
+    },
+    {
+      "id": "e01_1",
+      "event": 1,
+      "skill": 1,
+      "level": 2,
+      "title": "菜园边的邻居",
+      "text": "The first green shoots have appeared beside the river. A neighbor notices them and stops to talk. He has more grain than he needs, and a small pile of wood from a fence he recently replaced. If you want to continue building, he will help carry the wood to your camp. If you would rather prepare for another expedition, he can leave the grain instead. The offer is simple, and there is no deadline attached.",
+      "zh": "邻居有多余的谷物，也有拆旧栅栏留下的木材。你可以请他帮忙搬木材，继续建设；也可以留下谷物，做一份出行的食物。这份帮助没有限期。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Ask for help carrying the wood.",
+        "Keep the grain for travel food."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "请他帮忙搬木材。",
+        "留下谷物，做行粮。"
+      ],
+      "outcomes": [
+        "你们把木材搬到河岸。原来需要一个人来回跑的路，现在两趟就走完了。",
+        "邻居留下谷物，还画了一张简单的做饼说明。下一次出发有了准备。"
+      ],
+      "audio": "audio/e01_1.mp3"
+    },
+    {
+      "id": "e02_0",
+      "event": 2,
+      "skill": 1,
+      "level": 0,
+      "title": "修好工具之后",
+      "text": "A traveler asks you to repair the handle of her hammer. Your new workshop has the right tools. When the repair is finished, she offers either spare timber from her cart or a packed meal. You can choose what is useful for your next step.",
+      "zh": "旅人的锤柄裂了，你在新工坊修好了它。她愿意用两份备用木材，或者一份路上带的饭作为感谢。你可以选择对下一步更有用的东西。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Choose timber for the next building.",
+        "Choose the packed meal."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "选择木材，准备下一项建设。",
+        "选择打包好的饭。"
+      ],
+      "outcomes": [
+        "她重新挥了挥锤子，把木材卸在工坊旁。第一次修理，换来了下一步建设的可能。",
+        "你收下了饭。旅人拎起修好的锤子继续赶路，工坊终于开始派上用场。"
+      ],
+      "audio": "audio/e02_0.mp3"
+    },
+    {
+      "id": "e02_1",
+      "event": 2,
+      "skill": 1,
+      "level": 2,
+      "title": "修好工具之后",
+      "text": "The workshop has barely opened when someone brings in a broken hammer. Its head is sound, but the handle has split. You find a suitable piece of wood and make the tool useful again. The traveler cannot stay for long. To thank you, she offers either two pieces of spare timber or the meal she packed for the road. The repair has created a small opportunity; what it becomes is up to you.",
+      "zh": "旅人的锤柄裂了，你在新工坊修好了它。她愿意用两份备用木材，或者一份路上带的饭作为感谢。你可以选择对下一步更有用的东西。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Choose timber for the next building.",
+        "Choose the packed meal."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "选择木材，准备下一项建设。",
+        "选择打包好的饭。"
+      ],
+      "outcomes": [
+        "她重新挥了挥锤子，把木材卸在工坊旁。第一次修理，换来了下一步建设的可能。",
+        "你收下了饭。旅人拎起修好的锤子继续赶路，工坊终于开始派上用场。"
+      ],
+      "audio": "audio/e02_1.mp3"
+    },
+    {
+      "id": "e03_0",
+      "event": 3,
+      "skill": 1,
+      "level": 0,
+      "title": "桥另一端的消息",
+      "text": "A rider crosses your new bridge. She knows a place where people have spare building wood. She also carries food from a nearby village. She can bring you some wood on her return, or leave a meal now. Both offers are good; your next plan will decide.",
+      "zh": "木桥让骑手不必绕远路就能抵达。她可以带来两份建材，也可以现在留下一份饭。新增的通路带来了选择，接下来如何使用由你决定。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Request timber for the camp.",
+        "Take food for the next expedition."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "为营地要建材。",
+        "拿行粮，准备下一次出战。"
+      ],
+      "outcomes": [
+        "骑手按约带来了木材。桥连接的不只是两岸，也连接了原本互不相识的人。",
+        "你收下行粮，听她讲完河对岸的路况。下一次出发，多了一点底气。"
+      ],
+      "audio": "audio/e03_0.mp3"
+    },
+    {
+      "id": "e03_1",
+      "event": 3,
+      "skill": 1,
+      "level": 2,
+      "title": "桥另一端的消息",
+      "text": "For the first time, a rider reaches your camp without taking the long road around the river. She pauses on the bridge and tells you about a village with spare building materials. On her return, she could bring two pieces of timber. Alternatively, she can leave a meal from her bag right now. The bridge has given you another connection. It does not dictate what to do with it; that choice remains yours.",
+      "zh": "木桥让骑手不必绕远路就能抵达。她可以带来两份建材，也可以现在留下一份饭。新增的通路带来了选择，接下来如何使用由你决定。",
+      "prompt": "按你的下一步计划选择，没有标准答案。",
+      "options": [
+        "Request timber for the camp.",
+        "Take food for the next expedition."
+      ],
+      "correct": -1,
+      "choicesZh": [
+        "为营地要建材。",
+        "拿行粮，准备下一次出战。"
+      ],
+      "outcomes": [
+        "骑手按约带来了木材。桥连接的不只是两岸，也连接了原本互不相识的人。",
+        "你收下行粮，听她讲完河对岸的路况。下一次出发，多了一点底气。"
+      ],
+      "audio": "audio/e03_1.mp3"
+    }
+  ],
+  "dictionaryCount": 29494,
+  "dictionaryVersion": "de4d0fceb982"
+}

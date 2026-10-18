@@ -1,0 +1,42 @@
+plugins { id 'com.android.application' }
+
+def privateSigning = new Properties()
+def privateSigningFile = rootProject.file('signing.properties')
+if (privateSigningFile.exists()) {
+    privateSigningFile.withInputStream { privateSigning.load(it) }
+}
+
+android {
+    namespace 'com.wordfrontier.app'
+    compileSdk 36
+    buildToolsVersion '34.0.0'
+    defaultConfig {
+        applicationId 'com.wordfrontier.app'
+        minSdk 26
+        targetSdk 35
+        versionCode 2
+        versionName '0.2.0'
+        testInstrumentationRunner 'com.wordfrontier.app.V2TestRunner'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    signingConfigs {
+        personal {
+            if (privateSigningFile.exists()) {
+                storeFile rootProject.file(privateSigning.getProperty('storeFile'))
+                storePassword privateSigning.getProperty('storePassword')
+                keyAlias privateSigning.getProperty('keyAlias')
+                keyPassword privateSigning.getProperty('keyPassword')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (privateSigningFile.exists()) signingConfig signingConfigs.personal
+        }
+    }
+}
+

@@ -1,0 +1,7142 @@
+[
+  {
+    "id": "v000",
+    "path": "audio/v000.mp3",
+    "text": "arrive. The first visitors arrive before noon."
+  },
+  {
+    "id": "v001",
+    "path": "audio/v001.mp3",
+    "text": "borrow. May I borrow your map for a day?"
+  },
+  {
+    "id": "v002",
+    "path": "audio/v002.mp3",
+    "text": "carry. We can carry the small boxes together."
+  },
+  {
+    "id": "v003",
+    "path": "audio/v003.mp3",
+    "text": "choose. Choose a dry place for the tent."
+  },
+  {
+    "id": "v004",
+    "path": "audio/v004.mp3",
+    "text": "corner. A small lamp stands in the corner."
+  },
+  {
+    "id": "v005",
+    "path": "audio/v005.mp3",
+    "text": "decide. We must decide which road to take."
+  },
+  {
+    "id": "v006",
+    "path": "audio/v006.mp3",
+    "text": "empty. The basket is empty after lunch."
+  },
+  {
+    "id": "v007",
+    "path": "audio/v007.mp3",
+    "text": "enough. There is enough water for everyone."
+  },
+  {
+    "id": "v008",
+    "path": "audio/v008.mp3",
+    "text": "follow. Follow the path beside the river."
+  },
+  {
+    "id": "v009",
+    "path": "audio/v009.mp3",
+    "text": "fresh. She brings fresh bread every morning."
+  },
+  {
+    "id": "v010",
+    "path": "audio/v010.mp3",
+    "text": "gather. The travelers gather near the fire."
+  },
+  {
+    "id": "v011",
+    "path": "audio/v011.mp3",
+    "text": "gentle. A gentle wind moves through the grass."
+  },
+  {
+    "id": "v012",
+    "path": "audio/v012.mp3",
+    "text": "improve. Practice can improve your listening."
+  },
+  {
+    "id": "v013",
+    "path": "audio/v013.mp3",
+    "text": "invite. We invite our neighbors to dinner."
+  },
+  {
+    "id": "v014",
+    "path": "audio/v014.mp3",
+    "text": "journey. The journey takes three days."
+  },
+  {
+    "id": "v015",
+    "path": "audio/v015.mp3",
+    "text": "leave. We leave the village after breakfast."
+  },
+  {
+    "id": "v016",
+    "path": "audio/v016.mp3",
+    "text": "notice. Did you notice the broken window?"
+  },
+  {
+    "id": "v017",
+    "path": "audio/v017.mp3",
+    "text": "offer. They offer us a place to sleep."
+  },
+  {
+    "id": "v018",
+    "path": "audio/v018.mp3",
+    "text": "prepare. We prepare a hot meal for the team."
+  },
+  {
+    "id": "v019",
+    "path": "audio/v019.mp3",
+    "text": "quiet. The street is quiet at night."
+  },
+  {
+    "id": "v020",
+    "path": "audio/v020.mp3",
+    "text": "reach. Can we reach the bridge before dark?"
+  },
+  {
+    "id": "v021",
+    "path": "audio/v021.mp3",
+    "text": "repair. He can repair the old wooden chair."
+  },
+  {
+    "id": "v022",
+    "path": "audio/v022.mp3",
+    "text": "return. Please return before the rain starts."
+  },
+  {
+    "id": "v023",
+    "path": "audio/v023.mp3",
+    "text": "share. We share our food with the visitors."
+  },
+  {
+    "id": "v024",
+    "path": "audio/v024.mp3",
+    "text": "simple. The plan is simple and easy to follow."
+  },
+  {
+    "id": "v025",
+    "path": "audio/v025.mp3",
+    "text": "slowly. The boat moves slowly across the lake."
+  },
+  {
+    "id": "v026",
+    "path": "audio/v026.mp3",
+    "text": "space. There is space for one more tent."
+  },
+  {
+    "id": "v027",
+    "path": "audio/v027.mp3",
+    "text": "stay. You can stay here until tomorrow."
+  },
+  {
+    "id": "v028",
+    "path": "audio/v028.mp3",
+    "text": "storm. The storm keeps everyone indoors."
+  },
+  {
+    "id": "v029",
+    "path": "audio/v029.mp3",
+    "text": "strong. A strong horse pulls the heavy cart."
+  },
+  {
+    "id": "v030",
+    "path": "audio/v030.mp3",
+    "text": "surprise. The birthday cake is a lovely surprise."
+  },
+  {
+    "id": "v031",
+    "path": "audio/v031.mp3",
+    "text": "together. We finish the work together."
+  },
+  {
+    "id": "v032",
+    "path": "audio/v032.mp3",
+    "text": "useful. This little tool is very useful."
+  },
+  {
+    "id": "v033",
+    "path": "audio/v033.mp3",
+    "text": "village. The village lies beside a wide river."
+  },
+  {
+    "id": "v034",
+    "path": "audio/v034.mp3",
+    "text": "wait. Please wait here for the next boat."
+  },
+  {
+    "id": "v035",
+    "path": "audio/v035.mp3",
+    "text": "waste. Do not waste the clean water."
+  },
+  {
+    "id": "v036",
+    "path": "audio/v036.mp3",
+    "text": "weather. The weather changes quickly here."
+  },
+  {
+    "id": "v037",
+    "path": "audio/v037.mp3",
+    "text": "wide. The road is wide enough for two carts."
+  },
+  {
+    "id": "v038",
+    "path": "audio/v038.mp3",
+    "text": "wooden. They build a wooden table for the hall."
+  },
+  {
+    "id": "v039",
+    "path": "audio/v039.mp3",
+    "text": "worry. Do not worry about making a mistake."
+  },
+  {
+    "id": "v040",
+    "path": "audio/v040.mp3",
+    "text": "avoid. We avoid the narrow road during heavy rain."
+  },
+  {
+    "id": "v041",
+    "path": "audio/v041.mp3",
+    "text": "balance. Try to keep a balance between work and rest."
+  },
+  {
+    "id": "v042",
+    "path": "audio/v042.mp3",
+    "text": "benefit. One benefit of walking is better sleep."
+  },
+  {
+    "id": "v043",
+    "path": "audio/v043.mp3",
+    "text": "compare. Compare the two maps before you choose."
+  },
+  {
+    "id": "v044",
+    "path": "audio/v044.mp3",
+    "text": "complete. We hope to complete the bridge this week."
+  },
+  {
+    "id": "v045",
+    "path": "audio/v045.mp3",
+    "text": "consider. Please consider the risks before leaving."
+  },
+  {
+    "id": "v046",
+    "path": "audio/v046.mp3",
+    "text": "defend. Two guards stay behind to defend the gate."
+  },
+  {
+    "id": "v047",
+    "path": "audio/v047.mp3",
+    "text": "delay. The rain may delay our trip by an hour."
+  },
+  {
+    "id": "v048",
+    "path": "audio/v048.mp3",
+    "text": "depend. The village depends on the river for water."
+  },
+  {
+    "id": "v049",
+    "path": "audio/v049.mp3",
+    "text": "discover. We discover a small garden behind the house."
+  },
+  {
+    "id": "v050",
+    "path": "audio/v050.mp3",
+    "text": "effort. The team puts a lot of effort into the project."
+  },
+  {
+    "id": "v051",
+    "path": "audio/v051.mp3",
+    "text": "escape. The animals escape through a hole in the fence."
+  },
+  {
+    "id": "v052",
+    "path": "audio/v052.mp3",
+    "text": "expect. We expect the visitors to arrive this evening."
+  },
+  {
+    "id": "v053",
+    "path": "audio/v053.mp3",
+    "text": "explain. Can you explain why the path is closed?"
+  },
+  {
+    "id": "v054",
+    "path": "audio/v054.mp3",
+    "text": "familiar. Her voice sounds familiar to me."
+  },
+  {
+    "id": "v055",
+    "path": "audio/v055.mp3",
+    "text": "gently. Place the glass gently on the table."
+  },
+  {
+    "id": "v056",
+    "path": "audio/v056.mp3",
+    "text": "gradually. The empty field gradually becomes a garden."
+  },
+  {
+    "id": "v057",
+    "path": "audio/v057.mp3",
+    "text": "harvest. The farmers celebrate a good harvest."
+  },
+  {
+    "id": "v058",
+    "path": "audio/v058.mp3",
+    "text": "instead. It is raining, so we will read indoors instead."
+  },
+  {
+    "id": "v059",
+    "path": "audio/v059.mp3",
+    "text": "manage. We manage to fix the roof before the storm."
+  },
+  {
+    "id": "v060",
+    "path": "audio/v060.mp3",
+    "text": "material. Wood is the main material used for the bridge."
+  },
+  {
+    "id": "v061",
+    "path": "audio/v061.mp3",
+    "text": "meanwhile. I will cook; meanwhile, you can set the table."
+  },
+  {
+    "id": "v062",
+    "path": "audio/v062.mp3",
+    "text": "opponent. Our opponent often attacks from the left."
+  },
+  {
+    "id": "v063",
+    "path": "audio/v063.mp3",
+    "text": "patient. Be patient while the young plants grow."
+  },
+  {
+    "id": "v064",
+    "path": "audio/v064.mp3",
+    "text": "perhaps. Perhaps the other road is safer."
+  },
+  {
+    "id": "v065",
+    "path": "audio/v065.mp3",
+    "text": "protect. The walls protect the garden from the wind."
+  },
+  {
+    "id": "v066",
+    "path": "audio/v066.mp3",
+    "text": "purpose. The purpose of this room is to store food."
+  },
+  {
+    "id": "v067",
+    "path": "audio/v067.mp3",
+    "text": "reduce. Better tools can reduce the time we need."
+  },
+  {
+    "id": "v068",
+    "path": "audio/v068.mp3",
+    "text": "regular. Regular practice is better than one long session."
+  },
+  {
+    "id": "v069",
+    "path": "audio/v069.mp3",
+    "text": "remain. Please remain inside until the storm ends."
+  },
+  {
+    "id": "v070",
+    "path": "audio/v070.mp3",
+    "text": "replace. We need to replace the broken wheel."
+  },
+  {
+    "id": "v071",
+    "path": "audio/v071.mp3",
+    "text": "resource. Clean water is a valuable resource."
+  },
+  {
+    "id": "v072",
+    "path": "audio/v072.mp3",
+    "text": "route. This route follows the coast for several miles."
+  },
+  {
+    "id": "v073",
+    "path": "audio/v073.mp3",
+    "text": "shelter. We find shelter in an old stone house."
+  },
+  {
+    "id": "v074",
+    "path": "audio/v074.mp3",
+    "text": "signal. A raised flag is the signal to move."
+  },
+  {
+    "id": "v075",
+    "path": "audio/v075.mp3",
+    "text": "supply. The cart carries a supply of food and medicine."
+  },
+  {
+    "id": "v076",
+    "path": "audio/v076.mp3",
+    "text": "trade. Trade brings new goods into the village."
+  },
+  {
+    "id": "v077",
+    "path": "audio/v077.mp3",
+    "text": "trust. I trust her because she keeps her promises."
+  },
+  {
+    "id": "v078",
+    "path": "audio/v078.mp3",
+    "text": "unless. We will leave now unless you need more time."
+  },
+  {
+    "id": "v079",
+    "path": "audio/v079.mp3",
+    "text": "weakness. The wall has a weakness near the old gate."
+  },
+  {
+    "id": "v080",
+    "path": "audio/v080.mp3",
+    "text": "accurate. We need an accurate map of the valley."
+  },
+  {
+    "id": "v081",
+    "path": "audio/v081.mp3",
+    "text": "adapt. The team must adapt to the changing weather."
+  },
+  {
+    "id": "v082",
+    "path": "audio/v082.mp3",
+    "text": "advance. The soldiers advance slowly through the mist."
+  },
+  {
+    "id": "v083",
+    "path": "audio/v083.mp3",
+    "text": "alternative. Walking is a good alternative to waiting for a cart."
+  },
+  {
+    "id": "v084",
+    "path": "audio/v084.mp3",
+    "text": "approach. As we approach the village, we hear music."
+  },
+  {
+    "id": "v085",
+    "path": "audio/v085.mp3",
+    "text": "assume. Do not assume that every quiet road is safe."
+  },
+  {
+    "id": "v086",
+    "path": "audio/v086.mp3",
+    "text": "brief. He gives a brief account of the journey."
+  },
+  {
+    "id": "v087",
+    "path": "audio/v087.mp3",
+    "text": "capacity. The new tank has twice the capacity of the old one."
+  },
+  {
+    "id": "v088",
+    "path": "audio/v088.mp3",
+    "text": "consequence. Think about the consequence of leaving the gate open."
+  },
+  {
+    "id": "v089",
+    "path": "audio/v089.mp3",
+    "text": "constant. The constant noise makes it difficult to rest."
+  },
+  {
+    "id": "v090",
+    "path": "audio/v090.mp3",
+    "text": "contrast. There is a clear contrast between the two plans."
+  },
+  {
+    "id": "v091",
+    "path": "audio/v091.mp3",
+    "text": "convince. We convince the driver to take a safer route."
+  },
+  {
+    "id": "v092",
+    "path": "audio/v092.mp3",
+    "text": "decline. The number of visitors begins to decline in winter."
+  },
+  {
+    "id": "v093",
+    "path": "audio/v093.mp3",
+    "text": "efficient. This new stove is more efficient than the old one."
+  },
+  {
+    "id": "v094",
+    "path": "audio/v094.mp3",
+    "text": "estimate. Can you estimate how long the repairs will take?"
+  },
+  {
+    "id": "v095",
+    "path": "audio/v095.mp3",
+    "text": "evidence. The broken branches are evidence that someone passed here."
+  },
+  {
+    "id": "v096",
+    "path": "audio/v096.mp3",
+    "text": "expand. We plan to expand the garden next spring."
+  },
+  {
+    "id": "v097",
+    "path": "audio/v097.mp3",
+    "text": "expose. Removing the fence would expose the plants to strong winds."
+  },
+  {
+    "id": "v098",
+    "path": "audio/v098.mp3",
+    "text": "flexible. A flexible plan is useful when the weather changes."
+  },
+  {
+    "id": "v099",
+    "path": "audio/v099.mp3",
+    "text": "frequent. Frequent rain makes the path difficult to use."
+  },
+  {
+    "id": "v100",
+    "path": "audio/v100.mp3",
+    "text": "hesitate. She does not hesitate to help a stranger."
+  },
+  {
+    "id": "v101",
+    "path": "audio/v101.mp3",
+    "text": "identify. Can you identify the bird by its song?"
+  },
+  {
+    "id": "v102",
+    "path": "audio/v102.mp3",
+    "text": "maintain. We need to maintain a steady supply of water."
+  },
+  {
+    "id": "v103",
+    "path": "audio/v103.mp3",
+    "text": "nevertheless. The work is difficult; nevertheless, they continue."
+  },
+  {
+    "id": "v104",
+    "path": "audio/v104.mp3",
+    "text": "obtain. Travelers can obtain fresh water at the station."
+  },
+  {
+    "id": "v105",
+    "path": "audio/v105.mp3",
+    "text": "opportunity. The quiet afternoon is an opportunity to repair the roof."
+  },
+  {
+    "id": "v106",
+    "path": "audio/v106.mp3",
+    "text": "predict. It is difficult to predict the next storm."
+  },
+  {
+    "id": "v107",
+    "path": "audio/v107.mp3",
+    "text": "priority. Keeping everyone warm is our first priority."
+  },
+  {
+    "id": "v108",
+    "path": "audio/v108.mp3",
+    "text": "recover. The plants recover after a few days of rain."
+  },
+  {
+    "id": "v109",
+    "path": "audio/v109.mp3",
+    "text": "reluctant. He is reluctant to leave his comfortable home."
+  },
+  {
+    "id": "v110",
+    "path": "audio/v110.mp3",
+    "text": "reliable. We need a reliable source of news."
+  },
+  {
+    "id": "v111",
+    "path": "audio/v111.mp3",
+    "text": "reveal. The letter may reveal the reason for her journey."
+  },
+  {
+    "id": "v112",
+    "path": "audio/v112.mp3",
+    "text": "temporary. They put up a temporary shelter near the road."
+  },
+  {
+    "id": "v113",
+    "path": "audio/v113.mp3",
+    "text": "threat. Flooding is the biggest threat to the village."
+  },
+  {
+    "id": "v114",
+    "path": "audio/v114.mp3",
+    "text": "transfer. We transfer the food to a dry room."
+  },
+  {
+    "id": "v115",
+    "path": "audio/v115.mp3",
+    "text": "uncertain. The date of their return is still uncertain."
+  },
+  {
+    "id": "v116",
+    "path": "audio/v116.mp3",
+    "text": "valuable. Her advice is especially valuable to new travelers."
+  },
+  {
+    "id": "v117",
+    "path": "audio/v117.mp3",
+    "text": "whereas. The north road is short, whereas the south road is safe."
+  },
+  {
+    "id": "v118",
+    "path": "audio/v118.mp3",
+    "text": "withdraw. The guards withdraw when they see the larger force."
+  },
+  {
+    "id": "v119",
+    "path": "audio/v119.mp3",
+    "text": "withstand. The new roof can withstand heavy snow."
+  },
+  {
+    "id": "v120",
+    "path": "audio/v120.mp3",
+    "text": "ambiguous. The message is ambiguous, so we ask for more detail."
+  },
+  {
+    "id": "v121",
+    "path": "audio/v121.mp3",
+    "text": "anticipate. We anticipate greater demand for water in summer."
+  },
+  {
+    "id": "v122",
+    "path": "audio/v122.mp3",
+    "text": "apparent. There is no apparent damage to the bridge."
+  },
+  {
+    "id": "v123",
+    "path": "audio/v123.mp3",
+    "text": "compensate. The extra supplies compensate for the late delivery."
+  },
+  {
+    "id": "v124",
+    "path": "audio/v124.mp3",
+    "text": "compromise. They reach a compromise that gives each group some space."
+  },
+  {
+    "id": "v125",
+    "path": "audio/v125.mp3",
+    "text": "conceal. Thick branches conceal the entrance to the path."
+  },
+  {
+    "id": "v126",
+    "path": "audio/v126.mp3",
+    "text": "consistent. Her report is consistent with what the scouts saw."
+  },
+  {
+    "id": "v127",
+    "path": "audio/v127.mp3",
+    "text": "constraint. Limited time is the main constraint on our plan."
+  },
+  {
+    "id": "v128",
+    "path": "audio/v128.mp3",
+    "text": "coordinate. We coordinate the deliveries so that nothing is wasted."
+  },
+  {
+    "id": "v129",
+    "path": "audio/v129.mp3",
+    "text": "credible. We need a credible explanation for the missing goods."
+  },
+  {
+    "id": "v130",
+    "path": "audio/v130.mp3",
+    "text": "deliberate. The delay is deliberate, intended to avoid the storm."
+  },
+  {
+    "id": "v131",
+    "path": "audio/v131.mp3",
+    "text": "disrupt. A sudden flood could disrupt the supply route."
+  },
+  {
+    "id": "v132",
+    "path": "audio/v132.mp3",
+    "text": "distinguish. It is hard to distinguish a real warning from a rumor."
+  },
+  {
+    "id": "v133",
+    "path": "audio/v133.mp3",
+    "text": "divert. We divert the water into a smaller channel."
+  },
+  {
+    "id": "v134",
+    "path": "audio/v134.mp3",
+    "text": "elaborate. The captain has an elaborate plan with several stages."
+  },
+  {
+    "id": "v135",
+    "path": "audio/v135.mp3",
+    "text": "emerge. A new problem begins to emerge during construction."
+  },
+  {
+    "id": "v136",
+    "path": "audio/v136.mp3",
+    "text": "feasible. The smaller bridge is a feasible solution."
+  },
+  {
+    "id": "v137",
+    "path": "audio/v137.mp3",
+    "text": "fluctuate. Water levels fluctuate throughout the year."
+  },
+  {
+    "id": "v138",
+    "path": "audio/v138.mp3",
+    "text": "imply. Dark clouds imply that a storm may be near."
+  },
+  {
+    "id": "v139",
+    "path": "audio/v139.mp3",
+    "text": "incentive. A safer road is an incentive for travelers to return."
+  },
+  {
+    "id": "v140",
+    "path": "audio/v140.mp3",
+    "text": "inevitable. Some delays are inevitable in such bad weather."
+  },
+  {
+    "id": "v141",
+    "path": "audio/v141.mp3",
+    "text": "inference. Her conclusion is an inference based on several clues."
+  },
+  {
+    "id": "v142",
+    "path": "audio/v142.mp3",
+    "text": "initiative. A quick response allows our team to take the initiative."
+  },
+  {
+    "id": "v143",
+    "path": "audio/v143.mp3",
+    "text": "integrate. We integrate the new garden into the existing village."
+  },
+  {
+    "id": "v144",
+    "path": "audio/v144.mp3",
+    "text": "mutual. The agreement depends on mutual trust."
+  },
+  {
+    "id": "v145",
+    "path": "audio/v145.mp3",
+    "text": "negotiate. The two villages negotiate the cost of the bridge."
+  },
+  {
+    "id": "v146",
+    "path": "audio/v146.mp3",
+    "text": "objective. Try to give an objective account of what happened."
+  },
+  {
+    "id": "v147",
+    "path": "audio/v147.mp3",
+    "text": "persist. They persist despite several unsuccessful attempts."
+  },
+  {
+    "id": "v148",
+    "path": "audio/v148.mp3",
+    "text": "plausible. The broken wheel is a plausible reason for the delay."
+  },
+  {
+    "id": "v149",
+    "path": "audio/v149.mp3",
+    "text": "precise. We need precise measurements before cutting the wood."
+  },
+  {
+    "id": "v150",
+    "path": "audio/v150.mp3",
+    "text": "preserve. The village hopes to preserve its old meeting hall."
+  },
+  {
+    "id": "v151",
+    "path": "audio/v151.mp3",
+    "text": "reinforce. Workers reinforce the wall with additional stone."
+  },
+  {
+    "id": "v152",
+    "path": "audio/v152.mp3",
+    "text": "resilient. These plants are resilient and recover after dry weather."
+  },
+  {
+    "id": "v153",
+    "path": "audio/v153.mp3",
+    "text": "retain. The rebuilt house retains its original front door."
+  },
+  {
+    "id": "v154",
+    "path": "audio/v154.mp3",
+    "text": "scarce. Fresh vegetables are scarce during the cold months."
+  },
+  {
+    "id": "v155",
+    "path": "audio/v155.mp3",
+    "text": "subsequent. The subsequent report provides more reliable details."
+  },
+  {
+    "id": "v156",
+    "path": "audio/v156.mp3",
+    "text": "sustain. A small garden cannot sustain the entire village."
+  },
+  {
+    "id": "v157",
+    "path": "audio/v157.mp3",
+    "text": "trade-off. There is a trade-off between speed and safety."
+  },
+  {
+    "id": "v158",
+    "path": "audio/v158.mp3",
+    "text": "underlying. We must understand the underlying cause of the problem."
+  },
+  {
+    "id": "v159",
+    "path": "audio/v159.mp3",
+    "text": "vulnerable. Without a wall, the camp is vulnerable to attacks."
+  },
+  {
+    "id": "l000",
+    "path": "audio/l000.mp3",
+    "text": "They are coming down the main road. Get ready at the gate."
+  },
+  {
+    "id": "l001",
+    "path": "audio/l001.mp3",
+    "text": "They have stopped behind the wall. They are waiting for us."
+  },
+  {
+    "id": "l002",
+    "path": "audio/l002.mp3",
+    "text": "Look to your left. They are moving through the trees."
+  },
+  {
+    "id": "l003",
+    "path": "audio/l003.mp3",
+    "text": "The whole team is running straight toward our camp."
+  },
+  {
+    "id": "l004",
+    "path": "audio/l004.mp3",
+    "text": "Their shields are up. No one is leaving the old bridge."
+  },
+  {
+    "id": "l005",
+    "path": "audio/l005.mp3",
+    "text": "The main road is empty. They are taking the path on our right."
+  },
+  {
+    "id": "l006",
+    "path": "audio/l006.mp3",
+    "text": "The captain does not want to wait. She is bringing everyone down the center."
+  },
+  {
+    "id": "l007",
+    "path": "audio/l007.mp3",
+    "text": "They noticed our scout, but they did not follow him. They are staying behind the fence."
+  },
+  {
+    "id": "l008",
+    "path": "audio/l008.mp3",
+    "text": "Two guards are watching the bridge. The others are going around the hill to our left."
+  },
+  {
+    "id": "l009",
+    "path": "audio/l009.mp3",
+    "text": "They have left their supplies behind so they can move faster. Expect a direct attack."
+  },
+  {
+    "id": "l010",
+    "path": "audio/l010.mp3",
+    "text": "The other team is repairing the barrier. It looks like they want us to attack first."
+  },
+  {
+    "id": "l011",
+    "path": "audio/l011.mp3",
+    "text": "Keep watching the side road. Their riders have crossed the river behind the garden."
+  },
+  {
+    "id": "l012",
+    "path": "audio/l012.mp3",
+    "text": "The commander has abandoned the safer route. She is concentrating the entire group at the center for a quick breakthrough."
+  },
+  {
+    "id": "l013",
+    "path": "audio/l013.mp3",
+    "text": "Our attempt to draw them out has failed. They remain in cover and continue to reinforce their position."
+  },
+  {
+    "id": "l014",
+    "path": "audio/l014.mp3",
+    "text": "The noise at the gate is a distraction. Most of their team is following the dry stream toward our right flank."
+  },
+  {
+    "id": "l015",
+    "path": "audio/l015.mp3",
+    "text": "They know our supplies will arrive tonight. Rather than give us time to prepare, they are advancing along the main road now."
+  },
+  {
+    "id": "l016",
+    "path": "audio/l016.mp3",
+    "text": "Although their riders look ready to move, the commander has ordered them to hold the narrow entrance and wait."
+  },
+  {
+    "id": "l017",
+    "path": "audio/l017.mp3",
+    "text": "Only a small group remains in sight. Fresh tracks suggest the others have taken the longer route behind our camp."
+  },
+  {
+    "id": "l018",
+    "path": "audio/l018.mp3",
+    "text": "Despite earlier reports of a possible withdrawal, their reserve units are joining the central formation. A direct commitment now seems the most plausible interpretation."
+  },
+  {
+    "id": "l019",
+    "path": "audio/l019.mp3",
+    "text": "Their repeated movements outside the wall appear intended to provoke us. The supplies and reinforced doors suggest they plan to retain their defensive advantage."
+  },
+  {
+    "id": "l020",
+    "path": "audio/l020.mp3",
+    "text": "Only a small force remains near the bridge. Meanwhile, equipment is being transferred along the concealed western trail, consistent with an attempt to reach our side."
+  },
+  {
+    "id": "l021",
+    "path": "audio/l021.mp3",
+    "text": "Their commander has rejected any further delay. Equipment that might slow the group has been discarded, and every unit is now approaching through the central valley."
+  },
+  {
+    "id": "l022",
+    "path": "audio/l022.mp3",
+    "text": "The apparent hesitation may be deliberate. Their current position controls the water supply, so abandoning it would sacrifice their most reliable advantage."
+  },
+  {
+    "id": "l023",
+    "path": "audio/l023.mp3",
+    "text": "The emphasis on the main bridge conflicts with the latest supply movements. Those movements indicate that the principal force is circling toward our less protected flank."
+  },
+  {
+    "id": "s00_0",
+    "path": "audio/s00_0.mp3",
+    "text": "A traveler leaves a map at our camp. It shows where to find clean water, not where to find gold. \"The next person may be tired,\" she says. We put the map near the door so everyone can use it."
+  },
+  {
+    "id": "s00_1",
+    "path": "audio/s00_1.mp3",
+    "text": "When Mara arrived, she asked for neither a bed nor a meal. She wanted a pencil. Her old map showed the hills clearly, but it said nothing about the places where a tired traveler could find clean water. She spent the evening adding those details. Before leaving, she placed the map beside the door. \"A useful map tells people what they need,\" she said, \"not just what is there.\" We have kept a pencil beside it ever since."
+  },
+  {
+    "id": "s01_0",
+    "path": "audio/s01_0.mp3",
+    "text": "We have only one large pot, but six people want to cook. At first, everyone talks at once. Then we choose one simple dish. Two people cut vegetables, two bring water, and the others make a fire. Dinner is late, but nobody eats alone."
+  },
+  {
+    "id": "s01_1",
+    "path": "audio/s01_1.mp3",
+    "text": "The first shared dinner nearly failed before anyone lit the fire. Six people had six recipes and only one pot. Arguing about the best dish took longer than preparing it would have. Finally, Jin suggested that they choose a meal everyone could help make. It was not anyone's favorite, but it gave each person a useful task. By the time they sat down, the food was almost beside the point: the strangers had learned how to work together."
+  },
+  {
+    "id": "s02_0",
+    "path": "audio/s02_0.mp3",
+    "text": "The garden looks empty today. We picked the last vegetables yesterday. Our neighbor says the soil needs time to rest. We cover it with leaves instead of planting again at once. An empty field can still be part of a good plan."
+  },
+  {
+    "id": "s02_1",
+    "path": "audio/s02_1.mp3",
+    "text": "After the harvest, I wanted to plant every empty patch immediately. A garden full of green leaves seemed more successful than bare soil. Our neighbor disagreed. She explained that the previous crop had used many of the nutrients that the next one would need. We covered part of the ground with fallen leaves and left it alone. For a while, progress looked like doing less. The following season helped me understand why waiting had been part of the work."
+  },
+  {
+    "id": "s03_0",
+    "path": "audio/s03_0.mp3",
+    "text": "There are two roads to the village. The short road has deep mud. The longer one is dry. We choose the dry road and arrive before the other cart. Distance is not the only thing that makes a journey long."
+  },
+  {
+    "id": "s03_1",
+    "path": "audio/s03_1.mp3",
+    "text": "The driver was embarrassed to choose the longer road. On the map, it looked like an unnecessary detour, and the other travelers laughed when he turned away from the shortcut. But the recent rain had changed the calculation. While the first cart struggled through deep mud, ours kept moving at a steady pace. We reached the village with daylight to spare. The experience reminded us that the shortest route on paper is not always the quickest route in practice."
+  },
+  {
+    "id": "s04_0",
+    "path": "audio/s04_0.mp3",
+    "text": "I use the wrong English word when I ask for a bowl. My friend looks confused, then shows me the word I need. We laugh together. Later, I use it again without help. The mistake becomes a small part of a real conversation."
+  },
+  {
+    "id": "s04_1",
+    "path": "audio/s04_1.mp3",
+    "text": "I had practiced the sentence in my head, yet the wrong word came out when I finally spoke. For a moment, I considered pretending that I had meant something else. My friend simply picked up a bowl and said its name. There was no test to fail and no score to lose. Later that evening, I needed the same word again. This time it arrived more easily. What I remembered was not a rule on a page, but the moment when someone understood me."
+  },
+  {
+    "id": "s05_0",
+    "path": "audio/s05_0.mp3",
+    "text": "Our hammer breaks, so we borrow one from the next camp. We return it the following day. A week later, they ask for our saw. Soon we build a small shelf for shared tools. We do not need to own everything ourselves."
+  },
+  {
+    "id": "s05_1",
+    "path": "audio/s05_1.mp3",
+    "text": "At first, every household planned to buy a complete set of tools. The cost was high, and most tools would have remained unused for weeks. A broken hammer led to a different arrangement. After borrowing a replacement, we began keeping a list of what each neighbor could share. There were occasional delays, and someone had to maintain the list, but the system gave everyone access to more equipment than they could have afforded alone."
+  },
+  {
+    "id": "s06_0",
+    "path": "audio/s06_0.mp3",
+    "text": "Last month, I could not read the notice at the gate. Today, I understand most of it. There is no prize, and nobody is watching. I still stop for a moment and smile. Something that once blocked my way has become useful."
+  },
+  {
+    "id": "s06_1",
+    "path": "audio/s06_1.mp3",
+    "text": "The notice had been on the gate for weeks. On my first visit, its long sentences had looked like a wall of unfamiliar shapes. I took a photograph and forgot about it. When I returned, I could follow the main message without opening a dictionary. I still missed two details, but the difference was real. No level appeared above my head. The reward was that a piece of the world had become easier to understand."
+  },
+  {
+    "id": "s07_0",
+    "path": "audio/s07_0.mp3",
+    "text": "A letter arrives after three days of rain. Our friend cannot visit this week because the river is too high. She sends a story instead. We read it together by the fire. The visit is delayed, but the friendship is not."
+  },
+  {
+    "id": "s07_1",
+    "path": "audio/s07_1.mp3",
+    "text": "We had prepared an extra bed before the rain began. Three days later, a messenger arrived with a letter explaining that the river was no longer safe to cross. Our friend apologized for changing the plan and included a story from her own village. We read it aloud after dinner. The empty bed still reminded us of the visit we had expected, but the letter gave us something different to share. A postponed plan did not have to become a lost connection."
+  },
+  {
+    "id": "s08_0",
+    "path": "audio/s08_0.mp3",
+    "text": "The hall has a new roof and new windows. We keep the old front door. It is not perfect, but many visitors wrote their names on it. The building is better now, and it still remembers the people who helped us begin."
+  },
+  {
+    "id": "s08_1",
+    "path": "audio/s08_1.mp3",
+    "text": "During the repairs, someone suggested replacing the old front door. A new one would fit the frame more neatly and keep out a little more wind. Yet the old wood carried the names of nearly everyone who had helped establish the camp. We repaired its weakest parts and kept it. The decision was a small compromise between efficiency and memory. Improving a place did not require removing every sign of the work that had made it possible."
+  },
+  {
+    "id": "s09_0",
+    "path": "audio/s09_0.mp3",
+    "text": "Our bread is too hard. We change the flour, the water, and the cooking time. The next loaf is better, but we do not know why. After that, we change only one thing each time. Learning becomes slower to start and easier to trust."
+  },
+  {
+    "id": "s09_1",
+    "path": "audio/s09_1.mp3",
+    "text": "The first successful loaf caused an argument. One cook credited the new flour, another the extra water, and a third the shorter baking time. Because we had changed everything at once, none of us had convincing evidence. For the next few attempts, we kept careful notes and changed one part of the recipe at a time. This approach felt less exciting than trying a completely new recipe, but it gave us knowledge that could be used again."
+  },
+  {
+    "id": "s10_0",
+    "path": "audio/s10_0.mp3",
+    "text": "The roof is repaired. There is food for dinner and wood for the fire. We could keep working, but we choose to stop. Tomorrow has its own tasks. Tonight, we sit outside and enjoy the place we have made."
+  },
+  {
+    "id": "s10_1",
+    "path": "audio/s10_1.mp3",
+    "text": "By late afternoon, the final leak had been fixed. Someone pointed out that the fence could still be straighter and the shelves could still be larger. Those observations were true, but they did not make the day incomplete. We had finished what we set out to do. Instead of opening another project immediately, we carried our chairs into the yard. For once, the camp was not a list of future improvements. It was a place where we could live."
+  },
+  {
+    "id": "s11_0",
+    "path": "audio/s11_0.mp3",
+    "text": "The bridge is ready. A cart crosses it slowly, carrying books, cloth, and tea. The driver stops to thank us. Until today, the bridge was our project. Now it is part of someone else's journey. We watch the cart disappear down the road."
+  },
+  {
+    "id": "s11_1",
+    "path": "audio/s11_1.mp3",
+    "text": "We had spent so much time measuring, carrying, and repairing that the bridge had become a collection of tasks in our minds. Then the first cart arrived. Its driver knew nothing about the arguments over the design or the afternoon when a wheel had broken. He simply crossed the river, stopped to thank us, and continued toward the next village. Watching him leave changed the meaning of the work. The bridge was finished, and its usefulness had only just begun."
+  },
+  {
+    "id": "e00_0",
+    "path": "audio/e00_0.mp3",
+    "text": "A carpenter stops beside your tent. She has two spare boards and a bag of bread. She can leave the boards for your first building, or give you food for your next journey. She can spare one gift today. What would help you more?"
+  },
+  {
+    "id": "e00_1",
+    "path": "audio/e00_1.mp3",
+    "text": "The carpenter is on her way to a village beyond the hills. Before leaving, she offers a choice. Two spare boards could help turn your temporary camp into a more comfortable place. A bag of bread, on the other hand, would be useful when you next set out. She cannot spare both, but neither choice will disappoint her. You look at the unfinished ground and the road ahead. Which need matters more to you now?"
+  },
+  {
+    "id": "e01_0",
+    "path": "audio/e01_0.mp3",
+    "text": "Your neighbor brings an extra bag of grain. He has also saved some wood from an old fence. He can help you gather the wood, or leave the grain so you can make food for a journey. You do not need to repay him today."
+  },
+  {
+    "id": "e01_1",
+    "path": "audio/e01_1.mp3",
+    "text": "The first green shoots have appeared beside the river. A neighbor notices them and stops to talk. He has more grain than he needs, and a small pile of wood from a fence he recently replaced. If you want to continue building, he will help carry the wood to your camp. If you would rather prepare for another expedition, he can leave the grain instead. The offer is simple, and there is no deadline attached."
+  },
+  {
+    "id": "e02_0",
+    "path": "audio/e02_0.mp3",
+    "text": "A traveler asks you to repair the handle of her hammer. Your new workshop has the right tools. When the repair is finished, she offers either spare timber from her cart or a packed meal. You can choose what is useful for your next step."
+  },
+  {
+    "id": "e02_1",
+    "path": "audio/e02_1.mp3",
+    "text": "The workshop has barely opened when someone brings in a broken hammer. Its head is sound, but the handle has split. You find a suitable piece of wood and make the tool useful again. The traveler cannot stay for long. To thank you, she offers either two pieces of spare timber or the meal she packed for the road. The repair has created a small opportunity; what it becomes is up to you."
+  },
+  {
+    "id": "e03_0",
+    "path": "audio/e03_0.mp3",
+    "text": "A rider crosses your new bridge. She knows a place where people have spare building wood. She also carries food from a nearby village. She can bring you some wood on her return, or leave a meal now. Both offers are good; your next plan will decide."
+  },
+  {
+    "id": "e03_1",
+    "path": "audio/e03_1.mp3",
+    "text": "For the first time, a rider reaches your camp without taking the long road around the river. She pauses on the bridge and tells you about a village with spare building materials. On her return, she could bring two pieces of timber. Alternatively, she can leave a meal from her bag right now. The bridge has given you another connection. It does not dictate what to do with it; that choice remains yours."
+  },
+  {
+    "id": "x_differ",
+    "path": "audio/x_differ.mp3",
+    "text": "differ"
+  },
+  {
+    "id": "x_double",
+    "path": "audio/x_double.mp3",
+    "text": "double"
+  },
+  {
+    "id": "x_bird",
+    "path": "audio/x_bird.mp3",
+    "text": "bird"
+  },
+  {
+    "id": "x_master",
+    "path": "audio/x_master.mp3",
+    "text": "master"
+  },
+  {
+    "id": "x_pipe",
+    "path": "audio/x_pipe.mp3",
+    "text": "pipe"
+  },
+  {
+    "id": "x_shape",
+    "path": "audio/x_shape.mp3",
+    "text": "shape"
+  },
+  {
+    "id": "x_coast",
+    "path": "audio/x_coast.mp3",
+    "text": "coast"
+  },
+  {
+    "id": "x_shortly",
+    "path": "audio/x_shortly.mp3",
+    "text": "shortly"
+  },
+  {
+    "id": "x_reputation",
+    "path": "audio/x_reputation.mp3",
+    "text": "reputation"
+  },
+  {
+    "id": "x_glad",
+    "path": "audio/x_glad.mp3",
+    "text": "glad"
+  },
+  {
+    "id": "x_ought",
+    "path": "audio/x_ought.mp3",
+    "text": "ought"
+  },
+  {
+    "id": "x_routine",
+    "path": "audio/x_routine.mp3",
+    "text": "routine"
+  },
+  {
+    "id": "x_detective",
+    "path": "audio/x_detective.mp3",
+    "text": "detective"
+  },
+  {
+    "id": "x_restore",
+    "path": "audio/x_restore.mp3",
+    "text": "restore"
+  },
+  {
+    "id": "x_estimate",
+    "path": "audio/x_estimate.mp3",
+    "text": "estimate"
+  },
+  {
+    "id": "x_preserve",
+    "path": "audio/x_preserve.mp3",
+    "text": "preserve"
+  },
+  {
+    "id": "x_combination",
+    "path": "audio/x_combination.mp3",
+    "text": "combination"
+  },
+  {
+    "id": "x_operating",
+    "path": "audio/x_operating.mp3",
+    "text": "operating"
+  },
+  {
+    "id": "x_increasingly",
+    "path": "audio/x_increasingly.mp3",
+    "text": "increasingly"
+  },
+  {
+    "id": "x_objective",
+    "path": "audio/x_objective.mp3",
+    "text": "objective"
+  },
+  {
+    "id": "x_rich",
+    "path": "audio/x_rich.mp3",
+    "text": "rich"
+  },
+  {
+    "id": "x_western",
+    "path": "audio/x_western.mp3",
+    "text": "western"
+  },
+  {
+    "id": "x_implement",
+    "path": "audio/x_implement.mp3",
+    "text": "implement"
+  },
+  {
+    "id": "x_keen",
+    "path": "audio/x_keen.mp3",
+    "text": "keen"
+  },
+  {
+    "id": "x_religion",
+    "path": "audio/x_religion.mp3",
+    "text": "religion"
+  },
+  {
+    "id": "x_setting",
+    "path": "audio/x_setting.mp3",
+    "text": "setting"
+  },
+  {
+    "id": "x_meal",
+    "path": "audio/x_meal.mp3",
+    "text": "meal"
+  },
+  {
+    "id": "x_slight",
+    "path": "audio/x_slight.mp3",
+    "text": "slight"
+  },
+  {
+    "id": "x_farmer",
+    "path": "audio/x_farmer.mp3",
+    "text": "farmer"
+  },
+  {
+    "id": "x_manufacturer",
+    "path": "audio/x_manufacturer.mp3",
+    "text": "manufacturer"
+  },
+  {
+    "id": "x_pleased",
+    "path": "audio/x_pleased.mp3",
+    "text": "pleased"
+  },
+  {
+    "id": "x_consideration",
+    "path": "audio/x_consideration.mp3",
+    "text": "consideration"
+  },
+  {
+    "id": "x_tired",
+    "path": "audio/x_tired.mp3",
+    "text": "tired"
+  },
+  {
+    "id": "x_challenge",
+    "path": "audio/x_challenge.mp3",
+    "text": "challenge"
+  },
+  {
+    "id": "x_actor",
+    "path": "audio/x_actor.mp3",
+    "text": "actor"
+  },
+  {
+    "id": "x_specify",
+    "path": "audio/x_specify.mp3",
+    "text": "specify"
+  },
+  {
+    "id": "x_request",
+    "path": "audio/x_request.mp3",
+    "text": "request"
+  },
+  {
+    "id": "x_capable",
+    "path": "audio/x_capable.mp3",
+    "text": "capable"
+  },
+  {
+    "id": "x_genuine",
+    "path": "audio/x_genuine.mp3",
+    "text": "genuine"
+  },
+  {
+    "id": "x_lovely",
+    "path": "audio/x_lovely.mp3",
+    "text": "lovely"
+  },
+  {
+    "id": "x_limited",
+    "path": "audio/x_limited.mp3",
+    "text": "limited"
+  },
+  {
+    "id": "x_band",
+    "path": "audio/x_band.mp3",
+    "text": "band"
+  },
+  {
+    "id": "x_unlike",
+    "path": "audio/x_unlike.mp3",
+    "text": "unlike"
+  },
+  {
+    "id": "x_brown",
+    "path": "audio/x_brown.mp3",
+    "text": "brown"
+  },
+  {
+    "id": "x_participation",
+    "path": "audio/x_participation.mp3",
+    "text": "participation"
+  },
+  {
+    "id": "x_cultural",
+    "path": "audio/x_cultural.mp3",
+    "text": "cultural"
+  },
+  {
+    "id": "x_host",
+    "path": "audio/x_host.mp3",
+    "text": "host"
+  },
+  {
+    "id": "x_predict",
+    "path": "audio/x_predict.mp3",
+    "text": "predict"
+  },
+  {
+    "id": "x_trust",
+    "path": "audio/x_trust.mp3",
+    "text": "trust"
+  },
+  {
+    "id": "x_recording",
+    "path": "audio/x_recording.mp3",
+    "text": "recording"
+  },
+  {
+    "id": "x_sight",
+    "path": "audio/x_sight.mp3",
+    "text": "sight"
+  },
+  {
+    "id": "x_dust",
+    "path": "audio/x_dust.mp3",
+    "text": "dust"
+  },
+  {
+    "id": "x_strategy",
+    "path": "audio/x_strategy.mp3",
+    "text": "strategy"
+  },
+  {
+    "id": "x_indication",
+    "path": "audio/x_indication.mp3",
+    "text": "indication"
+  },
+  {
+    "id": "x_fault",
+    "path": "audio/x_fault.mp3",
+    "text": "fault"
+  },
+  {
+    "id": "x_partnership",
+    "path": "audio/x_partnership.mp3",
+    "text": "partnership"
+  },
+  {
+    "id": "x_appoint",
+    "path": "audio/x_appoint.mp3",
+    "text": "appoint"
+  },
+  {
+    "id": "x_means",
+    "path": "audio/x_means.mp3",
+    "text": "means"
+  },
+  {
+    "id": "x_catalogue",
+    "path": "audio/x_catalogue.mp3",
+    "text": "catalogue"
+  },
+  {
+    "id": "x_dominant",
+    "path": "audio/x_dominant.mp3",
+    "text": "dominant"
+  },
+  {
+    "id": "x_highlight",
+    "path": "audio/x_highlight.mp3",
+    "text": "highlight"
+  },
+  {
+    "id": "x_transition",
+    "path": "audio/x_transition.mp3",
+    "text": "transition"
+  },
+  {
+    "id": "x_thatcher",
+    "path": "audio/x_thatcher.mp3",
+    "text": "thatcher"
+  },
+  {
+    "id": "x_infant",
+    "path": "audio/x_infant.mp3",
+    "text": "infant"
+  },
+  {
+    "id": "x_address",
+    "path": "audio/x_address.mp3",
+    "text": "address"
+  },
+  {
+    "id": "x_necessarily",
+    "path": "audio/x_necessarily.mp3",
+    "text": "necessarily"
+  },
+  {
+    "id": "x_briefly",
+    "path": "audio/x_briefly.mp3",
+    "text": "briefly"
+  },
+  {
+    "id": "x_mark",
+    "path": "audio/x_mark.mp3",
+    "text": "mark"
+  },
+  {
+    "id": "x_essential",
+    "path": "audio/x_essential.mp3",
+    "text": "essential"
+  },
+  {
+    "id": "x_historian",
+    "path": "audio/x_historian.mp3",
+    "text": "historian"
+  },
+  {
+    "id": "x_loan",
+    "path": "audio/x_loan.mp3",
+    "text": "loan"
+  },
+  {
+    "id": "x_shoot",
+    "path": "audio/x_shoot.mp3",
+    "text": "shoot"
+  },
+  {
+    "id": "x_impact",
+    "path": "audio/x_impact.mp3",
+    "text": "impact"
+  },
+  {
+    "id": "x_scale",
+    "path": "audio/x_scale.mp3",
+    "text": "scale"
+  },
+  {
+    "id": "x_wooden",
+    "path": "audio/x_wooden.mp3",
+    "text": "wooden"
+  },
+  {
+    "id": "x_formula",
+    "path": "audio/x_formula.mp3",
+    "text": "formula"
+  },
+  {
+    "id": "x_dish",
+    "path": "audio/x_dish.mp3",
+    "text": "dish"
+  },
+  {
+    "id": "x_parliamentary",
+    "path": "audio/x_parliamentary.mp3",
+    "text": "parliamentary"
+  },
+  {
+    "id": "x_curve",
+    "path": "audio/x_curve.mp3",
+    "text": "curve"
+  },
+  {
+    "id": "x_imply",
+    "path": "audio/x_imply.mp3",
+    "text": "imply"
+  },
+  {
+    "id": "x_bridge",
+    "path": "audio/x_bridge.mp3",
+    "text": "bridge"
+  },
+  {
+    "id": "x_mortgage",
+    "path": "audio/x_mortgage.mp3",
+    "text": "mortgage"
+  },
+  {
+    "id": "x_whisper",
+    "path": "audio/x_whisper.mp3",
+    "text": "whisper"
+  },
+  {
+    "id": "x_remind",
+    "path": "audio/x_remind.mp3",
+    "text": "remind"
+  },
+  {
+    "id": "x_pitch",
+    "path": "audio/x_pitch.mp3",
+    "text": "pitch"
+  },
+  {
+    "id": "x_theatre",
+    "path": "audio/x_theatre.mp3",
+    "text": "theatre"
+  },
+  {
+    "id": "x_aged",
+    "path": "audio/x_aged.mp3",
+    "text": "aged"
+  },
+  {
+    "id": "x_advance",
+    "path": "audio/x_advance.mp3",
+    "text": "advance"
+  },
+  {
+    "id": "x_district",
+    "path": "audio/x_district.mp3",
+    "text": "district"
+  },
+  {
+    "id": "x_housing",
+    "path": "audio/x_housing.mp3",
+    "text": "housing"
+  },
+  {
+    "id": "x_evident",
+    "path": "audio/x_evident.mp3",
+    "text": "evident"
+  },
+  {
+    "id": "x_worried",
+    "path": "audio/x_worried.mp3",
+    "text": "worried"
+  },
+  {
+    "id": "x_illustrate",
+    "path": "audio/x_illustrate.mp3",
+    "text": "illustrate"
+  },
+  {
+    "id": "x_announcement",
+    "path": "audio/x_announcement.mp3",
+    "text": "announcement"
+  },
+  {
+    "id": "x_substantial",
+    "path": "audio/x_substantial.mp3",
+    "text": "substantial"
+  },
+  {
+    "id": "x_storage",
+    "path": "audio/x_storage.mp3",
+    "text": "storage"
+  },
+  {
+    "id": "x_wild",
+    "path": "audio/x_wild.mp3",
+    "text": "wild"
+  },
+  {
+    "id": "x_flight",
+    "path": "audio/x_flight.mp3",
+    "text": "flight"
+  },
+  {
+    "id": "x_decline",
+    "path": "audio/x_decline.mp3",
+    "text": "decline"
+  },
+  {
+    "id": "x_tennis",
+    "path": "audio/x_tennis.mp3",
+    "text": "tennis"
+  },
+  {
+    "id": "x_saving",
+    "path": "audio/x_saving.mp3",
+    "text": "saving"
+  },
+  {
+    "id": "x_complain",
+    "path": "audio/x_complain.mp3",
+    "text": "complain"
+  },
+  {
+    "id": "x_poll",
+    "path": "audio/x_poll.mp3",
+    "text": "poll"
+  },
+  {
+    "id": "x_discourse",
+    "path": "audio/x_discourse.mp3",
+    "text": "discourse"
+  },
+  {
+    "id": "x_railway",
+    "path": "audio/x_railway.mp3",
+    "text": "railway"
+  },
+  {
+    "id": "x_handle",
+    "path": "audio/x_handle.mp3",
+    "text": "handle"
+  },
+  {
+    "id": "x_allowance",
+    "path": "audio/x_allowance.mp3",
+    "text": "allowance"
+  },
+  {
+    "id": "x_vegetable",
+    "path": "audio/x_vegetable.mp3",
+    "text": "vegetable"
+  },
+  {
+    "id": "x_perception",
+    "path": "audio/x_perception.mp3",
+    "text": "perception"
+  },
+  {
+    "id": "x_entirely",
+    "path": "audio/x_entirely.mp3",
+    "text": "entirely"
+  },
+  {
+    "id": "x_suggestion",
+    "path": "audio/x_suggestion.mp3",
+    "text": "suggestion"
+  },
+  {
+    "id": "x_cheque",
+    "path": "audio/x_cheque.mp3",
+    "text": "cheque"
+  },
+  {
+    "id": "x_journalist",
+    "path": "audio/x_journalist.mp3",
+    "text": "journalist"
+  },
+  {
+    "id": "x_circle",
+    "path": "audio/x_circle.mp3",
+    "text": "circle"
+  },
+  {
+    "id": "x_promotion",
+    "path": "audio/x_promotion.mp3",
+    "text": "promotion"
+  },
+  {
+    "id": "x_understanding",
+    "path": "audio/x_understanding.mp3",
+    "text": "understanding"
+  },
+  {
+    "id": "x_stomach",
+    "path": "audio/x_stomach.mp3",
+    "text": "stomach"
+  },
+  {
+    "id": "x_effectively",
+    "path": "audio/x_effectively.mp3",
+    "text": "effectively"
+  },
+  {
+    "id": "x_sleep",
+    "path": "audio/x_sleep.mp3",
+    "text": "sleep"
+  },
+  {
+    "id": "x_twice",
+    "path": "audio/x_twice.mp3",
+    "text": "twice"
+  },
+  {
+    "id": "x_safe",
+    "path": "audio/x_safe.mp3",
+    "text": "safe"
+  },
+  {
+    "id": "x_crown",
+    "path": "audio/x_crown.mp3",
+    "text": "crown"
+  },
+  {
+    "id": "x_incorporate",
+    "path": "audio/x_incorporate.mp3",
+    "text": "incorporate"
+  },
+  {
+    "id": "x_treaty",
+    "path": "audio/x_treaty.mp3",
+    "text": "treaty"
+  },
+  {
+    "id": "x_custom",
+    "path": "audio/x_custom.mp3",
+    "text": "custom"
+  },
+  {
+    "id": "x_champion",
+    "path": "audio/x_champion.mp3",
+    "text": "champion"
+  },
+  {
+    "id": "x_muscle",
+    "path": "audio/x_muscle.mp3",
+    "text": "muscle"
+  },
+  {
+    "id": "x_fabric",
+    "path": "audio/x_fabric.mp3",
+    "text": "fabric"
+  },
+  {
+    "id": "x_ordinary",
+    "path": "audio/x_ordinary.mp3",
+    "text": "ordinary"
+  },
+  {
+    "id": "x_properly",
+    "path": "audio/x_properly.mp3",
+    "text": "properly"
+  },
+  {
+    "id": "x_practitioner",
+    "path": "audio/x_practitioner.mp3",
+    "text": "practitioner"
+  },
+  {
+    "id": "x_administrative",
+    "path": "audio/x_administrative.mp3",
+    "text": "administrative"
+  },
+  {
+    "id": "x_apparently",
+    "path": "audio/x_apparently.mp3",
+    "text": "apparently"
+  },
+  {
+    "id": "x_emotion",
+    "path": "audio/x_emotion.mp3",
+    "text": "emotion"
+  },
+  {
+    "id": "x_rare",
+    "path": "audio/x_rare.mp3",
+    "text": "rare"
+  },
+  {
+    "id": "x_hill",
+    "path": "audio/x_hill.mp3",
+    "text": "hill"
+  },
+  {
+    "id": "x_murder",
+    "path": "audio/x_murder.mp3",
+    "text": "murder"
+  },
+  {
+    "id": "x_wire",
+    "path": "audio/x_wire.mp3",
+    "text": "wire"
+  },
+  {
+    "id": "x_legislation",
+    "path": "audio/x_legislation.mp3",
+    "text": "legislation"
+  },
+  {
+    "id": "x_vary",
+    "path": "audio/x_vary.mp3",
+    "text": "vary"
+  },
+  {
+    "id": "x_hell",
+    "path": "audio/x_hell.mp3",
+    "text": "hell"
+  },
+  {
+    "id": "x_witness",
+    "path": "audio/x_witness.mp3",
+    "text": "witness"
+  },
+  {
+    "id": "x_crisis",
+    "path": "audio/x_crisis.mp3",
+    "text": "crisis"
+  },
+  {
+    "id": "x_chancellor",
+    "path": "audio/x_chancellor.mp3",
+    "text": "chancellor"
+  },
+  {
+    "id": "x_emphasise",
+    "path": "audio/x_emphasise.mp3",
+    "text": "emphasise"
+  },
+  {
+    "id": "x_supplier",
+    "path": "audio/x_supplier.mp3",
+    "text": "supplier"
+  },
+  {
+    "id": "x_regulation",
+    "path": "audio/x_regulation.mp3",
+    "text": "regulation"
+  },
+  {
+    "id": "x_facility",
+    "path": "audio/x_facility.mp3",
+    "text": "facility"
+  },
+  {
+    "id": "x_soil",
+    "path": "audio/x_soil.mp3",
+    "text": "soil"
+  },
+  {
+    "id": "x_acquisition",
+    "path": "audio/x_acquisition.mp3",
+    "text": "acquisition"
+  },
+  {
+    "id": "x_burst",
+    "path": "audio/x_burst.mp3",
+    "text": "burst"
+  },
+  {
+    "id": "x_intense",
+    "path": "audio/x_intense.mp3",
+    "text": "intense"
+  },
+  {
+    "id": "x_assignment",
+    "path": "audio/x_assignment.mp3",
+    "text": "assignment"
+  },
+  {
+    "id": "x_gaze",
+    "path": "audio/x_gaze.mp3",
+    "text": "gaze"
+  },
+  {
+    "id": "x_super",
+    "path": "audio/x_super.mp3",
+    "text": "super"
+  },
+  {
+    "id": "x_liver",
+    "path": "audio/x_liver.mp3",
+    "text": "liver"
+  },
+  {
+    "id": "x_palm",
+    "path": "audio/x_palm.mp3",
+    "text": "palm"
+  },
+  {
+    "id": "x_morris",
+    "path": "audio/x_morris.mp3",
+    "text": "morris"
+  },
+  {
+    "id": "x_sharply",
+    "path": "audio/x_sharply.mp3",
+    "text": "sharply"
+  },
+  {
+    "id": "x_manufacture",
+    "path": "audio/x_manufacture.mp3",
+    "text": "manufacture"
+  },
+  {
+    "id": "x_verb",
+    "path": "audio/x_verb.mp3",
+    "text": "verb"
+  },
+  {
+    "id": "x_concrete",
+    "path": "audio/x_concrete.mp3",
+    "text": "concrete"
+  },
+  {
+    "id": "x_radiation",
+    "path": "audio/x_radiation.mp3",
+    "text": "radiation"
+  },
+  {
+    "id": "x_nowadays",
+    "path": "audio/x_nowadays.mp3",
+    "text": "nowadays"
+  },
+  {
+    "id": "x_profitable",
+    "path": "audio/x_profitable.mp3",
+    "text": "profitable"
+  },
+  {
+    "id": "x_partial",
+    "path": "audio/x_partial.mp3",
+    "text": "partial"
+  },
+  {
+    "id": "x_lemon",
+    "path": "audio/x_lemon.mp3",
+    "text": "lemon"
+  },
+  {
+    "id": "x_grandfather",
+    "path": "audio/x_grandfather.mp3",
+    "text": "grandfather"
+  },
+  {
+    "id": "x_confer",
+    "path": "audio/x_confer.mp3",
+    "text": "confer"
+  },
+  {
+    "id": "x_whereby",
+    "path": "audio/x_whereby.mp3",
+    "text": "whereby"
+  },
+  {
+    "id": "x_brochure",
+    "path": "audio/x_brochure.mp3",
+    "text": "brochure"
+  },
+  {
+    "id": "x_dining",
+    "path": "audio/x_dining.mp3",
+    "text": "dining"
+  },
+  {
+    "id": "x_nowhere",
+    "path": "audio/x_nowhere.mp3",
+    "text": "nowhere"
+  },
+  {
+    "id": "x_chocolate",
+    "path": "audio/x_chocolate.mp3",
+    "text": "chocolate"
+  },
+  {
+    "id": "x_tribe",
+    "path": "audio/x_tribe.mp3",
+    "text": "tribe"
+  },
+  {
+    "id": "x_reactor",
+    "path": "audio/x_reactor.mp3",
+    "text": "reactor"
+  },
+  {
+    "id": "x_dioxide",
+    "path": "audio/x_dioxide.mp3",
+    "text": "dioxide"
+  },
+  {
+    "id": "x_reduced",
+    "path": "audio/x_reduced.mp3",
+    "text": "reduced"
+  },
+  {
+    "id": "x_conscience",
+    "path": "audio/x_conscience.mp3",
+    "text": "conscience"
+  },
+  {
+    "id": "x_petrol",
+    "path": "audio/x_petrol.mp3",
+    "text": "petrol"
+  },
+  {
+    "id": "x_favourable",
+    "path": "audio/x_favourable.mp3",
+    "text": "favourable"
+  },
+  {
+    "id": "x_systematic",
+    "path": "audio/x_systematic.mp3",
+    "text": "systematic"
+  },
+  {
+    "id": "x_magic",
+    "path": "audio/x_magic.mp3",
+    "text": "magic"
+  },
+  {
+    "id": "x_excuse",
+    "path": "audio/x_excuse.mp3",
+    "text": "excuse"
+  },
+  {
+    "id": "x_dolphin",
+    "path": "audio/x_dolphin.mp3",
+    "text": "dolphin"
+  },
+  {
+    "id": "x_execution",
+    "path": "audio/x_execution.mp3",
+    "text": "execution"
+  },
+  {
+    "id": "x_tile",
+    "path": "audio/x_tile.mp3",
+    "text": "tile"
+  },
+  {
+    "id": "x_reluctant",
+    "path": "audio/x_reluctant.mp3",
+    "text": "reluctant"
+  },
+  {
+    "id": "x_disposal",
+    "path": "audio/x_disposal.mp3",
+    "text": "disposal"
+  },
+  {
+    "id": "x_curious",
+    "path": "audio/x_curious.mp3",
+    "text": "curious"
+  },
+  {
+    "id": "x_johnny",
+    "path": "audio/x_johnny.mp3",
+    "text": "johnny"
+  },
+  {
+    "id": "x_tropical",
+    "path": "audio/x_tropical.mp3",
+    "text": "tropical"
+  },
+  {
+    "id": "x_skull",
+    "path": "audio/x_skull.mp3",
+    "text": "skull"
+  },
+  {
+    "id": "x_pardon",
+    "path": "audio/x_pardon.mp3",
+    "text": "pardon"
+  },
+  {
+    "id": "x_brush",
+    "path": "audio/x_brush.mp3",
+    "text": "brush"
+  },
+  {
+    "id": "x_vertical",
+    "path": "audio/x_vertical.mp3",
+    "text": "vertical"
+  },
+  {
+    "id": "x_rear",
+    "path": "audio/x_rear.mp3",
+    "text": "rear"
+  },
+  {
+    "id": "x_humanity",
+    "path": "audio/x_humanity.mp3",
+    "text": "humanity"
+  },
+  {
+    "id": "x_turkey",
+    "path": "audio/x_turkey.mp3",
+    "text": "turkey"
+  },
+  {
+    "id": "x_lonely",
+    "path": "audio/x_lonely.mp3",
+    "text": "lonely"
+  },
+  {
+    "id": "x_misleading",
+    "path": "audio/x_misleading.mp3",
+    "text": "misleading"
+  },
+  {
+    "id": "x_midnight",
+    "path": "audio/x_midnight.mp3",
+    "text": "midnight"
+  },
+  {
+    "id": "x_devise",
+    "path": "audio/x_devise.mp3",
+    "text": "devise"
+  },
+  {
+    "id": "x_costly",
+    "path": "audio/x_costly.mp3",
+    "text": "costly"
+  },
+  {
+    "id": "x_underline",
+    "path": "audio/x_underline.mp3",
+    "text": "underline"
+  },
+  {
+    "id": "x_presume",
+    "path": "audio/x_presume.mp3",
+    "text": "presume"
+  },
+  {
+    "id": "x_quota",
+    "path": "audio/x_quota.mp3",
+    "text": "quota"
+  },
+  {
+    "id": "x_ugly",
+    "path": "audio/x_ugly.mp3",
+    "text": "ugly"
+  },
+  {
+    "id": "x_lifetime",
+    "path": "audio/x_lifetime.mp3",
+    "text": "lifetime"
+  },
+  {
+    "id": "x_installation",
+    "path": "audio/x_installation.mp3",
+    "text": "installation"
+  },
+  {
+    "id": "x_compile",
+    "path": "audio/x_compile.mp3",
+    "text": "compile"
+  },
+  {
+    "id": "x_coverage",
+    "path": "audio/x_coverage.mp3",
+    "text": "coverage"
+  },
+  {
+    "id": "x_erect",
+    "path": "audio/x_erect.mp3",
+    "text": "erect"
+  },
+  {
+    "id": "x_resume",
+    "path": "audio/x_resume.mp3",
+    "text": "resume"
+  },
+  {
+    "id": "x_institutional",
+    "path": "audio/x_institutional.mp3",
+    "text": "institutional"
+  },
+  {
+    "id": "x_magnetic",
+    "path": "audio/x_magnetic.mp3",
+    "text": "magnetic"
+  },
+  {
+    "id": "x_steep",
+    "path": "audio/x_steep.mp3",
+    "text": "steep"
+  },
+  {
+    "id": "x_intelligent",
+    "path": "audio/x_intelligent.mp3",
+    "text": "intelligent"
+  },
+  {
+    "id": "x_uncomfortable",
+    "path": "audio/x_uncomfortable.mp3",
+    "text": "uncomfortable"
+  },
+  {
+    "id": "x_delegate",
+    "path": "audio/x_delegate.mp3",
+    "text": "delegate"
+  },
+  {
+    "id": "x_communicate",
+    "path": "audio/x_communicate.mp3",
+    "text": "communicate"
+  },
+  {
+    "id": "x_earl",
+    "path": "audio/x_earl.mp3",
+    "text": "earl"
+  },
+  {
+    "id": "x_depressed",
+    "path": "audio/x_depressed.mp3",
+    "text": "depressed"
+  },
+  {
+    "id": "x_imprisonment",
+    "path": "audio/x_imprisonment.mp3",
+    "text": "imprisonment"
+  },
+  {
+    "id": "x_mature",
+    "path": "audio/x_mature.mp3",
+    "text": "mature"
+  },
+  {
+    "id": "x_linguistic",
+    "path": "audio/x_linguistic.mp3",
+    "text": "linguistic"
+  },
+  {
+    "id": "x_occurrence",
+    "path": "audio/x_occurrence.mp3",
+    "text": "occurrence"
+  },
+  {
+    "id": "x_shocked",
+    "path": "audio/x_shocked.mp3",
+    "text": "shocked"
+  },
+  {
+    "id": "x_molecular",
+    "path": "audio/x_molecular.mp3",
+    "text": "molecular"
+  },
+  {
+    "id": "x_insect",
+    "path": "audio/x_insect.mp3",
+    "text": "insect"
+  },
+  {
+    "id": "x_charming",
+    "path": "audio/x_charming.mp3",
+    "text": "charming"
+  },
+  {
+    "id": "x_dictate",
+    "path": "audio/x_dictate.mp3",
+    "text": "dictate"
+  },
+  {
+    "id": "x_contempt",
+    "path": "audio/x_contempt.mp3",
+    "text": "contempt"
+  },
+  {
+    "id": "x_nest",
+    "path": "audio/x_nest.mp3",
+    "text": "nest"
+  },
+  {
+    "id": "x_strip",
+    "path": "audio/x_strip.mp3",
+    "text": "strip"
+  },
+  {
+    "id": "x_gathering",
+    "path": "audio/x_gathering.mp3",
+    "text": "gathering"
+  },
+  {
+    "id": "x_easier",
+    "path": "audio/x_easier.mp3",
+    "text": "easier"
+  },
+  {
+    "id": "x_embark",
+    "path": "audio/x_embark.mp3",
+    "text": "embark"
+  },
+  {
+    "id": "x_packet",
+    "path": "audio/x_packet.mp3",
+    "text": "packet"
+  },
+  {
+    "id": "x_disappointment",
+    "path": "audio/x_disappointment.mp3",
+    "text": "disappointment"
+  },
+  {
+    "id": "x_substantially",
+    "path": "audio/x_substantially.mp3",
+    "text": "substantially"
+  },
+  {
+    "id": "x_clinic",
+    "path": "audio/x_clinic.mp3",
+    "text": "clinic"
+  },
+  {
+    "id": "x_emperor",
+    "path": "audio/x_emperor.mp3",
+    "text": "emperor"
+  },
+  {
+    "id": "x_positively",
+    "path": "audio/x_positively.mp3",
+    "text": "positively"
+  },
+  {
+    "id": "x_cupboard",
+    "path": "audio/x_cupboard.mp3",
+    "text": "cupboard"
+  },
+  {
+    "id": "x_closure",
+    "path": "audio/x_closure.mp3",
+    "text": "closure"
+  },
+  {
+    "id": "x_genuinely",
+    "path": "audio/x_genuinely.mp3",
+    "text": "genuinely"
+  },
+  {
+    "id": "x_liberty",
+    "path": "audio/x_liberty.mp3",
+    "text": "liberty"
+  },
+  {
+    "id": "x_behalf",
+    "path": "audio/x_behalf.mp3",
+    "text": "behalf"
+  },
+  {
+    "id": "x_segment",
+    "path": "audio/x_segment.mp3",
+    "text": "segment"
+  },
+  {
+    "id": "x_plea",
+    "path": "audio/x_plea.mp3",
+    "text": "plea"
+  },
+  {
+    "id": "x_gravity",
+    "path": "audio/x_gravity.mp3",
+    "text": "gravity"
+  },
+  {
+    "id": "x_parental",
+    "path": "audio/x_parental.mp3",
+    "text": "parental"
+  },
+  {
+    "id": "x_shooting",
+    "path": "audio/x_shooting.mp3",
+    "text": "shooting"
+  },
+  {
+    "id": "x_recruitment",
+    "path": "audio/x_recruitment.mp3",
+    "text": "recruitment"
+  },
+  {
+    "id": "x_improved",
+    "path": "audio/x_improved.mp3",
+    "text": "improved"
+  },
+  {
+    "id": "x_composer",
+    "path": "audio/x_composer.mp3",
+    "text": "composer"
+  },
+  {
+    "id": "x_judicial",
+    "path": "audio/x_judicial.mp3",
+    "text": "judicial"
+  },
+  {
+    "id": "x_socially",
+    "path": "audio/x_socially.mp3",
+    "text": "socially"
+  },
+  {
+    "id": "x_liquid",
+    "path": "audio/x_liquid.mp3",
+    "text": "liquid"
+  },
+  {
+    "id": "x_sickness",
+    "path": "audio/x_sickness.mp3",
+    "text": "sickness"
+  },
+  {
+    "id": "x_workforce",
+    "path": "audio/x_workforce.mp3",
+    "text": "workforce"
+  },
+  {
+    "id": "x_episode",
+    "path": "audio/x_episode.mp3",
+    "text": "episode"
+  },
+  {
+    "id": "x_discharge",
+    "path": "audio/x_discharge.mp3",
+    "text": "discharge"
+  },
+  {
+    "id": "x_instant",
+    "path": "audio/x_instant.mp3",
+    "text": "instant"
+  },
+  {
+    "id": "x_unnecessary",
+    "path": "audio/x_unnecessary.mp3",
+    "text": "unnecessary"
+  },
+  {
+    "id": "x_valid",
+    "path": "audio/x_valid.mp3",
+    "text": "valid"
+  },
+  {
+    "id": "x_reproduction",
+    "path": "audio/x_reproduction.mp3",
+    "text": "reproduction"
+  },
+  {
+    "id": "x_locally",
+    "path": "audio/x_locally.mp3",
+    "text": "locally"
+  },
+  {
+    "id": "x_applicant",
+    "path": "audio/x_applicant.mp3",
+    "text": "applicant"
+  },
+  {
+    "id": "x_ford",
+    "path": "audio/x_ford.mp3",
+    "text": "ford"
+  },
+  {
+    "id": "x_registered",
+    "path": "audio/x_registered.mp3",
+    "text": "registered"
+  },
+  {
+    "id": "x_exhaust",
+    "path": "audio/x_exhaust.mp3",
+    "text": "exhaust"
+  },
+  {
+    "id": "x_confront",
+    "path": "audio/x_confront.mp3",
+    "text": "confront"
+  },
+  {
+    "id": "x_enclose",
+    "path": "audio/x_enclose.mp3",
+    "text": "enclose"
+  },
+  {
+    "id": "x_added",
+    "path": "audio/x_added.mp3",
+    "text": "added"
+  },
+  {
+    "id": "x_unaware",
+    "path": "audio/x_unaware.mp3",
+    "text": "unaware"
+  },
+  {
+    "id": "x_injection",
+    "path": "audio/x_injection.mp3",
+    "text": "injection"
+  },
+  {
+    "id": "x_supper",
+    "path": "audio/x_supper.mp3",
+    "text": "supper"
+  },
+  {
+    "id": "x_commander",
+    "path": "audio/x_commander.mp3",
+    "text": "commander"
+  },
+  {
+    "id": "x_leap",
+    "path": "audio/x_leap.mp3",
+    "text": "leap"
+  },
+  {
+    "id": "x_tomato",
+    "path": "audio/x_tomato.mp3",
+    "text": "tomato"
+  },
+  {
+    "id": "x_obliged",
+    "path": "audio/x_obliged.mp3",
+    "text": "obliged"
+  },
+  {
+    "id": "x_harsh",
+    "path": "audio/x_harsh.mp3",
+    "text": "harsh"
+  },
+  {
+    "id": "x_hardware",
+    "path": "audio/x_hardware.mp3",
+    "text": "hardware"
+  },
+  {
+    "id": "x_statistical",
+    "path": "audio/x_statistical.mp3",
+    "text": "statistical"
+  },
+  {
+    "id": "x_wrist",
+    "path": "audio/x_wrist.mp3",
+    "text": "wrist"
+  },
+  {
+    "id": "x_accordingly",
+    "path": "audio/x_accordingly.mp3",
+    "text": "accordingly"
+  },
+  {
+    "id": "x_barrel",
+    "path": "audio/x_barrel.mp3",
+    "text": "barrel"
+  },
+  {
+    "id": "x_offender",
+    "path": "audio/x_offender.mp3",
+    "text": "offender"
+  },
+  {
+    "id": "x_painful",
+    "path": "audio/x_painful.mp3",
+    "text": "painful"
+  },
+  {
+    "id": "x_diagram",
+    "path": "audio/x_diagram.mp3",
+    "text": "diagram"
+  },
+  {
+    "id": "x_ingredient",
+    "path": "audio/x_ingredient.mp3",
+    "text": "ingredient"
+  },
+  {
+    "id": "x_genetic",
+    "path": "audio/x_genetic.mp3",
+    "text": "genetic"
+  },
+  {
+    "id": "x_publicity",
+    "path": "audio/x_publicity.mp3",
+    "text": "publicity"
+  },
+  {
+    "id": "x_keeper",
+    "path": "audio/x_keeper.mp3",
+    "text": "keeper"
+  },
+  {
+    "id": "x_tiger",
+    "path": "audio/x_tiger.mp3",
+    "text": "tiger"
+  },
+  {
+    "id": "x_harbour",
+    "path": "audio/x_harbour.mp3",
+    "text": "harbour"
+  },
+  {
+    "id": "x_aggression",
+    "path": "audio/x_aggression.mp3",
+    "text": "aggression"
+  },
+  {
+    "id": "x_bible",
+    "path": "audio/x_bible.mp3",
+    "text": "bible"
+  },
+  {
+    "id": "x_contractual",
+    "path": "audio/x_contractual.mp3",
+    "text": "contractual"
+  },
+  {
+    "id": "x_adhere",
+    "path": "audio/x_adhere.mp3",
+    "text": "adhere"
+  },
+  {
+    "id": "x_chemist",
+    "path": "audio/x_chemist.mp3",
+    "text": "chemist"
+  },
+  {
+    "id": "x_exceptionally",
+    "path": "audio/x_exceptionally.mp3",
+    "text": "exceptionally"
+  },
+  {
+    "id": "x_propaganda",
+    "path": "audio/x_propaganda.mp3",
+    "text": "propaganda"
+  },
+  {
+    "id": "x_feminine",
+    "path": "audio/x_feminine.mp3",
+    "text": "feminine"
+  },
+  {
+    "id": "x_honourable",
+    "path": "audio/x_honourable.mp3",
+    "text": "honourable"
+  },
+  {
+    "id": "x_distract",
+    "path": "audio/x_distract.mp3",
+    "text": "distract"
+  },
+  {
+    "id": "x_sleeping",
+    "path": "audio/x_sleeping.mp3",
+    "text": "sleeping"
+  },
+  {
+    "id": "x_imaginative",
+    "path": "audio/x_imaginative.mp3",
+    "text": "imaginative"
+  },
+  {
+    "id": "x_appropriately",
+    "path": "audio/x_appropriately.mp3",
+    "text": "appropriately"
+  },
+  {
+    "id": "x_imprison",
+    "path": "audio/x_imprison.mp3",
+    "text": "imprison"
+  },
+  {
+    "id": "x_workplace",
+    "path": "audio/x_workplace.mp3",
+    "text": "workplace"
+  },
+  {
+    "id": "x_potent",
+    "path": "audio/x_potent.mp3",
+    "text": "potent"
+  },
+  {
+    "id": "x_plausible",
+    "path": "audio/x_plausible.mp3",
+    "text": "plausible"
+  },
+  {
+    "id": "x_shove",
+    "path": "audio/x_shove.mp3",
+    "text": "shove"
+  },
+  {
+    "id": "x_decorative",
+    "path": "audio/x_decorative.mp3",
+    "text": "decorative"
+  },
+  {
+    "id": "x_outing",
+    "path": "audio/x_outing.mp3",
+    "text": "outing"
+  },
+  {
+    "id": "x_accusation",
+    "path": "audio/x_accusation.mp3",
+    "text": "accusation"
+  },
+  {
+    "id": "x_balanced",
+    "path": "audio/x_balanced.mp3",
+    "text": "balanced"
+  },
+  {
+    "id": "x_poison",
+    "path": "audio/x_poison.mp3",
+    "text": "poison"
+  },
+  {
+    "id": "x_utter",
+    "path": "audio/x_utter.mp3",
+    "text": "utter"
+  },
+  {
+    "id": "x_fridge",
+    "path": "audio/x_fridge.mp3",
+    "text": "fridge"
+  },
+  {
+    "id": "x_tenancy",
+    "path": "audio/x_tenancy.mp3",
+    "text": "tenancy"
+  },
+  {
+    "id": "x_geological",
+    "path": "audio/x_geological.mp3",
+    "text": "geological"
+  },
+  {
+    "id": "x_revolt",
+    "path": "audio/x_revolt.mp3",
+    "text": "revolt"
+  },
+  {
+    "id": "x_mandatory",
+    "path": "audio/x_mandatory.mp3",
+    "text": "mandatory"
+  },
+  {
+    "id": "x_prostitute",
+    "path": "audio/x_prostitute.mp3",
+    "text": "prostitute"
+  },
+  {
+    "id": "x_summons",
+    "path": "audio/x_summons.mp3",
+    "text": "summons"
+  },
+  {
+    "id": "x_clearance",
+    "path": "audio/x_clearance.mp3",
+    "text": "clearance"
+  },
+  {
+    "id": "x_talented",
+    "path": "audio/x_talented.mp3",
+    "text": "talented"
+  },
+  {
+    "id": "x_scrap",
+    "path": "audio/x_scrap.mp3",
+    "text": "scrap"
+  },
+  {
+    "id": "x_confidential",
+    "path": "audio/x_confidential.mp3",
+    "text": "confidential"
+  },
+  {
+    "id": "x_creativity",
+    "path": "audio/x_creativity.mp3",
+    "text": "creativity"
+  },
+  {
+    "id": "x_fork",
+    "path": "audio/x_fork.mp3",
+    "text": "fork"
+  },
+  {
+    "id": "x_syllabus",
+    "path": "audio/x_syllabus.mp3",
+    "text": "syllabus"
+  },
+  {
+    "id": "x_chew",
+    "path": "audio/x_chew.mp3",
+    "text": "chew"
+  },
+  {
+    "id": "x_spouse",
+    "path": "audio/x_spouse.mp3",
+    "text": "spouse"
+  },
+  {
+    "id": "x_uncommon",
+    "path": "audio/x_uncommon.mp3",
+    "text": "uncommon"
+  },
+  {
+    "id": "x_honey",
+    "path": "audio/x_honey.mp3",
+    "text": "honey"
+  },
+  {
+    "id": "x_dentist",
+    "path": "audio/x_dentist.mp3",
+    "text": "dentist"
+  },
+  {
+    "id": "x_slap",
+    "path": "audio/x_slap.mp3",
+    "text": "slap"
+  },
+  {
+    "id": "x_correction",
+    "path": "audio/x_correction.mp3",
+    "text": "correction"
+  },
+  {
+    "id": "x_understandable",
+    "path": "audio/x_understandable.mp3",
+    "text": "understandable"
+  },
+  {
+    "id": "x_intensify",
+    "path": "audio/x_intensify.mp3",
+    "text": "intensify"
+  },
+  {
+    "id": "x_unconscious",
+    "path": "audio/x_unconscious.mp3",
+    "text": "unconscious"
+  },
+  {
+    "id": "x_wagon",
+    "path": "audio/x_wagon.mp3",
+    "text": "wagon"
+  },
+  {
+    "id": "x_reservoir",
+    "path": "audio/x_reservoir.mp3",
+    "text": "reservoir"
+  },
+  {
+    "id": "x_predominantly",
+    "path": "audio/x_predominantly.mp3",
+    "text": "predominantly"
+  },
+  {
+    "id": "x_reluctantly",
+    "path": "audio/x_reluctantly.mp3",
+    "text": "reluctantly"
+  },
+  {
+    "id": "x_credibility",
+    "path": "audio/x_credibility.mp3",
+    "text": "credibility"
+  },
+  {
+    "id": "x_palmer",
+    "path": "audio/x_palmer.mp3",
+    "text": "palmer"
+  },
+  {
+    "id": "x_enjoyable",
+    "path": "audio/x_enjoyable.mp3",
+    "text": "enjoyable"
+  },
+  {
+    "id": "x_lately",
+    "path": "audio/x_lately.mp3",
+    "text": "lately"
+  },
+  {
+    "id": "x_theology",
+    "path": "audio/x_theology.mp3",
+    "text": "theology"
+  },
+  {
+    "id": "x_waiting",
+    "path": "audio/x_waiting.mp3",
+    "text": "waiting"
+  },
+  {
+    "id": "x_corpse",
+    "path": "audio/x_corpse.mp3",
+    "text": "corpse"
+  },
+  {
+    "id": "x_proportional",
+    "path": "audio/x_proportional.mp3",
+    "text": "proportional"
+  },
+  {
+    "id": "x_discriminate",
+    "path": "audio/x_discriminate.mp3",
+    "text": "discriminate"
+  },
+  {
+    "id": "x_landowner",
+    "path": "audio/x_landowner.mp3",
+    "text": "landowner"
+  },
+  {
+    "id": "x_lender",
+    "path": "audio/x_lender.mp3",
+    "text": "lender"
+  },
+  {
+    "id": "x_heave",
+    "path": "audio/x_heave.mp3",
+    "text": "heave"
+  },
+  {
+    "id": "x_prevailing",
+    "path": "audio/x_prevailing.mp3",
+    "text": "prevailing"
+  },
+  {
+    "id": "x_authentic",
+    "path": "audio/x_authentic.mp3",
+    "text": "authentic"
+  },
+  {
+    "id": "x_boxing",
+    "path": "audio/x_boxing.mp3",
+    "text": "boxing"
+  },
+  {
+    "id": "x_chef",
+    "path": "audio/x_chef.mp3",
+    "text": "chef"
+  },
+  {
+    "id": "x_repeated",
+    "path": "audio/x_repeated.mp3",
+    "text": "repeated"
+  },
+  {
+    "id": "x_radically",
+    "path": "audio/x_radically.mp3",
+    "text": "radically"
+  },
+  {
+    "id": "x_pamphlet",
+    "path": "audio/x_pamphlet.mp3",
+    "text": "pamphlet"
+  },
+  {
+    "id": "x_annually",
+    "path": "audio/x_annually.mp3",
+    "text": "annually"
+  },
+  {
+    "id": "x_counsel",
+    "path": "audio/x_counsel.mp3",
+    "text": "counsel"
+  },
+  {
+    "id": "x_harmless",
+    "path": "audio/x_harmless.mp3",
+    "text": "harmless"
+  },
+  {
+    "id": "x_grim",
+    "path": "audio/x_grim.mp3",
+    "text": "grim"
+  },
+  {
+    "id": "x_amnesty",
+    "path": "audio/x_amnesty.mp3",
+    "text": "amnesty"
+  },
+  {
+    "id": "x_selling",
+    "path": "audio/x_selling.mp3",
+    "text": "selling"
+  },
+  {
+    "id": "x_warden",
+    "path": "audio/x_warden.mp3",
+    "text": "warden"
+  },
+  {
+    "id": "x_formulation",
+    "path": "audio/x_formulation.mp3",
+    "text": "formulation"
+  },
+  {
+    "id": "x_broadcast",
+    "path": "audio/x_broadcast.mp3",
+    "text": "broadcast"
+  },
+  {
+    "id": "x_bourgeois",
+    "path": "audio/x_bourgeois.mp3",
+    "text": "bourgeois"
+  },
+  {
+    "id": "x_conspicuous",
+    "path": "audio/x_conspicuous.mp3",
+    "text": "conspicuous"
+  },
+  {
+    "id": "x_jointly",
+    "path": "audio/x_jointly.mp3",
+    "text": "jointly"
+  },
+  {
+    "id": "x_variant",
+    "path": "audio/x_variant.mp3",
+    "text": "variant"
+  },
+  {
+    "id": "x_flourish",
+    "path": "audio/x_flourish.mp3",
+    "text": "flourish"
+  },
+  {
+    "id": "x_vector",
+    "path": "audio/x_vector.mp3",
+    "text": "vector"
+  },
+  {
+    "id": "x_daylight",
+    "path": "audio/x_daylight.mp3",
+    "text": "daylight"
+  },
+  {
+    "id": "x_lazy",
+    "path": "audio/x_lazy.mp3",
+    "text": "lazy"
+  },
+  {
+    "id": "x_marsh",
+    "path": "audio/x_marsh.mp3",
+    "text": "marsh"
+  },
+  {
+    "id": "x_loom",
+    "path": "audio/x_loom.mp3",
+    "text": "loom"
+  },
+  {
+    "id": "x_doll",
+    "path": "audio/x_doll.mp3",
+    "text": "doll"
+  },
+  {
+    "id": "x_distortion",
+    "path": "audio/x_distortion.mp3",
+    "text": "distortion"
+  },
+  {
+    "id": "x_luxury",
+    "path": "audio/x_luxury.mp3",
+    "text": "luxury"
+  },
+  {
+    "id": "x_flick",
+    "path": "audio/x_flick.mp3",
+    "text": "flick"
+  },
+  {
+    "id": "x_investigator",
+    "path": "audio/x_investigator.mp3",
+    "text": "investigator"
+  },
+  {
+    "id": "x_heap",
+    "path": "audio/x_heap.mp3",
+    "text": "heap"
+  },
+  {
+    "id": "x_tolerance",
+    "path": "audio/x_tolerance.mp3",
+    "text": "tolerance"
+  },
+  {
+    "id": "x_optimism",
+    "path": "audio/x_optimism.mp3",
+    "text": "optimism"
+  },
+  {
+    "id": "x_extensively",
+    "path": "audio/x_extensively.mp3",
+    "text": "extensively"
+  },
+  {
+    "id": "x_foster",
+    "path": "audio/x_foster.mp3",
+    "text": "foster"
+  },
+  {
+    "id": "x_terminate",
+    "path": "audio/x_terminate.mp3",
+    "text": "terminate"
+  },
+  {
+    "id": "x_maid",
+    "path": "audio/x_maid.mp3",
+    "text": "maid"
+  },
+  {
+    "id": "x_scholarship",
+    "path": "audio/x_scholarship.mp3",
+    "text": "scholarship"
+  },
+  {
+    "id": "x_confrontation",
+    "path": "audio/x_confrontation.mp3",
+    "text": "confrontation"
+  },
+  {
+    "id": "x_appalling",
+    "path": "audio/x_appalling.mp3",
+    "text": "appalling"
+  },
+  {
+    "id": "x_proximity",
+    "path": "audio/x_proximity.mp3",
+    "text": "proximity"
+  },
+  {
+    "id": "x_syntactic",
+    "path": "audio/x_syntactic.mp3",
+    "text": "syntactic"
+  },
+  {
+    "id": "x_narrative",
+    "path": "audio/x_narrative.mp3",
+    "text": "narrative"
+  },
+  {
+    "id": "x_accelerate",
+    "path": "audio/x_accelerate.mp3",
+    "text": "accelerate"
+  },
+  {
+    "id": "x_oracle",
+    "path": "audio/x_oracle.mp3",
+    "text": "oracle"
+  },
+  {
+    "id": "x_biblical",
+    "path": "audio/x_biblical.mp3",
+    "text": "biblical"
+  },
+  {
+    "id": "x_cult",
+    "path": "audio/x_cult.mp3",
+    "text": "cult"
+  },
+  {
+    "id": "x_donate",
+    "path": "audio/x_donate.mp3",
+    "text": "donate"
+  },
+  {
+    "id": "x_excellence",
+    "path": "audio/x_excellence.mp3",
+    "text": "excellence"
+  },
+  {
+    "id": "x_progressively",
+    "path": "audio/x_progressively.mp3",
+    "text": "progressively"
+  },
+  {
+    "id": "x_consolidate",
+    "path": "audio/x_consolidate.mp3",
+    "text": "consolidate"
+  },
+  {
+    "id": "x_glare",
+    "path": "audio/x_glare.mp3",
+    "text": "glare"
+  },
+  {
+    "id": "x_socket",
+    "path": "audio/x_socket.mp3",
+    "text": "socket"
+  },
+  {
+    "id": "x_distinctly",
+    "path": "audio/x_distinctly.mp3",
+    "text": "distinctly"
+  },
+  {
+    "id": "x_contradict",
+    "path": "audio/x_contradict.mp3",
+    "text": "contradict"
+  },
+  {
+    "id": "x_tariff",
+    "path": "audio/x_tariff.mp3",
+    "text": "tariff"
+  },
+  {
+    "id": "x_pine",
+    "path": "audio/x_pine.mp3",
+    "text": "pine"
+  },
+  {
+    "id": "x_stunning",
+    "path": "audio/x_stunning.mp3",
+    "text": "stunning"
+  },
+  {
+    "id": "x_sewage",
+    "path": "audio/x_sewage.mp3",
+    "text": "sewage"
+  },
+  {
+    "id": "x_sock",
+    "path": "audio/x_sock.mp3",
+    "text": "sock"
+  },
+  {
+    "id": "x_exaggerate",
+    "path": "audio/x_exaggerate.mp3",
+    "text": "exaggerate"
+  },
+  {
+    "id": "x_madam",
+    "path": "audio/x_madam.mp3",
+    "text": "madam"
+  },
+  {
+    "id": "x_dame",
+    "path": "audio/x_dame.mp3",
+    "text": "dame"
+  },
+  {
+    "id": "x_happening",
+    "path": "audio/x_happening.mp3",
+    "text": "happening"
+  },
+  {
+    "id": "x_embarrassing",
+    "path": "audio/x_embarrassing.mp3",
+    "text": "embarrassing"
+  },
+  {
+    "id": "x_vaguely",
+    "path": "audio/x_vaguely.mp3",
+    "text": "vaguely"
+  },
+  {
+    "id": "x_strive",
+    "path": "audio/x_strive.mp3",
+    "text": "strive"
+  },
+  {
+    "id": "x_slab",
+    "path": "audio/x_slab.mp3",
+    "text": "slab"
+  },
+  {
+    "id": "x_proprietor",
+    "path": "audio/x_proprietor.mp3",
+    "text": "proprietor"
+  },
+  {
+    "id": "x_knitting",
+    "path": "audio/x_knitting.mp3",
+    "text": "knitting"
+  },
+  {
+    "id": "x_herb",
+    "path": "audio/x_herb.mp3",
+    "text": "herb"
+  },
+  {
+    "id": "x_disagreement",
+    "path": "audio/x_disagreement.mp3",
+    "text": "disagreement"
+  },
+  {
+    "id": "x_ecclesiastical",
+    "path": "audio/x_ecclesiastical.mp3",
+    "text": "ecclesiastical"
+  },
+  {
+    "id": "x_bacon",
+    "path": "audio/x_bacon.mp3",
+    "text": "bacon"
+  },
+  {
+    "id": "x_lobby",
+    "path": "audio/x_lobby.mp3",
+    "text": "lobby"
+  },
+  {
+    "id": "x_robbery",
+    "path": "audio/x_robbery.mp3",
+    "text": "robbery"
+  },
+  {
+    "id": "x_disruption",
+    "path": "audio/x_disruption.mp3",
+    "text": "disruption"
+  },
+  {
+    "id": "x_borrower",
+    "path": "audio/x_borrower.mp3",
+    "text": "borrower"
+  },
+  {
+    "id": "x_conceptual",
+    "path": "audio/x_conceptual.mp3",
+    "text": "conceptual"
+  },
+  {
+    "id": "x_batch",
+    "path": "audio/x_batch.mp3",
+    "text": "batch"
+  },
+  {
+    "id": "x_floating",
+    "path": "audio/x_floating.mp3",
+    "text": "floating"
+  },
+  {
+    "id": "x_triangle",
+    "path": "audio/x_triangle.mp3",
+    "text": "triangle"
+  },
+  {
+    "id": "x_endure",
+    "path": "audio/x_endure.mp3",
+    "text": "endure"
+  },
+  {
+    "id": "x_unstable",
+    "path": "audio/x_unstable.mp3",
+    "text": "unstable"
+  },
+  {
+    "id": "x_spreadsheet",
+    "path": "audio/x_spreadsheet.mp3",
+    "text": "spreadsheet"
+  },
+  {
+    "id": "x_penetrate",
+    "path": "audio/x_penetrate.mp3",
+    "text": "penetrate"
+  },
+  {
+    "id": "x_atomic",
+    "path": "audio/x_atomic.mp3",
+    "text": "atomic"
+  },
+  {
+    "id": "x_impersonal",
+    "path": "audio/x_impersonal.mp3",
+    "text": "impersonal"
+  },
+  {
+    "id": "x_levy",
+    "path": "audio/x_levy.mp3",
+    "text": "levy"
+  },
+  {
+    "id": "x_flatten",
+    "path": "audio/x_flatten.mp3",
+    "text": "flatten"
+  },
+  {
+    "id": "x_intimacy",
+    "path": "audio/x_intimacy.mp3",
+    "text": "intimacy"
+  },
+  {
+    "id": "x_creed",
+    "path": "audio/x_creed.mp3",
+    "text": "creed"
+  },
+  {
+    "id": "x_apprehension",
+    "path": "audio/x_apprehension.mp3",
+    "text": "apprehension"
+  },
+  {
+    "id": "x_demographic",
+    "path": "audio/x_demographic.mp3",
+    "text": "demographic"
+  },
+  {
+    "id": "x_bureaucrat",
+    "path": "audio/x_bureaucrat.mp3",
+    "text": "bureaucrat"
+  },
+  {
+    "id": "x_avoidance",
+    "path": "audio/x_avoidance.mp3",
+    "text": "avoidance"
+  },
+  {
+    "id": "x_vocal",
+    "path": "audio/x_vocal.mp3",
+    "text": "vocal"
+  },
+  {
+    "id": "x_instalment",
+    "path": "audio/x_instalment.mp3",
+    "text": "instalment"
+  },
+  {
+    "id": "x_unload",
+    "path": "audio/x_unload.mp3",
+    "text": "unload"
+  },
+  {
+    "id": "x_dale",
+    "path": "audio/x_dale.mp3",
+    "text": "dale"
+  },
+  {
+    "id": "x_gorgeous",
+    "path": "audio/x_gorgeous.mp3",
+    "text": "gorgeous"
+  },
+  {
+    "id": "x_boxer",
+    "path": "audio/x_boxer.mp3",
+    "text": "boxer"
+  },
+  {
+    "id": "x_geology",
+    "path": "audio/x_geology.mp3",
+    "text": "geology"
+  },
+  {
+    "id": "x_trot",
+    "path": "audio/x_trot.mp3",
+    "text": "trot"
+  },
+  {
+    "id": "x_startle",
+    "path": "audio/x_startle.mp3",
+    "text": "startle"
+  },
+  {
+    "id": "x_wield",
+    "path": "audio/x_wield.mp3",
+    "text": "wield"
+  },
+  {
+    "id": "x_atmospheric",
+    "path": "audio/x_atmospheric.mp3",
+    "text": "atmospheric"
+  },
+  {
+    "id": "x_gentry",
+    "path": "audio/x_gentry.mp3",
+    "text": "gentry"
+  },
+  {
+    "id": "x_youthful",
+    "path": "audio/x_youthful.mp3",
+    "text": "youthful"
+  },
+  {
+    "id": "x_slum",
+    "path": "audio/x_slum.mp3",
+    "text": "slum"
+  },
+  {
+    "id": "x_transplant",
+    "path": "audio/x_transplant.mp3",
+    "text": "transplant"
+  },
+  {
+    "id": "x_summarize",
+    "path": "audio/x_summarize.mp3",
+    "text": "summarize"
+  },
+  {
+    "id": "x_psychic",
+    "path": "audio/x_psychic.mp3",
+    "text": "psychic"
+  },
+  {
+    "id": "x_syntax",
+    "path": "audio/x_syntax.mp3",
+    "text": "syntax"
+  },
+  {
+    "id": "x_affected",
+    "path": "audio/x_affected.mp3",
+    "text": "affected"
+  },
+  {
+    "id": "x_realization",
+    "path": "audio/x_realization.mp3",
+    "text": "realization"
+  },
+  {
+    "id": "x_reproductive",
+    "path": "audio/x_reproductive.mp3",
+    "text": "reproductive"
+  },
+  {
+    "id": "x_unnecessarily",
+    "path": "audio/x_unnecessarily.mp3",
+    "text": "unnecessarily"
+  },
+  {
+    "id": "x_anatomy",
+    "path": "audio/x_anatomy.mp3",
+    "text": "anatomy"
+  },
+  {
+    "id": "x_fascist",
+    "path": "audio/x_fascist.mp3",
+    "text": "fascist"
+  },
+  {
+    "id": "x_warmly",
+    "path": "audio/x_warmly.mp3",
+    "text": "warmly"
+  },
+  {
+    "id": "x_glide",
+    "path": "audio/x_glide.mp3",
+    "text": "glide"
+  },
+  {
+    "id": "x_enlightenment",
+    "path": "audio/x_enlightenment.mp3",
+    "text": "enlightenment"
+  },
+  {
+    "id": "x_introductory",
+    "path": "audio/x_introductory.mp3",
+    "text": "introductory"
+  },
+  {
+    "id": "x_ounce",
+    "path": "audio/x_ounce.mp3",
+    "text": "ounce"
+  },
+  {
+    "id": "x_commemorate",
+    "path": "audio/x_commemorate.mp3",
+    "text": "commemorate"
+  },
+  {
+    "id": "x_incomplete",
+    "path": "audio/x_incomplete.mp3",
+    "text": "incomplete"
+  },
+  {
+    "id": "x_stipulate",
+    "path": "audio/x_stipulate.mp3",
+    "text": "stipulate"
+  },
+  {
+    "id": "x_tuition",
+    "path": "audio/x_tuition.mp3",
+    "text": "tuition"
+  },
+  {
+    "id": "x_horrific",
+    "path": "audio/x_horrific.mp3",
+    "text": "horrific"
+  },
+  {
+    "id": "x_numerical",
+    "path": "audio/x_numerical.mp3",
+    "text": "numerical"
+  },
+  {
+    "id": "x_outwards",
+    "path": "audio/x_outwards.mp3",
+    "text": "outwards"
+  },
+  {
+    "id": "x_cane",
+    "path": "audio/x_cane.mp3",
+    "text": "cane"
+  },
+  {
+    "id": "x_iris",
+    "path": "audio/x_iris.mp3",
+    "text": "iris"
+  },
+  {
+    "id": "x_stereo",
+    "path": "audio/x_stereo.mp3",
+    "text": "stereo"
+  },
+  {
+    "id": "x_condemnation",
+    "path": "audio/x_condemnation.mp3",
+    "text": "condemnation"
+  },
+  {
+    "id": "x_guise",
+    "path": "audio/x_guise.mp3",
+    "text": "guise"
+  },
+  {
+    "id": "x_terrific",
+    "path": "audio/x_terrific.mp3",
+    "text": "terrific"
+  },
+  {
+    "id": "x_proprietary",
+    "path": "audio/x_proprietary.mp3",
+    "text": "proprietary"
+  },
+  {
+    "id": "x_needless",
+    "path": "audio/x_needless.mp3",
+    "text": "needless"
+  },
+  {
+    "id": "x_nanny",
+    "path": "audio/x_nanny.mp3",
+    "text": "nanny"
+  },
+  {
+    "id": "x_tentacle",
+    "path": "audio/x_tentacle.mp3",
+    "text": "tentacle"
+  },
+  {
+    "id": "x_recycle",
+    "path": "audio/x_recycle.mp3",
+    "text": "recycle"
+  },
+  {
+    "id": "x_temporal",
+    "path": "audio/x_temporal.mp3",
+    "text": "temporal"
+  },
+  {
+    "id": "x_hyde",
+    "path": "audio/x_hyde.mp3",
+    "text": "hyde"
+  },
+  {
+    "id": "x_imbalance",
+    "path": "audio/x_imbalance.mp3",
+    "text": "imbalance"
+  },
+  {
+    "id": "x_bacterial",
+    "path": "audio/x_bacterial.mp3",
+    "text": "bacterial"
+  },
+  {
+    "id": "x_retrieval",
+    "path": "audio/x_retrieval.mp3",
+    "text": "retrieval"
+  },
+  {
+    "id": "x_scotsman",
+    "path": "audio/x_scotsman.mp3",
+    "text": "scotsman"
+  },
+  {
+    "id": "x_clench",
+    "path": "audio/x_clench.mp3",
+    "text": "clench"
+  },
+  {
+    "id": "x_perpetual",
+    "path": "audio/x_perpetual.mp3",
+    "text": "perpetual"
+  },
+  {
+    "id": "x_finite",
+    "path": "audio/x_finite.mp3",
+    "text": "finite"
+  },
+  {
+    "id": "x_alienate",
+    "path": "audio/x_alienate.mp3",
+    "text": "alienate"
+  },
+  {
+    "id": "x_industrialist",
+    "path": "audio/x_industrialist.mp3",
+    "text": "industrialist"
+  },
+  {
+    "id": "x_intricate",
+    "path": "audio/x_intricate.mp3",
+    "text": "intricate"
+  },
+  {
+    "id": "x_unpopular",
+    "path": "audio/x_unpopular.mp3",
+    "text": "unpopular"
+  },
+  {
+    "id": "x_veterinary",
+    "path": "audio/x_veterinary.mp3",
+    "text": "veterinary"
+  },
+  {
+    "id": "x_triumphant",
+    "path": "audio/x_triumphant.mp3",
+    "text": "triumphant"
+  },
+  {
+    "id": "x_hockey",
+    "path": "audio/x_hockey.mp3",
+    "text": "hockey"
+  },
+  {
+    "id": "x_butcher",
+    "path": "audio/x_butcher.mp3",
+    "text": "butcher"
+  },
+  {
+    "id": "x_triple",
+    "path": "audio/x_triple.mp3",
+    "text": "triple"
+  },
+  {
+    "id": "x_twig",
+    "path": "audio/x_twig.mp3",
+    "text": "twig"
+  },
+  {
+    "id": "x_slash",
+    "path": "audio/x_slash.mp3",
+    "text": "slash"
+  },
+  {
+    "id": "x_overt",
+    "path": "audio/x_overt.mp3",
+    "text": "overt"
+  },
+  {
+    "id": "x_designated",
+    "path": "audio/x_designated.mp3",
+    "text": "designated"
+  },
+  {
+    "id": "x_indifferent",
+    "path": "audio/x_indifferent.mp3",
+    "text": "indifferent"
+  },
+  {
+    "id": "x_reconsider",
+    "path": "audio/x_reconsider.mp3",
+    "text": "reconsider"
+  },
+  {
+    "id": "x_homosexual",
+    "path": "audio/x_homosexual.mp3",
+    "text": "homosexual"
+  },
+  {
+    "id": "x_simulation",
+    "path": "audio/x_simulation.mp3",
+    "text": "simulation"
+  },
+  {
+    "id": "x_oversee",
+    "path": "audio/x_oversee.mp3",
+    "text": "oversee"
+  },
+  {
+    "id": "x_hatch",
+    "path": "audio/x_hatch.mp3",
+    "text": "hatch"
+  },
+  {
+    "id": "x_mislead",
+    "path": "audio/x_mislead.mp3",
+    "text": "mislead"
+  },
+  {
+    "id": "x_spokeswoman",
+    "path": "audio/x_spokeswoman.mp3",
+    "text": "spokeswoman"
+  },
+  {
+    "id": "x_daft",
+    "path": "audio/x_daft.mp3",
+    "text": "daft"
+  },
+  {
+    "id": "x_humiliation",
+    "path": "audio/x_humiliation.mp3",
+    "text": "humiliation"
+  },
+  {
+    "id": "x_replica",
+    "path": "audio/x_replica.mp3",
+    "text": "replica"
+  },
+  {
+    "id": "x_burglar",
+    "path": "audio/x_burglar.mp3",
+    "text": "burglar"
+  },
+  {
+    "id": "x_fascination",
+    "path": "audio/x_fascination.mp3",
+    "text": "fascination"
+  },
+  {
+    "id": "x_diarrhoea",
+    "path": "audio/x_diarrhoea.mp3",
+    "text": "diarrhoea"
+  },
+  {
+    "id": "x_nationwide",
+    "path": "audio/x_nationwide.mp3",
+    "text": "nationwide"
+  },
+  {
+    "id": "x_inconsistency",
+    "path": "audio/x_inconsistency.mp3",
+    "text": "inconsistency"
+  },
+  {
+    "id": "x_volatile",
+    "path": "audio/x_volatile.mp3",
+    "text": "volatile"
+  },
+  {
+    "id": "x_optimum",
+    "path": "audio/x_optimum.mp3",
+    "text": "optimum"
+  },
+  {
+    "id": "x_memoir",
+    "path": "audio/x_memoir.mp3",
+    "text": "memoir"
+  },
+  {
+    "id": "x_mandate",
+    "path": "audio/x_mandate.mp3",
+    "text": "mandate"
+  },
+  {
+    "id": "x_eminent",
+    "path": "audio/x_eminent.mp3",
+    "text": "eminent"
+  },
+  {
+    "id": "x_convene",
+    "path": "audio/x_convene.mp3",
+    "text": "convene"
+  },
+  {
+    "id": "x_elementary",
+    "path": "audio/x_elementary.mp3",
+    "text": "elementary"
+  },
+  {
+    "id": "x_halve",
+    "path": "audio/x_halve.mp3",
+    "text": "halve"
+  },
+  {
+    "id": "x_lucrative",
+    "path": "audio/x_lucrative.mp3",
+    "text": "lucrative"
+  },
+  {
+    "id": "x_dune",
+    "path": "audio/x_dune.mp3",
+    "text": "dune"
+  },
+  {
+    "id": "x_generosity",
+    "path": "audio/x_generosity.mp3",
+    "text": "generosity"
+  },
+  {
+    "id": "x_inverted",
+    "path": "audio/x_inverted.mp3",
+    "text": "inverted"
+  },
+  {
+    "id": "x_apprenticeship",
+    "path": "audio/x_apprenticeship.mp3",
+    "text": "apprenticeship"
+  },
+  {
+    "id": "x_genesis",
+    "path": "audio/x_genesis.mp3",
+    "text": "genesis"
+  },
+  {
+    "id": "x_perimeter",
+    "path": "audio/x_perimeter.mp3",
+    "text": "perimeter"
+  },
+  {
+    "id": "x_rejoin",
+    "path": "audio/x_rejoin.mp3",
+    "text": "rejoin"
+  },
+  {
+    "id": "x_petal",
+    "path": "audio/x_petal.mp3",
+    "text": "petal"
+  },
+  {
+    "id": "x_heroic",
+    "path": "audio/x_heroic.mp3",
+    "text": "heroic"
+  },
+  {
+    "id": "x_dine",
+    "path": "audio/x_dine.mp3",
+    "text": "dine"
+  },
+  {
+    "id": "x_unlimited",
+    "path": "audio/x_unlimited.mp3",
+    "text": "unlimited"
+  },
+  {
+    "id": "x_rejoice",
+    "path": "audio/x_rejoice.mp3",
+    "text": "rejoice"
+  },
+  {
+    "id": "x_paperback",
+    "path": "audio/x_paperback.mp3",
+    "text": "paperback"
+  },
+  {
+    "id": "x_descriptive",
+    "path": "audio/x_descriptive.mp3",
+    "text": "descriptive"
+  },
+  {
+    "id": "x_transitional",
+    "path": "audio/x_transitional.mp3",
+    "text": "transitional"
+  },
+  {
+    "id": "x_commuter",
+    "path": "audio/x_commuter.mp3",
+    "text": "commuter"
+  },
+  {
+    "id": "x_housekeeper",
+    "path": "audio/x_housekeeper.mp3",
+    "text": "housekeeper"
+  },
+  {
+    "id": "x_slippery",
+    "path": "audio/x_slippery.mp3",
+    "text": "slippery"
+  },
+  {
+    "id": "x_understandably",
+    "path": "audio/x_understandably.mp3",
+    "text": "understandably"
+  },
+  {
+    "id": "x_aristocracy",
+    "path": "audio/x_aristocracy.mp3",
+    "text": "aristocracy"
+  },
+  {
+    "id": "x_gifted",
+    "path": "audio/x_gifted.mp3",
+    "text": "gifted"
+  },
+  {
+    "id": "x_buck",
+    "path": "audio/x_buck.mp3",
+    "text": "buck"
+  },
+  {
+    "id": "x_strait",
+    "path": "audio/x_strait.mp3",
+    "text": "strait"
+  },
+  {
+    "id": "x_misfortune",
+    "path": "audio/x_misfortune.mp3",
+    "text": "misfortune"
+  },
+  {
+    "id": "x_abundant",
+    "path": "audio/x_abundant.mp3",
+    "text": "abundant"
+  },
+  {
+    "id": "x_setback",
+    "path": "audio/x_setback.mp3",
+    "text": "setback"
+  },
+  {
+    "id": "x_betrayal",
+    "path": "audio/x_betrayal.mp3",
+    "text": "betrayal"
+  },
+  {
+    "id": "x_cabbage",
+    "path": "audio/x_cabbage.mp3",
+    "text": "cabbage"
+  },
+  {
+    "id": "x_impatient",
+    "path": "audio/x_impatient.mp3",
+    "text": "impatient"
+  },
+  {
+    "id": "x_mend",
+    "path": "audio/x_mend.mp3",
+    "text": "mend"
+  },
+  {
+    "id": "x_lifeboat",
+    "path": "audio/x_lifeboat.mp3",
+    "text": "lifeboat"
+  },
+  {
+    "id": "x_uphold",
+    "path": "audio/x_uphold.mp3",
+    "text": "uphold"
+  },
+  {
+    "id": "x_pave",
+    "path": "audio/x_pave.mp3",
+    "text": "pave"
+  },
+  {
+    "id": "x_insulation",
+    "path": "audio/x_insulation.mp3",
+    "text": "insulation"
+  },
+  {
+    "id": "x_entrust",
+    "path": "audio/x_entrust.mp3",
+    "text": "entrust"
+  },
+  {
+    "id": "x_compassion",
+    "path": "audio/x_compassion.mp3",
+    "text": "compassion"
+  },
+  {
+    "id": "x_annoyance",
+    "path": "audio/x_annoyance.mp3",
+    "text": "annoyance"
+  },
+  {
+    "id": "x_contentious",
+    "path": "audio/x_contentious.mp3",
+    "text": "contentious"
+  },
+  {
+    "id": "x_porch",
+    "path": "audio/x_porch.mp3",
+    "text": "porch"
+  },
+  {
+    "id": "x_exempt",
+    "path": "audio/x_exempt.mp3",
+    "text": "exempt"
+  },
+  {
+    "id": "x_pronounced",
+    "path": "audio/x_pronounced.mp3",
+    "text": "pronounced"
+  },
+  {
+    "id": "x_multinational",
+    "path": "audio/x_multinational.mp3",
+    "text": "multinational"
+  },
+  {
+    "id": "x_shave",
+    "path": "audio/x_shave.mp3",
+    "text": "shave"
+  },
+  {
+    "id": "x_junk",
+    "path": "audio/x_junk.mp3",
+    "text": "junk"
+  },
+  {
+    "id": "x_dickens",
+    "path": "audio/x_dickens.mp3",
+    "text": "dickens"
+  },
+  {
+    "id": "x_continual",
+    "path": "audio/x_continual.mp3",
+    "text": "continual"
+  },
+  {
+    "id": "x_nervously",
+    "path": "audio/x_nervously.mp3",
+    "text": "nervously"
+  },
+  {
+    "id": "x_inspired",
+    "path": "audio/x_inspired.mp3",
+    "text": "inspired"
+  },
+  {
+    "id": "x_contextual",
+    "path": "audio/x_contextual.mp3",
+    "text": "contextual"
+  },
+  {
+    "id": "x_goblin",
+    "path": "audio/x_goblin.mp3",
+    "text": "goblin"
+  },
+  {
+    "id": "x_sliding",
+    "path": "audio/x_sliding.mp3",
+    "text": "sliding"
+  },
+  {
+    "id": "x_showroom",
+    "path": "audio/x_showroom.mp3",
+    "text": "showroom"
+  },
+  {
+    "id": "x_canoe",
+    "path": "audio/x_canoe.mp3",
+    "text": "canoe"
+  },
+  {
+    "id": "x_transnational",
+    "path": "audio/x_transnational.mp3",
+    "text": "transnational"
+  },
+  {
+    "id": "x_objectivity",
+    "path": "audio/x_objectivity.mp3",
+    "text": "objectivity"
+  },
+  {
+    "id": "x_enrolment",
+    "path": "audio/x_enrolment.mp3",
+    "text": "enrolment"
+  },
+  {
+    "id": "x_fragmentation",
+    "path": "audio/x_fragmentation.mp3",
+    "text": "fragmentation"
+  },
+  {
+    "id": "x_grandma",
+    "path": "audio/x_grandma.mp3",
+    "text": "grandma"
+  },
+  {
+    "id": "x_shabby",
+    "path": "audio/x_shabby.mp3",
+    "text": "shabby"
+  },
+  {
+    "id": "x_incompetence",
+    "path": "audio/x_incompetence.mp3",
+    "text": "incompetence"
+  },
+  {
+    "id": "x_potency",
+    "path": "audio/x_potency.mp3",
+    "text": "potency"
+  },
+  {
+    "id": "x_reptile",
+    "path": "audio/x_reptile.mp3",
+    "text": "reptile"
+  },
+  {
+    "id": "x_appropriation",
+    "path": "audio/x_appropriation.mp3",
+    "text": "appropriation"
+  },
+  {
+    "id": "x_ruined",
+    "path": "audio/x_ruined.mp3",
+    "text": "ruined"
+  },
+  {
+    "id": "x_modernity",
+    "path": "audio/x_modernity.mp3",
+    "text": "modernity"
+  },
+  {
+    "id": "x_vain",
+    "path": "audio/x_vain.mp3",
+    "text": "vain"
+  },
+  {
+    "id": "x_multiparty",
+    "path": "audio/x_multiparty.mp3",
+    "text": "multiparty"
+  },
+  {
+    "id": "x_relentless",
+    "path": "audio/x_relentless.mp3",
+    "text": "relentless"
+  },
+  {
+    "id": "x_relocate",
+    "path": "audio/x_relocate.mp3",
+    "text": "relocate"
+  },
+  {
+    "id": "x_unimportant",
+    "path": "audio/x_unimportant.mp3",
+    "text": "unimportant"
+  },
+  {
+    "id": "x_drily",
+    "path": "audio/x_drily.mp3",
+    "text": "drily"
+  },
+  {
+    "id": "x_cholera",
+    "path": "audio/x_cholera.mp3",
+    "text": "cholera"
+  },
+  {
+    "id": "x_modernist",
+    "path": "audio/x_modernist.mp3",
+    "text": "modernist"
+  },
+  {
+    "id": "x_dearly",
+    "path": "audio/x_dearly.mp3",
+    "text": "dearly"
+  },
+  {
+    "id": "x_insulting",
+    "path": "audio/x_insulting.mp3",
+    "text": "insulting"
+  },
+  {
+    "id": "x_insane",
+    "path": "audio/x_insane.mp3",
+    "text": "insane"
+  },
+  {
+    "id": "x_motorcycle",
+    "path": "audio/x_motorcycle.mp3",
+    "text": "motorcycle"
+  },
+  {
+    "id": "x_candy",
+    "path": "audio/x_candy.mp3",
+    "text": "candy"
+  },
+  {
+    "id": "x_cartel",
+    "path": "audio/x_cartel.mp3",
+    "text": "cartel"
+  },
+  {
+    "id": "x_limp",
+    "path": "audio/x_limp.mp3",
+    "text": "limp"
+  },
+  {
+    "id": "x_adamant",
+    "path": "audio/x_adamant.mp3",
+    "text": "adamant"
+  },
+  {
+    "id": "x_grease",
+    "path": "audio/x_grease.mp3",
+    "text": "grease"
+  },
+  {
+    "id": "x_flip",
+    "path": "audio/x_flip.mp3",
+    "text": "flip"
+  },
+  {
+    "id": "x_saline",
+    "path": "audio/x_saline.mp3",
+    "text": "saline"
+  },
+  {
+    "id": "x_teddy",
+    "path": "audio/x_teddy.mp3",
+    "text": "teddy"
+  },
+  {
+    "id": "x_oblivious",
+    "path": "audio/x_oblivious.mp3",
+    "text": "oblivious"
+  },
+  {
+    "id": "x_thriller",
+    "path": "audio/x_thriller.mp3",
+    "text": "thriller"
+  },
+  {
+    "id": "x_blah",
+    "path": "audio/x_blah.mp3",
+    "text": "blah"
+  },
+  {
+    "id": "x_assassin",
+    "path": "audio/x_assassin.mp3",
+    "text": "assassin"
+  },
+  {
+    "id": "x_cortex",
+    "path": "audio/x_cortex.mp3",
+    "text": "cortex"
+  },
+  {
+    "id": "x_proton",
+    "path": "audio/x_proton.mp3",
+    "text": "proton"
+  },
+  {
+    "id": "x_coconut",
+    "path": "audio/x_coconut.mp3",
+    "text": "coconut"
+  },
+  {
+    "id": "x_affiliation",
+    "path": "audio/x_affiliation.mp3",
+    "text": "affiliation"
+  },
+  {
+    "id": "x_rinse",
+    "path": "audio/x_rinse.mp3",
+    "text": "rinse"
+  },
+  {
+    "id": "x_orchid",
+    "path": "audio/x_orchid.mp3",
+    "text": "orchid"
+  },
+  {
+    "id": "x_chimpanzee",
+    "path": "audio/x_chimpanzee.mp3",
+    "text": "chimpanzee"
+  },
+  {
+    "id": "x_forcibly",
+    "path": "audio/x_forcibly.mp3",
+    "text": "forcibly"
+  },
+  {
+    "id": "x_template",
+    "path": "audio/x_template.mp3",
+    "text": "template"
+  },
+  {
+    "id": "x_glazing",
+    "path": "audio/x_glazing.mp3",
+    "text": "glazing"
+  },
+  {
+    "id": "x_inconvenience",
+    "path": "audio/x_inconvenience.mp3",
+    "text": "inconvenience"
+  },
+  {
+    "id": "x_uniformity",
+    "path": "audio/x_uniformity.mp3",
+    "text": "uniformity"
+  },
+  {
+    "id": "x_chilly",
+    "path": "audio/x_chilly.mp3",
+    "text": "chilly"
+  },
+  {
+    "id": "x_gala",
+    "path": "audio/x_gala.mp3",
+    "text": "gala"
+  },
+  {
+    "id": "x_marginally",
+    "path": "audio/x_marginally.mp3",
+    "text": "marginally"
+  },
+  {
+    "id": "x_centenary",
+    "path": "audio/x_centenary.mp3",
+    "text": "centenary"
+  },
+  {
+    "id": "x_individuality",
+    "path": "audio/x_individuality.mp3",
+    "text": "individuality"
+  },
+  {
+    "id": "x_malignant",
+    "path": "audio/x_malignant.mp3",
+    "text": "malignant"
+  },
+  {
+    "id": "x_consolidated",
+    "path": "audio/x_consolidated.mp3",
+    "text": "consolidated"
+  },
+  {
+    "id": "x_stranded",
+    "path": "audio/x_stranded.mp3",
+    "text": "stranded"
+  },
+  {
+    "id": "x_budgetary",
+    "path": "audio/x_budgetary.mp3",
+    "text": "budgetary"
+  },
+  {
+    "id": "x_interchange",
+    "path": "audio/x_interchange.mp3",
+    "text": "interchange"
+  },
+  {
+    "id": "x_animation",
+    "path": "audio/x_animation.mp3",
+    "text": "animation"
+  },
+  {
+    "id": "x_tapestry",
+    "path": "audio/x_tapestry.mp3",
+    "text": "tapestry"
+  },
+  {
+    "id": "x_disparity",
+    "path": "audio/x_disparity.mp3",
+    "text": "disparity"
+  },
+  {
+    "id": "x_reactive",
+    "path": "audio/x_reactive.mp3",
+    "text": "reactive"
+  },
+  {
+    "id": "x_briskly",
+    "path": "audio/x_briskly.mp3",
+    "text": "briskly"
+  },
+  {
+    "id": "x_morbidity",
+    "path": "audio/x_morbidity.mp3",
+    "text": "morbidity"
+  },
+  {
+    "id": "x_stylistic",
+    "path": "audio/x_stylistic.mp3",
+    "text": "stylistic"
+  },
+  {
+    "id": "x_prolific",
+    "path": "audio/x_prolific.mp3",
+    "text": "prolific"
+  },
+  {
+    "id": "x_elevate",
+    "path": "audio/x_elevate.mp3",
+    "text": "elevate"
+  },
+  {
+    "id": "x_pedigree",
+    "path": "audio/x_pedigree.mp3",
+    "text": "pedigree"
+  },
+  {
+    "id": "x_hospice",
+    "path": "audio/x_hospice.mp3",
+    "text": "hospice"
+  },
+  {
+    "id": "x_lowland",
+    "path": "audio/x_lowland.mp3",
+    "text": "lowland"
+  },
+  {
+    "id": "x_sleepy",
+    "path": "audio/x_sleepy.mp3",
+    "text": "sleepy"
+  },
+  {
+    "id": "x_headteacher",
+    "path": "audio/x_headteacher.mp3",
+    "text": "headteacher"
+  },
+  {
+    "id": "x_almond",
+    "path": "audio/x_almond.mp3",
+    "text": "almond"
+  },
+  {
+    "id": "x_arable",
+    "path": "audio/x_arable.mp3",
+    "text": "arable"
+  },
+  {
+    "id": "x_twitch",
+    "path": "audio/x_twitch.mp3",
+    "text": "twitch"
+  },
+  {
+    "id": "x_afield",
+    "path": "audio/x_afield.mp3",
+    "text": "afield"
+  },
+  {
+    "id": "x_arbitrator",
+    "path": "audio/x_arbitrator.mp3",
+    "text": "arbitrator"
+  },
+  {
+    "id": "x_soda",
+    "path": "audio/x_soda.mp3",
+    "text": "soda"
+  },
+  {
+    "id": "x_mentality",
+    "path": "audio/x_mentality.mp3",
+    "text": "mentality"
+  },
+  {
+    "id": "x_embankment",
+    "path": "audio/x_embankment.mp3",
+    "text": "embankment"
+  },
+  {
+    "id": "x_complexion",
+    "path": "audio/x_complexion.mp3",
+    "text": "complexion"
+  },
+  {
+    "id": "x_foreman",
+    "path": "audio/x_foreman.mp3",
+    "text": "foreman"
+  },
+  {
+    "id": "x_spinner",
+    "path": "audio/x_spinner.mp3",
+    "text": "spinner"
+  },
+  {
+    "id": "x_comet",
+    "path": "audio/x_comet.mp3",
+    "text": "comet"
+  },
+  {
+    "id": "x_designation",
+    "path": "audio/x_designation.mp3",
+    "text": "designation"
+  },
+  {
+    "id": "x_footing",
+    "path": "audio/x_footing.mp3",
+    "text": "footing"
+  },
+  {
+    "id": "x_byte",
+    "path": "audio/x_byte.mp3",
+    "text": "byte"
+  },
+  {
+    "id": "x_herring",
+    "path": "audio/x_herring.mp3",
+    "text": "herring"
+  },
+  {
+    "id": "x_auspices",
+    "path": "audio/x_auspices.mp3",
+    "text": "auspices"
+  },
+  {
+    "id": "x_flex",
+    "path": "audio/x_flex.mp3",
+    "text": "flex"
+  },
+  {
+    "id": "x_cardiac",
+    "path": "audio/x_cardiac.mp3",
+    "text": "cardiac"
+  },
+  {
+    "id": "x_shattered",
+    "path": "audio/x_shattered.mp3",
+    "text": "shattered"
+  },
+  {
+    "id": "x_quiver",
+    "path": "audio/x_quiver.mp3",
+    "text": "quiver"
+  },
+  {
+    "id": "x_flinch",
+    "path": "audio/x_flinch.mp3",
+    "text": "flinch"
+  },
+  {
+    "id": "x_nutritional",
+    "path": "audio/x_nutritional.mp3",
+    "text": "nutritional"
+  },
+  {
+    "id": "x_zinc",
+    "path": "audio/x_zinc.mp3",
+    "text": "zinc"
+  },
+  {
+    "id": "x_fumble",
+    "path": "audio/x_fumble.mp3",
+    "text": "fumble"
+  },
+  {
+    "id": "x_gleam",
+    "path": "audio/x_gleam.mp3",
+    "text": "gleam"
+  },
+  {
+    "id": "x_ploy",
+    "path": "audio/x_ploy.mp3",
+    "text": "ploy"
+  },
+  {
+    "id": "x_illegitimate",
+    "path": "audio/x_illegitimate.mp3",
+    "text": "illegitimate"
+  },
+  {
+    "id": "x_heterosexual",
+    "path": "audio/x_heterosexual.mp3",
+    "text": "heterosexual"
+  },
+  {
+    "id": "x_rick",
+    "path": "audio/x_rick.mp3",
+    "text": "rick"
+  },
+  {
+    "id": "x_monumental",
+    "path": "audio/x_monumental.mp3",
+    "text": "monumental"
+  },
+  {
+    "id": "x_suitability",
+    "path": "audio/x_suitability.mp3",
+    "text": "suitability"
+  },
+  {
+    "id": "x_motorbike",
+    "path": "audio/x_motorbike.mp3",
+    "text": "motorbike"
+  },
+  {
+    "id": "x_earner",
+    "path": "audio/x_earner.mp3",
+    "text": "earner"
+  },
+  {
+    "id": "x_bellow",
+    "path": "audio/x_bellow.mp3",
+    "text": "bellow"
+  },
+  {
+    "id": "x_berry",
+    "path": "audio/x_berry.mp3",
+    "text": "berry"
+  },
+  {
+    "id": "x_sealed",
+    "path": "audio/x_sealed.mp3",
+    "text": "sealed"
+  },
+  {
+    "id": "x_crag",
+    "path": "audio/x_crag.mp3",
+    "text": "crag"
+  },
+  {
+    "id": "x_broadcaster",
+    "path": "audio/x_broadcaster.mp3",
+    "text": "broadcaster"
+  },
+  {
+    "id": "x_predominant",
+    "path": "audio/x_predominant.mp3",
+    "text": "predominant"
+  },
+  {
+    "id": "x_punter",
+    "path": "audio/x_punter.mp3",
+    "text": "punter"
+  },
+  {
+    "id": "x_uncomfortably",
+    "path": "audio/x_uncomfortably.mp3",
+    "text": "uncomfortably"
+  },
+  {
+    "id": "x_bonfire",
+    "path": "audio/x_bonfire.mp3",
+    "text": "bonfire"
+  },
+  {
+    "id": "x_fruitful",
+    "path": "audio/x_fruitful.mp3",
+    "text": "fruitful"
+  },
+  {
+    "id": "x_lush",
+    "path": "audio/x_lush.mp3",
+    "text": "lush"
+  },
+  {
+    "id": "x_floral",
+    "path": "audio/x_floral.mp3",
+    "text": "floral"
+  },
+  {
+    "id": "x_predominate",
+    "path": "audio/x_predominate.mp3",
+    "text": "predominate"
+  },
+  {
+    "id": "x_erotic",
+    "path": "audio/x_erotic.mp3",
+    "text": "erotic"
+  },
+  {
+    "id": "x_excitation",
+    "path": "audio/x_excitation.mp3",
+    "text": "excitation"
+  },
+  {
+    "id": "x_incomprehensible",
+    "path": "audio/x_incomprehensible.mp3",
+    "text": "incomprehensible"
+  },
+  {
+    "id": "x_bulge",
+    "path": "audio/x_bulge.mp3",
+    "text": "bulge"
+  },
+  {
+    "id": "x_recess",
+    "path": "audio/x_recess.mp3",
+    "text": "recess"
+  },
+  {
+    "id": "x_disarmament",
+    "path": "audio/x_disarmament.mp3",
+    "text": "disarmament"
+  },
+  {
+    "id": "x_unmistakable",
+    "path": "audio/x_unmistakable.mp3",
+    "text": "unmistakable"
+  },
+  {
+    "id": "x_paving",
+    "path": "audio/x_paving.mp3",
+    "text": "paving"
+  },
+  {
+    "id": "x_flutter",
+    "path": "audio/x_flutter.mp3",
+    "text": "flutter"
+  },
+  {
+    "id": "x_whim",
+    "path": "audio/x_whim.mp3",
+    "text": "whim"
+  },
+  {
+    "id": "x_suspiciously",
+    "path": "audio/x_suspiciously.mp3",
+    "text": "suspiciously"
+  },
+  {
+    "id": "x_vengeance",
+    "path": "audio/x_vengeance.mp3",
+    "text": "vengeance"
+  },
+  {
+    "id": "x_relaxing",
+    "path": "audio/x_relaxing.mp3",
+    "text": "relaxing"
+  },
+  {
+    "id": "x_gully",
+    "path": "audio/x_gully.mp3",
+    "text": "gully"
+  },
+  {
+    "id": "x_embargo",
+    "path": "audio/x_embargo.mp3",
+    "text": "embargo"
+  },
+  {
+    "id": "x_mastery",
+    "path": "audio/x_mastery.mp3",
+    "text": "mastery"
+  },
+  {
+    "id": "x_recur",
+    "path": "audio/x_recur.mp3",
+    "text": "recur"
+  },
+  {
+    "id": "x_gulp",
+    "path": "audio/x_gulp.mp3",
+    "text": "gulp"
+  },
+  {
+    "id": "x_rhetorical",
+    "path": "audio/x_rhetorical.mp3",
+    "text": "rhetorical"
+  },
+  {
+    "id": "x_subtlety",
+    "path": "audio/x_subtlety.mp3",
+    "text": "subtlety"
+  },
+  {
+    "id": "x_ludicrous",
+    "path": "audio/x_ludicrous.mp3",
+    "text": "ludicrous"
+  },
+  {
+    "id": "x_railing",
+    "path": "audio/x_railing.mp3",
+    "text": "railing"
+  },
+  {
+    "id": "x_waitress",
+    "path": "audio/x_waitress.mp3",
+    "text": "waitress"
+  },
+  {
+    "id": "x_necklace",
+    "path": "audio/x_necklace.mp3",
+    "text": "necklace"
+  },
+  {
+    "id": "x_ornamental",
+    "path": "audio/x_ornamental.mp3",
+    "text": "ornamental"
+  },
+  {
+    "id": "x_renovate",
+    "path": "audio/x_renovate.mp3",
+    "text": "renovate"
+  },
+  {
+    "id": "x_cameraman",
+    "path": "audio/x_cameraman.mp3",
+    "text": "cameraman"
+  },
+  {
+    "id": "x_stressful",
+    "path": "audio/x_stressful.mp3",
+    "text": "stressful"
+  },
+  {
+    "id": "x_gazette",
+    "path": "audio/x_gazette.mp3",
+    "text": "gazette"
+  },
+  {
+    "id": "x_disintegration",
+    "path": "audio/x_disintegration.mp3",
+    "text": "disintegration"
+  },
+  {
+    "id": "x_terrestrial",
+    "path": "audio/x_terrestrial.mp3",
+    "text": "terrestrial"
+  },
+  {
+    "id": "x_tremendously",
+    "path": "audio/x_tremendously.mp3",
+    "text": "tremendously"
+  },
+  {
+    "id": "x_unhappiness",
+    "path": "audio/x_unhappiness.mp3",
+    "text": "unhappiness"
+  },
+  {
+    "id": "x_salient",
+    "path": "audio/x_salient.mp3",
+    "text": "salient"
+  },
+  {
+    "id": "x_waver",
+    "path": "audio/x_waver.mp3",
+    "text": "waver"
+  },
+  {
+    "id": "x_innumerable",
+    "path": "audio/x_innumerable.mp3",
+    "text": "innumerable"
+  },
+  {
+    "id": "x_wither",
+    "path": "audio/x_wither.mp3",
+    "text": "wither"
+  },
+  {
+    "id": "x_botanical",
+    "path": "audio/x_botanical.mp3",
+    "text": "botanical"
+  },
+  {
+    "id": "x_fiasco",
+    "path": "audio/x_fiasco.mp3",
+    "text": "fiasco"
+  },
+  {
+    "id": "x_vibrant",
+    "path": "audio/x_vibrant.mp3",
+    "text": "vibrant"
+  },
+  {
+    "id": "x_fragrant",
+    "path": "audio/x_fragrant.mp3",
+    "text": "fragrant"
+  },
+  {
+    "id": "x_blitz",
+    "path": "audio/x_blitz.mp3",
+    "text": "blitz"
+  },
+  {
+    "id": "x_romeo",
+    "path": "audio/x_romeo.mp3",
+    "text": "romeo"
+  },
+  {
+    "id": "x_symbolise",
+    "path": "audio/x_symbolise.mp3",
+    "text": "symbolise"
+  },
+  {
+    "id": "x_wean",
+    "path": "audio/x_wean.mp3",
+    "text": "wean"
+  },
+  {
+    "id": "x_caterer",
+    "path": "audio/x_caterer.mp3",
+    "text": "caterer"
+  },
+  {
+    "id": "x_smoked",
+    "path": "audio/x_smoked.mp3",
+    "text": "smoked"
+  },
+  {
+    "id": "x_asbestos",
+    "path": "audio/x_asbestos.mp3",
+    "text": "asbestos"
+  },
+  {
+    "id": "x_aptitude",
+    "path": "audio/x_aptitude.mp3",
+    "text": "aptitude"
+  },
+  {
+    "id": "x_scurry",
+    "path": "audio/x_scurry.mp3",
+    "text": "scurry"
+  },
+  {
+    "id": "x_barber",
+    "path": "audio/x_barber.mp3",
+    "text": "barber"
+  },
+  {
+    "id": "x_psychologically",
+    "path": "audio/x_psychologically.mp3",
+    "text": "psychologically"
+  },
+  {
+    "id": "x_annex",
+    "path": "audio/x_annex.mp3",
+    "text": "annex"
+  },
+  {
+    "id": "x_miraculously",
+    "path": "audio/x_miraculously.mp3",
+    "text": "miraculously"
+  },
+  {
+    "id": "x_ordinarily",
+    "path": "audio/x_ordinarily.mp3",
+    "text": "ordinarily"
+  },
+  {
+    "id": "x_cleric",
+    "path": "audio/x_cleric.mp3",
+    "text": "cleric"
+  },
+  {
+    "id": "x_zeal",
+    "path": "audio/x_zeal.mp3",
+    "text": "zeal"
+  },
+  {
+    "id": "x_incorrectly",
+    "path": "audio/x_incorrectly.mp3",
+    "text": "incorrectly"
+  },
+  {
+    "id": "x_crunch",
+    "path": "audio/x_crunch.mp3",
+    "text": "crunch"
+  },
+  {
+    "id": "x_vocation",
+    "path": "audio/x_vocation.mp3",
+    "text": "vocation"
+  },
+  {
+    "id": "x_reverence",
+    "path": "audio/x_reverence.mp3",
+    "text": "reverence"
+  },
+  {
+    "id": "x_leisurely",
+    "path": "audio/x_leisurely.mp3",
+    "text": "leisurely"
+  },
+  {
+    "id": "x_nostalgic",
+    "path": "audio/x_nostalgic.mp3",
+    "text": "nostalgic"
+  },
+  {
+    "id": "x_peculiarly",
+    "path": "audio/x_peculiarly.mp3",
+    "text": "peculiarly"
+  },
+  {
+    "id": "x_clog",
+    "path": "audio/x_clog.mp3",
+    "text": "clog"
+  },
+  {
+    "id": "x_fret",
+    "path": "audio/x_fret.mp3",
+    "text": "fret"
+  },
+  {
+    "id": "x_intolerance",
+    "path": "audio/x_intolerance.mp3",
+    "text": "intolerance"
+  },
+  {
+    "id": "x_tableau",
+    "path": "audio/x_tableau.mp3",
+    "text": "tableau"
+  },
+  {
+    "id": "x_atlas",
+    "path": "audio/x_atlas.mp3",
+    "text": "atlas"
+  },
+  {
+    "id": "x_prod",
+    "path": "audio/x_prod.mp3",
+    "text": "prod"
+  },
+  {
+    "id": "x_bakery",
+    "path": "audio/x_bakery.mp3",
+    "text": "bakery"
+  },
+  {
+    "id": "x_uplift",
+    "path": "audio/x_uplift.mp3",
+    "text": "uplift"
+  },
+  {
+    "id": "x_steeply",
+    "path": "audio/x_steeply.mp3",
+    "text": "steeply"
+  },
+  {
+    "id": "x_excitedly",
+    "path": "audio/x_excitedly.mp3",
+    "text": "excitedly"
+  },
+  {
+    "id": "x_deplete",
+    "path": "audio/x_deplete.mp3",
+    "text": "deplete"
+  },
+  {
+    "id": "x_casserole",
+    "path": "audio/x_casserole.mp3",
+    "text": "casserole"
+  },
+  {
+    "id": "x_devious",
+    "path": "audio/x_devious.mp3",
+    "text": "devious"
+  },
+  {
+    "id": "x_illicit",
+    "path": "audio/x_illicit.mp3",
+    "text": "illicit"
+  },
+  {
+    "id": "x_jeopardy",
+    "path": "audio/x_jeopardy.mp3",
+    "text": "jeopardy"
+  },
+  {
+    "id": "x_rediscover",
+    "path": "audio/x_rediscover.mp3",
+    "text": "rediscover"
+  },
+  {
+    "id": "x_wade",
+    "path": "audio/x_wade.mp3",
+    "text": "wade"
+  },
+  {
+    "id": "x_errand",
+    "path": "audio/x_errand.mp3",
+    "text": "errand"
+  },
+  {
+    "id": "x_sane",
+    "path": "audio/x_sane.mp3",
+    "text": "sane"
+  },
+  {
+    "id": "x_abusive",
+    "path": "audio/x_abusive.mp3",
+    "text": "abusive"
+  },
+  {
+    "id": "x_symposium",
+    "path": "audio/x_symposium.mp3",
+    "text": "symposium"
+  },
+  {
+    "id": "x_lagoon",
+    "path": "audio/x_lagoon.mp3",
+    "text": "lagoon"
+  },
+  {
+    "id": "x_sarcasm",
+    "path": "audio/x_sarcasm.mp3",
+    "text": "sarcasm"
+  },
+  {
+    "id": "x_ventral",
+    "path": "audio/x_ventral.mp3",
+    "text": "ventral"
+  },
+  {
+    "id": "x_sublime",
+    "path": "audio/x_sublime.mp3",
+    "text": "sublime"
+  },
+  {
+    "id": "x_mechanically",
+    "path": "audio/x_mechanically.mp3",
+    "text": "mechanically"
+  },
+  {
+    "id": "x_crossword",
+    "path": "audio/x_crossword.mp3",
+    "text": "crossword"
+  },
+  {
+    "id": "x_dresser",
+    "path": "audio/x_dresser.mp3",
+    "text": "dresser"
+  },
+  {
+    "id": "x_makeshift",
+    "path": "audio/x_makeshift.mp3",
+    "text": "makeshift"
+  },
+  {
+    "id": "x_ascot",
+    "path": "audio/x_ascot.mp3",
+    "text": "ascot"
+  },
+  {
+    "id": "x_unkind",
+    "path": "audio/x_unkind.mp3",
+    "text": "unkind"
+  },
+  {
+    "id": "x_feud",
+    "path": "audio/x_feud.mp3",
+    "text": "feud"
+  },
+  {
+    "id": "x_detriment",
+    "path": "audio/x_detriment.mp3",
+    "text": "detriment"
+  },
+  {
+    "id": "x_aching",
+    "path": "audio/x_aching.mp3",
+    "text": "aching"
+  },
+  {
+    "id": "x_tyrant",
+    "path": "audio/x_tyrant.mp3",
+    "text": "tyrant"
+  },
+  {
+    "id": "x_mitigate",
+    "path": "audio/x_mitigate.mp3",
+    "text": "mitigate"
+  },
+  {
+    "id": "x_lighten",
+    "path": "audio/x_lighten.mp3",
+    "text": "lighten"
+  },
+  {
+    "id": "x_spotted",
+    "path": "audio/x_spotted.mp3",
+    "text": "spotted"
+  },
+  {
+    "id": "x_eject",
+    "path": "audio/x_eject.mp3",
+    "text": "eject"
+  },
+  {
+    "id": "x_conservationist",
+    "path": "audio/x_conservationist.mp3",
+    "text": "conservationist"
+  },
+  {
+    "id": "x_lombard",
+    "path": "audio/x_lombard.mp3",
+    "text": "lombard"
+  },
+  {
+    "id": "x_audible",
+    "path": "audio/x_audible.mp3",
+    "text": "audible"
+  },
+  {
+    "id": "x_shipyard",
+    "path": "audio/x_shipyard.mp3",
+    "text": "shipyard"
+  },
+  {
+    "id": "x_dwindle",
+    "path": "audio/x_dwindle.mp3",
+    "text": "dwindle"
+  },
+  {
+    "id": "x_companionship",
+    "path": "audio/x_companionship.mp3",
+    "text": "companionship"
+  },
+  {
+    "id": "x_spokesperson",
+    "path": "audio/x_spokesperson.mp3",
+    "text": "spokesperson"
+  },
+  {
+    "id": "x_tablecloth",
+    "path": "audio/x_tablecloth.mp3",
+    "text": "tablecloth"
+  },
+  {
+    "id": "x_incumbent",
+    "path": "audio/x_incumbent.mp3",
+    "text": "incumbent"
+  },
+  {
+    "id": "x_hale",
+    "path": "audio/x_hale.mp3",
+    "text": "hale"
+  },
+  {
+    "id": "x_goodman",
+    "path": "audio/x_goodman.mp3",
+    "text": "goodman"
+  },
+  {
+    "id": "x_coalfield",
+    "path": "audio/x_coalfield.mp3",
+    "text": "coalfield"
+  },
+  {
+    "id": "x_pheasant",
+    "path": "audio/x_pheasant.mp3",
+    "text": "pheasant"
+  },
+  {
+    "id": "x_ghostly",
+    "path": "audio/x_ghostly.mp3",
+    "text": "ghostly"
+  },
+  {
+    "id": "x_outlaw",
+    "path": "audio/x_outlaw.mp3",
+    "text": "outlaw"
+  },
+  {
+    "id": "x_dated",
+    "path": "audio/x_dated.mp3",
+    "text": "dated"
+  },
+  {
+    "id": "x_oblivion",
+    "path": "audio/x_oblivion.mp3",
+    "text": "oblivion"
+  },
+  {
+    "id": "x_tunic",
+    "path": "audio/x_tunic.mp3",
+    "text": "tunic"
+  },
+  {
+    "id": "x_interviewee",
+    "path": "audio/x_interviewee.mp3",
+    "text": "interviewee"
+  },
+  {
+    "id": "x_ridicule",
+    "path": "audio/x_ridicule.mp3",
+    "text": "ridicule"
+  },
+  {
+    "id": "x_jeopardise",
+    "path": "audio/x_jeopardise.mp3",
+    "text": "jeopardise"
+  },
+  {
+    "id": "x_stinging",
+    "path": "audio/x_stinging.mp3",
+    "text": "stinging"
+  },
+  {
+    "id": "x_towering",
+    "path": "audio/x_towering.mp3",
+    "text": "towering"
+  },
+  {
+    "id": "x_dumping",
+    "path": "audio/x_dumping.mp3",
+    "text": "dumping"
+  },
+  {
+    "id": "x_inaugural",
+    "path": "audio/x_inaugural.mp3",
+    "text": "inaugural"
+  },
+  {
+    "id": "x_weekday",
+    "path": "audio/x_weekday.mp3",
+    "text": "weekday"
+  },
+  {
+    "id": "x_ghetto",
+    "path": "audio/x_ghetto.mp3",
+    "text": "ghetto"
+  },
+  {
+    "id": "x_platinum",
+    "path": "audio/x_platinum.mp3",
+    "text": "platinum"
+  },
+  {
+    "id": "x_sixpence",
+    "path": "audio/x_sixpence.mp3",
+    "text": "sixpence"
+  },
+  {
+    "id": "x_idly",
+    "path": "audio/x_idly.mp3",
+    "text": "idly"
+  },
+  {
+    "id": "x_stretcher",
+    "path": "audio/x_stretcher.mp3",
+    "text": "stretcher"
+  },
+  {
+    "id": "x_manure",
+    "path": "audio/x_manure.mp3",
+    "text": "manure"
+  },
+  {
+    "id": "x_roast",
+    "path": "audio/x_roast.mp3",
+    "text": "roast"
+  },
+  {
+    "id": "x_collusion",
+    "path": "audio/x_collusion.mp3",
+    "text": "collusion"
+  },
+  {
+    "id": "x_serving",
+    "path": "audio/x_serving.mp3",
+    "text": "serving"
+  },
+  {
+    "id": "x_yoghurt",
+    "path": "audio/x_yoghurt.mp3",
+    "text": "yoghurt"
+  },
+  {
+    "id": "x_creek",
+    "path": "audio/x_creek.mp3",
+    "text": "creek"
+  },
+  {
+    "id": "x_tacit",
+    "path": "audio/x_tacit.mp3",
+    "text": "tacit"
+  },
+  {
+    "id": "x_parapet",
+    "path": "audio/x_parapet.mp3",
+    "text": "parapet"
+  },
+  {
+    "id": "x_steamer",
+    "path": "audio/x_steamer.mp3",
+    "text": "steamer"
+  },
+  {
+    "id": "x_mimic",
+    "path": "audio/x_mimic.mp3",
+    "text": "mimic"
+  },
+  {
+    "id": "x_anarchy",
+    "path": "audio/x_anarchy.mp3",
+    "text": "anarchy"
+  },
+  {
+    "id": "x_sincerity",
+    "path": "audio/x_sincerity.mp3",
+    "text": "sincerity"
+  },
+  {
+    "id": "x_simmer",
+    "path": "audio/x_simmer.mp3",
+    "text": "simmer"
+  },
+  {
+    "id": "x_tremor",
+    "path": "audio/x_tremor.mp3",
+    "text": "tremor"
+  },
+  {
+    "id": "x_plume",
+    "path": "audio/x_plume.mp3",
+    "text": "plume"
+  },
+  {
+    "id": "x_evict",
+    "path": "audio/x_evict.mp3",
+    "text": "evict"
+  },
+  {
+    "id": "x_sweetness",
+    "path": "audio/x_sweetness.mp3",
+    "text": "sweetness"
+  },
+  {
+    "id": "x_unhealthy",
+    "path": "audio/x_unhealthy.mp3",
+    "text": "unhealthy"
+  },
+  {
+    "id": "x_pane",
+    "path": "audio/x_pane.mp3",
+    "text": "pane"
+  },
+  {
+    "id": "x_camping",
+    "path": "audio/x_camping.mp3",
+    "text": "camping"
+  },
+  {
+    "id": "x_distrust",
+    "path": "audio/x_distrust.mp3",
+    "text": "distrust"
+  },
+  {
+    "id": "x_pawn",
+    "path": "audio/x_pawn.mp3",
+    "text": "pawn"
+  },
+  {
+    "id": "x_indefinite",
+    "path": "audio/x_indefinite.mp3",
+    "text": "indefinite"
+  },
+  {
+    "id": "x_inwardly",
+    "path": "audio/x_inwardly.mp3",
+    "text": "inwardly"
+  },
+  {
+    "id": "x_remedial",
+    "path": "audio/x_remedial.mp3",
+    "text": "remedial"
+  },
+  {
+    "id": "x_reconnaissance",
+    "path": "audio/x_reconnaissance.mp3",
+    "text": "reconnaissance"
+  },
+  {
+    "id": "x_waive",
+    "path": "audio/x_waive.mp3",
+    "text": "waive"
+  },
+  {
+    "id": "x_cracker",
+    "path": "audio/x_cracker.mp3",
+    "text": "cracker"
+  },
+  {
+    "id": "x_fearsome",
+    "path": "audio/x_fearsome.mp3",
+    "text": "fearsome"
+  },
+  {
+    "id": "x_bombardment",
+    "path": "audio/x_bombardment.mp3",
+    "text": "bombardment"
+  },
+  {
+    "id": "x_miscarriage",
+    "path": "audio/x_miscarriage.mp3",
+    "text": "miscarriage"
+  },
+  {
+    "id": "x_unfairly",
+    "path": "audio/x_unfairly.mp3",
+    "text": "unfairly"
+  },
+  {
+    "id": "x_perennial",
+    "path": "audio/x_perennial.mp3",
+    "text": "perennial"
+  },
+  {
+    "id": "x_deference",
+    "path": "audio/x_deference.mp3",
+    "text": "deference"
+  },
+  {
+    "id": "x_solving",
+    "path": "audio/x_solving.mp3",
+    "text": "solving"
+  },
+  {
+    "id": "x_pruning",
+    "path": "audio/x_pruning.mp3",
+    "text": "pruning"
+  },
+  {
+    "id": "x_benefactor",
+    "path": "audio/x_benefactor.mp3",
+    "text": "benefactor"
+  },
+  {
+    "id": "x_volt",
+    "path": "audio/x_volt.mp3",
+    "text": "volt"
+  },
+  {
+    "id": "x_hanger",
+    "path": "audio/x_hanger.mp3",
+    "text": "hanger"
+  },
+  {
+    "id": "x_keenly",
+    "path": "audio/x_keenly.mp3",
+    "text": "keenly"
+  },
+  {
+    "id": "x_queer",
+    "path": "audio/x_queer.mp3",
+    "text": "queer"
+  },
+  {
+    "id": "x_loudspeaker",
+    "path": "audio/x_loudspeaker.mp3",
+    "text": "loudspeaker"
+  },
+  {
+    "id": "x_arduous",
+    "path": "audio/x_arduous.mp3",
+    "text": "arduous"
+  },
+  {
+    "id": "x_glaring",
+    "path": "audio/x_glaring.mp3",
+    "text": "glaring"
+  },
+  {
+    "id": "x_recoverable",
+    "path": "audio/x_recoverable.mp3",
+    "text": "recoverable"
+  },
+  {
+    "id": "x_simulated",
+    "path": "audio/x_simulated.mp3",
+    "text": "simulated"
+  },
+  {
+    "id": "x_bristle",
+    "path": "audio/x_bristle.mp3",
+    "text": "bristle"
+  },
+  {
+    "id": "x_rescuer",
+    "path": "audio/x_rescuer.mp3",
+    "text": "rescuer"
+  },
+  {
+    "id": "x_adaptable",
+    "path": "audio/x_adaptable.mp3",
+    "text": "adaptable"
+  },
+  {
+    "id": "x_crystallize",
+    "path": "audio/x_crystallize.mp3",
+    "text": "crystallize"
+  },
+  {
+    "id": "x_repress",
+    "path": "audio/x_repress.mp3",
+    "text": "repress"
+  },
+  {
+    "id": "x_overboard",
+    "path": "audio/x_overboard.mp3",
+    "text": "overboard"
+  },
+  {
+    "id": "x_swathe",
+    "path": "audio/x_swathe.mp3",
+    "text": "swathe"
+  },
+  {
+    "id": "x_lucid",
+    "path": "audio/x_lucid.mp3",
+    "text": "lucid"
+  },
+  {
+    "id": "x_recklessly",
+    "path": "audio/x_recklessly.mp3",
+    "text": "recklessly"
+  },
+  {
+    "id": "x_capacitor",
+    "path": "audio/x_capacitor.mp3",
+    "text": "capacitor"
+  },
+  {
+    "id": "x_insufficiently",
+    "path": "audio/x_insufficiently.mp3",
+    "text": "insufficiently"
+  },
+  {
+    "id": "x_booming",
+    "path": "audio/x_booming.mp3",
+    "text": "booming"
+  },
+  {
+    "id": "x_protrude",
+    "path": "audio/x_protrude.mp3",
+    "text": "protrude"
+  },
+  {
+    "id": "x_illustrious",
+    "path": "audio/x_illustrious.mp3",
+    "text": "illustrious"
+  },
+  {
+    "id": "x_squint",
+    "path": "audio/x_squint.mp3",
+    "text": "squint"
+  },
+  {
+    "id": "x_restrained",
+    "path": "audio/x_restrained.mp3",
+    "text": "restrained"
+  },
+  {
+    "id": "x_upkeep",
+    "path": "audio/x_upkeep.mp3",
+    "text": "upkeep"
+  },
+  {
+    "id": "x_compressed",
+    "path": "audio/x_compressed.mp3",
+    "text": "compressed"
+  },
+  {
+    "id": "x_metropolis",
+    "path": "audio/x_metropolis.mp3",
+    "text": "metropolis"
+  },
+  {
+    "id": "x_intersperse",
+    "path": "audio/x_intersperse.mp3",
+    "text": "intersperse"
+  },
+  {
+    "id": "x_extravagance",
+    "path": "audio/x_extravagance.mp3",
+    "text": "extravagance"
+  },
+  {
+    "id": "x_harrier",
+    "path": "audio/x_harrier.mp3",
+    "text": "harrier"
+  },
+  {
+    "id": "x_inflated",
+    "path": "audio/x_inflated.mp3",
+    "text": "inflated"
+  },
+  {
+    "id": "x_clamour",
+    "path": "audio/x_clamour.mp3",
+    "text": "clamour"
+  },
+  {
+    "id": "x_contented",
+    "path": "audio/x_contented.mp3",
+    "text": "contented"
+  },
+  {
+    "id": "x_glaze",
+    "path": "audio/x_glaze.mp3",
+    "text": "glaze"
+  },
+  {
+    "id": "x_spinster",
+    "path": "audio/x_spinster.mp3",
+    "text": "spinster"
+  },
+  {
+    "id": "x_underwriting",
+    "path": "audio/x_underwriting.mp3",
+    "text": "underwriting"
+  },
+  {
+    "id": "x_unheard",
+    "path": "audio/x_unheard.mp3",
+    "text": "unheard"
+  },
+  {
+    "id": "x_dissect",
+    "path": "audio/x_dissect.mp3",
+    "text": "dissect"
+  },
+  {
+    "id": "x_intricacy",
+    "path": "audio/x_intricacy.mp3",
+    "text": "intricacy"
+  },
+  {
+    "id": "x_frivolous",
+    "path": "audio/x_frivolous.mp3",
+    "text": "frivolous"
+  },
+  {
+    "id": "x_creeping",
+    "path": "audio/x_creeping.mp3",
+    "text": "creeping"
+  },
+  {
+    "id": "x_apprehend",
+    "path": "audio/x_apprehend.mp3",
+    "text": "apprehend"
+  },
+  {
+    "id": "x_dormitory",
+    "path": "audio/x_dormitory.mp3",
+    "text": "dormitory"
+  },
+  {
+    "id": "x_behold",
+    "path": "audio/x_behold.mp3",
+    "text": "behold"
+  },
+  {
+    "id": "x_verity",
+    "path": "audio/x_verity.mp3",
+    "text": "verity"
+  },
+  {
+    "id": "x_pungent",
+    "path": "audio/x_pungent.mp3",
+    "text": "pungent"
+  },
+  {
+    "id": "x_proverbial",
+    "path": "audio/x_proverbial.mp3",
+    "text": "proverbial"
+  },
+  {
+    "id": "x_intersect",
+    "path": "audio/x_intersect.mp3",
+    "text": "intersect"
+  },
+  {
+    "id": "x_distinguishable",
+    "path": "audio/x_distinguishable.mp3",
+    "text": "distinguishable"
+  },
+  {
+    "id": "x_negatively",
+    "path": "audio/x_negatively.mp3",
+    "text": "negatively"
+  },
+  {
+    "id": "x_ontological",
+    "path": "audio/x_ontological.mp3",
+    "text": "ontological"
+  },
+  {
+    "id": "x_dignitary",
+    "path": "audio/x_dignitary.mp3",
+    "text": "dignitary"
+  },
+  {
+    "id": "x_hindrance",
+    "path": "audio/x_hindrance.mp3",
+    "text": "hindrance"
+  },
+  {
+    "id": "x_regrettable",
+    "path": "audio/x_regrettable.mp3",
+    "text": "regrettable"
+  },
+  {
+    "id": "x_hydrocarbon",
+    "path": "audio/x_hydrocarbon.mp3",
+    "text": "hydrocarbon"
+  },
+  {
+    "id": "x_electronically",
+    "path": "audio/x_electronically.mp3",
+    "text": "electronically"
+  },
+  {
+    "id": "x_pester",
+    "path": "audio/x_pester.mp3",
+    "text": "pester"
+  },
+  {
+    "id": "x_stubble",
+    "path": "audio/x_stubble.mp3",
+    "text": "stubble"
+  },
+  {
+    "id": "x_illuminated",
+    "path": "audio/x_illuminated.mp3",
+    "text": "illuminated"
+  },
+  {
+    "id": "x_accustom",
+    "path": "audio/x_accustom.mp3",
+    "text": "accustom"
+  },
+  {
+    "id": "x_motivated",
+    "path": "audio/x_motivated.mp3",
+    "text": "motivated"
+  },
+  {
+    "id": "x_cinderella",
+    "path": "audio/x_cinderella.mp3",
+    "text": "cinderella"
+  },
+  {
+    "id": "x_fanciful",
+    "path": "audio/x_fanciful.mp3",
+    "text": "fanciful"
+  },
+  {
+    "id": "x_expound",
+    "path": "audio/x_expound.mp3",
+    "text": "expound"
+  },
+  {
+    "id": "x_revisit",
+    "path": "audio/x_revisit.mp3",
+    "text": "revisit"
+  },
+  {
+    "id": "x_shyness",
+    "path": "audio/x_shyness.mp3",
+    "text": "shyness"
+  },
+  {
+    "id": "x_segmentation",
+    "path": "audio/x_segmentation.mp3",
+    "text": "segmentation"
+  },
+  {
+    "id": "x_distinguishing",
+    "path": "audio/x_distinguishing.mp3",
+    "text": "distinguishing"
+  },
+  {
+    "id": "x_hapless",
+    "path": "audio/x_hapless.mp3",
+    "text": "hapless"
+  },
+  {
+    "id": "x_clarinet",
+    "path": "audio/x_clarinet.mp3",
+    "text": "clarinet"
+  },
+  {
+    "id": "x_stiffness",
+    "path": "audio/x_stiffness.mp3",
+    "text": "stiffness"
+  },
+  {
+    "id": "x_lookout",
+    "path": "audio/x_lookout.mp3",
+    "text": "lookout"
+  },
+  {
+    "id": "x_communicator",
+    "path": "audio/x_communicator.mp3",
+    "text": "communicator"
+  },
+  {
+    "id": "x_sparrow",
+    "path": "audio/x_sparrow.mp3",
+    "text": "sparrow"
+  },
+  {
+    "id": "x_inspiring",
+    "path": "audio/x_inspiring.mp3",
+    "text": "inspiring"
+  },
+  {
+    "id": "x_cessation",
+    "path": "audio/x_cessation.mp3",
+    "text": "cessation"
+  },
+  {
+    "id": "x_fondness",
+    "path": "audio/x_fondness.mp3",
+    "text": "fondness"
+  },
+  {
+    "id": "x_canned",
+    "path": "audio/x_canned.mp3",
+    "text": "canned"
+  },
+  {
+    "id": "x_supposition",
+    "path": "audio/x_supposition.mp3",
+    "text": "supposition"
+  },
+  {
+    "id": "x_admirably",
+    "path": "audio/x_admirably.mp3",
+    "text": "admirably"
+  },
+  {
+    "id": "x_frailty",
+    "path": "audio/x_frailty.mp3",
+    "text": "frailty"
+  },
+  {
+    "id": "x_presupposition",
+    "path": "audio/x_presupposition.mp3",
+    "text": "presupposition"
+  },
+  {
+    "id": "x_nonconformist",
+    "path": "audio/x_nonconformist.mp3",
+    "text": "nonconformist"
+  },
+  {
+    "id": "x_unchecked",
+    "path": "audio/x_unchecked.mp3",
+    "text": "unchecked"
+  },
+  {
+    "id": "x_drizzle",
+    "path": "audio/x_drizzle.mp3",
+    "text": "drizzle"
+  },
+  {
+    "id": "x_brownie",
+    "path": "audio/x_brownie.mp3",
+    "text": "brownie"
+  },
+  {
+    "id": "x_poisoned",
+    "path": "audio/x_poisoned.mp3",
+    "text": "poisoned"
+  },
+  {
+    "id": "x_trespass",
+    "path": "audio/x_trespass.mp3",
+    "text": "trespass"
+  },
+  {
+    "id": "x_estranged",
+    "path": "audio/x_estranged.mp3",
+    "text": "estranged"
+  },
+  {
+    "id": "x_inactivity",
+    "path": "audio/x_inactivity.mp3",
+    "text": "inactivity"
+  },
+  {
+    "id": "x_detest",
+    "path": "audio/x_detest.mp3",
+    "text": "detest"
+  },
+  {
+    "id": "x_fabrication",
+    "path": "audio/x_fabrication.mp3",
+    "text": "fabrication"
+  },
+  {
+    "id": "x_batty",
+    "path": "audio/x_batty.mp3",
+    "text": "batty"
+  },
+  {
+    "id": "x_horrify",
+    "path": "audio/x_horrify.mp3",
+    "text": "horrify"
+  },
+  {
+    "id": "x_entangle",
+    "path": "audio/x_entangle.mp3",
+    "text": "entangle"
+  },
+  {
+    "id": "x_tandem",
+    "path": "audio/x_tandem.mp3",
+    "text": "tandem"
+  },
+  {
+    "id": "x_surrogate",
+    "path": "audio/x_surrogate.mp3",
+    "text": "surrogate"
+  },
+  {
+    "id": "x_divisive",
+    "path": "audio/x_divisive.mp3",
+    "text": "divisive"
+  },
+  {
+    "id": "x_preamble",
+    "path": "audio/x_preamble.mp3",
+    "text": "preamble"
+  },
+  {
+    "id": "x_camouflage",
+    "path": "audio/x_camouflage.mp3",
+    "text": "camouflage"
+  },
+  {
+    "id": "x_diving",
+    "path": "audio/x_diving.mp3",
+    "text": "diving"
+  },
+  {
+    "id": "x_pendulum",
+    "path": "audio/x_pendulum.mp3",
+    "text": "pendulum"
+  },
+  {
+    "id": "x_avail",
+    "path": "audio/x_avail.mp3",
+    "text": "avail"
+  },
+  {
+    "id": "x_outwardly",
+    "path": "audio/x_outwardly.mp3",
+    "text": "outwardly"
+  },
+  {
+    "id": "x_upshot",
+    "path": "audio/x_upshot.mp3",
+    "text": "upshot"
+  },
+  {
+    "id": "x_nova",
+    "path": "audio/x_nova.mp3",
+    "text": "nova"
+  },
+  {
+    "id": "x_discerning",
+    "path": "audio/x_discerning.mp3",
+    "text": "discerning"
+  },
+  {
+    "id": "x_tempest",
+    "path": "audio/x_tempest.mp3",
+    "text": "tempest"
+  },
+  {
+    "id": "x_browny",
+    "path": "audio/x_browny.mp3",
+    "text": "browny"
+  },
+  {
+    "id": "x_senna",
+    "path": "audio/x_senna.mp3",
+    "text": "senna"
+  },
+  {
+    "id": "x_rendering",
+    "path": "audio/x_rendering.mp3",
+    "text": "rendering"
+  },
+  {
+    "id": "x_unproductive",
+    "path": "audio/x_unproductive.mp3",
+    "text": "unproductive"
+  },
+  {
+    "id": "x_losing",
+    "path": "audio/x_losing.mp3",
+    "text": "losing"
+  },
+  {
+    "id": "x_leafy",
+    "path": "audio/x_leafy.mp3",
+    "text": "leafy"
+  },
+  {
+    "id": "x_toughness",
+    "path": "audio/x_toughness.mp3",
+    "text": "toughness"
+  },
+  {
+    "id": "x_trump",
+    "path": "audio/x_trump.mp3",
+    "text": "trump"
+  },
+  {
+    "id": "x_decentralization",
+    "path": "audio/x_decentralization.mp3",
+    "text": "decentralization"
+  },
+  {
+    "id": "x_fractured",
+    "path": "audio/x_fractured.mp3",
+    "text": "fractured"
+  },
+  {
+    "id": "x_hike",
+    "path": "audio/x_hike.mp3",
+    "text": "hike"
+  },
+  {
+    "id": "x_articulated",
+    "path": "audio/x_articulated.mp3",
+    "text": "articulated"
+  },
+  {
+    "id": "x_ramification",
+    "path": "audio/x_ramification.mp3",
+    "text": "ramification"
+  },
+  {
+    "id": "x_verbally",
+    "path": "audio/x_verbally.mp3",
+    "text": "verbally"
+  },
+  {
+    "id": "x_cornerstone",
+    "path": "audio/x_cornerstone.mp3",
+    "text": "cornerstone"
+  },
+  {
+    "id": "x_incontinence",
+    "path": "audio/x_incontinence.mp3",
+    "text": "incontinence"
+  },
+  {
+    "id": "x_eastwards",
+    "path": "audio/x_eastwards.mp3",
+    "text": "eastwards"
+  },
+  {
+    "id": "x_solidly",
+    "path": "audio/x_solidly.mp3",
+    "text": "solidly"
+  },
+  {
+    "id": "x_embodiment",
+    "path": "audio/x_embodiment.mp3",
+    "text": "embodiment"
+  },
+  {
+    "id": "x_underwriter",
+    "path": "audio/x_underwriter.mp3",
+    "text": "underwriter"
+  },
+  {
+    "id": "x_entertainer",
+    "path": "audio/x_entertainer.mp3",
+    "text": "entertainer"
+  },
+  {
+    "id": "x_optimist",
+    "path": "audio/x_optimist.mp3",
+    "text": "optimist"
+  },
+  {
+    "id": "x_trustworthy",
+    "path": "audio/x_trustworthy.mp3",
+    "text": "trustworthy"
+  },
+  {
+    "id": "x_normative",
+    "path": "audio/x_normative.mp3",
+    "text": "normative"
+  },
+  {
+    "id": "x_adjudication",
+    "path": "audio/x_adjudication.mp3",
+    "text": "adjudication"
+  },
+  {
+    "id": "x_expansive",
+    "path": "audio/x_expansive.mp3",
+    "text": "expansive"
+  },
+  {
+    "id": "x_astute",
+    "path": "audio/x_astute.mp3",
+    "text": "astute"
+  },
+  {
+    "id": "x_entrenched",
+    "path": "audio/x_entrenched.mp3",
+    "text": "entrenched"
+  },
+  {
+    "id": "x_liberally",
+    "path": "audio/x_liberally.mp3",
+    "text": "liberally"
+  },
+  {
+    "id": "x_congested",
+    "path": "audio/x_congested.mp3",
+    "text": "congested"
+  },
+  {
+    "id": "x_hitch",
+    "path": "audio/x_hitch.mp3",
+    "text": "hitch"
+  },
+  {
+    "id": "x_immaterial",
+    "path": "audio/x_immaterial.mp3",
+    "text": "immaterial"
+  },
+  {
+    "id": "x_billing",
+    "path": "audio/x_billing.mp3",
+    "text": "billing"
+  },
+  {
+    "id": "x_sonnet",
+    "path": "audio/x_sonnet.mp3",
+    "text": "sonnet"
+  },
+  {
+    "id": "x_oceanic",
+    "path": "audio/x_oceanic.mp3",
+    "text": "oceanic"
+  },
+  {
+    "id": "x_anew",
+    "path": "audio/x_anew.mp3",
+    "text": "anew"
+  },
+  {
+    "id": "x_disillusion",
+    "path": "audio/x_disillusion.mp3",
+    "text": "disillusion"
+  },
+  {
+    "id": "x_provisionally",
+    "path": "audio/x_provisionally.mp3",
+    "text": "provisionally"
+  },
+  {
+    "id": "x_mayhem",
+    "path": "audio/x_mayhem.mp3",
+    "text": "mayhem"
+  },
+  {
+    "id": "x_footwear",
+    "path": "audio/x_footwear.mp3",
+    "text": "footwear"
+  },
+  {
+    "id": "x_disentangle",
+    "path": "audio/x_disentangle.mp3",
+    "text": "disentangle"
+  },
+  {
+    "id": "x_bandwagon",
+    "path": "audio/x_bandwagon.mp3",
+    "text": "bandwagon"
+  },
+  {
+    "id": "x_smoky",
+    "path": "audio/x_smoky.mp3",
+    "text": "smoky"
+  },
+  {
+    "id": "x_aggie",
+    "path": "audio/x_aggie.mp3",
+    "text": "aggie"
+  },
+  {
+    "id": "x_coded",
+    "path": "audio/x_coded.mp3",
+    "text": "coded"
+  },
+  {
+    "id": "x_spec",
+    "path": "audio/x_spec.mp3",
+    "text": "spec"
+  },
+  {
+    "id": "x_fragmentary",
+    "path": "audio/x_fragmentary.mp3",
+    "text": "fragmentary"
+  },
+  {
+    "id": "x_regenerate",
+    "path": "audio/x_regenerate.mp3",
+    "text": "regenerate"
+  },
+  {
+    "id": "x_howling",
+    "path": "audio/x_howling.mp3",
+    "text": "howling"
+  },
+  {
+    "id": "x_apricot",
+    "path": "audio/x_apricot.mp3",
+    "text": "apricot"
+  },
+  {
+    "id": "x_successively",
+    "path": "audio/x_successively.mp3",
+    "text": "successively"
+  },
+  {
+    "id": "x_scone",
+    "path": "audio/x_scone.mp3",
+    "text": "scone"
+  },
+  {
+    "id": "x_bray",
+    "path": "audio/x_bray.mp3",
+    "text": "bray"
+  },
+  {
+    "id": "x_cavalier",
+    "path": "audio/x_cavalier.mp3",
+    "text": "cavalier"
+  },
+  {
+    "id": "x_breech",
+    "path": "audio/x_breech.mp3",
+    "text": "breech"
+  },
+  {
+    "id": "x_standardise",
+    "path": "audio/x_standardise.mp3",
+    "text": "standardise"
+  },
+  {
+    "id": "x_waft",
+    "path": "audio/x_waft.mp3",
+    "text": "waft"
+  },
+  {
+    "id": "x_potty",
+    "path": "audio/x_potty.mp3",
+    "text": "potty"
+  },
+  {
+    "id": "x_warlord",
+    "path": "audio/x_warlord.mp3",
+    "text": "warlord"
+  },
+  {
+    "id": "x_authorship",
+    "path": "audio/x_authorship.mp3",
+    "text": "authorship"
+  },
+  {
+    "id": "x_currant",
+    "path": "audio/x_currant.mp3",
+    "text": "currant"
+  },
+  {
+    "id": "x_mercenary",
+    "path": "audio/x_mercenary.mp3",
+    "text": "mercenary"
+  },
+  {
+    "id": "x_obstructive",
+    "path": "audio/x_obstructive.mp3",
+    "text": "obstructive"
+  },
+  {
+    "id": "x_bairn",
+    "path": "audio/x_bairn.mp3",
+    "text": "bairn"
+  },
+  {
+    "id": "x_lichen",
+    "path": "audio/x_lichen.mp3",
+    "text": "lichen"
+  },
+  {
+    "id": "x_terracotta",
+    "path": "audio/x_terracotta.mp3",
+    "text": "terracotta"
+  },
+  {
+    "id": "x_wrongful",
+    "path": "audio/x_wrongful.mp3",
+    "text": "wrongful"
+  },
+  {
+    "id": "x_phosphorus",
+    "path": "audio/x_phosphorus.mp3",
+    "text": "phosphorus"
+  },
+  {
+    "id": "x_mauve",
+    "path": "audio/x_mauve.mp3",
+    "text": "mauve"
+  },
+  {
+    "id": "x_sliver",
+    "path": "audio/x_sliver.mp3",
+    "text": "sliver"
+  },
+  {
+    "id": "x_caustic",
+    "path": "audio/x_caustic.mp3",
+    "text": "caustic"
+  },
+  {
+    "id": "x_acton",
+    "path": "audio/x_acton.mp3",
+    "text": "acton"
+  },
+  {
+    "id": "x_scoff",
+    "path": "audio/x_scoff.mp3",
+    "text": "scoff"
+  },
+  {
+    "id": "x_snuggle",
+    "path": "audio/x_snuggle.mp3",
+    "text": "snuggle"
+  },
+  {
+    "id": "x_blinding",
+    "path": "audio/x_blinding.mp3",
+    "text": "blinding"
+  },
+  {
+    "id": "x_orally",
+    "path": "audio/x_orally.mp3",
+    "text": "orally"
+  },
+  {
+    "id": "x_indeterminate",
+    "path": "audio/x_indeterminate.mp3",
+    "text": "indeterminate"
+  },
+  {
+    "id": "x_chide",
+    "path": "audio/x_chide.mp3",
+    "text": "chide"
+  },
+  {
+    "id": "x_insolvent",
+    "path": "audio/x_insolvent.mp3",
+    "text": "insolvent"
+  },
+  {
+    "id": "x_puzzlement",
+    "path": "audio/x_puzzlement.mp3",
+    "text": "puzzlement"
+  },
+  {
+    "id": "x_peregrine",
+    "path": "audio/x_peregrine.mp3",
+    "text": "peregrine"
+  },
+  {
+    "id": "x_disallow",
+    "path": "audio/x_disallow.mp3",
+    "text": "disallow"
+  },
+  {
+    "id": "x_plywood",
+    "path": "audio/x_plywood.mp3",
+    "text": "plywood"
+  },
+  {
+    "id": "x_cadre",
+    "path": "audio/x_cadre.mp3",
+    "text": "cadre"
+  },
+  {
+    "id": "x_marketable",
+    "path": "audio/x_marketable.mp3",
+    "text": "marketable"
+  },
+  {
+    "id": "x_dialectical",
+    "path": "audio/x_dialectical.mp3",
+    "text": "dialectical"
+  },
+  {
+    "id": "x_sucker",
+    "path": "audio/x_sucker.mp3",
+    "text": "sucker"
+  },
+  {
+    "id": "x_surf",
+    "path": "audio/x_surf.mp3",
+    "text": "surf"
+  },
+  {
+    "id": "x_cryptic",
+    "path": "audio/x_cryptic.mp3",
+    "text": "cryptic"
+  },
+  {
+    "id": "x_doubling",
+    "path": "audio/x_doubling.mp3",
+    "text": "doubling"
+  },
+  {
+    "id": "x_genteel",
+    "path": "audio/x_genteel.mp3",
+    "text": "genteel"
+  },
+  {
+    "id": "x_clubhouse",
+    "path": "audio/x_clubhouse.mp3",
+    "text": "clubhouse"
+  },
+  {
+    "id": "x_warp",
+    "path": "audio/x_warp.mp3",
+    "text": "warp"
+  },
+  {
+    "id": "x_hogan",
+    "path": "audio/x_hogan.mp3",
+    "text": "hogan"
+  },
+  {
+    "id": "x_tawny",
+    "path": "audio/x_tawny.mp3",
+    "text": "tawny"
+  },
+  {
+    "id": "x_panoramic",
+    "path": "audio/x_panoramic.mp3",
+    "text": "panoramic"
+  },
+  {
+    "id": "x_fang",
+    "path": "audio/x_fang.mp3",
+    "text": "fang"
+  },
+  {
+    "id": "x_equator",
+    "path": "audio/x_equator.mp3",
+    "text": "equator"
+  },
+  {
+    "id": "x_marquess",
+    "path": "audio/x_marquess.mp3",
+    "text": "marquess"
+  },
+  {
+    "id": "x_macabre",
+    "path": "audio/x_macabre.mp3",
+    "text": "macabre"
+  },
+  {
+    "id": "x_buoyancy",
+    "path": "audio/x_buoyancy.mp3",
+    "text": "buoyancy"
+  },
+  {
+    "id": "x_viaduct",
+    "path": "audio/x_viaduct.mp3",
+    "text": "viaduct"
+  },
+  {
+    "id": "x_chieftain",
+    "path": "audio/x_chieftain.mp3",
+    "text": "chieftain"
+  },
+  {
+    "id": "x_decomposition",
+    "path": "audio/x_decomposition.mp3",
+    "text": "decomposition"
+  },
+  {
+    "id": "x_nymph",
+    "path": "audio/x_nymph.mp3",
+    "text": "nymph"
+  },
+  {
+    "id": "x_maturation",
+    "path": "audio/x_maturation.mp3",
+    "text": "maturation"
+  },
+  {
+    "id": "x_mane",
+    "path": "audio/x_mane.mp3",
+    "text": "mane"
+  },
+  {
+    "id": "x_backup",
+    "path": "audio/x_backup.mp3",
+    "text": "backup"
+  },
+  {
+    "id": "x_trespasser",
+    "path": "audio/x_trespasser.mp3",
+    "text": "trespasser"
+  },
+  {
+    "id": "x_shoemaker",
+    "path": "audio/x_shoemaker.mp3",
+    "text": "shoemaker"
+  },
+  {
+    "id": "x_moray",
+    "path": "audio/x_moray.mp3",
+    "text": "moray"
+  },
+  {
+    "id": "x_yank",
+    "path": "audio/x_yank.mp3",
+    "text": "yank"
+  },
+  {
+    "id": "x_existential",
+    "path": "audio/x_existential.mp3",
+    "text": "existential"
+  },
+  {
+    "id": "x_adjournment",
+    "path": "audio/x_adjournment.mp3",
+    "text": "adjournment"
+  },
+  {
+    "id": "x_garth",
+    "path": "audio/x_garth.mp3",
+    "text": "garth"
+  },
+  {
+    "id": "x_graphite",
+    "path": "audio/x_graphite.mp3",
+    "text": "graphite"
+  },
+  {
+    "id": "x_thicket",
+    "path": "audio/x_thicket.mp3",
+    "text": "thicket"
+  },
+  {
+    "id": "x_ritz",
+    "path": "audio/x_ritz.mp3",
+    "text": "ritz"
+  },
+  {
+    "id": "x_docker",
+    "path": "audio/x_docker.mp3",
+    "text": "docker"
+  },
+  {
+    "id": "x_bridesmaid",
+    "path": "audio/x_bridesmaid.mp3",
+    "text": "bridesmaid"
+  },
+  {
+    "id": "x_sternly",
+    "path": "audio/x_sternly.mp3",
+    "text": "sternly"
+  },
+  {
+    "id": "x_fleck",
+    "path": "audio/x_fleck.mp3",
+    "text": "fleck"
+  },
+  {
+    "id": "x_posit",
+    "path": "audio/x_posit.mp3",
+    "text": "posit"
+  },
+  {
+    "id": "x_hundredth",
+    "path": "audio/x_hundredth.mp3",
+    "text": "hundredth"
+  },
+  {
+    "id": "x_scratching",
+    "path": "audio/x_scratching.mp3",
+    "text": "scratching"
+  },
+  {
+    "id": "x_incredulous",
+    "path": "audio/x_incredulous.mp3",
+    "text": "incredulous"
+  },
+  {
+    "id": "x_stammer",
+    "path": "audio/x_stammer.mp3",
+    "text": "stammer"
+  },
+  {
+    "id": "x_terminally",
+    "path": "audio/x_terminally.mp3",
+    "text": "terminally"
+  },
+  {
+    "id": "x_migraine",
+    "path": "audio/x_migraine.mp3",
+    "text": "migraine"
+  },
+  {
+    "id": "x_blackbird",
+    "path": "audio/x_blackbird.mp3",
+    "text": "blackbird"
+  },
+  {
+    "id": "x_craze",
+    "path": "audio/x_craze.mp3",
+    "text": "craze"
+  },
+  {
+    "id": "x_interception",
+    "path": "audio/x_interception.mp3",
+    "text": "interception"
+  },
+  {
+    "id": "x_crucifixion",
+    "path": "audio/x_crucifixion.mp3",
+    "text": "crucifixion"
+  },
+  {
+    "id": "x_flickering",
+    "path": "audio/x_flickering.mp3",
+    "text": "flickering"
+  },
+  {
+    "id": "x_ideologically",
+    "path": "audio/x_ideologically.mp3",
+    "text": "ideologically"
+  },
+  {
+    "id": "x_salted",
+    "path": "audio/x_salted.mp3",
+    "text": "salted"
+  },
+  {
+    "id": "x_viennese",
+    "path": "audio/x_viennese.mp3",
+    "text": "viennese"
+  },
+  {
+    "id": "x_standardisation",
+    "path": "audio/x_standardisation.mp3",
+    "text": "standardisation"
+  },
+  {
+    "id": "x_racer",
+    "path": "audio/x_racer.mp3",
+    "text": "racer"
+  },
+  {
+    "id": "x_cloister",
+    "path": "audio/x_cloister.mp3",
+    "text": "cloister"
+  },
+  {
+    "id": "x_dainty",
+    "path": "audio/x_dainty.mp3",
+    "text": "dainty"
+  },
+  {
+    "id": "x_evangelist",
+    "path": "audio/x_evangelist.mp3",
+    "text": "evangelist"
+  },
+  {
+    "id": "x_monolithic",
+    "path": "audio/x_monolithic.mp3",
+    "text": "monolithic"
+  },
+  {
+    "id": "x_soundtrack",
+    "path": "audio/x_soundtrack.mp3",
+    "text": "soundtrack"
+  },
+  {
+    "id": "x_bodice",
+    "path": "audio/x_bodice.mp3",
+    "text": "bodice"
+  },
+  {
+    "id": "x_consensual",
+    "path": "audio/x_consensual.mp3",
+    "text": "consensual"
+  },
+  {
+    "id": "x_makeup",
+    "path": "audio/x_makeup.mp3",
+    "text": "makeup"
+  },
+  {
+    "id": "x_waken",
+    "path": "audio/x_waken.mp3",
+    "text": "waken"
+  },
+  {
+    "id": "x_preponderance",
+    "path": "audio/x_preponderance.mp3",
+    "text": "preponderance"
+  },
+  {
+    "id": "x_armpit",
+    "path": "audio/x_armpit.mp3",
+    "text": "armpit"
+  },
+  {
+    "id": "x_instrumentation",
+    "path": "audio/x_instrumentation.mp3",
+    "text": "instrumentation"
+  },
+  {
+    "id": "x_cringe",
+    "path": "audio/x_cringe.mp3",
+    "text": "cringe"
+  },
+  {
+    "id": "x_pantry",
+    "path": "audio/x_pantry.mp3",
+    "text": "pantry"
+  },
+  {
+    "id": "x_searchlight",
+    "path": "audio/x_searchlight.mp3",
+    "text": "searchlight"
+  },
+  {
+    "id": "x_inferiority",
+    "path": "audio/x_inferiority.mp3",
+    "text": "inferiority"
+  },
+  {
+    "id": "x_renege",
+    "path": "audio/x_renege.mp3",
+    "text": "renege"
+  },
+  {
+    "id": "x_provenance",
+    "path": "audio/x_provenance.mp3",
+    "text": "provenance"
+  },
+  {
+    "id": "x_snub",
+    "path": "audio/x_snub.mp3",
+    "text": "snub"
+  },
+  {
+    "id": "x_standby",
+    "path": "audio/x_standby.mp3",
+    "text": "standby"
+  },
+  {
+    "id": "x_filming",
+    "path": "audio/x_filming.mp3",
+    "text": "filming"
+  },
+  {
+    "id": "x_authorization",
+    "path": "audio/x_authorization.mp3",
+    "text": "authorization"
+  },
+  {
+    "id": "x_parked",
+    "path": "audio/x_parked.mp3",
+    "text": "parked"
+  },
+  {
+    "id": "x_renunciation",
+    "path": "audio/x_renunciation.mp3",
+    "text": "renunciation"
+  },
+  {
+    "id": "x_tester",
+    "path": "audio/x_tester.mp3",
+    "text": "tester"
+  },
+  {
+    "id": "x_alder",
+    "path": "audio/x_alder.mp3",
+    "text": "alder"
+  },
+  {
+    "id": "x_impromptu",
+    "path": "audio/x_impromptu.mp3",
+    "text": "impromptu"
+  },
+  {
+    "id": "x_bayonet",
+    "path": "audio/x_bayonet.mp3",
+    "text": "bayonet"
+  },
+  {
+    "id": "x_aboriginal",
+    "path": "audio/x_aboriginal.mp3",
+    "text": "aboriginal"
+  },
+  {
+    "id": "x_teamwork",
+    "path": "audio/x_teamwork.mp3",
+    "text": "teamwork"
+  },
+  {
+    "id": "x_cloakroom",
+    "path": "audio/x_cloakroom.mp3",
+    "text": "cloakroom"
+  },
+  {
+    "id": "x_snout",
+    "path": "audio/x_snout.mp3",
+    "text": "snout"
+  },
+  {
+    "id": "x_tang",
+    "path": "audio/x_tang.mp3",
+    "text": "tang"
+  },
+  {
+    "id": "x_indent",
+    "path": "audio/x_indent.mp3",
+    "text": "indent"
+  },
+  {
+    "id": "x_antagonistic",
+    "path": "audio/x_antagonistic.mp3",
+    "text": "antagonistic"
+  },
+  {
+    "id": "x_predominance",
+    "path": "audio/x_predominance.mp3",
+    "text": "predominance"
+  },
+  {
+    "id": "x_implausible",
+    "path": "audio/x_implausible.mp3",
+    "text": "implausible"
+  },
+  {
+    "id": "x_foreboding",
+    "path": "audio/x_foreboding.mp3",
+    "text": "foreboding"
+  },
+  {
+    "id": "x_yeoman",
+    "path": "audio/x_yeoman.mp3",
+    "text": "yeoman"
+  },
+  {
+    "id": "x_interrelated",
+    "path": "audio/x_interrelated.mp3",
+    "text": "interrelated"
+  },
+  {
+    "id": "x_extricate",
+    "path": "audio/x_extricate.mp3",
+    "text": "extricate"
+  },
+  {
+    "id": "x_yearning",
+    "path": "audio/x_yearning.mp3",
+    "text": "yearning"
+  },
+  {
+    "id": "x_forefinger",
+    "path": "audio/x_forefinger.mp3",
+    "text": "forefinger"
+  },
+  {
+    "id": "x_tuning",
+    "path": "audio/x_tuning.mp3",
+    "text": "tuning"
+  },
+  {
+    "id": "x_educationalist",
+    "path": "audio/x_educationalist.mp3",
+    "text": "educationalist"
+  },
+  {
+    "id": "x_sodden",
+    "path": "audio/x_sodden.mp3",
+    "text": "sodden"
+  },
+  {
+    "id": "x_potentiality",
+    "path": "audio/x_potentiality.mp3",
+    "text": "potentiality"
+  },
+  {
+    "id": "x_scamper",
+    "path": "audio/x_scamper.mp3",
+    "text": "scamper"
+  },
+  {
+    "id": "x_brat",
+    "path": "audio/x_brat.mp3",
+    "text": "brat"
+  },
+  {
+    "id": "x_fundamentalist",
+    "path": "audio/x_fundamentalist.mp3",
+    "text": "fundamentalist"
+  },
+  {
+    "id": "x_anchorage",
+    "path": "audio/x_anchorage.mp3",
+    "text": "anchorage"
+  },
+  {
+    "id": "x_sash",
+    "path": "audio/x_sash.mp3",
+    "text": "sash"
+  },
+  {
+    "id": "x_affective",
+    "path": "audio/x_affective.mp3",
+    "text": "affective"
+  },
+  {
+    "id": "x_memorabilia",
+    "path": "audio/x_memorabilia.mp3",
+    "text": "memorabilia"
+  },
+  {
+    "id": "x_geometrical",
+    "path": "audio/x_geometrical.mp3",
+    "text": "geometrical"
+  },
+  {
+    "id": "x_ascending",
+    "path": "audio/x_ascending.mp3",
+    "text": "ascending"
+  },
+  {
+    "id": "n00_0",
+    "path": "audio/n00_0.mp3",
+    "text": "A team studies damaged planes that returned from a mission. Most holes are in the wings. One engineer asks about the planes that never returned. Their damage may have been in different places. Looking only at the survivors could lead the team to protect the wrong parts."
+  },
+  {
+    "id": "n00_1",
+    "path": "audio/n00_1.mp3",
+    "text": "A repair team maps the holes in planes that returned from a difficult mission. The wings are covered in marks, while the engines show very little damage. At first, adding protection to the wings seems like the obvious choice. Then an engineer points out a missing group: planes that did not make it home. The returning aircraft demonstrate that some wing damage can be survived. Damage to an engine might prevent a plane from returning at all. The team cannot locate every lost aircraft, so its evidence is incomplete. Even so, asking what is absent changes the decision. The most visible problem is not always the most important one."
+  },
+  {
+    "id": "n01_0",
+    "path": "audio/n01_0.mp3",
+    "text": "Lee loses three games to a computer opponent. It seems to know every move. Then Lee notices that he always attacks after waiting. In the next game, he waits and chooses defense instead. The computer attacks into his defense. It was following a pattern, not reading his mind."
+  },
+  {
+    "id": "n01_1",
+    "path": "audio/n01_1.mp3",
+    "text": "After losing several matches, Lee accuses the computer opponent of reading his next command. His friend suggests reviewing the match history before changing the difficulty. In nearly every round, Lee waits once and then attacks. An opponent that remembers this sequence can appear remarkably clever without seeing any private input. Lee tests the idea by keeping the wait but replacing the attack with defense. The computer still prepares to punish an attack, and its plan fails. This does not prove that every opponent is fair. It does provide a simpler explanation for these particular matches. Lee decides to vary his choices rather than merely press the attack button faster."
+  },
+  {
+    "id": "n02_0",
+    "path": "audio/n02_0.mp3",
+    "text": "At a repair cafe, Nora brings a broken lamp. A volunteer offers to fix it for her. Nora asks to watch and help. The repair takes longer, but she learns how to replace the damaged wire safely. She leaves with a working lamp and a skill she can use again."
+  },
+  {
+    "id": "n02_1",
+    "path": "audio/n02_1.mp3",
+    "text": "Nora could buy a new lamp, but she takes the broken one to a community repair cafe. The volunteer finds a damaged wire and offers to complete the work while she has a drink. Instead, Nora asks to stay at the table. The volunteer explains the safety checks and lets her help with suitable steps. The process takes longer than a quick replacement. Yet Nora values something beyond the repaired object: a problem that once seemed mysterious has become understandable. She does not assume that she can now repair every electrical device. Next time something breaks, however, she will be better prepared to describe the problem and decide when expert help is necessary."
+  },
+  {
+    "id": "n03_0",
+    "path": "audio/n03_0.mp3",
+    "text": "A traveler hears a station announcement through heavy wind. She catches the words \"platform four\" but misses the rest. Instead of guessing, she checks the departure board. Her train leaves from platform two; platform four is closed. Recognizing familiar words was useful, but understanding the whole message mattered more."
+  },
+  {
+    "id": "n03_1",
+    "path": "audio/n03_1.mp3",
+    "text": "Heavy wind makes the station announcement difficult to hear. A traveler recognizes the phrase \"platform four\" and starts walking in that direction. Before she reaches the stairs, she notices that several passengers are moving the other way. She stops to check the departure board. Her train is listed at platform two, while a separate notice says that platform four is temporarily closed. The words she recognized were accurate; her interpretation was not. She had supplied a relationship that the announcement never expressed. Rather than treating the mistake as evidence that she knows no English, she identifies the missing skill: following how familiar words connect, especially when part of a message is lost."
+  },
+  {
+    "id": "n04_0",
+    "path": "audio/n04_0.mp3",
+    "text": "A student wants to make a film about a giant monster, but her team cannot afford the effects. They show shaking cups, empty streets, and a huge shadow instead. The monster never appears clearly. Viewers still feel its size because they see how the ordinary world reacts to it."
+  },
+  {
+    "id": "n04_1",
+    "path": "audio/n04_1.mp3",
+    "text": "The team has planned an ambitious short film in which a giant creature walks through a city. Once they estimate the cost of detailed visual effects, the plan seems impossible. The director then changes the question. Instead of asking how to show every part of the creature, she asks what its presence would change. A glass trembles on a quiet table. People stop speaking before a distant footstep arrives. A shadow crosses an entire street. These effects are cheaper, but they also give the audience room to imagine the unseen whole. The finished film is not successful merely because it hides something. Each small detail supports the same clear idea of enormous scale."
+  },
+  {
+    "id": "n05_0",
+    "path": "audio/n05_0.mp3",
+    "text": "Two maps show the same island. One marks roads and buildings. The other marks steep ground and flood areas. A cyclist chooses the first map for a short city trip. A rescue team needs the second after a storm. Neither map contains everything; each is useful for a different decision."
+  },
+  {
+    "id": "n05_1",
+    "path": "audio/n05_1.mp3",
+    "text": "When a town publishes two maps of the same island, a visitor complains that one must be unnecessary. The first emphasizes roads, shops, and public buildings. The second leaves many of those labels out and shows slopes, streams, and areas at risk of flooding. During an ordinary afternoon, the first map helps the visitor find a cafe. After a severe storm, the rescue team uses the second to plan a safer route. Adding every detail to a single map would not necessarily make it better. Important information could disappear among irrelevant labels. The choice depends on the decision being made, and a useful map makes its purpose clear enough that people know what it leaves out."
+  }
+]

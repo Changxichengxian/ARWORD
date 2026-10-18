@@ -1,0 +1,30 @@
+0.2 内容维护
+
+构建无需运行生成工具。已生成资产和原始图像均随源码提供。
+
+内容生成顺序
+1. tools/make_content.py --reuse-dictionary：重建原始内容及 audio-manifest.json。
+2. tools/expand_vocabulary.py --ecdict PATH：从上游 ECDICT CSV 重建 1,200 道扩展词义题和 audio-v2-manifest.json。
+3. tools/new_readings.py：追加六个新故事的短长两版，同时更新音频清单。
+4. tools/synthesize_neural.py：根据清单合成声音；文本改变时需重录。
+ECDICT CSV 不重复打包，请从上游取得。题目 ID 已用于存档，不要随意重新分配。上游 CSV 版本变化会影响抽样结果；交付的 JSON 是此版确定的课程。
+
+神经语音
+准备 Python 环境及 kokoro-onnx==0.6.1、onnxruntime==1.31.0、soundfile、phonemizer、espeakng-loader、numpy。Kokoro 文件来自官方封装项目 README 指向的 model-files-v1.1 release：kokoro-v1.0.onnx、voices-v1.0.bin。
+用 --model-dir 指定模型目录，--ffmpeg 指定 FFmpeg，--audit 指定增量生成记录。默认使用 af_heart，0.97 倍生成语速，单声道 24kHz 64kbps MP3，统一至 -18 LUFS / -2dB 真峰值目标。
+这是开发工具，不在手机上运行。录音以 ID+朗读文本摘要缓存；换模型或音色时应使用新的 audit 路径，避免误用旧缓存。
+tools/make_audio.ps1 是 0.1 的 Windows Zira 旧生成器，保留作历史备选，不用于 0.2 正式录音。
+
+图像
+tools/prepare_art.py 从 art-source/ 中裁切四份内置 image_gen 原图，导出 app/src/main/assets/art/ 的 WebP 和原生启动图标。裁切、缩放、压缩不重新创造图像内容。提示词见 docs/美术生成记录.txt。
+
+阅读包
+顶层对象含 readings 数组。每项字段：title、text、zh、prompt、options（2–4 个不同选项）、correct（从 0 开始）、explain、level（0–3）。参考 docs/示例阅读包.json。
+每篇英文和中文各最多 4,000 字符；题目/标题 200，解释 1,000，选项 160。导入文件 1.5 MB；活跃库 300 篇 / 2 MB。ID 按正文、问题、选项和答案的摘要生成，重复内容不重复加入。
+仅支持扩展阅读，不支持把任意 JSON 变成新游戏逻辑。扩展阅读没有预录 MP3，用设备语音引擎。短一点只用于有内置短版的材料。
+API 兼容范围：标准 HTTPS chat/completions 风格请求，Bearer 密钥，非流式 choices[0].message.content。要求返回上述 JSON；接受外层 json 代码围栏，不接受工具调用或音频回复。temperature 与 max_tokens 参数并非所有提供商都支持，需要选兼容模型。
+用户预览后加入；导入校验失败保留原内容。保存的是材料，密钥不保存。整理已读材料保留最近一次可恢复批次，长期留档先导出存档。
+
+质量边界
+八个词频区间不是标准难度校准，基础 160 道与扩展 1,200 道存在 11 个重复目标词。不能说成 1,360 个不同单词。
+自动核查答案索引、选项重复、文本及录音对应、文件可解码。仍需复读语义、事实、翻译与干扰项；当前没有自动证明学习有效性的测试。

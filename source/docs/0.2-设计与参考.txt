@@ -1,0 +1,31 @@
+词境前线 0.2：这轮如何回应反馈
+
+一、让画面成为主体
+参考 Supercell 官方游戏展示中的明快色彩、清楚轮廓、角色和场景优先的层级，再做本项目原创的河谷、建筑、角色。没有提取它们的角色、界面图或声音。生成的资产分别绘制：建设状态会改变画面，菜圃有三阶段，交锋有受击和生命条；不是一张不可交互的整页海报。
+https://supercell.com/en/games/brawlstars/
+https://supercell.com/en/games/clashroyale/
+主要操作留在画面上，设置移到角落。文字只解释当前任务，规则与来源放进帮助。NN/g 的简洁设计原则支持减少无关信息；这并不能证明“所有 GPT 界面都过度解释”，但上一版确实有这个问题。
+https://www.nngroup.com/articles/aesthetic-minimalist-design/
+https://www.nngroup.com/articles/ux-context-design/
+
+二、学习难度不能由几道简单题决定
+Duolingo 公开的分级测试说明展示了根据回答调整下一题、利用更细的表现信号。这里借鉴的是自适应取样的思路，并未复制其经过数据校准的模型。
+https://blog.duolingo.com/partial-credit-improvements-to-duolingos-placement-test/
+本版在 1,200 道扩展题、八个 BNC 词频区间内进行 24 次抽样。词频只是一种粗略选题线索，题目未经过真实人群校准；中文选项仍可能提示答案。自报猜测不算独立理解。结果只说明题库中的表现和后续选题起点，不给精确总词汇量或 CEFR 证书级别。
+阅读和听力另行观察，提示、字幕、短版降低即时负担。Duolingo 的教学方法与动态难度文章支持熟悉内容和适量新挑战相结合，但不能据此断言本应用有效。
+https://blog.duolingo.com/duolingo-teaching-method/
+https://blog.duolingo.com/keeping-you-at-the-frontier-of-learning-with-adaptive-lessons/
+
+三、爽感需要行为带来可读的后果
+在现有反制、体力和时机基础上，独立理解获得专注。玩家可以在信息更准和恢复耐久之间选择。对手在出手前已经决定动作，洞察揭示的是既定动作；没有读取玩家当前选择后偷偷改招。
+建设仍有四项明确终点，菜圃可收获，不添加无限升本和活动倒计时。长期内容需求通过导入和可选生成解决，避免把没有终点的数值增长当作全部长期目标。
+这些是待检验的设计假设。它仍是本地回合交锋，无法凭画面更新获得真人的意图、表情和关系。
+
+四、语音与材料扩展
+用本地 Kokoro 神经语音重新生成全部内置录音，选择 af_heart，美式英语，轻微减速，统一音量。模型是 Apache 2.0，kokoro-onnx 包为 MIT；应用只打包输出 MP3，没有打包模型或推理库。
+https://huggingface.co/hexgrad/Kokoro-82M
+https://github.com/thewh1teagle/kokoro-onnx
+扩展词义与词典沿用 ECDICT，保留 MIT 许可。新扩展词经过格式与重复选项检查，仍有词义歧义和词性简化风险，不把机器生成量当作精编量。
+https://github.com/skywind3000/ECDICT
+https://github.com/skywind3000/ECDICT/blob/master/LICENSE
+可选网络生成只处理材料，不能执行代码或抓取返回的链接。格式校验、预览和保留原存档降低导入错误的影响，不能代替教学内容审核。

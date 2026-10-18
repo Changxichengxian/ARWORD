@@ -1,0 +1,18 @@
+{
+  "readings": [
+    {
+      "title": "留给后来的人",
+      "text": "At the end of a walk, Leo finds a clean bottle beside a bench. He is tired and wants to go home. The nearest bin is across the square. He carries the bottle there anyway. On his next visit, a child is sitting on the same bench with a book.",
+      "zh": "散步结束时，里奥在长椅旁发现一个干净的空瓶。他很累，想回家，最近的垃圾桶却在广场另一边。他还是把瓶子带了过去。下次来时，一个孩子正坐在同一张长椅上读书。",
+      "prompt": "里奥的行动说明了什么？",
+      "options": [
+        "他愿意为公共环境多走一点路",
+        "他打算出售捡到的瓶子",
+        "那个孩子要求他清理长椅"
+      ],
+      "correct": 0,
+      "explain": "他虽然很累，仍把瓶子带到较远的垃圾桶；其他两项没有文本依据。",
+      "level": 1
+    }
+  ]
+}
