@@ -6,12 +6,17 @@ parser=argparse.ArgumentParser();parser.add_argument('--models',type=Path,requir
 R=Path(__file__).resolve().parents[1];M=args.models;W=Path(tempfile.mkdtemp(prefix='little-tide-voice-'))
 opts=ort.SessionOptions();opts.intra_op_num_threads=2;opts.inter_op_num_threads=1
 tts=Kokoro.from_session(ort.InferenceSession(str(M/'kokoro-v1.0.onnx'),sess_options=opts,providers=['CPUExecutionProvider']),str(M/'voices-v1.0.bin'))
-audit={}
-for i,item in enumerate(json.loads((R/'tools/audio-manifest.json').read_text(encoding='utf-8'))):
-    p=R/'assets'/item['path'];samples,rate=tts.create(item['text'],voice='af_heart',speed=.94,lang='en-us');sf.write(str(W/'planet-tmp.wav'),samples,rate)
+audit=json.loads((R/'tools/voice-audit.json').read_text('utf-8')) if (R/'tools/voice-audit.json').exists() else {}
+manifest=json.loads((R/'tools/audio-manifest.json').read_text(encoding='utf-8'))
+for i,item in enumerate(manifest):
+    p=R/'assets'/item['path'];text_hash=hashlib.sha256(item['text'].encode()).hexdigest()
+    if p.exists() and audit.get(item['id'],{}).get('textHash')==text_hash:continue
+    samples,rate=tts.create(item['text'],voice='af_heart',speed=.94,lang='en-us');sf.write(str(W/'planet-tmp.wav'),samples,rate)
     subprocess.run([args.ffmpeg,'-v','error','-y','-i',str(W/'planet-tmp.wav'),'-af','loudnorm=I=-18:TP=-2:LRA=9','-ar','24000','-ac','1','-b:a','64k',str(p)],check=True)
     audit[item['id']]={'textHash':hashlib.sha256(item['text'].encode()).hexdigest(),'seconds':len(samples)/rate}
-    if i%12==0:print('Voice',i+1,'/ 99',flush=True)
+    if i%12==0:
+        print('Voice',i+1,'/',len(manifest),flush=True)
+        (R/'tools/voice-audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
 rng=np.random.default_rng(17);sr=24000
 for name,duration,frequencies in [('chop',.16,[170,310]),('stone',.20,[640,930,1280]),('land',.16,[440,660]),('build',.55,[523,659,784,1046]),('tap',.05,[700]),('soft',.22,[392,494])]:
     t=np.arange(int(sr*duration))/sr;audio=np.zeros_like(t)

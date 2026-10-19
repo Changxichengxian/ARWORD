@@ -2,11 +2,15 @@ extends RefCounted
 class_name IslandLearning
 
 const NEEDS=[8,12,16]
+const EXTRA=36
+const MODES=["word","word","read","word","listen","sentence"]
+const PROJECTS=["木屋","风车","花园"]
+const STEPS=[["搭好木屋","沿岸栈道","门前长椅","伙伴的营地"],["让风车转起来","蓄水装置","引水小渠","检修工作台"],["种下第一床","果树小园","木栅栏","蜜蜂的小屋"]]
 var bank:Array=[]
 var by_id={}
 var recent:Array=[]
 var rng=RandomNumberGenerator.new()
-var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0}
+var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{}}
 
 func _init():
 	rng.randomize()
@@ -24,6 +28,17 @@ func accept_save(candidate)->bool:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))
 	for i in range(3):data.build[i]=clampi(int(candidate.build[i]),0,NEEDS[i])
 	data.active=clampi(data.active,0,2);data.band=clampi(data.band,0,3)
+	for key in ["development","work_turns"]:
+		if data[key].size()!=3:data[key]=[0,0,0]
+		for i in range(3):
+			data[key][i]=clampi(int(data[key][i]),0,EXTRA if key=="development" else 1000000) if data[key][i] is int or data[key][i] is float else 0
+	for mode in ["read","listen","sentence"]:data.practice[mode]=maxi(0,int(data.practice.get(mode,0))) if data.practice.get(mode,0) is int or data.practice.get(mode,0) is float else 0
+	if data.harvested.size()!=2:data.harvested=[0,0]
+	for i in range(2):data.harvested[i]=maxi(0,int(data.harvested[i])) if data.harvested[i] is int or data.harvested[i] is float else 0
+	for key in data.contexts.keys():
+		var entry=data.contexts[key]
+		if not entry is Dictionary:data.contexts.erase(key);continue
+		for field in ["completed","assisted"]:entry[field]=maxi(0,int(entry.get(field,0))) if entry.get(field,0) is int or entry.get(field,0) is float else 0
 	for id in data.words.keys():
 		var s=data.words[id]
 		if not by_id.has(id) or not s is Dictionary:data.words.erase(id);continue
@@ -31,7 +46,7 @@ func accept_save(candidate)->bool:
 			if not (s.get(k) is int or s.get(k) is float):s[k]=0
 	return true
 
-func next_word(now:float)->Dictionary:
+func next_word(now:float,focus:Array=[])->Dictionary:
 	if by_id.has(data.help_pending):return by_id[data.help_pending]
 	var due=[];var fresh=[];var other=[]
 	for q in bank:
@@ -42,10 +57,15 @@ func next_word(now:float)->Dictionary:
 	var result={}
 	if not due.is_empty():
 		due.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due);result=due[0]
-	elif not fresh.is_empty():result=fresh[rng.randi_range(0,fresh.size()-1)]
-	elif not other.is_empty():
+	elif not focus.is_empty():
+		var targets=[]
+		for id in focus:
+			if by_id.has(id) and not recent.has(id) and int(by_id[id].band)<=data.band+1:targets.append(by_id[id])
+		if not targets.is_empty():result=targets[rng.randi_range(0,targets.size()-1)]
+	if result.is_empty() and not fresh.is_empty():result=fresh[rng.randi_range(0,fresh.size()-1)]
+	elif result.is_empty() and not other.is_empty():
 		other.sort_custom(func(a,b):return absi(a.band-data.band)<absi(b.band-data.band));result=other[0]
-	else:
+	elif result.is_empty():
 		var pool=bank.filter(func(q):return not recent.has(q.id))
 		pool.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due)
 		result=pool[0] if not pool.is_empty() else bank[0]
@@ -66,15 +86,43 @@ func record(id:String,helped:bool,now:float)->Dictionary:
 	else:
 		s.correct+=1
 		if spaced:s.strength=mini(5,int(s.strength)+1)
-		var gaps=[120,14400,86400,259200,604800,1209600]
+		var gaps=[120,120,600,14400,86400,259200]
 		s.due=maxf(float(s.due),now+gaps[int(s.strength)]);data.miss_run=0;data.success_run+=1
 		if data.success_run>=4:data.band=mini(3,data.band+1);data.success_run=0
 	s.last=now;data.words[id]=s;data.help_pending=""
-	var active=int(data.active);var complete=false
+	data.harvested[1 if data.active==1 else 0]+=1
+	return advance()
+
+func advance()->Dictionary:
+	var active=int(data.active);var complete=false;var upgrade=false
 	if int(data.build[active])<NEEDS[active]:
 		data.build[active]=int(data.build[active])+1;complete=int(data.build[active])==NEEDS[active]
+	elif int(data.development[active])<EXTRA:
+		data.development[active]+=1;upgrade=int(data.development[active])%12==0
 	data.actions+=1
-	return {"helped":helped,"complete":complete,"project":active,"fraction":float(data.build[active])/NEEDS[active]}
+	data.work_turns[active]+=1
+	return {"complete":complete or upgrade,"project":active,"fraction":float(data.build[active])/NEEDS[active]}
+
+func finish_context(mode:String,id:String,assisted:bool)->Dictionary:
+	data.practice[mode]=int(data.practice.get(mode,0))+1
+	var key=id+"_"+mode;var old=data.contexts.get(key,{"completed":0,"assisted":0})
+	old.completed+=1
+	if assisted:old.assisted+=1
+	data.contexts[key]=old
+	return advance()
+
+func mode()->String:return MODES[int(data.work_turns[data.active])%MODES.size()]
+func note_index()->int:return int(data.active)*4+(int(data.work_turns[data.active])/6)%4
+func stage(site:int)->int:
+	if int(data.build[site])<NEEDS[site]:return 0
+	return mini(3,1+int(data.development[site])/12)
+func progress(site:int)->Vector2:
+	if int(data.build[site])<NEEDS[site]:return Vector2(data.build[site],NEEDS[site])
+	if int(data.development[site])>=EXTRA:return Vector2(12,12)
+	return Vector2(int(data.development[site])%12,12)
+func site_done(site:int)->bool:return int(data.build[site])>=NEEDS[site] and int(data.development[site])>=EXTRA
+func all_done()->bool:return site_done(0) and site_done(1) and site_done(2)
+func select_site(site:int):data.active=clampi(site,0,2)
 
 func completed()->bool:return int(data.build[2])>=NEEDS[2]
 func independent_count()->int:
@@ -83,4 +131,4 @@ func independent_count()->int:
 		if int(s.get("correct",0))>0:count+=1
 	return count
 func next_project():
-	if data.active<2 and int(data.build[data.active])>=NEEDS[data.active]:data.active+=1
+	pass # Work sites are selected by the player; never advance to another site automatically.

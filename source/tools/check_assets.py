@@ -1,24 +1,49 @@
+"""Check source assets and regenerated speech against the playable content."""
 from pathlib import Path
-import json,struct,re,hashlib,subprocess
-r=Path(__file__).resolve().parents[1];v=json.loads((r/'assets/vocabulary.json').read_text('utf-8'));letters=json.loads((r/'assets/lessons.json').read_text('utf-8'));dictionary=json.loads((r/'assets/dictionary.json').read_text('utf-8'))
+import json,struct,re,hashlib
+r=Path(__file__).resolve().parents[1]
+v=json.loads((r/'assets/vocabulary.json').read_text('utf-8'))
+notes=json.loads((r/'assets/missions.json').read_text('utf-8'))
+dictionary=json.loads((r/'assets/dictionary.json').read_text('utf-8'))
 assert len(v)==96 and len({q['id'] for q in v})==96
-assert all(len(q['options'])==4 and len(set(q['options']))==4 and q['options'][q['correct']]==q['zh'] and q['phonetic'] for q in v)
-needed=set(re.findall(r"[a-z]+(?:'[a-z]+)?",' '.join([q['example'] for q in v]+[l['text']+' '+l['sentence'] for l in letters]).lower()))|{q['word'] for q in v}
+assert all(len(q['options'])==4 and len(set(q['options']))==4 and q['options'][q['correct']]==q['zh'] for q in v)
+assert len(notes)==12 and len({n['id'] for n in notes})==12
+ids={q['id'] for q in v}
+for n in notes:
+ assert len(n['options'])==3 and len(set(n['options']))==3 and 0<=n['correct']<3
+ assert len(n['cue_options'])==3 and len(set(n['cue_options']))==3 and 0<=n['cue_correct']<3
+ assert len(n['focus'])==4 and set(n['focus'])<=ids
+ assert 25<=len(n['short'].split())<=50 and len(n['text'].split())>len(n['short'].split())
+ assert all(n[k] for k in ['zh','question','sentence_zh','cue'])
+content=' '.join([q['example'] for q in v]+[n[k] for n in notes for k in ['short','text','cue','sentence']])
+needed=set(re.findall(r"[a-z]+(?:'[a-z]+)?",content.lower()))|ids
 assert not needed-dictionary.keys(),needed-dictionary.keys()
-manifest=json.loads((r/'tools/audio-manifest.json').read_text('utf-8'));audit=json.loads((r/'tools/voice-audit.json').read_text('utf-8'))
-assert len(manifest)==99
-for item in manifest:assert hashlib.sha256(item['text'].encode()).hexdigest()==audit[item['id']]['textHash'] and (r/'assets'/item['path']).stat().st_size>1000
-assert [m['text'] for m in manifest[-3:]]==[l['text'] for l in letters]
+manifest=json.loads((r/'tools/audio-manifest.json').read_text('utf-8'))
+audit=json.loads((r/'tools/voice-audit.json').read_text('utf-8'))
+assert len(manifest)==607 and len({m['id'] for m in manifest})==607
+paths={m['path'] for m in manifest}
+for item in manifest:
+ assert hashlib.sha256(item['text'].encode()).hexdigest()==audit[item['id']]['textHash'],item['id']
+ assert (r/'assets'/item['path']).stat().st_size>1000,item['id']
+for word in needed:
+ path=next((q['audio'] for q in v if q['id']==word),'audio/lookup_'+word+'.mp3')
+ assert path in paths,path
+for n in notes:
+ for suffix,key in [('short','short'),('full','text'),('cue','cue')]:
+  item=next(m for m in manifest if m['path']=='audio/'+n['id']+'_'+suffix+'.mp3')
+  assert item['text']==n[key]
 models=[]
 for p in (r/'assets/models').glob('*.glb'):
  b=p.read_bytes();magic,version,length=struct.unpack('<4sII',b[:12]);assert magic==b'glTF' and version==2 and length==len(b)
  size=struct.unpack('<I',b[12:16])[0];g=json.loads(b[20:20+size]);models.append({'name':p.stem,'meshes':len(g['meshes']),'bytes':len(b)})
  assert (r/'art-source'/(p.stem+'.blend')).exists()
-assert len(models)==11
+ if p.stem=='builder':assert {'ArmL','ArmR','LegL','LegR','Body'}<={n['name'] for n in g['nodes']}
+assert len(models)==20
 from fontTools.ttLib import TTFont
 codes=set()
-for n in ['FrontierSC.ttf','FrontierLatin.ttf']:codes.update(TTFont(r/'assets/fonts'/n).getBestCmap())
-chars=''.join(p.read_text('utf-8') for p in [*(r/'scripts').glob('*.gd'),*(r/'assets').glob('*.json')]);missing=set(ord(c) for c in chars if not c.isspace())-codes
+for name in ['FrontierSC.ttf','FrontierLatin.ttf']:codes.update(TTFont(r/'assets/fonts'/name).getBestCmap())
+chars=''.join(p.read_text('utf-8-sig') for p in [*(r/'scripts').glob('*.gd'),*(r/'assets').glob('*.json')])
+missing=set(ord(c) for c in chars if not c.isspace())-codes
 assert not missing,[(hex(c),chr(c)) for c in missing]
-report={'words':96,'all_words_have_four_unique_choices_and_IPA':True,'lookup_entries':len(dictionary),'all_example_and_letter_word_forms_covered':True,'audio_text_hashes_verified':99,'models':models,'fonts_complete':True}
+report={'words':96,'unique_meaning_choices':True,'work_notes':12,'short_and_expanded_readings':24,'listening_instructions':12,'sentence_tasks':12,'lookup_entries':len(dictionary),'every_content_word_has_lookup_and_audio':True,'audio_text_hashes_verified':607,'models':models,'fonts_complete':True}
 print(json.dumps(report,ensure_ascii=False,indent=2));print('CONTENT_ASSETS_PASS')

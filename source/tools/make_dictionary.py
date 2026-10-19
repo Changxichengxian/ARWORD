@@ -2,7 +2,9 @@ from pathlib import Path
 import csv,json,re,argparse
 R=Path(__file__).resolve().parents[1];parser=argparse.ArgumentParser();parser.add_argument('ecdict',type=Path);csvpath=parser.parse_args().ecdict
 v=json.loads((R/'assets/vocabulary.json').read_text(encoding='utf-8'));lessons=json.loads((R/'assets/lessons.json').read_text(encoding='utf-8'))
-needed=set(re.findall(r"[a-z]+(?:'[a-z]+)?",' '.join([q['example'] for q in v]+[l['text']+' '+l['sentence'] for l in lessons]).lower()))|{q['word'] for q in v}
+missions=json.loads((R/'assets/missions.json').read_text(encoding='utf-8'))
+text=' '.join([q['example'] for q in v]+[l['text']+' '+l['sentence'] for l in lessons]+[m['short']+' '+m['text']+' '+m['cue']+' '+m['sentence'] for m in missions])
+needed=set(re.findall(r"[a-z]+(?:'[a-z]+)?",text.lower()))|{q['word'] for q in v}
 found={}
 with csvpath.open(encoding='utf-8') as f:
     for row in csv.DictReader(f):

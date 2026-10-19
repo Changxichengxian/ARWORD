@@ -480,18 +480,2558 @@
     "path": "audio/word_provisionally.mp3"
   },
   {
-    "id": "letter0",
-    "text": "The new cottage needs a quiet place. Keep it away from the busy landing area. The western meadow has enough space, and a short path connects it to the forest. Let us build the cottage there.",
-    "path": "audio/letter0.mp3"
+    "id": "work00_short",
+    "text": "Rain is coming. We need to repair the roof. One board is broken. Replace that board, but keep the dry boards. A cloth cover is only a temporary solution.",
+    "path": "audio/work00_short.mp3"
   },
   {
-    "id": "letter1",
-    "text": "The trees can block the wind. To keep the mill working, place it on the open hill rather than beneath the tall trees. Its sails need enough space to turn freely. The garden can remain below.",
-    "path": "audio/letter1.mp3"
+    "id": "work00_full",
+    "text": "The cottage stayed dry last night, but one roof board has cracked. We should repair the roof before the next shower. Replace only the damaged board; the other boards are still reliable. A cloth cover may help for an hour, but it is only a temporary solution. Save the sound wood for the porch.",
+    "path": "audio/work00_full.mp3"
   },
   {
-    "id": "letter2",
-    "text": "The garden is almost ready, but its soil is dry. The windmill can power a small water pump. Connect the pump to the garden before opening the valve. Then the water will reach the plants instead of spilling onto the path.",
-    "path": "audio/letter2.mp3"
+    "id": "work00_cue",
+    "text": "Replace the broken board. Keep the dry wood beside the cottage.",
+    "path": "audio/work00_cue.mp3"
+  },
+  {
+    "id": "work01_short",
+    "text": "The boat will deliver wood today. Gather the loose stones from the path. Rope is scarce, so repairing the landing area is our first priority. The flowers can wait.",
+    "path": "audio/work01_short.mp3"
+  },
+  {
+    "id": "work01_full",
+    "text": "A boat will deliver fresh wood this afternoon. Before it arrives, gather the loose stones that block the path. Rope is scarce, and we cannot repair every corner today. Our priority is a safe landing area. Once the crew can reach the cottage without slipping, we can return to the flower beds.",
+    "path": "audio/work01_full.mp3"
+  },
+  {
+    "id": "work01_cue",
+    "text": "Clear the path first. Then carry the new wood to the landing area.",
+    "path": "audio/work01_cue.mp3"
+  },
+  {
+    "id": "work02_short",
+    "text": "An ordinary chair sits beneath the porch. Its frame is strong. We can restore the seat and preserve the frame. Do not throw the whole chair away.",
+    "path": "audio/work02_short.mp3"
+  },
+  {
+    "id": "work02_full",
+    "text": "We found an ordinary wooden chair beneath the porch. The seat has worn out, but the frame is still strong. Instead of throwing the chair away, restore its seat and preserve the useful frame. It will give the boat crew a comfortable place to rest. Keep the chair under the roof so that rain cannot reach it.",
+    "path": "audio/work02_full.mp3"
+  },
+  {
+    "id": "work02_cue",
+    "text": "Put the repaired chair beneath the porch, away from the rain.",
+    "path": "audio/work02_cue.mp3"
+  },
+  {
+    "id": "work03_short",
+    "text": "Two friends will visit. Adapt the porch to accommodate them. A versatile folding table leaves room for a bench. We can expand the porch later; today, move the large crates.",
+    "path": "audio/work03_short.mp3"
+  },
+  {
+    "id": "work03_full",
+    "text": "Two friends are arriving on the next boat. We can adapt the porch to accommodate them without rebuilding the cottage. A versatile folding table can serve both meals and repairs. Move the large crates inside to make space for a bench. If more visitors arrive later, we can expand the porch, but there is no need to do everything today.",
+    "path": "audio/work03_full.mp3"
+  },
+  {
+    "id": "work03_cue",
+    "text": "Move the crates inside. Leave enough space for the bench.",
+    "path": "audio/work03_cue.mp3"
+  },
+  {
+    "id": "work04_short",
+    "text": "The mill turns slowly. The rough surface of one part causes friction. Make it smooth to reduce friction. Avoid the moving sails while you work. Stop the mill first.",
+    "path": "audio/work04_short.mp3"
+  },
+  {
+    "id": "work04_full",
+    "text": "The wind is strong enough, yet the mill turns slowly. A rough surface inside the mechanism is rubbing against another part. We can reduce friction by making that surface smooth. To avoid an accident, stop the sails before opening the cover. Adding more weight will not solve the problem; careful repair will.",
+    "path": "audio/work04_full.mp3"
+  },
+  {
+    "id": "work04_cue",
+    "text": "Stop the sails. Smooth the rough surface before starting the mill again.",
+    "path": "audio/work04_cue.mp3"
+  },
+  {
+    "id": "work05_short",
+    "text": "We can obtain water from the pump. The small tank has limited capacity. Use an efficient pipe with no leaks. One full tank is adequate for the garden today.",
+    "path": "audio/work05_short.mp3"
+  },
+  {
+    "id": "work05_full",
+    "text": "The new pump helps us obtain water from the shore. However, the storage tank has a limited capacity. An efficient system needs a sealed pipe so that water reaches the tank instead of leaking onto the path. One full tank is adequate for today. When it is full, close the valve rather than letting the water overflow.",
+    "path": "audio/work05_full.mp3"
+  },
+  {
+    "id": "work05_cue",
+    "text": "Fill the tank, then close the valve. Save the water for the garden.",
+    "path": "audio/work05_cue.mp3"
+  },
+  {
+    "id": "work06_short",
+    "text": "A storm is coming. The tall support is fragile. Reinforce it so the mill can withstand the wind. Our main constraint is time. Repair the support before painting the door.",
+    "path": "audio/work06_short.mp3"
+  },
+  {
+    "id": "work06_full",
+    "text": "The next storm may bring stronger winds. A fragile support beneath the mill needs attention if the structure is to withstand the weather. Reinforce the support with the spare beams. Our main constraint is time, so painting the door must wait. Strengthening the part that carries the load matters more than changing its colour.",
+    "path": "audio/work06_full.mp3"
+  },
+  {
+    "id": "work06_cue",
+    "text": "Use the spare beams to reinforce the support. Paint the door later.",
+    "path": "audio/work06_cue.mp3"
+  },
+  {
+    "id": "work07_short",
+    "text": "Wind speed can fluctuate. A tank helps sustain the water supply when the wind stops. Stored water can mitigate a short shortage and keep the supply consistent. Fill the tank while the mill runs.",
+    "path": "audio/work07_short.mp3"
+  },
+  {
+    "id": "work07_full",
+    "text": "Wind speed can fluctuate throughout the day. The garden needs a more consistent supply of water than the weather can provide on its own. A storage tank helps sustain the supply during calm periods. Keeping some water in reserve can mitigate a short shortage. Fill the tank while the mill is running, and use the stored water when the sails stop.",
+    "path": "audio/work07_full.mp3"
+  },
+  {
+    "id": "work07_cue",
+    "text": "Store water while the wind blows. Use the reserve when the sails stop.",
+    "path": "audio/work07_cue.mp3"
+  },
+  {
+    "id": "work08_short",
+    "text": "Seeds are abundant, but sunny space is scarce. Gather the empty pots. Space is a useful resource. Leave a gap between the pots so that every plant can receive light.",
+    "path": "audio/work08_short.mp3"
+  },
+  {
+    "id": "work08_full",
+    "text": "We have abundant seeds, but space in the sunny corner is scarce. Gather the empty pots before deciding where to put them. Space is a resource too: packing every pot into one tight row will leave some plants in shade. Leave a small gap between the pots and keep the taller plants behind the shorter ones.",
+    "path": "audio/work08_full.mp3"
+  },
+  {
+    "id": "work08_cue",
+    "text": "Leave a gap between the pots. Put the tall plants at the back.",
+    "path": "audio/work08_cue.mp3"
+  },
+  {
+    "id": "work09_short",
+    "text": "Water is essential for the seedlings. Cover the soil with dry leaves to retain moisture. Add roughly one thin layer. Growth is gradual, so do not dig up the roots every morning.",
+    "path": "audio/work09_short.mp3"
+  },
+  {
+    "id": "work09_full",
+    "text": "The seedlings need water, but the soil dries quickly in the sun. A thin layer of dry leaves can help it retain moisture. Add roughly enough leaves to cover the bare surface without burying the stems. Water remains essential, and growth will be gradual. Check the soil gently instead of disturbing the roots every morning.",
+    "path": "audio/work09_full.mp3"
+  },
+  {
+    "id": "work09_cue",
+    "text": "Cover the bare soil with a thin layer of leaves. Keep the stems clear.",
+    "path": "audio/work09_cue.mp3"
+  },
+  {
+    "id": "work10_short",
+    "text": "We must allocate water between two beds. Give a larger proportion to the dry bed. Replenish the tank afterwards. Otherwise, there will be no water for the evening.",
+    "path": "audio/work10_short.mp3"
+  },
+  {
+    "id": "work10_full",
+    "text": "One garden bed is much drier than the other. We need to allocate the remaining water carefully rather than give both beds the same amount. Send a larger proportion to the dry bed, then replenish the tank while the wind is still strong. Otherwise, we may have nothing left for the young plants in the evening.",
+    "path": "audio/work10_full.mp3"
+  },
+  {
+    "id": "work10_cue",
+    "text": "Water the dry bed first. Replenish the tank before the wind drops.",
+    "path": "audio/work10_cue.mp3"
+  },
+  {
+    "id": "work11_short",
+    "text": "The older plants are resilient. The young seedlings are susceptible to cold. Anticipate a chilly night and cover only the young plants. Leaving them outside may have a serious consequence.",
+    "path": "audio/work11_short.mp3"
+  },
+  {
+    "id": "work11_full",
+    "text": "The weather report suggests a cold night. The older plants are resilient, but the young seedlings are susceptible to sudden changes in temperature. We can anticipate the problem and move the youngest pots beneath the shelter. Leaving every plant exposed may have a serious consequence. Keep the cover loose enough to let air pass through.",
+    "path": "audio/work11_full.mp3"
+  },
+  {
+    "id": "work11_cue",
+    "text": "Move the young seedlings beneath the shelter. Leave a small gap for air.",
+    "path": "audio/work11_cue.mp3"
+  },
+  {
+    "id": "lookup_a",
+    "text": "a",
+    "path": "audio/lookup_a.mp3"
+  },
+  {
+    "id": "lookup_access",
+    "text": "access",
+    "path": "audio/lookup_access.mp3"
+  },
+  {
+    "id": "lookup_accident",
+    "text": "accident",
+    "path": "audio/lookup_accident.mp3"
+  },
+  {
+    "id": "lookup_add",
+    "text": "add",
+    "path": "audio/lookup_add.mp3"
+  },
+  {
+    "id": "lookup_adding",
+    "text": "adding",
+    "path": "audio/lookup_adding.mp3"
+  },
+  {
+    "id": "lookup_after",
+    "text": "after",
+    "path": "audio/lookup_after.mp3"
+  },
+  {
+    "id": "lookup_afternoon",
+    "text": "afternoon",
+    "path": "audio/lookup_afternoon.mp3"
+  },
+  {
+    "id": "lookup_afterwards",
+    "text": "afterwards",
+    "path": "audio/lookup_afterwards.mp3"
+  },
+  {
+    "id": "lookup_again",
+    "text": "again",
+    "path": "audio/lookup_again.mp3"
+  },
+  {
+    "id": "lookup_against",
+    "text": "against",
+    "path": "audio/lookup_against.mp3"
+  },
+  {
+    "id": "lookup_agreed",
+    "text": "agreed",
+    "path": "audio/lookup_agreed.mp3"
+  },
+  {
+    "id": "lookup_air",
+    "text": "air",
+    "path": "audio/lookup_air.mp3"
+  },
+  {
+    "id": "lookup_almost",
+    "text": "almost",
+    "path": "audio/lookup_almost.mp3"
+  },
+  {
+    "id": "lookup_amount",
+    "text": "amount",
+    "path": "audio/lookup_amount.mp3"
+  },
+  {
+    "id": "lookup_an",
+    "text": "an",
+    "path": "audio/lookup_an.mp3"
+  },
+  {
+    "id": "lookup_and",
+    "text": "and",
+    "path": "audio/lookup_and.mp3"
+  },
+  {
+    "id": "lookup_another",
+    "text": "another",
+    "path": "audio/lookup_another.mp3"
+  },
+  {
+    "id": "lookup_approved",
+    "text": "approved",
+    "path": "audio/lookup_approved.mp3"
+  },
+  {
+    "id": "lookup_are",
+    "text": "are",
+    "path": "audio/lookup_are.mp3"
+  },
+  {
+    "id": "lookup_area",
+    "text": "area",
+    "path": "audio/lookup_area.mp3"
+  },
+  {
+    "id": "lookup_arrive",
+    "text": "arrive",
+    "path": "audio/lookup_arrive.mp3"
+  },
+  {
+    "id": "lookup_arrives",
+    "text": "arrives",
+    "path": "audio/lookup_arrives.mp3"
+  },
+  {
+    "id": "lookup_arriving",
+    "text": "arriving",
+    "path": "audio/lookup_arriving.mp3"
+  },
+  {
+    "id": "lookup_at",
+    "text": "at",
+    "path": "audio/lookup_at.mp3"
+  },
+  {
+    "id": "lookup_attention",
+    "text": "attention",
+    "path": "audio/lookup_attention.mp3"
+  },
+  {
+    "id": "lookup_away",
+    "text": "away",
+    "path": "audio/lookup_away.mp3"
+  },
+  {
+    "id": "lookup_back",
+    "text": "back",
+    "path": "audio/lookup_back.mp3"
+  },
+  {
+    "id": "lookup_bare",
+    "text": "bare",
+    "path": "audio/lookup_bare.mp3"
+  },
+  {
+    "id": "lookup_basket",
+    "text": "basket",
+    "path": "audio/lookup_basket.mp3"
+  },
+  {
+    "id": "lookup_be",
+    "text": "be",
+    "path": "audio/lookup_be.mp3"
+  },
+  {
+    "id": "lookup_beams",
+    "text": "beams",
+    "path": "audio/lookup_beams.mp3"
+  },
+  {
+    "id": "lookup_became",
+    "text": "became",
+    "path": "audio/lookup_became.mp3"
+  },
+  {
+    "id": "lookup_bed",
+    "text": "bed",
+    "path": "audio/lookup_bed.mp3"
+  },
+  {
+    "id": "lookup_beds",
+    "text": "beds",
+    "path": "audio/lookup_beds.mp3"
+  },
+  {
+    "id": "lookup_before",
+    "text": "before",
+    "path": "audio/lookup_before.mp3"
+  },
+  {
+    "id": "lookup_behind",
+    "text": "behind",
+    "path": "audio/lookup_behind.mp3"
+  },
+  {
+    "id": "lookup_below",
+    "text": "below",
+    "path": "audio/lookup_below.mp3"
+  },
+  {
+    "id": "lookup_bench",
+    "text": "bench",
+    "path": "audio/lookup_bench.mp3"
+  },
+  {
+    "id": "lookup_beside",
+    "text": "beside",
+    "path": "audio/lookup_beside.mp3"
+  },
+  {
+    "id": "lookup_between",
+    "text": "between",
+    "path": "audio/lookup_between.mp3"
+  },
+  {
+    "id": "lookup_block",
+    "text": "block",
+    "path": "audio/lookup_block.mp3"
+  },
+  {
+    "id": "lookup_blocked",
+    "text": "blocked",
+    "path": "audio/lookup_blocked.mp3"
+  },
+  {
+    "id": "lookup_blows",
+    "text": "blows",
+    "path": "audio/lookup_blows.mp3"
+  },
+  {
+    "id": "lookup_board",
+    "text": "board",
+    "path": "audio/lookup_board.mp3"
+  },
+  {
+    "id": "lookup_boards",
+    "text": "boards",
+    "path": "audio/lookup_boards.mp3"
+  },
+  {
+    "id": "lookup_boat",
+    "text": "boat",
+    "path": "audio/lookup_boat.mp3"
+  },
+  {
+    "id": "lookup_both",
+    "text": "both",
+    "path": "audio/lookup_both.mp3"
+  },
+  {
+    "id": "lookup_bridge",
+    "text": "bridge",
+    "path": "audio/lookup_bridge.mp3"
+  },
+  {
+    "id": "lookup_bring",
+    "text": "bring",
+    "path": "audio/lookup_bring.mp3"
+  },
+  {
+    "id": "lookup_broken",
+    "text": "broken",
+    "path": "audio/lookup_broken.mp3"
+  },
+  {
+    "id": "lookup_build",
+    "text": "build",
+    "path": "audio/lookup_build.mp3"
+  },
+  {
+    "id": "lookup_burying",
+    "text": "burying",
+    "path": "audio/lookup_burying.mp3"
+  },
+  {
+    "id": "lookup_busy",
+    "text": "busy",
+    "path": "audio/lookup_busy.mp3"
+  },
+  {
+    "id": "lookup_but",
+    "text": "but",
+    "path": "audio/lookup_but.mp3"
+  },
+  {
+    "id": "lookup_by",
+    "text": "by",
+    "path": "audio/lookup_by.mp3"
+  },
+  {
+    "id": "lookup_calm",
+    "text": "calm",
+    "path": "audio/lookup_calm.mp3"
+  },
+  {
+    "id": "lookup_can",
+    "text": "can",
+    "path": "audio/lookup_can.mp3"
+  },
+  {
+    "id": "lookup_cannot",
+    "text": "cannot",
+    "path": "audio/lookup_cannot.mp3"
+  },
+  {
+    "id": "lookup_careful",
+    "text": "careful",
+    "path": "audio/lookup_careful.mp3"
+  },
+  {
+    "id": "lookup_carefully",
+    "text": "carefully",
+    "path": "audio/lookup_carefully.mp3"
+  },
+  {
+    "id": "lookup_carries",
+    "text": "carries",
+    "path": "audio/lookup_carries.mp3"
+  },
+  {
+    "id": "lookup_carry",
+    "text": "carry",
+    "path": "audio/lookup_carry.mp3"
+  },
+  {
+    "id": "lookup_causes",
+    "text": "causes",
+    "path": "audio/lookup_causes.mp3"
+  },
+  {
+    "id": "lookup_chair",
+    "text": "chair",
+    "path": "audio/lookup_chair.mp3"
+  },
+  {
+    "id": "lookup_change",
+    "text": "change",
+    "path": "audio/lookup_change.mp3"
+  },
+  {
+    "id": "lookup_changes",
+    "text": "changes",
+    "path": "audio/lookup_changes.mp3"
+  },
+  {
+    "id": "lookup_changing",
+    "text": "changing",
+    "path": "audio/lookup_changing.mp3"
+  },
+  {
+    "id": "lookup_check",
+    "text": "check",
+    "path": "audio/lookup_check.mp3"
+  },
+  {
+    "id": "lookup_chilly",
+    "text": "chilly",
+    "path": "audio/lookup_chilly.mp3"
+  },
+  {
+    "id": "lookup_clean",
+    "text": "clean",
+    "path": "audio/lookup_clean.mp3"
+  },
+  {
+    "id": "lookup_clear",
+    "text": "clear",
+    "path": "audio/lookup_clear.mp3"
+  },
+  {
+    "id": "lookup_close",
+    "text": "close",
+    "path": "audio/lookup_close.mp3"
+  },
+  {
+    "id": "lookup_closed",
+    "text": "closed",
+    "path": "audio/lookup_closed.mp3"
+  },
+  {
+    "id": "lookup_cloth",
+    "text": "cloth",
+    "path": "audio/lookup_cloth.mp3"
+  },
+  {
+    "id": "lookup_cold",
+    "text": "cold",
+    "path": "audio/lookup_cold.mp3"
+  },
+  {
+    "id": "lookup_color",
+    "text": "color",
+    "path": "audio/lookup_color.mp3"
+  },
+  {
+    "id": "lookup_colour",
+    "text": "colour",
+    "path": "audio/lookup_colour.mp3"
+  },
+  {
+    "id": "lookup_comfortable",
+    "text": "comfortable",
+    "path": "audio/lookup_comfortable.mp3"
+  },
+  {
+    "id": "lookup_coming",
+    "text": "coming",
+    "path": "audio/lookup_coming.mp3"
+  },
+  {
+    "id": "lookup_compost",
+    "text": "compost",
+    "path": "audio/lookup_compost.mp3"
+  },
+  {
+    "id": "lookup_conditions",
+    "text": "conditions",
+    "path": "audio/lookup_conditions.mp3"
+  },
+  {
+    "id": "lookup_connect",
+    "text": "connect",
+    "path": "audio/lookup_connect.mp3"
+  },
+  {
+    "id": "lookup_connects",
+    "text": "connects",
+    "path": "audio/lookup_connects.mp3"
+  },
+  {
+    "id": "lookup_corner",
+    "text": "corner",
+    "path": "audio/lookup_corner.mp3"
+  },
+  {
+    "id": "lookup_cost",
+    "text": "cost",
+    "path": "audio/lookup_cost.mp3"
+  },
+  {
+    "id": "lookup_cottage",
+    "text": "cottage",
+    "path": "audio/lookup_cottage.mp3"
+  },
+  {
+    "id": "lookup_cover",
+    "text": "cover",
+    "path": "audio/lookup_cover.mp3"
+  },
+  {
+    "id": "lookup_covered",
+    "text": "covered",
+    "path": "audio/lookup_covered.mp3"
+  },
+  {
+    "id": "lookup_cracked",
+    "text": "cracked",
+    "path": "audio/lookup_cracked.mp3"
+  },
+  {
+    "id": "lookup_crates",
+    "text": "crates",
+    "path": "audio/lookup_crates.mp3"
+  },
+  {
+    "id": "lookup_crew",
+    "text": "crew",
+    "path": "audio/lookup_crew.mp3"
+  },
+  {
+    "id": "lookup_cut",
+    "text": "cut",
+    "path": "audio/lookup_cut.mp3"
+  },
+  {
+    "id": "lookup_damaged",
+    "text": "damaged",
+    "path": "audio/lookup_damaged.mp3"
+  },
+  {
+    "id": "lookup_damp",
+    "text": "damp",
+    "path": "audio/lookup_damp.mp3"
+  },
+  {
+    "id": "lookup_day",
+    "text": "day",
+    "path": "audio/lookup_day.mp3"
+  },
+  {
+    "id": "lookup_deciding",
+    "text": "deciding",
+    "path": "audio/lookup_deciding.mp3"
+  },
+  {
+    "id": "lookup_delay",
+    "text": "delay",
+    "path": "audio/lookup_delay.mp3"
+  },
+  {
+    "id": "lookup_did",
+    "text": "did",
+    "path": "audio/lookup_did.mp3"
+  },
+  {
+    "id": "lookup_difference",
+    "text": "difference",
+    "path": "audio/lookup_difference.mp3"
+  },
+  {
+    "id": "lookup_different",
+    "text": "different",
+    "path": "audio/lookup_different.mp3"
+  },
+  {
+    "id": "lookup_dig",
+    "text": "dig",
+    "path": "audio/lookup_dig.mp3"
+  },
+  {
+    "id": "lookup_disturbing",
+    "text": "disturbing",
+    "path": "audio/lookup_disturbing.mp3"
+  },
+  {
+    "id": "lookup_do",
+    "text": "do",
+    "path": "audio/lookup_do.mp3"
+  },
+  {
+    "id": "lookup_door",
+    "text": "door",
+    "path": "audio/lookup_door.mp3"
+  },
+  {
+    "id": "lookup_down",
+    "text": "down",
+    "path": "audio/lookup_down.mp3"
+  },
+  {
+    "id": "lookup_drain",
+    "text": "drain",
+    "path": "audio/lookup_drain.mp3"
+  },
+  {
+    "id": "lookup_drier",
+    "text": "drier",
+    "path": "audio/lookup_drier.mp3"
+  },
+  {
+    "id": "lookup_dries",
+    "text": "dries",
+    "path": "audio/lookup_dries.mp3"
+  },
+  {
+    "id": "lookup_drops",
+    "text": "drops",
+    "path": "audio/lookup_drops.mp3"
+  },
+  {
+    "id": "lookup_dry",
+    "text": "dry",
+    "path": "audio/lookup_dry.mp3"
+  },
+  {
+    "id": "lookup_during",
+    "text": "during",
+    "path": "audio/lookup_during.mp3"
+  },
+  {
+    "id": "lookup_easily",
+    "text": "easily",
+    "path": "audio/lookup_easily.mp3"
+  },
+  {
+    "id": "lookup_effects",
+    "text": "effects",
+    "path": "audio/lookup_effects.mp3"
+  },
+  {
+    "id": "lookup_enough",
+    "text": "enough",
+    "path": "audio/lookup_enough.mp3"
+  },
+  {
+    "id": "lookup_escape",
+    "text": "escape",
+    "path": "audio/lookup_escape.mp3"
+  },
+  {
+    "id": "lookup_evening",
+    "text": "evening",
+    "path": "audio/lookup_evening.mp3"
+  },
+  {
+    "id": "lookup_every",
+    "text": "every",
+    "path": "audio/lookup_every.mp3"
+  },
+  {
+    "id": "lookup_everything",
+    "text": "everything",
+    "path": "audio/lookup_everything.mp3"
+  },
+  {
+    "id": "lookup_explanation",
+    "text": "explanation",
+    "path": "audio/lookup_explanation.mp3"
+  },
+  {
+    "id": "lookup_exposed",
+    "text": "exposed",
+    "path": "audio/lookup_exposed.mp3"
+  },
+  {
+    "id": "lookup_extra",
+    "text": "extra",
+    "path": "audio/lookup_extra.mp3"
+  },
+  {
+    "id": "lookup_fence",
+    "text": "fence",
+    "path": "audio/lookup_fence.mp3"
+  },
+  {
+    "id": "lookup_fill",
+    "text": "fill",
+    "path": "audio/lookup_fill.mp3"
+  },
+  {
+    "id": "lookup_finished",
+    "text": "finished",
+    "path": "audio/lookup_finished.mp3"
+  },
+  {
+    "id": "lookup_first",
+    "text": "first",
+    "path": "audio/lookup_first.mp3"
+  },
+  {
+    "id": "lookup_flexible",
+    "text": "flexible",
+    "path": "audio/lookup_flexible.mp3"
+  },
+  {
+    "id": "lookup_flooding",
+    "text": "flooding",
+    "path": "audio/lookup_flooding.mp3"
+  },
+  {
+    "id": "lookup_flower",
+    "text": "flower",
+    "path": "audio/lookup_flower.mp3"
+  },
+  {
+    "id": "lookup_flowers",
+    "text": "flowers",
+    "path": "audio/lookup_flowers.mp3"
+  },
+  {
+    "id": "lookup_folding",
+    "text": "folding",
+    "path": "audio/lookup_folding.mp3"
+  },
+  {
+    "id": "lookup_for",
+    "text": "for",
+    "path": "audio/lookup_for.mp3"
+  },
+  {
+    "id": "lookup_forest",
+    "text": "forest",
+    "path": "audio/lookup_forest.mp3"
+  },
+  {
+    "id": "lookup_found",
+    "text": "found",
+    "path": "audio/lookup_found.mp3"
+  },
+  {
+    "id": "lookup_four",
+    "text": "four",
+    "path": "audio/lookup_four.mp3"
+  },
+  {
+    "id": "lookup_frame",
+    "text": "frame",
+    "path": "audio/lookup_frame.mp3"
+  },
+  {
+    "id": "lookup_freely",
+    "text": "freely",
+    "path": "audio/lookup_freely.mp3"
+  },
+  {
+    "id": "lookup_fresh",
+    "text": "fresh",
+    "path": "audio/lookup_fresh.mp3"
+  },
+  {
+    "id": "lookup_friction",
+    "text": "friction",
+    "path": "audio/lookup_friction.mp3"
+  },
+  {
+    "id": "lookup_friends",
+    "text": "friends",
+    "path": "audio/lookup_friends.mp3"
+  },
+  {
+    "id": "lookup_from",
+    "text": "from",
+    "path": "audio/lookup_from.mp3"
+  },
+  {
+    "id": "lookup_frost",
+    "text": "frost",
+    "path": "audio/lookup_frost.mp3"
+  },
+  {
+    "id": "lookup_full",
+    "text": "full",
+    "path": "audio/lookup_full.mp3"
+  },
+  {
+    "id": "lookup_gap",
+    "text": "gap",
+    "path": "audio/lookup_gap.mp3"
+  },
+  {
+    "id": "lookup_garden",
+    "text": "garden",
+    "path": "audio/lookup_garden.mp3"
+  },
+  {
+    "id": "lookup_gate",
+    "text": "gate",
+    "path": "audio/lookup_gate.mp3"
+  },
+  {
+    "id": "lookup_gently",
+    "text": "gently",
+    "path": "audio/lookup_gently.mp3"
+  },
+  {
+    "id": "lookup_give",
+    "text": "give",
+    "path": "audio/lookup_give.mp3"
+  },
+  {
+    "id": "lookup_glass",
+    "text": "glass",
+    "path": "audio/lookup_glass.mp3"
+  },
+  {
+    "id": "lookup_grew",
+    "text": "grew",
+    "path": "audio/lookup_grew.mp3"
+  },
+  {
+    "id": "lookup_grow",
+    "text": "grow",
+    "path": "audio/lookup_grow.mp3"
+  },
+  {
+    "id": "lookup_growth",
+    "text": "growth",
+    "path": "audio/lookup_growth.mp3"
+  },
+  {
+    "id": "lookup_handle",
+    "text": "handle",
+    "path": "audio/lookup_handle.mp3"
+  },
+  {
+    "id": "lookup_has",
+    "text": "has",
+    "path": "audio/lookup_has.mp3"
+  },
+  {
+    "id": "lookup_have",
+    "text": "have",
+    "path": "audio/lookup_have.mp3"
+  },
+  {
+    "id": "lookup_he",
+    "text": "he",
+    "path": "audio/lookup_he.mp3"
+  },
+  {
+    "id": "lookup_health",
+    "text": "health",
+    "path": "audio/lookup_health.mp3"
+  },
+  {
+    "id": "lookup_heat",
+    "text": "heat",
+    "path": "audio/lookup_heat.mp3"
+  },
+  {
+    "id": "lookup_heavy",
+    "text": "heavy",
+    "path": "audio/lookup_heavy.mp3"
+  },
+  {
+    "id": "lookup_help",
+    "text": "help",
+    "path": "audio/lookup_help.mp3"
+  },
+  {
+    "id": "lookup_helps",
+    "text": "helps",
+    "path": "audio/lookup_helps.mp3"
+  },
+  {
+    "id": "lookup_here",
+    "text": "here",
+    "path": "audio/lookup_here.mp3"
+  },
+  {
+    "id": "lookup_hill",
+    "text": "hill",
+    "path": "audio/lookup_hill.mp3"
+  },
+  {
+    "id": "lookup_hope",
+    "text": "hope",
+    "path": "audio/lookup_hope.mp3"
+  },
+  {
+    "id": "lookup_hour",
+    "text": "hour",
+    "path": "audio/lookup_hour.mp3"
+  },
+  {
+    "id": "lookup_house",
+    "text": "house",
+    "path": "audio/lookup_house.mp3"
+  },
+  {
+    "id": "lookup_houses",
+    "text": "houses",
+    "path": "audio/lookup_houses.mp3"
+  },
+  {
+    "id": "lookup_how",
+    "text": "how",
+    "path": "audio/lookup_how.mp3"
+  },
+  {
+    "id": "lookup_however",
+    "text": "however",
+    "path": "audio/lookup_however.mp3"
+  },
+  {
+    "id": "lookup_i",
+    "text": "i",
+    "path": "audio/lookup_i.mp3"
+  },
+  {
+    "id": "lookup_if",
+    "text": "if",
+    "path": "audio/lookup_if.mp3"
+  },
+  {
+    "id": "lookup_in",
+    "text": "in",
+    "path": "audio/lookup_in.mp3"
+  },
+  {
+    "id": "lookup_inside",
+    "text": "inside",
+    "path": "audio/lookup_inside.mp3"
+  },
+  {
+    "id": "lookup_insulation",
+    "text": "insulation",
+    "path": "audio/lookup_insulation.mp3"
+  },
+  {
+    "id": "lookup_into",
+    "text": "into",
+    "path": "audio/lookup_into.mp3"
+  },
+  {
+    "id": "lookup_is",
+    "text": "is",
+    "path": "audio/lookup_is.mp3"
+  },
+  {
+    "id": "lookup_island",
+    "text": "island",
+    "path": "audio/lookup_island.mp3"
+  },
+  {
+    "id": "lookup_it",
+    "text": "it",
+    "path": "audio/lookup_it.mp3"
+  },
+  {
+    "id": "lookup_its",
+    "text": "its",
+    "path": "audio/lookup_its.mp3"
+  },
+  {
+    "id": "lookup_keep",
+    "text": "keep",
+    "path": "audio/lookup_keep.mp3"
+  },
+  {
+    "id": "lookup_keeping",
+    "text": "keeping",
+    "path": "audio/lookup_keeping.mp3"
+  },
+  {
+    "id": "lookup_lake",
+    "text": "lake",
+    "path": "audio/lookup_lake.mp3"
+  },
+  {
+    "id": "lookup_land",
+    "text": "land",
+    "path": "audio/lookup_land.mp3"
+  },
+  {
+    "id": "lookup_landing",
+    "text": "landing",
+    "path": "audio/lookup_landing.mp3"
+  },
+  {
+    "id": "lookup_large",
+    "text": "large",
+    "path": "audio/lookup_large.mp3"
+  },
+  {
+    "id": "lookup_larger",
+    "text": "larger",
+    "path": "audio/lookup_larger.mp3"
+  },
+  {
+    "id": "lookup_last",
+    "text": "last",
+    "path": "audio/lookup_last.mp3"
+  },
+  {
+    "id": "lookup_later",
+    "text": "later",
+    "path": "audio/lookup_later.mp3"
+  },
+  {
+    "id": "lookup_layer",
+    "text": "layer",
+    "path": "audio/lookup_layer.mp3"
+  },
+  {
+    "id": "lookup_leak",
+    "text": "leak",
+    "path": "audio/lookup_leak.mp3"
+  },
+  {
+    "id": "lookup_leaking",
+    "text": "leaking",
+    "path": "audio/lookup_leaking.mp3"
+  },
+  {
+    "id": "lookup_leaks",
+    "text": "leaks",
+    "path": "audio/lookup_leaks.mp3"
+  },
+  {
+    "id": "lookup_leave",
+    "text": "leave",
+    "path": "audio/lookup_leave.mp3"
+  },
+  {
+    "id": "lookup_leaves",
+    "text": "leaves",
+    "path": "audio/lookup_leaves.mp3"
+  },
+  {
+    "id": "lookup_leaving",
+    "text": "leaving",
+    "path": "audio/lookup_leaving.mp3"
+  },
+  {
+    "id": "lookup_left",
+    "text": "left",
+    "path": "audio/lookup_left.mp3"
+  },
+  {
+    "id": "lookup_let",
+    "text": "let",
+    "path": "audio/lookup_let.mp3"
+  },
+  {
+    "id": "lookup_letting",
+    "text": "letting",
+    "path": "audio/lookup_letting.mp3"
+  },
+  {
+    "id": "lookup_levels",
+    "text": "levels",
+    "path": "audio/lookup_levels.mp3"
+  },
+  {
+    "id": "lookup_light",
+    "text": "light",
+    "path": "audio/lookup_light.mp3"
+  },
+  {
+    "id": "lookup_like",
+    "text": "like",
+    "path": "audio/lookup_like.mp3"
+  },
+  {
+    "id": "lookup_limited",
+    "text": "limited",
+    "path": "audio/lookup_limited.mp3"
+  },
+  {
+    "id": "lookup_load",
+    "text": "load",
+    "path": "audio/lookup_load.mp3"
+  },
+  {
+    "id": "lookup_location",
+    "text": "location",
+    "path": "audio/lookup_location.mp3"
+  },
+  {
+    "id": "lookup_looks",
+    "text": "looks",
+    "path": "audio/lookup_looks.mp3"
+  },
+  {
+    "id": "lookup_loose",
+    "text": "loose",
+    "path": "audio/lookup_loose.mp3"
+  },
+  {
+    "id": "lookup_lot",
+    "text": "lot",
+    "path": "audio/lookup_lot.mp3"
+  },
+  {
+    "id": "lookup_lower",
+    "text": "lower",
+    "path": "audio/lookup_lower.mp3"
+  },
+  {
+    "id": "lookup_machine",
+    "text": "machine",
+    "path": "audio/lookup_machine.mp3"
+  },
+  {
+    "id": "lookup_main",
+    "text": "main",
+    "path": "audio/lookup_main.mp3"
+  },
+  {
+    "id": "lookup_make",
+    "text": "make",
+    "path": "audio/lookup_make.mp3"
+  },
+  {
+    "id": "lookup_making",
+    "text": "making",
+    "path": "audio/lookup_making.mp3"
+  },
+  {
+    "id": "lookup_material",
+    "text": "material",
+    "path": "audio/lookup_material.mp3"
+  },
+  {
+    "id": "lookup_matters",
+    "text": "matters",
+    "path": "audio/lookup_matters.mp3"
+  },
+  {
+    "id": "lookup_may",
+    "text": "may",
+    "path": "audio/lookup_may.mp3"
+  },
+  {
+    "id": "lookup_meadow",
+    "text": "meadow",
+    "path": "audio/lookup_meadow.mp3"
+  },
+  {
+    "id": "lookup_meals",
+    "text": "meals",
+    "path": "audio/lookup_meals.mp3"
+  },
+  {
+    "id": "lookup_measure",
+    "text": "measure",
+    "path": "audio/lookup_measure.mp3"
+  },
+  {
+    "id": "lookup_measurements",
+    "text": "measurements",
+    "path": "audio/lookup_measurements.mp3"
+  },
+  {
+    "id": "lookup_mechanism",
+    "text": "mechanism",
+    "path": "audio/lookup_mechanism.mp3"
+  },
+  {
+    "id": "lookup_mill",
+    "text": "mill",
+    "path": "audio/lookup_mill.mp3"
+  },
+  {
+    "id": "lookup_model",
+    "text": "model",
+    "path": "audio/lookup_model.mp3"
+  },
+  {
+    "id": "lookup_moisture",
+    "text": "moisture",
+    "path": "audio/lookup_moisture.mp3"
+  },
+  {
+    "id": "lookup_more",
+    "text": "more",
+    "path": "audio/lookup_more.mp3"
+  },
+  {
+    "id": "lookup_morning",
+    "text": "morning",
+    "path": "audio/lookup_morning.mp3"
+  },
+  {
+    "id": "lookup_move",
+    "text": "move",
+    "path": "audio/lookup_move.mp3"
+  },
+  {
+    "id": "lookup_moving",
+    "text": "moving",
+    "path": "audio/lookup_moving.mp3"
+  },
+  {
+    "id": "lookup_much",
+    "text": "much",
+    "path": "audio/lookup_much.mp3"
+  },
+  {
+    "id": "lookup_must",
+    "text": "must",
+    "path": "audio/lookup_must.mp3"
+  },
+  {
+    "id": "lookup_narrow",
+    "text": "narrow",
+    "path": "audio/lookup_narrow.mp3"
+  },
+  {
+    "id": "lookup_need",
+    "text": "need",
+    "path": "audio/lookup_need.mp3"
+  },
+  {
+    "id": "lookup_needs",
+    "text": "needs",
+    "path": "audio/lookup_needs.mp3"
+  },
+  {
+    "id": "lookup_new",
+    "text": "new",
+    "path": "audio/lookup_new.mp3"
+  },
+  {
+    "id": "lookup_next",
+    "text": "next",
+    "path": "audio/lookup_next.mp3"
+  },
+  {
+    "id": "lookup_night",
+    "text": "night",
+    "path": "audio/lookup_night.mp3"
+  },
+  {
+    "id": "lookup_no",
+    "text": "no",
+    "path": "audio/lookup_no.mp3"
+  },
+  {
+    "id": "lookup_northern",
+    "text": "northern",
+    "path": "audio/lookup_northern.mp3"
+  },
+  {
+    "id": "lookup_not",
+    "text": "not",
+    "path": "audio/lookup_not.mp3"
+  },
+  {
+    "id": "lookup_nothing",
+    "text": "nothing",
+    "path": "audio/lookup_nothing.mp3"
+  },
+  {
+    "id": "lookup_noticed",
+    "text": "noticed",
+    "path": "audio/lookup_noticed.mp3"
+  },
+  {
+    "id": "lookup_of",
+    "text": "of",
+    "path": "audio/lookup_of.mp3"
+  },
+  {
+    "id": "lookup_offers",
+    "text": "offers",
+    "path": "audio/lookup_offers.mp3"
+  },
+  {
+    "id": "lookup_old",
+    "text": "old",
+    "path": "audio/lookup_old.mp3"
+  },
+  {
+    "id": "lookup_older",
+    "text": "older",
+    "path": "audio/lookup_older.mp3"
+  },
+  {
+    "id": "lookup_on",
+    "text": "on",
+    "path": "audio/lookup_on.mp3"
+  },
+  {
+    "id": "lookup_once",
+    "text": "once",
+    "path": "audio/lookup_once.mp3"
+  },
+  {
+    "id": "lookup_one",
+    "text": "one",
+    "path": "audio/lookup_one.mp3"
+  },
+  {
+    "id": "lookup_ones",
+    "text": "ones",
+    "path": "audio/lookup_ones.mp3"
+  },
+  {
+    "id": "lookup_only",
+    "text": "only",
+    "path": "audio/lookup_only.mp3"
+  },
+  {
+    "id": "lookup_onto",
+    "text": "onto",
+    "path": "audio/lookup_onto.mp3"
+  },
+  {
+    "id": "lookup_open",
+    "text": "open",
+    "path": "audio/lookup_open.mp3"
+  },
+  {
+    "id": "lookup_opening",
+    "text": "opening",
+    "path": "audio/lookup_opening.mp3"
+  },
+  {
+    "id": "lookup_other",
+    "text": "other",
+    "path": "audio/lookup_other.mp3"
+  },
+  {
+    "id": "lookup_our",
+    "text": "our",
+    "path": "audio/lookup_our.mp3"
+  },
+  {
+    "id": "lookup_out",
+    "text": "out",
+    "path": "audio/lookup_out.mp3"
+  },
+  {
+    "id": "lookup_outside",
+    "text": "outside",
+    "path": "audio/lookup_outside.mp3"
+  },
+  {
+    "id": "lookup_overflow",
+    "text": "overflow",
+    "path": "audio/lookup_overflow.mp3"
+  },
+  {
+    "id": "lookup_own",
+    "text": "own",
+    "path": "audio/lookup_own.mp3"
+  },
+  {
+    "id": "lookup_packing",
+    "text": "packing",
+    "path": "audio/lookup_packing.mp3"
+  },
+  {
+    "id": "lookup_paint",
+    "text": "paint",
+    "path": "audio/lookup_paint.mp3"
+  },
+  {
+    "id": "lookup_painting",
+    "text": "painting",
+    "path": "audio/lookup_painting.mp3"
+  },
+  {
+    "id": "lookup_part",
+    "text": "part",
+    "path": "audio/lookup_part.mp3"
+  },
+  {
+    "id": "lookup_pass",
+    "text": "pass",
+    "path": "audio/lookup_pass.mp3"
+  },
+  {
+    "id": "lookup_path",
+    "text": "path",
+    "path": "audio/lookup_path.mp3"
+  },
+  {
+    "id": "lookup_people",
+    "text": "people",
+    "path": "audio/lookup_people.mp3"
+  },
+  {
+    "id": "lookup_periods",
+    "text": "periods",
+    "path": "audio/lookup_periods.mp3"
+  },
+  {
+    "id": "lookup_pipe",
+    "text": "pipe",
+    "path": "audio/lookup_pipe.mp3"
+  },
+  {
+    "id": "lookup_place",
+    "text": "place",
+    "path": "audio/lookup_place.mp3"
+  },
+  {
+    "id": "lookup_plan",
+    "text": "plan",
+    "path": "audio/lookup_plan.mp3"
+  },
+  {
+    "id": "lookup_planning",
+    "text": "planning",
+    "path": "audio/lookup_planning.mp3"
+  },
+  {
+    "id": "lookup_plans",
+    "text": "plans",
+    "path": "audio/lookup_plans.mp3"
+  },
+  {
+    "id": "lookup_plant",
+    "text": "plant",
+    "path": "audio/lookup_plant.mp3"
+  },
+  {
+    "id": "lookup_plants",
+    "text": "plants",
+    "path": "audio/lookup_plants.mp3"
+  },
+  {
+    "id": "lookup_poor",
+    "text": "poor",
+    "path": "audio/lookup_poor.mp3"
+  },
+  {
+    "id": "lookup_porch",
+    "text": "porch",
+    "path": "audio/lookup_porch.mp3"
+  },
+  {
+    "id": "lookup_pot",
+    "text": "pot",
+    "path": "audio/lookup_pot.mp3"
+  },
+  {
+    "id": "lookup_pots",
+    "text": "pots",
+    "path": "audio/lookup_pots.mp3"
+  },
+  {
+    "id": "lookup_power",
+    "text": "power",
+    "path": "audio/lookup_power.mp3"
+  },
+  {
+    "id": "lookup_problem",
+    "text": "problem",
+    "path": "audio/lookup_problem.mp3"
+  },
+  {
+    "id": "lookup_project",
+    "text": "project",
+    "path": "audio/lookup_project.mp3"
+  },
+  {
+    "id": "lookup_provide",
+    "text": "provide",
+    "path": "audio/lookup_provide.mp3"
+  },
+  {
+    "id": "lookup_provides",
+    "text": "provides",
+    "path": "audio/lookup_provides.mp3"
+  },
+  {
+    "id": "lookup_pump",
+    "text": "pump",
+    "path": "audio/lookup_pump.mp3"
+  },
+  {
+    "id": "lookup_pumps",
+    "text": "pumps",
+    "path": "audio/lookup_pumps.mp3"
+  },
+  {
+    "id": "lookup_put",
+    "text": "put",
+    "path": "audio/lookup_put.mp3"
+  },
+  {
+    "id": "lookup_quickly",
+    "text": "quickly",
+    "path": "audio/lookup_quickly.mp3"
+  },
+  {
+    "id": "lookup_quiet",
+    "text": "quiet",
+    "path": "audio/lookup_quiet.mp3"
+  },
+  {
+    "id": "lookup_rain",
+    "text": "rain",
+    "path": "audio/lookup_rain.mp3"
+  },
+  {
+    "id": "lookup_rather",
+    "text": "rather",
+    "path": "audio/lookup_rather.mp3"
+  },
+  {
+    "id": "lookup_reach",
+    "text": "reach",
+    "path": "audio/lookup_reach.mp3"
+  },
+  {
+    "id": "lookup_reached",
+    "text": "reached",
+    "path": "audio/lookup_reached.mp3"
+  },
+  {
+    "id": "lookup_reaches",
+    "text": "reaches",
+    "path": "audio/lookup_reaches.mp3"
+  },
+  {
+    "id": "lookup_ready",
+    "text": "ready",
+    "path": "audio/lookup_ready.mp3"
+  },
+  {
+    "id": "lookup_rebuilding",
+    "text": "rebuilding",
+    "path": "audio/lookup_rebuilding.mp3"
+  },
+  {
+    "id": "lookup_receive",
+    "text": "receive",
+    "path": "audio/lookup_receive.mp3"
+  },
+  {
+    "id": "lookup_recent",
+    "text": "recent",
+    "path": "audio/lookup_recent.mp3"
+  },
+  {
+    "id": "lookup_refilling",
+    "text": "refilling",
+    "path": "audio/lookup_refilling.mp3"
+  },
+  {
+    "id": "lookup_remaining",
+    "text": "remaining",
+    "path": "audio/lookup_remaining.mp3"
+  },
+  {
+    "id": "lookup_remains",
+    "text": "remains",
+    "path": "audio/lookup_remains.mp3"
+  },
+  {
+    "id": "lookup_repaired",
+    "text": "repaired",
+    "path": "audio/lookup_repaired.mp3"
+  },
+  {
+    "id": "lookup_repairing",
+    "text": "repairing",
+    "path": "audio/lookup_repairing.mp3"
+  },
+  {
+    "id": "lookup_repairs",
+    "text": "repairs",
+    "path": "audio/lookup_repairs.mp3"
+  },
+  {
+    "id": "lookup_report",
+    "text": "report",
+    "path": "audio/lookup_report.mp3"
+  },
+  {
+    "id": "lookup_required",
+    "text": "required",
+    "path": "audio/lookup_required.mp3"
+  },
+  {
+    "id": "lookup_requires",
+    "text": "requires",
+    "path": "audio/lookup_requires.mp3"
+  },
+  {
+    "id": "lookup_reserve",
+    "text": "reserve",
+    "path": "audio/lookup_reserve.mp3"
+  },
+  {
+    "id": "lookup_rest",
+    "text": "rest",
+    "path": "audio/lookup_rest.mp3"
+  },
+  {
+    "id": "lookup_restored",
+    "text": "restored",
+    "path": "audio/lookup_restored.mp3"
+  },
+  {
+    "id": "lookup_restricts",
+    "text": "restricts",
+    "path": "audio/lookup_restricts.mp3"
+  },
+  {
+    "id": "lookup_results",
+    "text": "results",
+    "path": "audio/lookup_results.mp3"
+  },
+  {
+    "id": "lookup_return",
+    "text": "return",
+    "path": "audio/lookup_return.mp3"
+  },
+  {
+    "id": "lookup_road",
+    "text": "road",
+    "path": "audio/lookup_road.mp3"
+  },
+  {
+    "id": "lookup_roof",
+    "text": "roof",
+    "path": "audio/lookup_roof.mp3"
+  },
+  {
+    "id": "lookup_room",
+    "text": "room",
+    "path": "audio/lookup_room.mp3"
+  },
+  {
+    "id": "lookup_roots",
+    "text": "roots",
+    "path": "audio/lookup_roots.mp3"
+  },
+  {
+    "id": "lookup_rope",
+    "text": "rope",
+    "path": "audio/lookup_rope.mp3"
+  },
+  {
+    "id": "lookup_rough",
+    "text": "rough",
+    "path": "audio/lookup_rough.mp3"
+  },
+  {
+    "id": "lookup_route",
+    "text": "route",
+    "path": "audio/lookup_route.mp3"
+  },
+  {
+    "id": "lookup_routes",
+    "text": "routes",
+    "path": "audio/lookup_routes.mp3"
+  },
+  {
+    "id": "lookup_row",
+    "text": "row",
+    "path": "audio/lookup_row.mp3"
+  },
+  {
+    "id": "lookup_rubbing",
+    "text": "rubbing",
+    "path": "audio/lookup_rubbing.mp3"
+  },
+  {
+    "id": "lookup_running",
+    "text": "running",
+    "path": "audio/lookup_running.mp3"
+  },
+  {
+    "id": "lookup_runs",
+    "text": "runs",
+    "path": "audio/lookup_runs.mp3"
+  },
+  {
+    "id": "lookup_safe",
+    "text": "safe",
+    "path": "audio/lookup_safe.mp3"
+  },
+  {
+    "id": "lookup_sails",
+    "text": "sails",
+    "path": "audio/lookup_sails.mp3"
+  },
+  {
+    "id": "lookup_same",
+    "text": "same",
+    "path": "audio/lookup_same.mp3"
+  },
+  {
+    "id": "lookup_save",
+    "text": "save",
+    "path": "audio/lookup_save.mp3"
+  },
+  {
+    "id": "lookup_scattered",
+    "text": "scattered",
+    "path": "audio/lookup_scattered.mp3"
+  },
+  {
+    "id": "lookup_schedule",
+    "text": "schedule",
+    "path": "audio/lookup_schedule.mp3"
+  },
+  {
+    "id": "lookup_sealed",
+    "text": "sealed",
+    "path": "audio/lookup_sealed.mp3"
+  },
+  {
+    "id": "lookup_seat",
+    "text": "seat",
+    "path": "audio/lookup_seat.mp3"
+  },
+  {
+    "id": "lookup_seedlings",
+    "text": "seedlings",
+    "path": "audio/lookup_seedlings.mp3"
+  },
+  {
+    "id": "lookup_seeds",
+    "text": "seeds",
+    "path": "audio/lookup_seeds.mp3"
+  },
+  {
+    "id": "lookup_send",
+    "text": "send",
+    "path": "audio/lookup_send.mp3"
+  },
+  {
+    "id": "lookup_serious",
+    "text": "serious",
+    "path": "audio/lookup_serious.mp3"
+  },
+  {
+    "id": "lookup_serve",
+    "text": "serve",
+    "path": "audio/lookup_serve.mp3"
+  },
+  {
+    "id": "lookup_shade",
+    "text": "shade",
+    "path": "audio/lookup_shade.mp3"
+  },
+  {
+    "id": "lookup_shape",
+    "text": "shape",
+    "path": "audio/lookup_shape.mp3"
+  },
+  {
+    "id": "lookup_sheep",
+    "text": "sheep",
+    "path": "audio/lookup_sheep.mp3"
+  },
+  {
+    "id": "lookup_shelter",
+    "text": "shelter",
+    "path": "audio/lookup_shelter.mp3"
+  },
+  {
+    "id": "lookup_shore",
+    "text": "shore",
+    "path": "audio/lookup_shore.mp3"
+  },
+  {
+    "id": "lookup_short",
+    "text": "short",
+    "path": "audio/lookup_short.mp3"
+  },
+  {
+    "id": "lookup_shortage",
+    "text": "shortage",
+    "path": "audio/lookup_shortage.mp3"
+  },
+  {
+    "id": "lookup_shorter",
+    "text": "shorter",
+    "path": "audio/lookup_shorter.mp3"
+  },
+  {
+    "id": "lookup_should",
+    "text": "should",
+    "path": "audio/lookup_should.mp3"
+  },
+  {
+    "id": "lookup_shower",
+    "text": "shower",
+    "path": "audio/lookup_shower.mp3"
+  },
+  {
+    "id": "lookup_sits",
+    "text": "sits",
+    "path": "audio/lookup_sits.mp3"
+  },
+  {
+    "id": "lookup_slipping",
+    "text": "slipping",
+    "path": "audio/lookup_slipping.mp3"
+  },
+  {
+    "id": "lookup_slowly",
+    "text": "slowly",
+    "path": "audio/lookup_slowly.mp3"
+  },
+  {
+    "id": "lookup_small",
+    "text": "small",
+    "path": "audio/lookup_small.mp3"
+  },
+  {
+    "id": "lookup_so",
+    "text": "so",
+    "path": "audio/lookup_so.mp3"
+  },
+  {
+    "id": "lookup_soil",
+    "text": "soil",
+    "path": "audio/lookup_soil.mp3"
+  },
+  {
+    "id": "lookup_solution",
+    "text": "solution",
+    "path": "audio/lookup_solution.mp3"
+  },
+  {
+    "id": "lookup_solve",
+    "text": "solve",
+    "path": "audio/lookup_solve.mp3"
+  },
+  {
+    "id": "lookup_some",
+    "text": "some",
+    "path": "audio/lookup_some.mp3"
+  },
+  {
+    "id": "lookup_sound",
+    "text": "sound",
+    "path": "audio/lookup_sound.mp3"
+  },
+  {
+    "id": "lookup_source",
+    "text": "source",
+    "path": "audio/lookup_source.mp3"
+  },
+  {
+    "id": "lookup_space",
+    "text": "space",
+    "path": "audio/lookup_space.mp3"
+  },
+  {
+    "id": "lookup_spare",
+    "text": "spare",
+    "path": "audio/lookup_spare.mp3"
+  },
+  {
+    "id": "lookup_speed",
+    "text": "speed",
+    "path": "audio/lookup_speed.mp3"
+  },
+  {
+    "id": "lookup_spilling",
+    "text": "spilling",
+    "path": "audio/lookup_spilling.mp3"
+  },
+  {
+    "id": "lookup_started",
+    "text": "started",
+    "path": "audio/lookup_started.mp3"
+  },
+  {
+    "id": "lookup_starting",
+    "text": "starting",
+    "path": "audio/lookup_starting.mp3"
+  },
+  {
+    "id": "lookup_stayed",
+    "text": "stayed",
+    "path": "audio/lookup_stayed.mp3"
+  },
+  {
+    "id": "lookup_stems",
+    "text": "stems",
+    "path": "audio/lookup_stems.mp3"
+  },
+  {
+    "id": "lookup_still",
+    "text": "still",
+    "path": "audio/lookup_still.mp3"
+  },
+  {
+    "id": "lookup_stone",
+    "text": "stone",
+    "path": "audio/lookup_stone.mp3"
+  },
+  {
+    "id": "lookup_stones",
+    "text": "stones",
+    "path": "audio/lookup_stones.mp3"
+  },
+  {
+    "id": "lookup_stop",
+    "text": "stop",
+    "path": "audio/lookup_stop.mp3"
+  },
+  {
+    "id": "lookup_stops",
+    "text": "stops",
+    "path": "audio/lookup_stops.mp3"
+  },
+  {
+    "id": "lookup_storage",
+    "text": "storage",
+    "path": "audio/lookup_storage.mp3"
+  },
+  {
+    "id": "lookup_store",
+    "text": "store",
+    "path": "audio/lookup_store.mp3"
+  },
+  {
+    "id": "lookup_stored",
+    "text": "stored",
+    "path": "audio/lookup_stored.mp3"
+  },
+  {
+    "id": "lookup_storm",
+    "text": "storm",
+    "path": "audio/lookup_storm.mp3"
+  },
+  {
+    "id": "lookup_stream",
+    "text": "stream",
+    "path": "audio/lookup_stream.mp3"
+  },
+  {
+    "id": "lookup_strengthening",
+    "text": "strengthening",
+    "path": "audio/lookup_strengthening.mp3"
+  },
+  {
+    "id": "lookup_strong",
+    "text": "strong",
+    "path": "audio/lookup_strong.mp3"
+  },
+  {
+    "id": "lookup_stronger",
+    "text": "stronger",
+    "path": "audio/lookup_stronger.mp3"
+  },
+  {
+    "id": "lookup_structure",
+    "text": "structure",
+    "path": "audio/lookup_structure.mp3"
+  },
+  {
+    "id": "lookup_sudden",
+    "text": "sudden",
+    "path": "audio/lookup_sudden.mp3"
+  },
+  {
+    "id": "lookup_suggests",
+    "text": "suggests",
+    "path": "audio/lookup_suggests.mp3"
+  },
+  {
+    "id": "lookup_sun",
+    "text": "sun",
+    "path": "audio/lookup_sun.mp3"
+  },
+  {
+    "id": "lookup_sunlight",
+    "text": "sunlight",
+    "path": "audio/lookup_sunlight.mp3"
+  },
+  {
+    "id": "lookup_sunny",
+    "text": "sunny",
+    "path": "audio/lookup_sunny.mp3"
+  },
+  {
+    "id": "lookup_sunset",
+    "text": "sunset",
+    "path": "audio/lookup_sunset.mp3"
+  },
+  {
+    "id": "lookup_supplies",
+    "text": "supplies",
+    "path": "audio/lookup_supplies.mp3"
+  },
+  {
+    "id": "lookup_supply",
+    "text": "supply",
+    "path": "audio/lookup_supply.mp3"
+  },
+  {
+    "id": "lookup_support",
+    "text": "support",
+    "path": "audio/lookup_support.mp3"
+  },
+  {
+    "id": "lookup_survived",
+    "text": "survived",
+    "path": "audio/lookup_survived.mp3"
+  },
+  {
+    "id": "lookup_system",
+    "text": "system",
+    "path": "audio/lookup_system.mp3"
+  },
+  {
+    "id": "lookup_table",
+    "text": "table",
+    "path": "audio/lookup_table.mp3"
+  },
+  {
+    "id": "lookup_takes",
+    "text": "takes",
+    "path": "audio/lookup_takes.mp3"
+  },
+  {
+    "id": "lookup_tall",
+    "text": "tall",
+    "path": "audio/lookup_tall.mp3"
+  },
+  {
+    "id": "lookup_taller",
+    "text": "taller",
+    "path": "audio/lookup_taller.mp3"
+  },
+  {
+    "id": "lookup_tank",
+    "text": "tank",
+    "path": "audio/lookup_tank.mp3"
+  },
+  {
+    "id": "lookup_team",
+    "text": "team",
+    "path": "audio/lookup_team.mp3"
+  },
+  {
+    "id": "lookup_temperature",
+    "text": "temperature",
+    "path": "audio/lookup_temperature.mp3"
+  },
+  {
+    "id": "lookup_than",
+    "text": "than",
+    "path": "audio/lookup_than.mp3"
+  },
+  {
+    "id": "lookup_that",
+    "text": "that",
+    "path": "audio/lookup_that.mp3"
+  },
+  {
+    "id": "lookup_the",
+    "text": "the",
+    "path": "audio/lookup_the.mp3"
+  },
+  {
+    "id": "lookup_them",
+    "text": "them",
+    "path": "audio/lookup_them.mp3"
+  },
+  {
+    "id": "lookup_then",
+    "text": "then",
+    "path": "audio/lookup_then.mp3"
+  },
+  {
+    "id": "lookup_there",
+    "text": "there",
+    "path": "audio/lookup_there.mp3"
+  },
+  {
+    "id": "lookup_these",
+    "text": "these",
+    "path": "audio/lookup_these.mp3"
+  },
+  {
+    "id": "lookup_they",
+    "text": "they",
+    "path": "audio/lookup_they.mp3"
+  },
+  {
+    "id": "lookup_thin",
+    "text": "thin",
+    "path": "audio/lookup_thin.mp3"
+  },
+  {
+    "id": "lookup_this",
+    "text": "this",
+    "path": "audio/lookup_this.mp3"
+  },
+  {
+    "id": "lookup_through",
+    "text": "through",
+    "path": "audio/lookup_through.mp3"
+  },
+  {
+    "id": "lookup_throughout",
+    "text": "throughout",
+    "path": "audio/lookup_throughout.mp3"
+  },
+  {
+    "id": "lookup_throw",
+    "text": "throw",
+    "path": "audio/lookup_throw.mp3"
+  },
+  {
+    "id": "lookup_throwing",
+    "text": "throwing",
+    "path": "audio/lookup_throwing.mp3"
+  },
+  {
+    "id": "lookup_tight",
+    "text": "tight",
+    "path": "audio/lookup_tight.mp3"
+  },
+  {
+    "id": "lookup_timber",
+    "text": "timber",
+    "path": "audio/lookup_timber.mp3"
+  },
+  {
+    "id": "lookup_time",
+    "text": "time",
+    "path": "audio/lookup_time.mp3"
+  },
+  {
+    "id": "lookup_to",
+    "text": "to",
+    "path": "audio/lookup_to.mp3"
+  },
+  {
+    "id": "lookup_today",
+    "text": "today",
+    "path": "audio/lookup_today.mp3"
+  },
+  {
+    "id": "lookup_tomorrow",
+    "text": "tomorrow",
+    "path": "audio/lookup_tomorrow.mp3"
+  },
+  {
+    "id": "lookup_too",
+    "text": "too",
+    "path": "audio/lookup_too.mp3"
+  },
+  {
+    "id": "lookup_took",
+    "text": "took",
+    "path": "audio/lookup_took.mp3"
+  },
+  {
+    "id": "lookup_tool",
+    "text": "tool",
+    "path": "audio/lookup_tool.mp3"
+  },
+  {
+    "id": "lookup_tools",
+    "text": "tools",
+    "path": "audio/lookup_tools.mp3"
+  },
+  {
+    "id": "lookup_town",
+    "text": "town",
+    "path": "audio/lookup_town.mp3"
+  },
+  {
+    "id": "lookup_travel",
+    "text": "travel",
+    "path": "audio/lookup_travel.mp3"
+  },
+  {
+    "id": "lookup_tree",
+    "text": "tree",
+    "path": "audio/lookup_tree.mp3"
+  },
+  {
+    "id": "lookup_trees",
+    "text": "trees",
+    "path": "audio/lookup_trees.mp3"
+  },
+  {
+    "id": "lookup_trip",
+    "text": "trip",
+    "path": "audio/lookup_trip.mp3"
+  },
+  {
+    "id": "lookup_turn",
+    "text": "turn",
+    "path": "audio/lookup_turn.mp3"
+  },
+  {
+    "id": "lookup_turns",
+    "text": "turns",
+    "path": "audio/lookup_turns.mp3"
+  },
+  {
+    "id": "lookup_two",
+    "text": "two",
+    "path": "audio/lookup_two.mp3"
+  },
+  {
+    "id": "lookup_types",
+    "text": "types",
+    "path": "audio/lookup_types.mp3"
+  },
+  {
+    "id": "lookup_under",
+    "text": "under",
+    "path": "audio/lookup_under.mp3"
+  },
+  {
+    "id": "lookup_untouched",
+    "text": "untouched",
+    "path": "audio/lookup_untouched.mp3"
+  },
+  {
+    "id": "lookup_up",
+    "text": "up",
+    "path": "audio/lookup_up.mp3"
+  },
+  {
+    "id": "lookup_us",
+    "text": "us",
+    "path": "audio/lookup_us.mp3"
+  },
+  {
+    "id": "lookup_use",
+    "text": "use",
+    "path": "audio/lookup_use.mp3"
+  },
+  {
+    "id": "lookup_useful",
+    "text": "useful",
+    "path": "audio/lookup_useful.mp3"
+  },
+  {
+    "id": "lookup_valuable",
+    "text": "valuable",
+    "path": "audio/lookup_valuable.mp3"
+  },
+  {
+    "id": "lookup_valve",
+    "text": "valve",
+    "path": "audio/lookup_valve.mp3"
+  },
+  {
+    "id": "lookup_village",
+    "text": "village",
+    "path": "audio/lookup_village.mp3"
+  },
+  {
+    "id": "lookup_villagers",
+    "text": "villagers",
+    "path": "audio/lookup_villagers.mp3"
+  },
+  {
+    "id": "lookup_visit",
+    "text": "visit",
+    "path": "audio/lookup_visit.mp3"
+  },
+  {
+    "id": "lookup_visitors",
+    "text": "visitors",
+    "path": "audio/lookup_visitors.mp3"
+  },
+  {
+    "id": "lookup_wait",
+    "text": "wait",
+    "path": "audio/lookup_wait.mp3"
+  },
+  {
+    "id": "lookup_walk",
+    "text": "walk",
+    "path": "audio/lookup_walk.mp3"
+  },
+  {
+    "id": "lookup_walls",
+    "text": "walls",
+    "path": "audio/lookup_walls.mp3"
+  },
+  {
+    "id": "lookup_was",
+    "text": "was",
+    "path": "audio/lookup_was.mp3"
+  },
+  {
+    "id": "lookup_water",
+    "text": "water",
+    "path": "audio/lookup_water.mp3"
+  },
+  {
+    "id": "lookup_we",
+    "text": "we",
+    "path": "audio/lookup_we.mp3"
+  },
+  {
+    "id": "lookup_weather",
+    "text": "weather",
+    "path": "audio/lookup_weather.mp3"
+  },
+  {
+    "id": "lookup_weight",
+    "text": "weight",
+    "path": "audio/lookup_weight.mp3"
+  },
+  {
+    "id": "lookup_well",
+    "text": "well",
+    "path": "audio/lookup_well.mp3"
+  },
+  {
+    "id": "lookup_western",
+    "text": "western",
+    "path": "audio/lookup_western.mp3"
+  },
+  {
+    "id": "lookup_what",
+    "text": "what",
+    "path": "audio/lookup_what.mp3"
+  },
+  {
+    "id": "lookup_when",
+    "text": "when",
+    "path": "audio/lookup_when.mp3"
+  },
+  {
+    "id": "lookup_where",
+    "text": "where",
+    "path": "audio/lookup_where.mp3"
+  },
+  {
+    "id": "lookup_while",
+    "text": "while",
+    "path": "audio/lookup_while.mp3"
+  },
+  {
+    "id": "lookup_whole",
+    "text": "whole",
+    "path": "audio/lookup_whole.mp3"
+  },
+  {
+    "id": "lookup_will",
+    "text": "will",
+    "path": "audio/lookup_will.mp3"
+  },
+  {
+    "id": "lookup_wind",
+    "text": "wind",
+    "path": "audio/lookup_wind.mp3"
+  },
+  {
+    "id": "lookup_windmill",
+    "text": "windmill",
+    "path": "audio/lookup_windmill.mp3"
+  },
+  {
+    "id": "lookup_window",
+    "text": "window",
+    "path": "audio/lookup_window.mp3"
+  },
+  {
+    "id": "lookup_winds",
+    "text": "winds",
+    "path": "audio/lookup_winds.mp3"
+  },
+  {
+    "id": "lookup_with",
+    "text": "with",
+    "path": "audio/lookup_with.mp3"
+  },
+  {
+    "id": "lookup_without",
+    "text": "without",
+    "path": "audio/lookup_without.mp3"
+  },
+  {
+    "id": "lookup_wood",
+    "text": "wood",
+    "path": "audio/lookup_wood.mp3"
+  },
+  {
+    "id": "lookup_wooden",
+    "text": "wooden",
+    "path": "audio/lookup_wooden.mp3"
+  },
+  {
+    "id": "lookup_work",
+    "text": "work",
+    "path": "audio/lookup_work.mp3"
+  },
+  {
+    "id": "lookup_working",
+    "text": "working",
+    "path": "audio/lookup_working.mp3"
+  },
+  {
+    "id": "lookup_workshop",
+    "text": "workshop",
+    "path": "audio/lookup_workshop.mp3"
+  },
+  {
+    "id": "lookup_worn",
+    "text": "worn",
+    "path": "audio/lookup_worn.mp3"
+  },
+  {
+    "id": "lookup_year",
+    "text": "year",
+    "path": "audio/lookup_year.mp3"
+  },
+  {
+    "id": "lookup_yet",
+    "text": "yet",
+    "path": "audio/lookup_yet.mp3"
+  },
+  {
+    "id": "lookup_you",
+    "text": "you",
+    "path": "audio/lookup_you.mp3"
+  },
+  {
+    "id": "lookup_young",
+    "text": "young",
+    "path": "audio/lookup_young.mp3"
+  },
+  {
+    "id": "lookup_youngest",
+    "text": "youngest",
+    "path": "audio/lookup_youngest.mp3"
+  },
+  {
+    "id": "lookup_your",
+    "text": "your",
+    "path": "audio/lookup_your.mp3"
   }
 ]

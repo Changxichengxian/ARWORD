@@ -1,5 +1,5 @@
 """Original miniature world assets; run in Blender --background --python this.py."""
-import bpy, math, random
+import bpy, math, random, sys
 from pathlib import Path
 from mathutils import Vector
 R=Path(__file__).resolve().parents[1]
@@ -7,6 +7,7 @@ OUT=R/'assets/models';OUT.mkdir(parents=True,exist_ok=True)
 SRC=R/'art-source';SRC.mkdir(exist_ok=True)
 bpy.context.preferences.filepaths.save_version=0
 random.seed(402)
+ONLY=sys.argv[sys.argv.index('--only')+1] if '--only' in sys.argv else ''
 def clean():
     bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 def mat(name,h):
@@ -34,6 +35,7 @@ def beam(name,a,b,w,m,parent=None):
 def mesh(name,verts,faces,m,parent=None):
     d=bpy.data.meshes.new(name);d.from_pydata(verts,[],faces);d.update();o=bpy.data.objects.new(name,d);bpy.context.collection.objects.link(o);return finish(o,name,m,parent)
 def export(name):
+    if ONLY and name!=ONLY:return
     bpy.ops.export_scene.gltf(filepath=str(OUT/(name+'.glb')),export_format='GLB',export_yup=True,export_apply=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(SRC/(name+'.blend')))
 wood=mat('Toasted cedar','915636');cut=mat('Honey end grain','E7BA76');cream=mat('Warm plaster','FFF1CE');navy=mat('Ink','213F50');roof=mat('Apricot clay','E88350');rooflight=mat('Clay highlight','F2AB65');teal=mat('Blue green glass','6EC5BC');stone=mat('Blue slate','8199AD');lightstone=mat('Silver stone','B6CDCE');leaf=mat('Fresh foliage','76B84C');leafdark=mat('Deep foliage','438C5C');leaflight=mat('Leaf tips','B5D966');gold=mat('Golden brass','F7CC67');snow=mat('Cloud','F8F2DD');pink=mat('Flower coral','F4A495')
@@ -74,14 +76,21 @@ clean();root=empty('Timber');o=cyl('Log',(0,0,0),.12,.56,wood,root,8);o.rotation
 for x in [-.284,.284]:o=cyl('Cut face',(x,0,0),.108,.01,cut,root,8);o.rotation_euler[1]=math.pi/2
 export('timber')
 clean();root=empty('Builder')
-for x in [-.17,.17]:cube('Boot',(x,.05,.12),(.23,.36,.24),navy,root,.055);cube('Trouser',(x,0,.34),(.22,.23,.35),teal,root,.05)
-body=empty('Body',root);cube('Coat',(0,0,.68),(.65,.36,.55),gold,body,.10);cube('Apron',(0,.21,.60),(.4,.06,.42),cream,body,.03)
-cube('Pack',(0,-.24,.72),(.4,.20,.40),roof,body,.05)
-ico('Head',(0,0,1.13),(.29,.27,.30),cream,body,2)
-for x in [-.10,.10]:ico('Eye',(x,.254,1.15),(.037,.025,.043),navy,body,2)
-cyl('Hat brim',(0,0,1.36),.40,.07,gold,body,12);cyl('Hat',(0,0,1.47),.27,.20,roof,body,10,.24)
-for x in [-.40,.40]:cube('Sleeve',(x,0,.78),(.20,.27,.33),gold,body,.055);ico('Hand',(x,.04,.58),(.12,.13,.12),cream,body,1)
-tool=empty('Tool',body);beam('Handle',(.40,.07,.53),(.4,.20,1.16),.07,wood,tool);cube('Tool head',(.40,.20,1.16),(.33,.12,.14),stone,tool,.025)
+# A deliberately simple, readable silhouette. Each limb has a real animation pivot.
+person=mat('Apricot character','F5A33B');face=mat('Warm yellow head','FFDB7A')
+body=empty('Body',root);ico('Torso',(0,0,.78),(.26,.18,.36),person,body,2)
+ico('Head',(0,0,1.32),(.235,.22,.245),face,body,2)
+for side,x in [('L',-.145),('R',.145)]:
+    leg=empty('Leg'+side,root);leg.location=(x,0,.50)
+    cyl('Leg shape',(0,0,-.17),.10,.34,person,leg,10)
+    ico('Foot',(0,.055,-.37),(.115,.175,.11),person,leg,2)
+for side,x in [('L',-.31),('R',.31)]:
+    arm=empty('Arm'+side,root);arm.location=(x,0,.99)
+    cyl('Arm shape',(0,0,-.18),.095,.36,person,arm,10)
+    ico('Hand',(0,0,-.38),(.11,.11,.12),person,arm,2)
+    if side=='R':
+        tool=empty('Tool',arm);beam('Handle',(0,0,-.42),(0,.34,-.42),.055,wood,tool)
+        cube('Tool head',(0,.35,-.42),(.25,.12,.13),lightstone,tool,.035)
 export('builder')
 
 def building_start(name):
@@ -124,6 +133,58 @@ for y in [-.76,0,.76]:
     beam('Arch',(-.90,y,1.15),(0,y,1.64),.07,cream,s[3]);beam('Arch',(0,y,1.64),(.90,y,1.15),.07,cream,s[3])
 beam('Ridge',(0,-.82,1.64),(0,.82,1.64),.09,teal,s[3])
 export('garden')
+
+# Small additions make each completed chapter visible without inflating building levels.
+clean();root=empty('Deck')
+for i in range(7):cube('Plank',((i-3)*.18,0,.12),(.16,1.3,.16),cut,root,.018)
+for x in [-.65,.65]:
+    for y in [-.52,.52]:cyl('Post',(x,y,.30),.065,.60,wood,root,8)
+    beam('Rail',(x,-.55,.55),(x,.55,.55),.06,cream,root)
+export('deck')
+clean();root=empty('Bench')
+for x in [-.43,.43]:cube('Leg',(x,0,.2),(.11,.5,.4),wood,root,.02)
+cube('Seat',(0,0,.43),(1.15,.56,.12),cut,root,.035)
+cube('Back',(0,-.23,.72),(1.15,.10,.46),teal,root,.04)
+export('bench')
+clean();root=empty('Camp')
+for x in [-.65,.65]:beam('Pole',(x,0,0),(x,0,1.6),.065,wood,root)
+mesh('Canopy',[(-.75,-.6,1.24),(.75,-.6,1.24),(-.75,0,1.66),(.75,0,1.66),(-.75,.6,1.24),(.75,.6,1.24)],[(0,1,3,2),(2,3,5,4)],cream,root)
+cube('Rug',(0,0,.035),(1.25,.95,.07),teal,root,.025)
+for x in [-.35,.35]:ico('Cushion',(x,.12,.13),(.22,.25,.13),roof,root,2)
+export('camp')
+clean();root=empty('Cistern')
+cyl('Tank',(0,0,.48),.53,.96,wood,root,12)
+for z in [.16,.74]:cyl('Band',(0,0,z),.55,.08,lightstone,root,12)
+cyl('Water',(0,0,.97),.47,.025,teal,root,12)
+beam('Outlet',(.42,0,.36),(.72,0,.36),.12,lightstone,root)
+export('cistern')
+clean();root=empty('Channel')
+cube('Trough',(0,0,.10),(.42,1.7,.20),wood,root,.025)
+cube('Water',(0,0,.22),(.30,1.65,.03),teal,root,.01)
+for x in [-.24,.24]:cube('Wall',(x,0,.24),(.10,1.7,.32),cut,root,.02)
+export('channel')
+clean();root=empty('Workbench')
+for x in [-.42,.42]:
+    for y in [-.22,.22]:cube('Leg',(x,y,.36),(.12,.12,.72),wood,root,.018)
+cube('Top',(0,0,.77),(1.13,.72,.15),cut,root,.04)
+cyl('Pot',(-.30,0,.94),.15,.22,teal,root,10)
+beam('Tool',(.05,-.15,.87),(.35,.15,.87),.07,navy,root)
+export('workbench')
+clean();root=empty('Orchard')
+for x,y in [(-.42,-.1),(.40,.25)]:
+    cyl('Trunk',(x,y,.55),.09,1.1,wood,root,7)
+    ico('Crown',(x,y,1.2),(.48,.47,.54),leafdark,root,2)
+    for a in range(5):ico('Fruit',(x+math.sin(a*2)*.35,y+math.cos(a*2)*.35,1.2),(.10,.10,.10),roof,root,2)
+export('orchard')
+clean();root=empty('Fence')
+for x in [-.8,-.4,0,.4,.8]:cube('Picket',(x,0,.37),(.12,.11,.74),cream,root,.045)
+for z in [.22,.55]:cube('Rail',(0,-.07,z),(1.8,.10,.09),wood,root,.02)
+export('fence')
+clean();root=empty('Hive')
+for z,radius in [(.22,.37),(.48,.40),(.72,.36),(.91,.25)]:cyl('Hive ring',(0,0,z),radius,.26,gold,root,12,radius*.92)
+ico('Entrance',(0,.38,.38),(.10,.025,.075),navy,root,2)
+cube('Stand',(0,0,.07),(.9,.8,.14),wood,root,.04)
+export('hive')
 clean();root=empty('Cloud')
 for p,s in [((-.5,0,0),(.55,.33,.28)),((0,0,.12),(.70,.43,.4)),((.6,0,0),(.48,.32,.26))]:ico('Puff',p,s,snow,root,2)
 export('cloud')
