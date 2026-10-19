@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 R=Path(__file__).resolve().parents[1]
 v=json.loads((R/'assets/vocabulary.json').read_text('utf-8'))
-notes=json.loads((R/'assets/missions.json').read_text('utf-8'))
+notes=json.loads((R/'assets/missions.json').read_text('utf-8'))+json.loads((R/'assets/frontier_missions.json').read_text('utf-8'))
 d=json.loads((R/'assets/dictionary.json').read_text('utf-8'))
 manifest=[dict(id=q['id'],text=q['word'],path=q['audio']) for q in v]
 words={q['word'] for q in v}

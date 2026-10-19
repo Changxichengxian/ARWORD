@@ -10,7 +10,7 @@ var bank:Array=[]
 var by_id={}
 var recent:Array=[]
 var rng=RandomNumberGenerator.new()
-var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{}}
+var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{},"frontier":{}}
 
 func _init():
 	rng.randomize()
@@ -75,7 +75,7 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 
 func mark_help(id:String):data.help_pending=id
 
-func record(id:String,helped:bool,now:float)->Dictionary:
+func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)->Dictionary:
 	var s=data.words.get(id,{"seen":0,"correct":0,"strength":0,"last":0,"due":0,"helped":0})
 	helped=helped or data.help_pending==id
 	var spaced=now-float(s.last)>=120
@@ -90,8 +90,8 @@ func record(id:String,helped:bool,now:float)->Dictionary:
 		s.due=maxf(float(s.due),now+gaps[int(s.strength)]);data.miss_run=0;data.success_run+=1
 		if data.success_run>=4:data.band=mini(3,data.band+1);data.success_run=0
 	s.last=now;data.words[id]=s;data.help_pending=""
-	data.harvested[1 if data.active==1 else 0]+=1
-	return advance()
+	data.harvested[harvest_kind if harvest_kind>=0 else (1 if data.active==1 else 0)]+=1
+	return advance() if advance_build else {}
 
 func advance()->Dictionary:
 	var active=int(data.active);var complete=false;var upgrade=false
@@ -103,13 +103,13 @@ func advance()->Dictionary:
 	data.work_turns[active]+=1
 	return {"complete":complete or upgrade,"project":active,"fraction":float(data.build[active])/NEEDS[active]}
 
-func finish_context(mode:String,id:String,assisted:bool)->Dictionary:
+func finish_context(mode:String,id:String,assisted:bool,advance_build=true)->Dictionary:
 	data.practice[mode]=int(data.practice.get(mode,0))+1
 	var key=id+"_"+mode;var old=data.contexts.get(key,{"completed":0,"assisted":0})
 	old.completed+=1
 	if assisted:old.assisted+=1
 	data.contexts[key]=old
-	return advance()
+	return advance() if advance_build else {}
 
 func mode()->String:return MODES[int(data.work_turns[data.active])%MODES.size()]
 func note_index()->int:return int(data.active)*4+(int(data.work_turns[data.active])/6)%4

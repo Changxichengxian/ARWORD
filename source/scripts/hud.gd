@@ -57,7 +57,7 @@ func _ready():
 	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=30
 	var top=row(header);var titles=VBoxContainer.new();titles.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(titles)
 	text(titles,"词屿 / LITTLE TIDE",11,Color("A6C6C6"));text(titles,"青芽星",28,CREAM)
-	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"工作手记"],["compass",game.recenter,"星球回正"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
+	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"工作手记"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
 	var goal_panel=PanelContainer.new();add_child(goal_panel);goal_panel.anchor_right=1;goal_panel.offset_left=22;goal_panel.offset_right=-22;goal_panel.offset_top=101
 	goal_panel.add_theme_stylebox_override("panel",skin(Color(.08,.20,.26,.83),16))
 	var box=VBoxContainer.new();box.add_theme_constant_override("separation",7);goal_panel.add_child(box)
@@ -69,8 +69,7 @@ func _ready():
 	toast_label=text(self,"",18,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=170;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var view=icon(self,"planet",game.explore,"看看星球");view.anchor_left=1;view.anchor_right=1;view.offset_left=-66;view.offset_right=-22;view.offset_top=178;view.offset_bottom=222
 	sites=HBoxContainer.new();add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
-	for i in range(3):
-		var b=icon(sites,["home","mill","leaf"][i],game.select_site.bind(i),"照料"+IslandLearning.PROJECTS[i]);b.caption=IslandLearning.PROJECTS[i];b.size_flags_horizontal=Control.SIZE_EXPAND_FILL;site_buttons.append(b)
+	sites.hide()
 	card=PanelContainer.new();add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
 	card.add_theme_stylebox_override("panel",skin(CREAM,26));body=VBoxContainer.new();body.add_theme_constant_override("separation",6);card.add_child(body)
 	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
@@ -84,12 +83,10 @@ func layout_card(height:float):
 	card.offset_top=-height-20;card.offset_bottom=-20
 	sites.offset_top=-height-80;sites.offset_bottom=-height-30
 func sync_goal():
-	var a=int(game.learning.data.active);var p=game.learning.progress(a)
-	goal.text=IslandLearning.PROJECTS[a]+" · "+("自由照料" if game.learning.site_done(a) else IslandLearning.STEPS[a][game.learning.stage(a)])
-	progress_label.text="✓" if game.learning.site_done(a) else str(int(p.x))+" / "+str(int(p.y));bar.value=p.x/p.y
-	for i in range(site_buttons.size()):
-		var b=site_buttons[i];var color=Color("F3C671") if i==a else Color("204653");b.ink=INK if i==a else CREAM
-		b.add_theme_stylebox_override("normal",skin(color,16));b.queue_redraw()
+	var id=str(game.frontier.data.active);var p=game.frontier.progress(id)
+	goal.text=game.frontier.title(id)
+	progress_label.text="✓" if game.frontier.done(id) else str(int(p.x))+" / "+str(int(p.y));bar.value=p.x/p.y
+
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	return r
@@ -101,7 +98,7 @@ func show_task():
 		"listen":show_listen()
 		"sentence":show_sentence()
 func show_word():
-	layout_card(365);var q=game.current;var r=task_heading("听音采集" if game.learning.data.listen else "回忆 · 采集")
+	layout_card(365);var q=game.current;var r=task_heading("听音 · 采集" if game.learning.data.listen else "回忆 · 采集")
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
 	word_label=ghost(body,"点一下，再听一遍" if game.learning.data.listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if game.learning.data.listen else 34)
 	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER

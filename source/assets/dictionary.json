@@ -23,6 +23,10 @@
     "phonetic": "ә'kju:mjuleit",
     "translation": "动词 积累；积聚"
   },
+  "across": {
+    "phonetic": "ә'krɒs",
+    "translation": "prep. 越过, 穿过, 与...相交叉, 在...的对面\nadv. 交叉, 到另一边, 在对面, 成十字"
+  },
   "adapt": {
     "phonetic": "ә'dæpt",
     "translation": "动词 适应；使适合"
@@ -75,6 +79,10 @@
     "phonetic": "'ɒ:lmәust",
     "translation": "adv. 几乎, 差不多"
   },
+  "along": {
+    "phonetic": "ә'lɒŋ",
+    "translation": "adv. 平行地, 向前\nprep. 沿着"
+  },
   "alternative": {
     "phonetic": "ɒ:l'tә:nәtiv",
     "translation": "名词 可供选择的方案"
@@ -123,6 +131,10 @@
     "phonetic": "",
     "translation": "到达"
   },
+  "as": {
+    "phonetic": "æz",
+    "translation": "adv. 同样地, 例如\nprep. 做为, 当作\nconj. 当...之时, 以...的方式, 像...一样, 因为\n[计] 高级系统, 先进系统, 辅助存储器, 自治系统"
+  },
   "at": {
     "phonetic": "æt",
     "translation": "prep. 在, 向, 对\n[计] 地址转换器, 异常传输, 自动订票"
@@ -147,9 +159,17 @@
     "phonetic": "bєә",
     "translation": "a. 赤裸的, 缺少的, 无遮蔽的, 坦率的\nvt. 使赤裸, 露出"
   },
+  "base": {
+    "phonetic": "beis",
+    "translation": "n. 底部, 垒, 基础, 基地\nvt. 以...作基础\na. 卑鄙的, 低劣的\n[计] 基准"
+  },
   "basket": {
     "phonetic": "'bɑ:skit",
     "translation": "n. 篮, 篮子\nvt. 装入篮"
+  },
+  "bay": {
+    "phonetic": "bei",
+    "translation": "n. 海湾, 狗吠声, 月桂\nvt. 吠, 使走投无路\nvi. 吠"
   },
   "be": {
     "phonetic": "bi:",
@@ -203,6 +223,10 @@
     "phonetic": "bi'jɒnd",
     "translation": "介词 在……的另一边；超出"
   },
+  "blade": {
+    "phonetic": "bleid",
+    "translation": "n. 叶片, 刀锋, 刀口, 剑\n[医] 页[片], 叶片, 刀片, 刀刃, 刀口"
+  },
   "block": {
     "phonetic": "blɒk",
     "translation": "n. 街区, 木块, 石块, 块\nvt. 阻塞, 封锁, 使成块状\n[计] 块, 数据块"
@@ -210,6 +234,10 @@
   "blocked": {
     "phonetic": "blɔkt",
     "translation": "a. 堵塞的；被封锁的"
+  },
+  "blow": {
+    "phonetic": "blәu",
+    "translation": "n. 吹, 打击, 殴打, 花开\nv. 吹, 风吹, 吹响, 开花"
   },
   "blows": {
     "phonetic": "",
@@ -235,9 +263,21 @@
     "phonetic": "bәuθ",
     "translation": "a. 两者的\nadv. 两者都\npron. 两者"
   },
+  "break": {
+    "phonetic": "breik",
+    "translation": "n. 休息, 中断, 破裂处, 绝交, 破晓, 突变\nvt. 打破, 弄破, 弄坏, 破坏, 违反, 打断, 削弱, 放弃\nvi. 破碎, 决裂, 破晓, 突变, 变弱, 暂停\nn. 分隔符\n[计] 分隔符; 中断; DOS内部命令:设定扫描中断按键的时机"
+  },
+  "bricks": {
+    "phonetic": "brɪk",
+    "translation": "n. 砖( brick的复数形式 ); 砖块; 积木; 可靠的朋友"
+  },
   "bridge": {
     "phonetic": "bridʒ",
     "translation": "n. 桥, 舰桥, 桥梁, 桥牌\nvt. 架桥于, 跨越\n[计] 桥, 网桥, 桥接器"
+  },
+  "bright": {
+    "phonetic": "brait",
+    "translation": "a. 明亮的, 聪明的, 鲜明的, 欢快的\nadv. 明亮地, 欢快地"
   },
   "bring": {
     "phonetic": "briŋ",
@@ -351,9 +391,17 @@
     "phonetic": "klɒ:θ. klɒθ",
     "translation": "n. 布料, 织品, 布\n[建] 布"
   },
+  "cluster": {
+    "phonetic": "'klʌstә",
+    "translation": "n. 串, 丛, 群, 簇\nvi. 成串, 丛生\nvt. 使聚集\n[计] 簇"
+  },
   "cold": {
     "phonetic": "kәuld",
     "translation": "n. 感冒, 寒冷\na. 寒冷的, 冷淡的, 冷静的\nadv. 完全地"
+  },
+  "collect": {
+    "phonetic": "kә'lekt",
+    "translation": "v. 收集, 聚集, 集中, 搜集\na. 由收到者付款的\nadv. 由收到者付款地"
   },
   "color": {
     "phonetic": "'kʌlә",
@@ -415,6 +463,10 @@
     "phonetic": "kәn'tindʒәnsi",
     "translation": "名词 可能发生的意外事件"
   },
+  "cool": {
+    "phonetic": "ku:l",
+    "translation": "n. 凉爽, 凉爽的空气\na. 凉爽的, 冷淡的, 冷静的\nvi. 冷却, 平息\nvt. 使冷却, 使平静"
+  },
   "corner": {
     "phonetic": "'kɒ:nә",
     "translation": "n. 角落, 转角, 窘境\nvt. 迫至一隅, 垄断, 使陷入绝境\nvi. 相交成角, 垄断\n[计] 边角"
@@ -426,6 +478,10 @@
   "cottage": {
     "phonetic": "'kɒtidʒ",
     "translation": "n. 小屋, 茅舍"
+  },
+  "could": {
+    "phonetic": "kud",
+    "translation": "aux. 可以, 能"
   },
   "cover": {
     "phonetic": "'kʌvә",
@@ -447,6 +503,18 @@
     "phonetic": "kru:",
     "translation": "n. 全体人员, 一群人, 全体队员\ncrow的过去式"
   },
+  "cross": {
+    "phonetic": "krɒs",
+    "translation": "n. 十字架, 十字架形物件, 交叉, 十字标, 交叉路, 磨难, 杂交\na. 生气的, 交叉的, 相反的\nv. 交叉, 横过, 越过\n[计] 交叉, 十字标"
+  },
+  "crystal": {
+    "phonetic": "'kristl",
+    "translation": "n. 水晶, 水晶装饰品, 结晶\na. 水晶的, 水晶一样的, 透明的"
+  },
+  "crystals": {
+    "phonetic": "",
+    "translation": "n. 石英晶体；晶体（crystal的复数形式）"
+  },
   "cut": {
     "phonetic": "kʌt",
     "translation": "n. 切口, 割伤, 降低, 切, 割, 砍, 削, 伤口, 削减, 缩短, 删节, 通路\na. 经切割的, 缩减的\nvt. 切, 割, 减少, 刺痛, 开辟, 雕刻, 删节, 缩短, 停止, 排斥, 切断, 关, 显出\nvi. 切, 割, 砍, 刺痛, 相交, 抄近路, 剪辑\n[计] 剪切"
@@ -458,6 +526,10 @@
   "damp": {
     "phonetic": "dæmp",
     "translation": "n. 潮湿, 湿气\na. 潮湿的\nvt. 使潮湿, 使阻尼, 抑止\nvi. 变潮湿, 衰减"
+  },
+  "dark": {
+    "phonetic": "dɑ:k",
+    "translation": "n. 黑暗, 夜, 黄昏, 模糊\na. 黑暗的, 暗的, 深色的, 隐密的, 模糊的, 无知的"
   },
   "day": {
     "phonetic": "dei",
@@ -551,9 +623,17 @@
     "phonetic": "'djuәriŋ",
     "translation": "prep. 在...的时候"
   },
+  "each": {
+    "phonetic": "i:tʃ",
+    "translation": "a. 每个, 每一\nadv. 每个\npron. 每个, 个人, 各自"
+  },
   "easily": {
     "phonetic": "'i:zili",
     "translation": "adv. 容易地, 轻易地, 流利地"
+  },
+  "edge": {
+    "phonetic": "edʒ",
+    "translation": "n. 边缘, 尖锐, 刀刃, 优势\nvt. 使锐利, 挤进, 镶边\nvi. 缓缓移动"
   },
   "effects": {
     "phonetic": "",
@@ -631,6 +711,10 @@
     "phonetic": "'fi:zәbl",
     "translation": "形容词 可行的"
   },
+  "feature": {
+    "phonetic": "'fi:tʃә",
+    "translation": "n. 面孔的一部分(如眼、口等), 特征, 容貌, 特色, 特写\nvt. 是...的特色, 特写, 放映\nvi. 起重要作用\n[计] 特性"
+  },
   "fence": {
     "phonetic": "fens",
     "translation": "n. 围墙, 栅栏, 买卖赃物的人, 剑术\nvt. 用篱笆围住, 练习剑术, 防护\nvi. 击剑, 搪塞"
@@ -643,6 +727,10 @@
     "phonetic": "'finiʃt",
     "translation": "a. 完成的, 完结的, 精巧的, 完美的"
   },
+  "firing": {
+    "phonetic": "'faiәriŋ",
+    "translation": "n. 烧毁, 焚烧, 加热, 添煤\n[计] 点火"
+  },
   "first": {
     "phonetic": "fә:st",
     "translation": "adv. 首先, 第一, 优先\na. 第一的\nnum. 第一\nn. 开始, 第一"
@@ -654,6 +742,10 @@
   "flooding": {
     "phonetic": "'flʌdiŋ",
     "translation": "n. 充溢, 泛滥, 血崩\n[计] 满屏幕; 扩散式路由选择"
+  },
+  "floor": {
+    "phonetic": "flɒ:",
+    "translation": "n. 地板, 楼层, 底部, 底价\nvt. 铺地板, 打倒\nn. 地面, 地板, 基底\n[计] 基底"
   },
   "flower": {
     "phonetic": "'flauә",
@@ -678,6 +770,10 @@
   "forest": {
     "phonetic": "'fɒrist",
     "translation": "n. 森林, 林区\nvt. 植树于"
+  },
+  "form": {
+    "phonetic": "fɒ:m",
+    "translation": "n. 形状, 形体, 类型, 方式, 表格, 形式\nv. 形成, 排列, (使)组成\nn. 表单\n[计] 表单"
   },
   "found": {
     "phonetic": "faund",
@@ -714,6 +810,10 @@
   "from": {
     "phonetic": "frɒm",
     "translation": "prep. 从, 来自, 根据"
+  },
+  "front": {
+    "phonetic": "frʌnt",
+    "translation": "n. 前面, 开头, 前线, 阵线, 态度\nvt. 面对, 朝向, 对抗\nvi. 朝向"
   },
   "frost": {
     "phonetic": "frɒst",
@@ -758,6 +858,10 @@
   "grew": {
     "phonetic": "gru:",
     "translation": "grow的过去式"
+  },
+  "ground": {
+    "phonetic": "graund",
+    "translation": "n. 土地, 战场, 场地, 地面, 范围\na. 土地的, 地面上的\nvt. 放在地上, 使搁浅, 打基础, 给...以训练\nvi. 搁浅, 落地, 根据, 基于\na. 磨过的\ngrind的过去式和过去分词"
   },
   "grow": {
     "phonetic": "grәu",
@@ -814,6 +918,10 @@
   "hope": {
     "phonetic": "hәup",
     "translation": "n. 希望, 信心, 期待\nv. 希望, 期望, 信赖"
+  },
+  "hot": {
+    "phonetic": "hɒt",
+    "translation": "a. 热的, 热心的, 辣的, 热情的, 激动的, 猛烈的, 紧迫的\nadv. 热, 紧迫地"
   },
   "hour": {
     "phonetic": "auә",
@@ -911,6 +1019,10 @@
     "phonetic": "'ki:piŋ",
     "translation": "n. 保管, 供养, 一致\n[法] 保管, 保护, 管理"
   },
+  "kiln": {
+    "phonetic": "kiln",
+    "translation": "n. 窑, 炉, 干燥炉\nvt. 烧窑, (在干燥炉)烘干"
+  },
   "lake": {
     "phonetic": "leik",
     "translation": "n. 湖, 池, 色淀\nv. (使)血球溶解"
@@ -1003,6 +1115,14 @@
     "phonetic": "lәu'keiʃәn",
     "translation": "n. 位置, 场所, 特定区域\n[计] 位置"
   },
+  "log": {
+    "phonetic": "lɒg",
+    "translation": "n. 记录, 圆木, 日志, 计程仪\nvt. 伐木, 切, 航行\nvi. 伐木\n[计] 日志"
+  },
+  "logs": {
+    "phonetic": "",
+    "translation": "n. 日志；原木（log的复数）"
+  },
   "looks": {
     "phonetic": "",
     "translation": "n. 美貌"
@@ -1071,6 +1191,10 @@
     "phonetic": "mә'tikjulәs",
     "translation": "形容词 一丝不苟的；细致的"
   },
+  "middle": {
+    "phonetic": "'midl",
+    "translation": "n. 中央, 中间, 腰部\na. 中央的, 中庸的, 中间的"
+  },
   "mill": {
     "phonetic": "mil",
     "translation": "n. 压榨机, 磨坊, 制造厂\nvt. 碾磨, 磨细, 搅拌, 使乱转\nvi. 乱转, 被碾磨"
@@ -1114,6 +1238,14 @@
   "narrow": {
     "phonetic": "'nærәu",
     "translation": "n. 狭窄部分, 隘路\na. 狭窄的, 仔细的, 有限的, 勉强的, 狭隘的, 手紧的\nvi. 变窄\nvt. 使变狭窄"
+  },
+  "near": {
+    "phonetic": "niә",
+    "translation": "a. 近的, 近亲的, 近似的\nadv. 接近, 亲近\nprep. 靠近, 近似于\nv. 接近, 走近"
+  },
+  "nearest": {
+    "phonetic": "",
+    "translation": "a. 最近的（near的最高级）"
   },
   "nearly": {
     "phonetic": "'niәli",
@@ -1271,6 +1403,10 @@
     "phonetic": "'peintiŋ",
     "translation": "n. 画, 绘画, 油漆\n[化] 涂漆"
   },
+  "pale": {
+    "phonetic": "peil",
+    "translation": "n. 栅栏, 界线, 范围\na. 苍白的, 暗淡的, 无力的\nvi. 变苍白, 变暗, 失色\nvt. 使变苍白, 使失色, 用栅栏围"
+  },
   "part": {
     "phonetic": "pɑ:t",
     "translation": "n. 部分, 局部, 零件, 要素, 等分, 职责, 角色, 部位\nvt. 分开, 分离, 断绝, 区别, 分配\nvi. 分开, 断裂, 分手\na. 部分的, 局部的\nadv. 部分地, 有些"
@@ -1294,6 +1430,10 @@
   "periods": {
     "phonetic": "",
     "translation": "n. 周期（period的复数）"
+  },
+  "pieces": {
+    "phonetic": "",
+    "translation": "n. 匹头, 毛束；件片块个工件零件"
   },
   "pipe": {
     "phonetic": "paip",
@@ -1326,6 +1466,10 @@
   "plausible": {
     "phonetic": "'plɒ:zibl",
     "translation": "形容词 貌似合理的；说得通的"
+  },
+  "points": {
+    "phonetic": "",
+    "translation": "n. 转轨器, 道岔\n[计] 磅"
   },
   "poor": {
     "phonetic": "puә. pɒ:",
@@ -1639,6 +1783,10 @@
     "phonetic": "seiv",
     "translation": "n. 救球\nvt. 解救, 挽救, 储蓄, 保存, 节省, 保留\nvi. 挽救, 节省, 救球\nprep. 除...之外\n[计] 保存"
   },
+  "sawmill": {
+    "phonetic": "'sɒ:mil",
+    "translation": "n. 锯木厂, 锯木机"
+  },
   "scarce": {
     "phonetic": "skɑ:s",
     "translation": "形容词 稀缺的；不足的"
@@ -1659,6 +1807,10 @@
     "phonetic": "si:t",
     "translation": "n. 座, 座位, 位子, 席位, 所在地\nvt. 使坐下, 使就座, 为...设座于, 使就职\nvi. 安装在底座上"
   },
+  "section": {
+    "phonetic": "'sekʃәn",
+    "translation": "n. 区段, 部分, 区域, 节, 截面, 处, 科, 区, 扇区\nvt. 把...分段, 把...切片\nvi. 被切成片\n[计] 扇区"
+  },
   "seedlings": {
     "phonetic": "'si:dɪŋz",
     "translation": "n. 刚出芽的幼苗( seedling的复数形式 )"
@@ -1678,6 +1830,10 @@
   "serve": {
     "phonetic": "sә:v",
     "translation": "vt. 可作...用, 服务, 经历, 招待, 供应, 送交, 对待\nvi. 服务, 服役, 侍应, 适合, 有用, 开球\nn. 发球, 轮到发球"
+  },
+  "several": {
+    "phonetic": "'sevәrәl",
+    "translation": "a. 几个的, 一些的, 各自的\npron. 几个"
   },
   "shade": {
     "phonetic": "ʃeid",
@@ -1718,6 +1874,10 @@
   "shower": {
     "phonetic": "'ʃauә",
     "translation": "n. 阵雨, 淋浴, 一阵, 展出者, 显示者\nvi. 淋浴, 下阵雨\nvt. 淋湿, 倾注"
+  },
+  "side": {
+    "phonetic": "said",
+    "translation": "n. 旁边, 侧, 方面, 胁, 侧边, 血统\na. 旁的, 侧的, 次要的\nvt. 同意, 支持\nvi. 支持, 赞助"
   },
   "simultaneously": {
     "phonetic": "simәl'teiniәsly; (?@) saim-",
@@ -1786,6 +1946,10 @@
   "spilling": {
     "phonetic": "'spiliŋ",
     "translation": "v. 跌下；溢漏, 泄漏（spill的现在分词）"
+  },
+  "start": {
+    "phonetic": "stɑ:t",
+    "translation": "n. 惊起, 出发, 开端, 起点, 吃惊, 有利条件\nvi. 开始, 出发, 启动, 跳起, 吃惊, 出现, 松动, 脱落, 起价, 参赛\nvt. 使惊起, 开动, 发动, 启动, 开始, 创办, 提议, 使松动, 使脱落, 起用\n[计] 起始"
   },
   "started": {
     "phonetic": "s'tɑ:tɪd",
@@ -1939,6 +2103,10 @@
     "phonetic": "'tɔ:lə(r)",
     "translation": "a. 高的( tall的比较级 ); 难以置信的; 难以完成的; （用以表示或询问高度）有...高"
   },
+  "tallest": {
+    "phonetic": "",
+    "translation": "a. 最高的"
+  },
   "tank": {
     "phonetic": "tæŋk",
     "translation": "n. 槽, 箱, 柜, 罐, 池塘, 储水池, 坦克\nvt. 储于箱中"
@@ -1990,6 +2158,10 @@
   "they": {
     "phonetic": "ðei",
     "translation": "pron. 他们, 它们"
+  },
+  "thick": {
+    "phonetic": "θik",
+    "translation": "a. 厚的, 粗壮的, 浓的, 迟钝的, 浑浊的, 多雾的, 过分的, 口齿不清的\nadv. 厚地, 密地, 浓浓地\nn. 最浓处, 最厚处, 最密集处\n[计] 暗, 粗线"
   },
   "thin": {
     "phonetic": "θin",
@@ -2151,6 +2323,10 @@
     "phonetic": "wɒ:k",
     "translation": "n. 走, 散步, 步行, 行走的路程, 竞走, 散步场所\nvi. 走路, 步行, 处世\nvt. 走过, 遛, 使走, 护送...走"
   },
+  "wall": {
+    "phonetic": "wɒ:l",
+    "translation": "n. 墙, 墙壁, 垣, 内壁, 分界物, 屏障\na. 墙的\nvt. 给...建墙, 禁闭, 用墙围住\n[计] 背景墙"
+  },
   "walls": {
     "phonetic": "",
     "translation": "n. 墙壁；墙体（wall的复数）"
@@ -2158,6 +2334,10 @@
   "was": {
     "phonetic": "wɒz",
     "translation": "be的过去式"
+  },
+  "waste": {
+    "phonetic": "weist",
+    "translation": "n. 浪费, 废物, 损耗, 消耗, 荒地, 垃圾, 地面风化物\na. 废弃的, 荒芜的, 多余的\nvt. 浪费, 消耗, 使荒芜\nvi. 浪费, 消耗, 变消瘦"
   },
   "water": {
     "phonetic": "'wɒ:tә",
@@ -2246,6 +2426,10 @@
   "work": {
     "phonetic": "wә:k",
     "translation": "n. 工作, 劳动, 职业, 行为, 功, 作品, 成果, 产品, 工程\nvi. 工作, 劳动, 做, 运转, 起作用, 被加工\nvt. 使工作, 使转动, 开动, 使用, 经营, 使逐渐变得, 造成"
+  },
+  "worker": {
+    "phonetic": "'wә:kә",
+    "translation": "n. 工人, 劳动者\n[经] 工人, 劳工, 劳动者"
   },
   "working": {
     "phonetic": "'wә:kiŋ",

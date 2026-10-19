@@ -660,6 +660,81 @@
     "path": "audio/work11_cue.mp3"
   },
   {
+    "id": "land00_short",
+    "text": "We can expand the island beside the shore. Keep each new surface close to the old land. A gradual change leaves a short distance for the worker to cross.",
+    "path": "audio/land00_short.mp3"
+  },
+  {
+    "id": "land00_full",
+    "text": "We can expand the island beside the shore. Keep each new surface close to the old land. A gradual change leaves a short distance for the worker to cross. Start with the nearest section, then connect the next one. The trees can remain where they are. There is no need to clear the whole forest before making a path.",
+    "path": "audio/land00_full.mp3"
+  },
+  {
+    "id": "land00_cue",
+    "text": "Connect the nearest section first, and leave the trees beside the path.",
+    "path": "audio/land00_cue.mp3"
+  },
+  {
+    "id": "land01_short",
+    "text": "The sawmill turns short logs into boards. Keep the surface clear and move one log at a time. This is efficient: it can reduce waste and preserve useful pieces.",
+    "path": "audio/land01_short.mp3"
+  },
+  {
+    "id": "land01_full",
+    "text": "The sawmill turns short logs into boards. Keep the surface clear and move one log at a time. This is efficient: it can reduce waste and preserve useful pieces. Put the finished boards beside the table, away from the moving blade. Later, the boards will form the cottage floor and the narrow path beside the water.",
+    "path": "audio/land01_full.mp3"
+  },
+  {
+    "id": "land01_cue",
+    "text": "Place the finished boards beside the table, away from the moving blade.",
+    "path": "audio/land01_cue.mp3"
+  },
+  {
+    "id": "land02_short",
+    "text": "Gather stone for the kiln base. The thick walls retain heat, but the front opening must remain clear. Be patient after firing. Avoid moving the bricks while they are hot.",
+    "path": "audio/land02_short.mp3"
+  },
+  {
+    "id": "land02_full",
+    "text": "Gather stone for the kiln base. The thick walls retain heat, but the front opening must remain clear. Be patient after firing. Avoid moving the bricks while they are hot. Leave a small space between each row so air can pass through. Once the bricks cool, carry them to the new garden wall and the windmill base.",
+    "path": "audio/land02_full.mp3"
+  },
+  {
+    "id": "land02_cue",
+    "text": "Leave the front opening clear, and wait for the bricks to cool.",
+    "path": "audio/land02_cue.mp3"
+  },
+  {
+    "id": "land03_short",
+    "text": "The meadow has room for a garden and a path. Allocate adequate space between them. Our choice matters: the worker must still reach the small hill beyond the garden.",
+    "path": "audio/land03_short.mp3"
+  },
+  {
+    "id": "land03_full",
+    "text": "The meadow has room for a garden and a path. Allocate adequate space between them. Our choice matters: the worker must still reach the small hill beyond the garden. Put the new beds on one side instead of across the middle. Flowers can grow along the edge, while the open path connects the old shore to the new ground.",
+    "path": "audio/land03_full.mp3"
+  },
+  {
+    "id": "land03_cue",
+    "text": "Place the beds on one side, and keep the middle path open.",
+    "path": "audio/land03_cue.mp3"
+  },
+  {
+    "id": "land04_short",
+    "text": "Notice the pale crystals in the dark stone. Distinguish the loose pieces from the large cluster. The points are fragile, so preserve the cluster and collect the loose pieces first.",
+    "path": "audio/land04_short.mp3"
+  },
+  {
+    "id": "land04_full",
+    "text": "Notice the pale crystals in the dark stone. Distinguish the loose pieces from the large cluster. The points are fragile, so preserve the cluster and collect the loose pieces first. A heavy blow could break several points at once. Use a small tool near the base. Leave the tallest crystal as a bright feature of the new bay.",
+    "path": "audio/land04_full.mp3"
+  },
+  {
+    "id": "land04_cue",
+    "text": "Collect the loose pieces first, and leave the tallest crystal in place.",
+    "path": "audio/land04_cue.mp3"
+  },
+  {
     "id": "lookup_a",
     "text": "a",
     "path": "audio/lookup_a.mp3"
@@ -673,6 +748,11 @@
     "id": "lookup_accident",
     "text": "accident",
     "path": "audio/lookup_accident.mp3"
+  },
+  {
+    "id": "lookup_across",
+    "text": "across",
+    "path": "audio/lookup_across.mp3"
   },
   {
     "id": "lookup_add",
@@ -725,6 +805,11 @@
     "path": "audio/lookup_almost.mp3"
   },
   {
+    "id": "lookup_along",
+    "text": "along",
+    "path": "audio/lookup_along.mp3"
+  },
+  {
     "id": "lookup_amount",
     "text": "amount",
     "path": "audio/lookup_amount.mp3"
@@ -775,6 +860,11 @@
     "path": "audio/lookup_arriving.mp3"
   },
   {
+    "id": "lookup_as",
+    "text": "as",
+    "path": "audio/lookup_as.mp3"
+  },
+  {
     "id": "lookup_at",
     "text": "at",
     "path": "audio/lookup_at.mp3"
@@ -800,9 +890,19 @@
     "path": "audio/lookup_bare.mp3"
   },
   {
+    "id": "lookup_base",
+    "text": "base",
+    "path": "audio/lookup_base.mp3"
+  },
+  {
     "id": "lookup_basket",
     "text": "basket",
     "path": "audio/lookup_basket.mp3"
+  },
+  {
+    "id": "lookup_bay",
+    "text": "bay",
+    "path": "audio/lookup_bay.mp3"
   },
   {
     "id": "lookup_be",
@@ -860,6 +960,11 @@
     "path": "audio/lookup_between.mp3"
   },
   {
+    "id": "lookup_blade",
+    "text": "blade",
+    "path": "audio/lookup_blade.mp3"
+  },
+  {
     "id": "lookup_block",
     "text": "block",
     "path": "audio/lookup_block.mp3"
@@ -868,6 +973,11 @@
     "id": "lookup_blocked",
     "text": "blocked",
     "path": "audio/lookup_blocked.mp3"
+  },
+  {
+    "id": "lookup_blow",
+    "text": "blow",
+    "path": "audio/lookup_blow.mp3"
   },
   {
     "id": "lookup_blows",
@@ -895,9 +1005,24 @@
     "path": "audio/lookup_both.mp3"
   },
   {
+    "id": "lookup_break",
+    "text": "break",
+    "path": "audio/lookup_break.mp3"
+  },
+  {
+    "id": "lookup_bricks",
+    "text": "bricks",
+    "path": "audio/lookup_bricks.mp3"
+  },
+  {
     "id": "lookup_bridge",
     "text": "bridge",
     "path": "audio/lookup_bridge.mp3"
+  },
+  {
+    "id": "lookup_bright",
+    "text": "bright",
+    "path": "audio/lookup_bright.mp3"
   },
   {
     "id": "lookup_bring",
@@ -1030,9 +1155,19 @@
     "path": "audio/lookup_cloth.mp3"
   },
   {
+    "id": "lookup_cluster",
+    "text": "cluster",
+    "path": "audio/lookup_cluster.mp3"
+  },
+  {
     "id": "lookup_cold",
     "text": "cold",
     "path": "audio/lookup_cold.mp3"
+  },
+  {
+    "id": "lookup_collect",
+    "text": "collect",
+    "path": "audio/lookup_collect.mp3"
   },
   {
     "id": "lookup_color",
@@ -1075,6 +1210,11 @@
     "path": "audio/lookup_connects.mp3"
   },
   {
+    "id": "lookup_cool",
+    "text": "cool",
+    "path": "audio/lookup_cool.mp3"
+  },
+  {
     "id": "lookup_corner",
     "text": "corner",
     "path": "audio/lookup_corner.mp3"
@@ -1088,6 +1228,11 @@
     "id": "lookup_cottage",
     "text": "cottage",
     "path": "audio/lookup_cottage.mp3"
+  },
+  {
+    "id": "lookup_could",
+    "text": "could",
+    "path": "audio/lookup_could.mp3"
   },
   {
     "id": "lookup_cover",
@@ -1115,6 +1260,21 @@
     "path": "audio/lookup_crew.mp3"
   },
   {
+    "id": "lookup_cross",
+    "text": "cross",
+    "path": "audio/lookup_cross.mp3"
+  },
+  {
+    "id": "lookup_crystal",
+    "text": "crystal",
+    "path": "audio/lookup_crystal.mp3"
+  },
+  {
+    "id": "lookup_crystals",
+    "text": "crystals",
+    "path": "audio/lookup_crystals.mp3"
+  },
+  {
     "id": "lookup_cut",
     "text": "cut",
     "path": "audio/lookup_cut.mp3"
@@ -1128,6 +1288,11 @@
     "id": "lookup_damp",
     "text": "damp",
     "path": "audio/lookup_damp.mp3"
+  },
+  {
+    "id": "lookup_dark",
+    "text": "dark",
+    "path": "audio/lookup_dark.mp3"
   },
   {
     "id": "lookup_day",
@@ -1215,9 +1380,19 @@
     "path": "audio/lookup_during.mp3"
   },
   {
+    "id": "lookup_each",
+    "text": "each",
+    "path": "audio/lookup_each.mp3"
+  },
+  {
     "id": "lookup_easily",
     "text": "easily",
     "path": "audio/lookup_easily.mp3"
+  },
+  {
+    "id": "lookup_edge",
+    "text": "edge",
+    "path": "audio/lookup_edge.mp3"
   },
   {
     "id": "lookup_effects",
@@ -1265,6 +1440,11 @@
     "path": "audio/lookup_extra.mp3"
   },
   {
+    "id": "lookup_feature",
+    "text": "feature",
+    "path": "audio/lookup_feature.mp3"
+  },
+  {
     "id": "lookup_fence",
     "text": "fence",
     "path": "audio/lookup_fence.mp3"
@@ -1280,6 +1460,11 @@
     "path": "audio/lookup_finished.mp3"
   },
   {
+    "id": "lookup_firing",
+    "text": "firing",
+    "path": "audio/lookup_firing.mp3"
+  },
+  {
     "id": "lookup_first",
     "text": "first",
     "path": "audio/lookup_first.mp3"
@@ -1293,6 +1478,11 @@
     "id": "lookup_flooding",
     "text": "flooding",
     "path": "audio/lookup_flooding.mp3"
+  },
+  {
+    "id": "lookup_floor",
+    "text": "floor",
+    "path": "audio/lookup_floor.mp3"
   },
   {
     "id": "lookup_flower",
@@ -1318,6 +1508,11 @@
     "id": "lookup_forest",
     "text": "forest",
     "path": "audio/lookup_forest.mp3"
+  },
+  {
+    "id": "lookup_form",
+    "text": "form",
+    "path": "audio/lookup_form.mp3"
   },
   {
     "id": "lookup_found",
@@ -1358,6 +1553,11 @@
     "id": "lookup_from",
     "text": "from",
     "path": "audio/lookup_from.mp3"
+  },
+  {
+    "id": "lookup_front",
+    "text": "front",
+    "path": "audio/lookup_front.mp3"
   },
   {
     "id": "lookup_frost",
@@ -1403,6 +1603,11 @@
     "id": "lookup_grew",
     "text": "grew",
     "path": "audio/lookup_grew.mp3"
+  },
+  {
+    "id": "lookup_ground",
+    "text": "ground",
+    "path": "audio/lookup_ground.mp3"
   },
   {
     "id": "lookup_grow",
@@ -1473,6 +1678,11 @@
     "id": "lookup_hope",
     "text": "hope",
     "path": "audio/lookup_hope.mp3"
+  },
+  {
+    "id": "lookup_hot",
+    "text": "hot",
+    "path": "audio/lookup_hot.mp3"
   },
   {
     "id": "lookup_hour",
@@ -1558,6 +1768,11 @@
     "id": "lookup_keeping",
     "text": "keeping",
     "path": "audio/lookup_keeping.mp3"
+  },
+  {
+    "id": "lookup_kiln",
+    "text": "kiln",
+    "path": "audio/lookup_kiln.mp3"
   },
   {
     "id": "lookup_lake",
@@ -1675,6 +1890,16 @@
     "path": "audio/lookup_location.mp3"
   },
   {
+    "id": "lookup_log",
+    "text": "log",
+    "path": "audio/lookup_log.mp3"
+  },
+  {
+    "id": "lookup_logs",
+    "text": "logs",
+    "path": "audio/lookup_logs.mp3"
+  },
+  {
     "id": "lookup_looks",
     "text": "looks",
     "path": "audio/lookup_looks.mp3"
@@ -1755,6 +1980,11 @@
     "path": "audio/lookup_mechanism.mp3"
   },
   {
+    "id": "lookup_middle",
+    "text": "middle",
+    "path": "audio/lookup_middle.mp3"
+  },
+  {
     "id": "lookup_mill",
     "text": "mill",
     "path": "audio/lookup_mill.mp3"
@@ -1803,6 +2033,16 @@
     "id": "lookup_narrow",
     "text": "narrow",
     "path": "audio/lookup_narrow.mp3"
+  },
+  {
+    "id": "lookup_near",
+    "text": "near",
+    "path": "audio/lookup_near.mp3"
+  },
+  {
+    "id": "lookup_nearest",
+    "text": "nearest",
+    "path": "audio/lookup_nearest.mp3"
   },
   {
     "id": "lookup_need",
@@ -1960,6 +2200,11 @@
     "path": "audio/lookup_painting.mp3"
   },
   {
+    "id": "lookup_pale",
+    "text": "pale",
+    "path": "audio/lookup_pale.mp3"
+  },
+  {
     "id": "lookup_part",
     "text": "part",
     "path": "audio/lookup_part.mp3"
@@ -1983,6 +2228,11 @@
     "id": "lookup_periods",
     "text": "periods",
     "path": "audio/lookup_periods.mp3"
+  },
+  {
+    "id": "lookup_pieces",
+    "text": "pieces",
+    "path": "audio/lookup_pieces.mp3"
   },
   {
     "id": "lookup_pipe",
@@ -2018,6 +2268,11 @@
     "id": "lookup_plants",
     "text": "plants",
     "path": "audio/lookup_plants.mp3"
+  },
+  {
+    "id": "lookup_points",
+    "text": "points",
+    "path": "audio/lookup_points.mp3"
   },
   {
     "id": "lookup_poor",
@@ -2290,6 +2545,11 @@
     "path": "audio/lookup_save.mp3"
   },
   {
+    "id": "lookup_sawmill",
+    "text": "sawmill",
+    "path": "audio/lookup_sawmill.mp3"
+  },
+  {
     "id": "lookup_scattered",
     "text": "scattered",
     "path": "audio/lookup_scattered.mp3"
@@ -2308,6 +2568,11 @@
     "id": "lookup_seat",
     "text": "seat",
     "path": "audio/lookup_seat.mp3"
+  },
+  {
+    "id": "lookup_section",
+    "text": "section",
+    "path": "audio/lookup_section.mp3"
   },
   {
     "id": "lookup_seedlings",
@@ -2333,6 +2598,11 @@
     "id": "lookup_serve",
     "text": "serve",
     "path": "audio/lookup_serve.mp3"
+  },
+  {
+    "id": "lookup_several",
+    "text": "several",
+    "path": "audio/lookup_several.mp3"
   },
   {
     "id": "lookup_shade",
@@ -2383,6 +2653,11 @@
     "id": "lookup_shower",
     "text": "shower",
     "path": "audio/lookup_shower.mp3"
+  },
+  {
+    "id": "lookup_side",
+    "text": "side",
+    "path": "audio/lookup_side.mp3"
   },
   {
     "id": "lookup_sits",
@@ -2458,6 +2733,11 @@
     "id": "lookup_spilling",
     "text": "spilling",
     "path": "audio/lookup_spilling.mp3"
+  },
+  {
+    "id": "lookup_start",
+    "text": "start",
+    "path": "audio/lookup_start.mp3"
   },
   {
     "id": "lookup_started",
@@ -2625,6 +2905,11 @@
     "path": "audio/lookup_taller.mp3"
   },
   {
+    "id": "lookup_tallest",
+    "text": "tallest",
+    "path": "audio/lookup_tallest.mp3"
+  },
+  {
     "id": "lookup_tank",
     "text": "tank",
     "path": "audio/lookup_tank.mp3"
@@ -2678,6 +2963,11 @@
     "id": "lookup_they",
     "text": "they",
     "path": "audio/lookup_they.mp3"
+  },
+  {
+    "id": "lookup_thick",
+    "text": "thick",
+    "path": "audio/lookup_thick.mp3"
   },
   {
     "id": "lookup_thin",
@@ -2875,6 +3165,11 @@
     "path": "audio/lookup_walk.mp3"
   },
   {
+    "id": "lookup_wall",
+    "text": "wall",
+    "path": "audio/lookup_wall.mp3"
+  },
+  {
     "id": "lookup_walls",
     "text": "walls",
     "path": "audio/lookup_walls.mp3"
@@ -2883,6 +3178,11 @@
     "id": "lookup_was",
     "text": "was",
     "path": "audio/lookup_was.mp3"
+  },
+  {
+    "id": "lookup_waste",
+    "text": "waste",
+    "path": "audio/lookup_waste.mp3"
   },
   {
     "id": "lookup_water",
@@ -2988,6 +3288,11 @@
     "id": "lookup_work",
     "text": "work",
     "path": "audio/lookup_work.mp3"
+  },
+  {
+    "id": "lookup_worker",
+    "text": "worker",
+    "path": "audio/lookup_worker.mp3"
   },
   {
     "id": "lookup_working",

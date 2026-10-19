@@ -76,21 +76,53 @@ clean();root=empty('Timber');o=cyl('Log',(0,0,0),.12,.56,wood,root,8);o.rotation
 for x in [-.284,.284]:o=cyl('Cut face',(x,0,0),.108,.01,cut,root,8);o.rotation_euler[1]=math.pi/2
 export('timber')
 clean();root=empty('Builder')
-# A deliberately simple, readable silhouette. Each limb has a real animation pivot.
-person=mat('Apricot character','F5A33B');face=mat('Warm yellow head','FFDB7A')
-body=empty('Body',root);ico('Torso',(0,0,.78),(.26,.18,.36),person,body,2)
-ico('Head',(0,0,1.32),(.235,.22,.245),face,body,2)
-for side,x in [('L',-.145),('R',.145)]:
-    leg=empty('Leg'+side,root);leg.location=(x,0,.50)
-    cyl('Leg shape',(0,0,-.17),.10,.34,person,leg,10)
-    ico('Foot',(0,.055,-.37),(.115,.175,.11),person,leg,2)
-for side,x in [('L',-.31),('R',.31)]:
-    arm=empty('Arm'+side,root);arm.location=(x,0,.99)
-    cyl('Arm shape',(0,0,-.18),.095,.36,person,arm,10)
-    ico('Hand',(0,0,-.38),(.11,.11,.12),person,arm,2)
+# A smooth toy-like silhouette; expressive limbs, no face or ornamental equipment.
+person=mat('Sunflower body','FFD043')
+def round_shape(name,p,s,m,parent=None):
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=16,ring_count=8,radius=1,location=p)
+    o=bpy.context.object;o.scale=s
+    for f in o.data.polygons:f.use_smooth=True
+    return finish(o,name,m,parent)
+def capsule(name,a,b,r,m,parent=None):
+    a,b=Vector(a),Vector(b)
+    bpy.ops.mesh.primitive_uv_sphere_add(segments=12,ring_count=8,radius=1)
+    o=bpy.context.object
+    for v in o.data.vertices:
+        v.co*=r
+        v.co.z+=((b-a).length/2 if v.co.z>=0 else -(b-a).length/2)
+    o.location=(a+b)/2;o.rotation_euler=(b-a).to_track_quat('Z','Y').to_euler()
+    for f in o.data.polygons:f.use_smooth=True
+    return finish(o,name,m,parent)
+body=empty('Body',root)
+round_shape('Torso',(0,0,.88),(.255,.175,.38),person,body)
+round_shape('Hip',(0,0,.64),(.25,.17,.19),person,body)
+round_shape('Neck',(0,0,1.21),(.095,.09,.13),person,body)
+round_shape('Head',(0,0,1.48),(.285,.265,.29),person,body)
+for side,x in [('L',-.15),('R',.15)]:
+    leg=empty('Leg'+side,root);leg.location=(x,0,.62)
+    capsule('Thigh',(0,0,-.05),(0,0,-.29),.10,person,leg)
+    knee=empty('Knee'+side,leg);knee.location=(0,0,-.30)
+    capsule('Shin',(0,0,0),(0,.03,-.20),.092,person,knee)
+    round_shape('Foot',(0,.065,-.21),(.10,.145,.08),person,knee)
+for side,x in [('L',-.30),('R',.30)]:
+    arm=empty('Arm'+side,root);arm.location=(x,0,1.12)
+    capsule('Upper arm',(0,0,-.02),(0,0,-.25),.085,person,arm)
+    elbow=empty('Elbow'+side,arm);elbow.location=(0,0,-.25)
+    capsule('Forearm',(0,0,0),(0,.14,-.19),.08,person,elbow)
+    round_shape('Hand',(0,.15,-.20),(.092,.092,.096),person,elbow)
     if side=='R':
-        tool=empty('Tool',arm);beam('Handle',(0,0,-.42),(0,.34,-.42),.055,wood,tool)
-        cube('Tool head',(0,.35,-.42),(.25,.12,.13),lightstone,tool,.035)
+        grip=empty('Grip',elbow);grip.location=(0,.15,-.20)
+        for toolname in ['Axe','Pickaxe','Mallet']:
+            tool=empty(toolname,grip)
+            capsule('Handle',(0,-.18,0),(0,.46,0),.035,wood,tool)
+            if toolname=='Axe':
+                mesh('Broad axe',[(0,.28,-.06),(0,.51,-.10),(0,.55,.22),(0,.33,.29),(.06,.28,-.06),(.06,.51,-.10),(.06,.55,.22),(.06,.33,.29)],[(0,1,2,3),(7,6,5,4),(0,4,5,1),(1,5,6,2),(2,6,7,3),(3,7,4,0)],lightstone,tool)
+                cube('Binding',(0,.36,0),(.11,.09,.12),gold,tool,.02)
+            elif toolname=='Pickaxe':
+                for sign in [-1,1]:
+                    beam('Pick crown',(0,.40,0),(0,.46,sign*.18),.095,lightstone,tool)
+                    mesh('Tapered tip',[(-.05,.42,sign*.15),(.05,.42,sign*.15),(.05,.50,sign*.15),(-.05,.50,sign*.15),(0,.35,sign*.39)],[(0,1,4),(1,2,4),(2,3,4),(3,0,4),(0,3,2,1)],lightstone,tool)
+            else:cube('Mallet head',(0,.42,0),(.17,.17,.32),cut,tool,.04)
 export('builder')
 
 def building_start(name):
@@ -194,4 +226,48 @@ export('boat')
 clean();root=empty('Flower')
 beam('Stem',(0,0,0),(0,0,.35),.04,leafdark,root);ico('Bloom',(0,0,.38),(.15,.15,.11),pink,root,1);ico('Center',(0,0,.46),(.07,.07,.04),gold,root,1)
 export('flower')
+# Reusable expansion assets. Terrain geometry in grove.gd conforms each tile to the sphere.
+clean();root=empty('OceanWorld')
+o=ico('Ocean',(0,0,0),(11.62,11.62,11.62),mat('Open turquoise sea','49B7C9'),root,4)
+for h in ['50BDCD','45B1C5','58C2D0']:o.data.materials.append(mat('Water '+h,h))
+for f in o.data.polygons:f.material_index=random.choices([0,1,2,3],[14,1,1,1])[0]
+export('ocean')
+clean();root=empty('LandTile')
+cyl('Clay edge',(0,0,-.22),1.34,.44,mat('Soft coast sand','E8CF95'),root,6)
+cyl('Grass',(0,0,.01),1.34,.08,mat('Bright meadow','95C96A'),root,6)
+export('land_tile')
+clean();root=empty('Sawmill')
+cube('Platform',(0,0,.12),(1.8,1.3,.24),lightstone,root,.06)
+for x in [-.7,.7]:cube('Leg',(x,0,.5),(.15,1.1,.75),wood,root)
+cube('Table',(0,0,.86),(1.95,1.12,.16),cut,root)
+wheel=empty('SawWheel',root);wheel.location=(0,0,.96)
+o=cyl('Steel blade',(0,0,0),.36,.075,lightstone,wheel,16);o.rotation_euler[0]=math.pi/2
+for i in range(12):
+    a=i*math.tau/12;o=cube('Tooth',(math.sin(a)*.34,0,math.cos(a)*.34),(.10,.08,.13),cream,wheel,.01);o.rotation_euler[1]=a
+for x in [-.38,-.62,-.86]:cube('Output plank',(x,.80,.16),(.15,.9,.12),cut,root,.015)
+for y in [-.35,.10]:o=cyl('Waiting log',(.5,y,1.03),.12,1.2,wood,root,10);o.rotation_euler[1]=math.pi/2
+export('sawmill')
+clean();root=empty('Kiln')
+cyl('Stone base',(0,0,.14),.92,.28,lightstone,root,10)
+round_shape('Clay oven',(0,0,.54),(.78,.65,.64),roof,root)
+round_shape('Dark opening',(0,.59,.45),(.31,.05,.29),navy,root)
+round_shape('Warm embers',(0,.645,.29),(.21,.025,.10),gold,root)
+cyl('Chimney',(0,-.27,1.13),.18,.7,stone,root,8)
+for x in [-.65,-.28]:
+    for y in [.9,1.15]:cube('Finished brick',(x,y,.14),(.31,.19,.16),rooflight,root,.035)
+export('kiln')
+clean();root=empty('Crystal')
+for x,y,z,r in [(0,0,.65,.23),(-.34,.02,.37,.18),(.29,.17,.48,.19),(0,-.3,.30,.16)]:
+    o=cyl('Prism',(x,y,z*.45),r,z,mat('Crystal '+str(x)+str(y),'AE8DEA' if x<=0 else 'D5AEFA'),root,5,r*.84)
+    cyl('Crystal tip',(x,y,z+.06),r*.84,z*.30,teal if x>0 else pink,root,5,.0)
+export('crystal')
+clean();root=empty('LandingPod')
+round_shape('Hull',(0,0,.65),(.50,.43,.67),cream,root)
+round_shape('Window',(0,.37,.76),(.29,.07,.28),teal,root)
+for a in range(3):
+    t=a*math.tau/3;beam('Landing strut',(math.sin(t)*.32,math.cos(t)*.32,.35),(math.sin(t)*.68,math.cos(t)*.68,.08),.11,roof,root)
+    round_shape('Pad',(math.sin(t)*.68,math.cos(t)*.68,.08),(.17,.17,.08),lightstone,root)
+export('landing_pod')
+clean();root=empty('Plank');cube('Plank',(0,0,0),(.65,.17,.10),cut,root,.025);export('plank')
+clean();root=empty('Brick');cube('Brick',(0,0,0),(.35,.22,.17),roof,root,.03);export('brick')
 print('PLANET_ART_COMPLETE')

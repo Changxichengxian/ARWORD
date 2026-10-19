@@ -3,6 +3,12 @@ extends Node3D
 const SAVE="user://island4.json"
 var font=preload("res://assets/fonts/FrontierSC.ttf")
 var learning:IslandLearning
+var frontier:IslandFrontier
+var frontier_notes:Array=[]
+var touch_points={}
+var pinch_distance=0.0
+var mouse_drag=false
+var world_zoom=12.0
 var world:IslandGrove
 var hud:IslandHUD
 var camera:Camera3D
@@ -38,10 +44,11 @@ var lookup_return:Callable
 func _ready():
 	font.fallbacks=[preload("res://assets/fonts/FrontierLatin.ttf")]
 	qa="--qa" in OS.get_cmdline_user_args();get_tree().quit_on_go_back=false
-	learning=IslandLearning.new();read_save()
+	learning=IslandLearning.new();read_save();frontier=IslandFrontier.new(learning)
+	frontier_notes=JSON.parse_string(FileAccess.get_file_as_string("res://assets/frontier_missions.json"))
 	notes=JSON.parse_string(FileAccess.get_file_as_string("res://assets/missions.json"));dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/dictionary.json"))
 	world=IslandGrove.new();add_child(world);world.setup(self)
-	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=12.0;camera.near=.1;camera.far=100;add_child(camera);camera.position=Vector3(9,12,17);camera.look_at(Vector3(0,-3.0,0));camera.current=true
+	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=Vector3(0,24,21);camera.look_at(Vector3(0,6.6,0));camera.current=true
 	speech=AudioStreamPlayer.new();add_child(speech)
 	for i in range(6):var p=AudioStreamPlayer.new();add_child(p);effects.append(p)
 	for kind in ["chop","stone","land","build","tap","soft"]:
@@ -50,7 +57,7 @@ func _ready():
 	var layer=CanvasLayer.new();add_child(layer);hud=IslandHUD.new();hud.game=self;layer.add_child(hud)
 	restore_button=hud.button(hud,"继续照料",resume_collect,true,54);restore_button.anchor_left=.26;restore_button.anchor_right=.74;restore_button.anchor_top=1;restore_button.anchor_bottom=1;restore_button.offset_top=-86;restore_button.offset_bottom=-30;restore_button.hide()
 	next_task()
-	if learning.data.actions==0:hud.toast("选一处地方，开始照料。")
+	if learning.data.actions==0:hud.toast("点白圈选工地 · 拖动看四周")
 
 func read_save():
 	if qa:return
@@ -70,7 +77,11 @@ func save_progress():
 
 func context_key()->String:return str(mission.id)+"_"+mode
 func next_task():
-	mode=learning.mode();mission=notes[learning.note_index()];locked=false;help_visible=false;sentence_hint=""
+	mode=frontier.mode();locked=false;help_visible=false;sentence_hint=""
+	var active=str(frontier.data.active)
+	if active in IslandFrontier.BUILD_IDS:
+		mission=notes[frontier.site(active)*4+(int(frontier.data.turns.get(active,0))/6)%4]
+	else:mission=frontier_notes[int(frontier.chapter(active).note)]
 	context_assisted=learning.data.context_help.get(context_key(),false)
 	short_reading=learning.data.band<2
 	if mode=="word":
@@ -82,9 +93,10 @@ func next_task():
 	order.shuffle();world.prepare_resource();hud.show_task();hud.sync_goal()
 	if mode=="listen":call_deferred("speak_task")
 func next_word():next_task()
-func select_site(site:int):
-	if locked or site==int(learning.data.active):return
-	speech.stop();learning.select_site(site);save_progress();hud.close();next_task()
+func select_site(site):
+	var id=IslandFrontier.BUILD_IDS[site] if site is int else str(site)
+	if locked or id==frontier.data.active or not frontier.choose(id):return
+	speech.stop();save_progress();hud.close();world.sync_buildings();next_task()
 	if exploring:resume_collect()
 
 func answer(index:int):
@@ -95,12 +107,14 @@ func answer(index:int):
 		else:mark_context_help();hud.show_task()
 		return
 	locked=true;speech.stop();hud.feedback(index)
-	var result=learning.record(current.id,helped,Time.get_unix_time_from_system()) if mode=="word" else learning.finish_context(mode,mission.id,context_assisted)
+	if mode=="word":learning.record(current.id,helped,Time.get_unix_time_from_system(),false,world.active_kind)
+	else:learning.finish_context(mode,mission.id,context_assisted,false)
+	var result=frontier.advance()
 	complete_action(result)
 func complete_action(result:Dictionary):
 	learning.data.context_help.erase(context_key());save_progress();world.harvest(result);play_fx("chop" if world.active_kind==0 else "stone");hud.sync_goal()
-	if result.complete:hud.toast("这一段做好了。")
-	var duration=1.25 if result.complete else .88
+	if result.complete:hud.toast("这一段做好了 · 点白圈选下一处")
+	var duration=1.35 if result.complete else 1.15
 	get_tree().create_timer(duration).timeout.connect(func():
 		if is_inside_tree():next_task()
 	)
@@ -159,7 +173,8 @@ func select_word(index:int):
 	if sentence_chosen.size()==sentence_words.size():
 		locked=true
 		if int(learning.data.active)==2:learning.data.flags.water=true
-		complete_action(learning.finish_context("sentence",mission.id,context_assisted))
+		learning.finish_context("sentence",mission.id,context_assisted,false)
+		complete_action(frontier.advance())
 	else:hud.show_task()
 func sentence_help():
 	if locked:return
@@ -170,29 +185,61 @@ func sentence_reset():
 
 func explore():
 	if locked:return
-	exploring=true;hud.card.hide();hud.sites.hide();restore_button.show();speech.stop();hud.toast("上下左右，都可以转。")
-	camera.look_at(Vector3.ZERO);camera.size=11.5
+	exploring=true;hud.card.hide();hud.sites.hide();restore_button.show();speech.stop();hud.toast("点白圈选工地 · 双指缩放")
+	camera.look_at(Vector3.ZERO);camera.size=27.0
 func resume_collect():
-	exploring=false;restore_button.hide();hud.card.show();hud.sites.show();camera.look_at(Vector3(0,-3.0,0));camera.size=12.0
+	exploring=false;restore_button.hide();hud.card.show();hud.sites.hide();camera.look_at(Vector3(0,6.6,0));camera.size=world_zoom
 func recenter():world.recenter()
+func world_area(p:Vector2)->bool:
+	return p.y>190 and p.y<(hud.card.position.y-8 if not exploring else hud.size.y-100)
 func _unhandled_input(event):
 	if not is_instance_valid(hud) or hud.overlay.visible:return
-	var limit=hud.sites.position.y if not exploring else hud.size.y-100
 	if event is InputEventScreenTouch:
-		if event.pressed and event.position.y>190 and event.position.y<limit:drag_id=event.index;drag_start=event.position;drag_distance=0
-		elif event.index==drag_id:
-			if drag_distance<12:
-				var site=world.site_at(event.position)
-				if site>=0:select_site(site)
-			drag_id=-1
-	if event is InputEventScreenDrag and event.index==drag_id:drag_distance+=event.relative.length();world.drag(event.relative)
-	if event is InputEventMouseMotion and event.button_mask==MOUSE_BUTTON_MASK_LEFT and not OS.has_feature("android") and event.position.y>190 and event.position.y<limit:world.drag(event.relative)
+		if event.pressed and world_area(event.position):
+			touch_points[event.index]=event.position
+			if touch_points.size()==1:drag_id=event.index;drag_start=event.position;drag_distance=0
+			elif touch_points.size()==2:pinch_distance=touch_points.values()[0].distance_to(touch_points.values()[1]);drag_distance=100
+		elif not event.pressed:
+			if event.index==drag_id and drag_distance<12 and world_area(event.position):
+				var id=world.site_at(event.position)
+				if not id.is_empty():select_site(id)
+			touch_points.erase(event.index)
+			if touch_points.is_empty():drag_id=-1
+			else:drag_id=int(touch_points.keys()[0]);drag_distance=100
+	if event is InputEventScreenDrag and touch_points.has(event.index):
+		touch_points[event.index]=event.position
+		if touch_points.size()==2:
+			var distance=touch_points.values()[0].distance_to(touch_points.values()[1])
+			if pinch_distance>1:camera.size=clampf(camera.size*pinch_distance/maxf(1,distance),8,29)
+			if not exploring:world_zoom=camera.size
+			pinch_distance=distance
+		elif event.index==drag_id:drag_distance+=event.relative.length();world.drag(event.relative)
+	if not OS.has_feature("android"):
+		if event is InputEventMouseButton:
+			if event.button_index==MOUSE_BUTTON_LEFT:
+				if event.pressed and world_area(event.position):mouse_drag=true;drag_distance=0
+				elif not event.pressed:
+					if mouse_drag and drag_distance<12:
+						var id=world.site_at(event.position)
+						if not id.is_empty():select_site(id)
+					mouse_drag=false
+			elif event.pressed and world_area(event.position) and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+				camera.size=clampf(camera.size*(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1),8,29)
+				if not exploring:world_zoom=camera.size
+		if event is InputEventMouseMotion and mouse_drag:drag_distance+=event.relative.length();world.drag(event.relative)
+
 func _input(event):
+	# Releases over a card/modal still end a world gesture; UI may consume them later.
+	if event is InputEventScreenTouch and not event.pressed and is_instance_valid(hud) and (hud.overlay.visible or not world_area(event.position)):
+		touch_points.erase(event.index)
+		if touch_points.is_empty():drag_id=-1
+		else:drag_id=int(touch_points.keys()[0]);drag_distance=100
+	if event is InputEventMouseButton and not event.pressed and is_instance_valid(hud) and not world_area(event.position):mouse_drag=false
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
 func _notification(what):
 	if what==NOTIFICATION_WM_GO_BACK_REQUEST and is_instance_valid(hud):back()
 	if what==NOTIFICATION_APPLICATION_PAUSED and learning!=null:
-		save_progress();drag_id=-1
+		save_progress();drag_id=-1;touch_points.clear();mouse_drag=false
 		if is_instance_valid(speech):speech.stop()
 func back():
 	var now=Time.get_ticks_msec()
