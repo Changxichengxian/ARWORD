@@ -1,4 +1,10 @@
-词屿 · 0.6.0 竖屏小星球样段
+词屿 · 0.7.0 竖屏小星球样段
+
+电脑上直接看
+交付目录 Windows/LittleTide.exe 双击运行，无需安装 Godot、模拟器或浏览器。仍是同一个原生 3D 场景和学习流程。Windows 10/11 x64，需要 Vulkan 显卡支持；窗口按屏幕可用高度缩放为竖屏。
+鼠标左键拖动星球，滚轮缩放，点白圈或建筑选工地；词卡、阅读、听力和组句均可直接点按。星球图标看全貌，返回时自动对准当前工地。
+Windows/直接看美术.lnk 打开已扩建的测试场景，可以立即看近景和全貌。该模式不读取、不写入正常学习存档，窗口内也能继续试做学习题；退出后这些测试操作不保存。正常电脑试玩使用 Windows 本机独立存档，不自动同步手机。
+本轮画面调整：分层草地/沙边/岸壁、冷暖海水和细小波光、树林高低变化、矮灌木、窄路、栈桥、路灯、木屋门阶与百叶窗。新增静态道具合并为顶点颜色网格，减少逐个花瓣绘制的开销。镜头让工地进入学习卡片上方的可见区域。
 
 独立 Android 应用，包名 com.wordfrontier.planet。Godot 4.5.1 实时三维渲染；离线运行，无浏览器或 WebView。需要 Android 7.0 以上及 Vulkan 支持。与 0.4 / 0.5 同包升级，继续读取原存档；0.2、0.3 是不同应用。
 
@@ -34,7 +40,7 @@ scripts/frontier.gd：有限地图、解锁条件、分工地进度和兼容读�
 scripts/grove.gd：三维场景、动作、采集、搬运、建筑动画。
 scripts/hud.gd、icon_button.gd：原生游戏界面和图标。
 assets/vocabulary.json、missions.json、frontier_missions.json：教学内容；改英文语音文字后需重新生成对应录音。
-art-source：28 个原创 Blender 源文件。assets/models：对应 GLB 运行资源。它们是源资产，保存在 Git。
+art-source：32 个原创 Blender 源文件。assets/models：对应 GLB 运行资源。它们是源资产，保存在 Git。
 tools/make_art.py、render_icon.py：Blender 4.4.3 后台运行，生成模型和图标。
 tools/make_missions.py：生成 12 组建筑手记。tools/make_frontier_missions.py：生成 5 组扩地与加工手记。
 tools/make_dictionary.py：传入 ECDICT CSV 路径，提取词形和释义。
@@ -44,16 +50,19 @@ tools/make_font.py：Python fonttools，生成静态字体子集，文字改动�
 第三方许可见 assets/CREDITS.txt。
 
 构建
-依赖 Godot 4.5.1 及对应 Android 导出模板、Android SDK、JDK 21。PowerShell 调用 build.ps1，传入 -Godot、-Templates、-AndroidSdk、-JavaHome、-SigningProperties、-OutputDirectory。签名配置属于私密文件，勿提交 Git。
+Windows：Python 调用 build_desktop.py --godot <Godot控制台exe> --templates <4.5.1 templates.tpz> --output <交付目录>。使用独立编辑器配置和临时目录，导出内嵌资源的单个 EXE、预览入口和来源哈希。无需签名资料。交付程序不含测试代码、Blender 工程或浏览器。
+Android：依赖 Godot 4.5.1 及对应 Android 导出模板、Android SDK、JDK 21。PowerShell 7 调用 build.ps1，传入 -Godot、-Templates、-AndroidSdk、-JavaHome、-SigningProperties、-OutputDirectory。签名配置属于私密文件，勿提交 Git。
 脚本在独立临时目录导入和导出，不修改全局 Godot 设置；对齐、签名、验证后清理本次中间目录。生成 APK、SHA256SUMS.txt、source-inputs-sha256.json 和 build.log。输入清单用于核对交付来源。
 
 检查
 Godot --headless --editor --path . --import
 Godot --headless --path . --script tests/core.gd -- --qa
 python tools/check_assets.py
+Godot --headless --path . --script tests/desktop_preview.gd -- --art-preview
+Godot --path . --script tests/desktop_visual.gd -- --art-preview --visual-out=<截图目录>
 --qa 隔离测试存档；常规应用不会启用。tests/android 是独立的 Android 触控检查程序，不包含在游戏 APK 中。预置的完工场景只用于画面与存档检查，不代表真实学习完成。
 具体检查结果见 验证记录.txt。构建、流程检查和截图不能证明实体手机流畅、愿意复玩或学习有效。
 
 版本保存
-唯一工作源码在 source/。根目录 Git 用 v0.1.0 至 v0.6.0 保存各代源码。用 git archive 导出旧版到独立目录，不直接覆盖当前工作源码。APK、测试包、缓存和签名资料不提交 Git。新版验证后只保留当前试玩 APK；旧版源码继续由 Git 保留。
+唯一工作源码在 source/。根目录 Git 用 v0.1.0 至 v0.7.0 保存各代源码。用 git archive 导出旧版到独立目录，不直接覆盖当前工作源码。EXE、APK、测试包、缓存和签名资料不提交 Git。新版验证后只保留当前 Windows 试玩和 APK；旧版源码继续由 Git 保留。
 

@@ -13,9 +13,9 @@ with zipfile.ZipFile(args.apk) as z:
  assert set(abis)=={'arm64-v8a','armeabi-v7a','x86_64'}
 build_tools=sorted((args.sdk/'build-tools').iterdir(),key=lambda p:tuple(map(int,p.name.split('.'))) if re.fullmatch(r'\d+\.\d+\.\d+',p.name) else (0,))[-1]
 rp=subprocess.run([str(build_tools/'aapt2.exe'),'dump','badging',str(args.apk)],capture_output=True,text=True,encoding='utf-8');assert rp.returncode==0
-assert "package: name='com.wordfrontier.planet' versionCode='6' versionName='0.6.0'" in rp.stdout
+assert "package: name='com.wordfrontier.planet' versionCode='7' versionName='0.7.0'" in rp.stdout
 assert 'android.permission.INTERNET' not in rp.stdout
 (args.out/'package-check.txt').write_text(rp.stdout,'utf-8')
 subprocess.run([str(build_tools/'zipalign.exe'),'-c','-P','16','4',str(args.apk)],check=True)
-report={'sha256':hashlib.sha256(args.apk.read_bytes()).hexdigest(),'bytes':args.apk.stat().st_size,'source_inputs_verified':len(inputs),'zip_crc':True,'alignment_16KB':True,'ABIs':abis,'package':'com.wordfrontier.planet','version':'0.6.0','no_internet_permission':True,'test_and_private_files_excluded':True}
+report={'sha256':hashlib.sha256(args.apk.read_bytes()).hexdigest(),'bytes':args.apk.stat().st_size,'source_inputs_verified':len(inputs),'zip_crc':True,'alignment_16KB':True,'ABIs':abis,'package':'com.wordfrontier.planet','version':'0.7.0','no_internet_permission':True,'test_and_private_files_excluded':True}
 (args.out/'artifact-check.json').write_text(json.dumps(report,indent=2),'utf-8');print(json.dumps(report))

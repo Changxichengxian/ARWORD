@@ -56,7 +56,7 @@ func _ready():
 	for i in range(55):stars.append(Vector3(rng.randf(),rng.randf(),rng.randf_range(.7,1.7)))
 	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=30
 	var top=row(header);var titles=VBoxContainer.new();titles.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(titles)
-	text(titles,"词屿 / LITTLE TIDE",11,Color("A6C6C6"));text(titles,"青芽星",28,CREAM)
+	text(titles,"美术预览 · 不保存" if game.art_preview else "词屿 / LITTLE TIDE",11,Color("A6C6C6"));text(titles,"青芽星",28,CREAM)
 	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"工作手记"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
 	var goal_panel=PanelContainer.new();add_child(goal_panel);goal_panel.anchor_right=1;goal_panel.offset_left=22;goal_panel.offset_right=-22;goal_panel.offset_top=101
 	goal_panel.add_theme_stylebox_override("panel",skin(Color(.08,.20,.26,.83),16))
@@ -75,7 +75,8 @@ func _ready():
 	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
 	sync_goal()
 func _draw():
-	for p in stars:draw_circle(Vector2(p.x*size.x,p.y*size.y*.8),p.z,Color(.65,.83,.87,.25))
+	for p in stars:
+		if p.y*size.y*.8<190:draw_circle(Vector2(p.x*size.x,p.y*size.y*.8),p.z,Color(.65,.83,.87,.18))
 func clear_body():
 	for child in body.get_children():child.hide();child.queue_free()
 	answers.clear();word_label=null

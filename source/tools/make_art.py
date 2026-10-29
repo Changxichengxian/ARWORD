@@ -35,7 +35,23 @@ def beam(name,a,b,w,m,parent=None):
 def mesh(name,verts,faces,m,parent=None):
     d=bpy.data.meshes.new(name);d.from_pydata(verts,[],faces);d.update();o=bpy.data.objects.new(name,d);bpy.context.collection.objects.link(o);return finish(o,name,m,parent)
 def export(name):
-    if ONLY and name!=ONLY:return
+    if ONLY and name not in ONLY.split(','):return
+    # Small static props share one vertex-colored mesh instead of one draw per petal/branch.
+    if name in {'oak','coast_garden','cypress','lantern','pier'}:
+        bpy.ops.object.select_all(action='DESELECT')
+        parts=[o for o in bpy.context.scene.objects if o.type=='MESH']
+        for part in parts:part.select_set(True)
+        bpy.context.view_layer.objects.active=parts[0];bpy.ops.object.join()
+        merged=bpy.context.object;merged.name=name.title()+'Mesh'
+        colors=merged.data.color_attributes.new(name='Tint',type='FLOAT_COLOR',domain='CORNER')
+        for face in merged.data.polygons:
+            color=merged.data.materials[face.material_index].diffuse_color
+            for loop in face.loop_indices:colors.data[loop].color=color
+        paint=mat(name+' vertex paint','FFFFFF')
+        vertex=paint.node_tree.nodes.new('ShaderNodeVertexColor');vertex.layer_name='Tint'
+        paint.node_tree.links.new(vertex.outputs['Color'],paint.node_tree.nodes.get('Principled BSDF').inputs['Base Color'])
+        merged.data.materials.clear();merged.data.materials.append(paint)
+        for face in merged.data.polygons:face.material_index=0
     bpy.ops.export_scene.gltf(filepath=str(OUT/(name+'.glb')),export_format='GLB',export_yup=True,export_apply=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(SRC/(name+'.blend')))
 wood=mat('Toasted cedar','915636');cut=mat('Honey end grain','E7BA76');cream=mat('Warm plaster','FFF1CE');navy=mat('Ink','213F50');roof=mat('Apricot clay','E88350');rooflight=mat('Clay highlight','F2AB65');teal=mat('Blue green glass','6EC5BC');stone=mat('Blue slate','8199AD');lightstone=mat('Silver stone','B6CDCE');leaf=mat('Fresh foliage','76B84C');leafdark=mat('Deep foliage','438C5C');leaflight=mat('Leaf tips','B5D966');gold=mat('Golden brass','F7CC67');snow=mat('Cloud','F8F2DD');pink=mat('Flower coral','F4A495')
@@ -65,9 +81,10 @@ land.data.materials.append(mat('Grass sun','A5CE77'));land.data.materials.append
 for f in land.data.polygons:f.material_index=random.choices([0,1,2],[8,1,1])[0]
 export('planet')
 
-clean();root=empty('Oak');cyl('Trunk',(0,0,.62),.14,1.24,wood,root,7,.1)
-beam('Fork',(-.35,0,.95),(.25,0,1.42),.13,wood,root)
-for p,s,m in [((0,0,1.55),(.70,.64,.60),leaf),((-.40,0,1.30),(.55,.52,.49),leafdark),((.35,.12,1.70),(.52,.49,.45),leaflight)]:ico('Crown',p,s,m,root,2)
+clean();root=empty('Oak');cyl('Trunk',(0,0,.62),.13,1.24,wood,root,7,.085)
+for a,b in [((0,0,.6),(-.32,.1,1.17)),((0,0,.7),(.29,-.1,1.44))]:beam('Fork',a,b,.10,wood,root)
+for p,s,m in [((-.34,.10,1.24),(.52,.48,.48),leafdark),((.30,-.10,1.51),(.56,.51,.55),leaf),((-.10,0,1.77),(.58,.53,.48),leaflight)]:ico('Crown',p,s,m,root,1)
+for a in range(4):beam('Root',(0,0,.08),(math.sin(a*1.57)*.27,math.cos(a*1.57)*.27,.025),.08,wood,root)
 export('oak')
 clean();root=empty('Ore')
 for p,s,m in [((0,0,.34),(.65,.53,.48),stone),((.37,.19,.23),(.42,.4,.32),lightstone),((-.27,-.1,.60),(.21,.23,.30),teal)]:ico('Boulder',p,s,m,root,1)
@@ -135,8 +152,13 @@ for x in [-.65,.65]:
     for y in [-.55,.55]:cube('Frame',(x,y,.73),(.12,.12,1.26),wood,s[1])
 cube('Walls',(0,0,.68),(1.36,1.12,1.0),cream,s[1],.05)
 cube('Door',(0,.575,.53),(.37,.035,.76),teal,s[2],.08)
+for z in [.05,.15]:cube('Doorstep',(0,.94-z,z),(.64,.40,.10),lightstone,s[2],.04)
+ico('Door handle',(.12,.61,.51),(.035,.025,.035),gold,s[2],2)
 for x in [-.43,.43]:
     cube('Window',(x,.58,.88),(.26,.05,.31),navy,s[2],.035);cube('Sill',(x,.64,.69),(.34,.15,.07),wood,s[2])
+    for side in [-1,1]:cube('Shutter',(x+side*.20,.61,.88),(.10,.07,.32),teal,s[2],.018)
+    beam('Window cross',(x-.12,.62,.88),(x+.12,.62,.88),.026,cream,s[2])
+    beam('Window mullion',(x,.62,.74),(x,.62,1.02),.026,cream,s[2])
 gable('Roof',1.8,1.65,1.18,.62,roof,s[3])
 for y in [-.68,-.34,0,.34,.68]:
     beam('Roof batten',(-.89,y,1.20),(0,y,1.84),.055,rooflight,s[3]);beam('Roof batten',(0,y,1.84),(.89,y,1.20),.055,rooflight,s[3])
@@ -270,4 +292,28 @@ for a in range(3):
 export('landing_pod')
 clean();root=empty('Plank');cube('Plank',(0,0,0),(.65,.17,.10),cut,root,.025);export('plank')
 clean();root=empty('Brick');cube('Brick',(0,0,0),(.35,.22,.17),roof,root,.03);export('brick')
+clean();root=empty('Cypress')
+cyl('Trunk',(0,0,.50),.09,1.0,wood,root,7)
+for z,r,h,m in [(.87,.50,.85,leafdark),(1.30,.39,.8,leaf),(1.68,.27,.68,leaflight)]:
+    cyl('Crown',(0,0,z),r,h,m,root,7,.03)
+export('cypress')
+clean();root=empty('CoastGarden')
+for x,y,z,s,m in [(-.18,0,.16,.25,leafdark),(.10,.06,.20,.28,leaf),(.31,.14,.12,.17,leaflight)]:ico('Low foliage',(x,y,z),(s,s*.8,s*.75),m,root,1)
+for x,y in [(-.24,-.1),(.1,-.13),(.3,.1)]:ico('Petal',(x,y,.34),(.065,.065,.06),cream if x<0 else pink,root,1)
+ico('Pebble',(-.34,.22,.07),(.16,.12,.09),lightstone,root,1)
+export('coast_garden')
+clean();root=empty('Pier')
+for i in range(11):cube('Weathered board',(0,(i-5)*.16,.16),(.82,.145,.10),cut if i%3 else wood,root,.015)
+for x in [-.35,.35]:
+    for y in [-.75,.70]:
+        cyl('Piling',(x,y,-.08),.075,.75,wood,root,7)
+        cyl('Pale cap',(x,y,.33),.09,.05,cream,root,8)
+beam('Mooring rope',(-.35,.7,.32),(-.35,-.75,.32),.025,cream,root)
+export('pier')
+clean();root=empty('Lantern')
+cyl('Foot',(0,0,.04),.12,.08,lightstone,root,8)
+cyl('Post',(0,0,.40),.035,.80,wood,root,8)
+cube('Lantern',(0,0,.83),(.19,.19,.25),gold,root,.02)
+cyl('Cap',(0,0,1.01),.17,.13,teal,root,4,.03)
+export('lantern')
 print('PLANET_ART_COMPLETE')

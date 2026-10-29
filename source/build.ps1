@@ -54,7 +54,7 @@ $preset | Set-Content -LiteralPath (Join-Path $stage 'export_presets.cfg') -Enco
 $log=Join-Path $OutputDirectory 'build.log'
 $unsigned=Join-Path $buildRoot 'unsigned.apk'
 $aligned=Join-Path $buildRoot 'aligned.apk'
-$apk=Join-Path $OutputDirectory '词屿-0.6.0.apk'
+$apk=Join-Path $OutputDirectory '词屿-0.7.0.apk'
 Write-Host '导入三维资源……'
 & $engineExe --headless --editor --path $stage --import *> $log
 if($LASTEXITCODE -ne 0){throw "导入失败，请看 $log"}

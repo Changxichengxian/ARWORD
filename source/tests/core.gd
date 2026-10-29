@@ -82,6 +82,11 @@ func run():
 	check(game.learning.data.actions==before+1 and game.learning.data.words[id].strength==0,"assisted recall builds without counting independent mastery")
 	await create_timer(1.45).timeout
 	check(game.mode=="read","two recalls lead directly into a reading task")
+	var compact_land=game.world.land.size()==4
+	for anchor in game.world.land.values():
+		for mesh in anchor.get_children():
+			if mesh is MeshInstance3D and mesh.get_aabb().size.length()>5:compact_land=false
+	check(compact_land,"new land stays tile-sized after its spring appearance animation")
 	before=game.learning.data.actions;game.answer(game.mission.correct);check(game.learning.data.actions==before+1 and game.learning.data.practice.read==1,"reading decision directly advances selected project")
 	await create_timer(1.45).timeout
 	set_mode("listen");game.answer((int(game.mission.cue_correct)+1)%3)
@@ -91,6 +96,10 @@ func run():
 	set_mode("sentence",8);var tile_order=game.sentence_order.duplicate();game.select_word(0)
 	check(game.sentence_order==tile_order,"sentence tiles retain their positions")
 	while game.sentence_chosen.size()<game.sentence_words.size():game.select_word(game.sentence_chosen.size())
+	var complete_phrase=false
+	for label in game.hud.body.find_children("*","Label",true,false):
+		if label.text==" ".join(game.sentence_words) and label.visible:complete_phrase=true
+	check(complete_phrase,"the final chosen word is visible in the completed sentence")
 	check(game.learning.data.flags.get("water",false) and game.learning.data.practice.sentence==1,"organizing garden instruction unlocks water route")
 	await create_timer(1.45).timeout
 	game.journal();game.lookup("the");game.back();check(game.hud.screen=="journal","native back restores reading after lookup")

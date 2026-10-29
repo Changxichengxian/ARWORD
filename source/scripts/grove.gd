@@ -34,6 +34,8 @@ var last_target=""
 var current_tool=0
 var ring_material:StandardMaterial3D
 var selected_entry={}
+var scenery:Node3D
+var coast_count=-1
 
 func mat(hex:String)->StandardMaterial3D:
 	if mats.has(hex):return mats[hex]
@@ -80,21 +82,61 @@ func ring(parent:Node3D,radius:float,material:Material)->Node3D:
 			for v in [p0,p2,p1,p0,p3,p2]:st.add_vertex(v)
 	st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();n.material_override=material;root.add_child(n);return root
 func tile(cell:Vector2i,animate:bool):
-	var anchor=Node3D.new();globe.add_child(anchor);var p=IslandFrontier.point(cell);place(anchor,p)
-	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var center=surface(p);var inv=anchor.basis.inverse();var verts=[]
-	for i in range(6):
-		var a=(i*60+30)*PI/180;verts.append(surface(p+Vector2(cos(a),sin(a))*IslandFrontier.HEX))
-	var green=Color(["92C86C","9DCF74","8FC46A"][posmod(cell.x*3+cell.y,3)])
-	for i in range(6):
-		var a=verts[i];var b=verts[(i+1)%6]
-		st.set_color(green)
-		for v in [center,b,a]:st.add_vertex(inv*(v-center))
-		st.set_color(Color("E7CF9A"))
-		var low_a=a-a.normalized()*.46;var low_b=b-b.normalized()*.46
-		for v in [a,b,low_b,a,low_b,low_a]:st.add_vertex(inv*(v-center))
-	st.generate_normals();var mesh=MeshInstance3D.new();mesh.mesh=st.commit();var material=mat("FFFFFF").duplicate();material.vertex_color_use_as_albedo=true;material.vertex_color_is_srgb=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;mesh.material_override=material;anchor.add_child(mesh);land[cell]=anchor
+	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,IslandFrontier.point(cell));land[cell]=anchor
 	if animate:pop(anchor,float(land.size()%3)*.07)
+func terrain_geometry():
+	var directions=[Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1),Vector2i(1,0)]
+	for cell in land:
+		var anchor=land[cell];var p=IslandFrontier.point(cell);var center=surface(p);var inv=anchor.basis.orthonormalized().inverse()
+		for old in anchor.get_children():old.queue_free()
+		var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var corners=[];var inside=[];var boundary=[]
+		for i in range(6):boundary.append(not land.has(cell+directions[i]))
+		for i in range(6):
+			var angle=(i*60+30)*PI/180;var off=Vector2(cos(angle),sin(angle))*IslandFrontier.HEX
+			var coast=boundary[i] or boundary[(i+5)%6]
+			corners.append(surface(p+off).normalized()*(RADIUS-.14 if coast else RADIUS))
+			inside.append(surface(p+off*(.88 if coast else 1.0)))
+		var green=Color(["75AF62","79B369","73AC63"][posmod(cell.x*3+cell.y,3)])
+		for i in range(6):
+			var j=(i+1)%6;var a=inside[i];var b=inside[j];var c=corners[i];var d=corners[j]
+			st.set_color(green)
+			for v in [center,b,a]:st.add_vertex(inv*(v-center))
+			st.set_color(Color("DDC58C") if boundary[i] else green)
+			for v in [a,b,d,a,d,c]:st.add_vertex(inv*(v-center))
+			if boundary[i]:
+				var low_a=c.normalized()*(RADIUS-.55);var low_b=d.normalized()*(RADIUS-.55)
+				st.set_color(Color("B69B72"))
+				for v in [c,d,low_b,c,low_b,low_a]:st.add_vertex(inv*(v-center))
+		st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();var material=mat("FFFFFF").duplicate();material.vertex_color_use_as_albedo=true;material.vertex_color_is_srgb=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;n.material_override=material;anchor.add_child(n)
+	if scenery:scenery.queue_free()
+	scenery=Node3D.new();globe.add_child(scenery)
+	# One connected footpath tree, leaving clearings between resource clusters.
+	var queue=[Vector2i(0,1)];var visited={Vector2i(0,1):true}
+	while not queue.is_empty():
+		var cell=queue.pop_front()
+		for step in directions:
+			var next=cell+step
+			if land.has(next) and not visited.has(next):
+				visited[next]=true;queue.append(next)
+				path_segment(IslandFrontier.point(cell),IslandFrontier.point(next))
+	for cell in land:
+		var p=IslandFrontier.point(cell)
+		for i in range(6):
+			if land.has(cell+directions[i]):continue
+			var a=(i*60+30)*PI/180;var b=a+PI/3
+			var off0=Vector2(cos(a),sin(a))*IslandFrontier.HEX;var off1=Vector2(cos(b),sin(b))*IslandFrontier.HEX
+			var edge=(off0+off1)*.5
+			# Quiet coves have pale submerged shelves, separate from the grassy edge.
+			var shelf=pebble(scenery,surface(p+edge*1.12).normalized()*11.56,Vector3(.62,.035,.28),"60C5C7")
+			shelf.basis=Basis(Quaternion(Vector3.UP,shelf.position.normalized()));shelf.rotate_object_local(Vector3.UP,-atan2(edge.y,edge.x)+PI/2);shelf.scale=Vector3(.72,.035,.28)
+	coast_count=land.size()
+func path_segment(a:Vector2,b:Vector2):
+	var side=Vector2(-(b-a).y,(b-a).x).normalized()*.16;var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in range(6):
+		var p=a.lerp(b,i/6.0);var q=a.lerp(b,(i+1)/6.0)
+		for v in [p-side,q+side,p+side,p-side,q-side,q+side]:st.add_vertex(surface(v)*1.0015)
+	st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();n.material_override=mat("C9B983");scenery.add_child(n)
 func marker(id:String):
 	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,game.frontier.target(id));markers[id]=anchor
 	var material=StandardMaterial3D.new();material.albedo_color=Color(1,.98,.90,.65);material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.cull_mode=BaseMaterial3D.CULL_DISABLED
@@ -108,24 +150,34 @@ func add_resource(kind:int,p:Vector2,scale_factor:float,crystal=false):
 func decorate_cell(cell:Vector2i,animate:bool):
 	var p=IslandFrontier.point(cell);var is_grove=cell in IslandFrontier.CHAPTERS[0].cells;var is_quarry=cell in IslandFrontier.CHAPTERS[1].cells;var is_crystal=cell in IslandFrontier.CHAPTERS[5].cells
 	if cell==Vector2i(0,0) or is_grove:
-		for offset in [Vector2(-.46,-.38),Vector2(.48,-.35)]:
-			add_resource(0,p+offset,.79 if is_grove else .72)
+		var offsets=[Vector2(-.58,-.32),Vector2(.40,-.52),Vector2(.68,.28)] if is_grove else [Vector2(-.53,-.48),Vector2(.38,-.42)]
+		for k in range(offsets.size()):
+			add_resource(0,p+offsets[k],[.79,.65,.51][k] if is_grove else [.77,.63][k])
 			if animate:pop(resources[0][-1].visual,.3,resources[0][-1].base)
 	elif is_quarry or is_crystal:
 		add_resource(1,p+Vector2(-.35,-.35),.86,is_crystal);add_resource(1,p+Vector2(.45,.2),.65,is_crystal)
 		if animate:
 			for entry in [resources[1][-1],resources[1][-2]]:pop(entry.visual,.3,entry.base)
-	if cell!=Vector2i(0,0):
-		for i in range(2):
-			var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(-.6+i*.95,.65),i);var flower=model("flower",a);flower.scale=Vector3.ONE*.65
-			if animate:pop(flower,.25,Vector3.ONE*.65)
+	var rng=RandomNumberGenerator.new();rng.seed=915+cell.x*101+cell.y*29
+	for i in range(3):
+		var a=Node3D.new();globe.add_child(a);var angle=i*TAU/3+rng.randf_range(-.3,.3)
+		place(a,p+Vector2(cos(angle),sin(angle))*.94,angle)
+		var shrub=model("coast_garden",a);var sc=rng.randf_range(.45,.8);shrub.scale=Vector3.ONE*sc
+		if animate:pop(shrub,.25,Vector3.ONE*sc)
+	if cell in [Vector2i(-2,1),Vector2i(1,2),Vector2i(0,-2),Vector2i(-1,2)]:
+		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(-.62,-.55),.3);model("cypress",a).scale=Vector3.ONE*.87
+	if cell in [Vector2i(1,0),Vector2i(0,1),Vector2i(1,3),Vector2i(-1,3),Vector2i(0,-1)]:
+		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(.64,.47));model("lantern",a).scale=Vector3.ONE*.75
 func setup(owner_node):
 	game=owner_node
-	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("183D57");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("D4F1F1");e.ambient_light_energy=.52;e.tonemap_mode=Environment.TONE_MAPPER_ACES
+	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
-	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-52,-30,0);sun.light_color=Color("FFF0D1");sun.light_energy=1.15;sun.shadow_enabled=true;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
-	globe=Node3D.new();add_child(globe);model("ocean",globe)
+	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.shadow_enabled=true;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
+	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
+	var water=ShaderMaterial.new();water.shader=preload("res://assets/water.gdshader")
+	for mesh in ocean.find_children("*","MeshInstance3D",true,false):mesh.material_override=water
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
+	var pier=Node3D.new();globe.add_child(pier);place(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
 	for id in IslandFrontier.BUILD_IDS:marker(id)
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
 	for i in range(3):
@@ -151,6 +203,7 @@ func setup(owner_node):
 func sync_buildings(animate=true):
 	for cell in game.frontier.cells():
 		if not land.has(cell):tile(cell,animate);decorate_cell(cell,animate)
+	if coast_count!=land.size():terrain_geometry()
 	for id in markers:
 		markers[id].visible=game.frontier.available(id) and (not game.frontier.done(id) or id==game.frontier.data.active or id in IslandFrontier.BUILD_IDS)
 		markers[id].get_node("Sign").visible=id not in IslandFrontier.BUILD_IDS and not game.frontier.done(id)

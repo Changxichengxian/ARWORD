@@ -8,7 +8,7 @@ var frontier_notes:Array=[]
 var touch_points={}
 var pinch_distance=0.0
 var mouse_drag=false
-var world_zoom=12.0
+var world_zoom=10.0
 var world:IslandGrove
 var hud:IslandHUD
 var camera:Camera3D
@@ -35,6 +35,7 @@ var sentence_chosen:Array=[]
 var sentence_order:Array=[]
 var sentence_hint=""
 var qa=false
+var art_preview=false
 var drag_id=-1
 var drag_start=Vector2.ZERO
 var drag_distance=0.0
@@ -43,12 +44,22 @@ var lookup_return:Callable
 
 func _ready():
 	font.fallbacks=[preload("res://assets/fonts/FrontierLatin.ttf")]
-	qa="--qa" in OS.get_cmdline_user_args();get_tree().quit_on_go_back=false
+	art_preview="--art-preview" in OS.get_cmdline_user_args()
+	qa="--qa" in OS.get_cmdline_user_args() or art_preview;get_tree().quit_on_go_back=false
+	if OS.has_feature("windows") and DisplayServer.get_name()!="headless":
+		var area=DisplayServer.screen_get_usable_rect()
+		var height=mini(1100,area.size.y-100);var width=roundi(height*9.0/16)
+		DisplayServer.window_set_size(Vector2i(width,height))
+		DisplayServer.window_set_position(area.position+Vector2i((area.size.x-width)/2,(area.size.y-height)/2))
+		get_window().title="词屿 · 美术预览（不保存）" if art_preview else "词屿 · 电脑试玩"
 	learning=IslandLearning.new();read_save();frontier=IslandFrontier.new(learning)
+	if art_preview:
+		for c in IslandFrontier.CHAPTERS:frontier.data.progress[c.id]=c.need
+		learning.data.build=[8,12,16];learning.data.development=[36,24,24];frontier.data.active="cottage"
 	frontier_notes=JSON.parse_string(FileAccess.get_file_as_string("res://assets/frontier_missions.json"))
 	notes=JSON.parse_string(FileAccess.get_file_as_string("res://assets/missions.json"));dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/dictionary.json"))
 	world=IslandGrove.new();add_child(world);world.setup(self)
-	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=Vector3(0,24,21);camera.look_at(Vector3(0,6.6,0));camera.current=true
+	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=Vector3(0,24,21);camera.look_at(Vector3(0,10.0,0));camera.current=true
 	speech=AudioStreamPlayer.new();add_child(speech)
 	for i in range(6):var p=AudioStreamPlayer.new();add_child(p);effects.append(p)
 	for kind in ["chop","stone","land","build","tap","soft"]:
@@ -57,7 +68,9 @@ func _ready():
 	var layer=CanvasLayer.new();add_child(layer);hud=IslandHUD.new();hud.game=self;layer.add_child(hud)
 	restore_button=hud.button(hud,"继续照料",resume_collect,true,54);restore_button.anchor_left=.26;restore_button.anchor_right=.74;restore_button.anchor_top=1;restore_button.anchor_bottom=1;restore_button.offset_top=-86;restore_button.offset_bottom=-30;restore_button.hide()
 	next_task()
-	if learning.data.actions==0:hud.toast("点白圈选工地 · 拖动看四周")
+	if art_preview:
+		explore();camera.size=21.5;camera.look_at(Vector3(0,4.2,0));world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized());hud.toast("美术预览 · 不保存进度")
+	elif learning.data.actions==0:hud.toast("点白圈选工地 · 拖动看四周")
 
 func read_save():
 	if qa:return
@@ -171,7 +184,7 @@ func select_word(index:int):
 		mark_context_help();sentence_hint="下一处："+expected;hud.show_task();return
 	sentence_hint="";sentence_used.append(index);sentence_chosen.append(sentence_words[index]);play_fx("tap")
 	if sentence_chosen.size()==sentence_words.size():
-		locked=true
+		locked=true;hud.show_task()
 		if int(learning.data.active)==2:learning.data.flags.water=true
 		learning.finish_context("sentence",mission.id,context_assisted,false)
 		complete_action(frontier.advance())
@@ -188,7 +201,8 @@ func explore():
 	exploring=true;hud.card.hide();hud.sites.hide();restore_button.show();speech.stop();hud.toast("点白圈选工地 · 双指缩放")
 	camera.look_at(Vector3.ZERO);camera.size=27.0
 func resume_collect():
-	exploring=false;restore_button.hide();hud.card.show();hud.sites.hide();camera.look_at(Vector3(0,6.6,0));camera.size=world_zoom
+	exploring=false;restore_button.hide();hud.card.show();hud.sites.hide();camera.look_at(Vector3(0,10.0,0));camera.size=world_zoom
+	world.recenter()
 func recenter():world.recenter()
 func world_area(p:Vector2)->bool:
 	return p.y>190 and p.y<(hud.card.position.y-8 if not exploring else hud.size.y-100)

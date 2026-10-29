@@ -38,7 +38,7 @@ for p in (r/'assets/models').glob('*.glb'):
  size=struct.unpack('<I',b[12:16])[0];g=json.loads(b[20:20+size]);models.append({'name':p.stem,'meshes':len(g['meshes']),'bytes':len(b)})
  assert (r/'art-source'/(p.stem+'.blend')).exists()
  if p.stem=='builder':assert {'ArmL','ArmR','LegL','LegR','Body'}<={n['name'] for n in g['nodes']}
-assert len(models)==28
+assert len(models)==32
 from fontTools.ttLib import TTFont
 codes=set()
 for name in ['FrontierSC.ttf','FrontierLatin.ttf']:codes.update(TTFont(r/'assets/fonts'/name).getBestCmap())
