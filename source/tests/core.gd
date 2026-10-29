@@ -63,14 +63,15 @@ func run():
 	check(f.cells().size()==3 and f.available("grove") and f.available("quarry") and not f.available("sawmill"),"small starting shore has two expansion choices and gated new capability")
 	f.advance();check(f.cells().size()==3,"one recall shows progress without adding an entire biome")
 	f.advance();check(f.cells().size()==4,"two work actions create a visible new land tile")
+	f.learning.data.harvested=[100,100];f.learning.data.practice.read=100
 	for c in IslandFrontier.CHAPTERS:
 		check(f.available(c.id),"expansion dependencies can be reached: "+c.id)
 		f.choose(c.id)
 		for i in range(c.need):f.advance()
-	check(f.cells().size()==24 and f.finished_count()==7,"seven bounded chapters grow three starting tiles into twenty-four")
+	check(f.cells().size()==33 and f.finished_count()==10,"ten bounded chapters grow three starting tiles into thirty-three")
 	var fixed=f.cells().size();f.advance();check(f.cells().size()==fixed,"completed land never creates endless new requirements")
 	var retained=IslandLearning.new();retained.accept_save(JSON.parse_string(JSON.stringify(f.learning.data)));var ff=IslandFrontier.new(retained)
-	check(ff.cells().size()==24 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
+	check(ff.cells().size()==33 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
 	check(not game.hud.sites.visible and game.hud.site_buttons.is_empty(),"fixed three-building navigation is absent")
 	var before=game.learning.data.actions;game.current=game.learning.by_id.retain;game.order=[0,1,2,3];game.hud.show_task();game.answer(game.current.correct);game.answer(game.current.correct)
 	check(game.learning.data.actions==before+1,"double tap cannot collect twice")
@@ -136,8 +137,8 @@ func run():
 		for extra in extras:if extra.visible:visible_count+=1
 	check(visible_count==6,"each completed 12-action stage reveals one specific addition")
 	check(is_instance_valid(world.limbs.ElbowR) and is_instance_valid(world.limbs.KneeL) and world.tools.size()==3,"hero has elbow and knee articulation and three real tools")
-	var idle_actions=game.learning.data.actions;world.work_clock=6.4;await create_timer(.2).timeout
-	check(game.learning.data.actions==idle_actions and world.move_tween.is_running(),"idle worker changes position without earning construction progress")
+	var idle_actions=game.learning.data.actions;world.worker.work_left=0;world.worker.settle();await create_timer(.2).timeout
+	check(game.learning.data.actions==idle_actions and not world.tools.Axe.visible and not world.tools.Mallet.visible,"resting worker puts tools away without earning construction progress")
 	game.frontier.choose("cottage");world.sync_buildings(false);world.recenter();world.globe.quaternion=world.desired_rotation
 	var projected=game.camera.unproject_position(world.markers.cottage.global_position)
 	check(world.site_at(projected)=="cottage","touching a projected building selects its world worksite")

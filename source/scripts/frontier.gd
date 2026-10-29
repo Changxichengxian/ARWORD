@@ -11,7 +11,10 @@ const CHAPTERS=[
 	{"id":"meadow","title":"南边的草地","need":6,"requires":["grove"],"cells":[Vector2i(0,2),Vector2i(-1,2),Vector2i(-1,3)],"point":Vector2i(-1,2),"site":2,"note":3},
 	{"id":"kiln","title":"石岸砖窑","need":8,"requires":["quarry","sawmill"],"cells":[Vector2i(3,-1),Vector2i(3,0),Vector2i(2,1)],"point":Vector2i(3,0),"site":1,"note":2},
 	{"id":"crystal","title":"晶簇小湾","need":8,"requires":["kiln"],"cells":[Vector2i(-1,-1),Vector2i(-1,-2),Vector2i(-2,-1)],"point":Vector2i(-1,-1),"site":1,"note":4},
-	{"id":"hill","title":"向风的小丘","need":6,"requires":["quarry"],"cells":[Vector2i(1,1),Vector2i(1,2),Vector2i(1,3)],"point":Vector2i(1,2),"site":1,"note":3}
+	{"id":"hill","title":"向风的小丘","need":6,"requires":["quarry"],"cells":[Vector2i(1,1),Vector2i(1,2),Vector2i(1,3)],"point":Vector2i(1,2),"site":1,"note":3},
+	{"id":"wetland","title":"芦苇浅湾","need":8,"requires":["meadow"],"cells":[Vector2i(-2,2),Vector2i(-3,2),Vector2i(-3,3)],"point":Vector2i(-3,2),"site":0,"note":3,"gate":"wood","threshold":8},
+	{"id":"plateau","title":"石脊高原","need":10,"requires":["quarry"],"cells":[Vector2i(3,-2),Vector2i(4,-2),Vector2i(4,-1)],"point":Vector2i(4,-2),"site":1,"note":0,"gate":"stone","threshold":10},
+	{"id":"mountain","title":"云杉山地","need":12,"requires":["plateau","hill"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0,"gate":"explore","threshold":12}
 ]
 const BUILD_IDS=["cottage","windmill","garden"]
 const BUILD_CELLS=[Vector2i(1,0),Vector2i(1,3),Vector2i(-1,3)]
@@ -56,9 +59,26 @@ func available(id:String)->bool:
 		return BUILD_GATES[i].is_empty() or done(BUILD_GATES[i]) or learning.data.build[i]>0
 	var c=chapter(id)
 	if c.is_empty():return false
+	if done(id):return true
+	for dependency in c.requires:
+		if not done(dependency):return false
+	return not c.has("gate") or gate_count(c.gate)>=int(c.threshold)
+func gate_count(gate:String)->int:
+	if gate=="wood":return int(learning.data.harvested[0])
+	if gate=="stone":return int(learning.data.harvested[1])
+	return int(learning.data.practice.read)+int(learning.data.practice.listen)
+func previewable(id:String)->bool:
+	if available(id):return true
+	var c=chapter(id)
+	if not c.has("gate"):return false
 	for dependency in c.requires:
 		if not done(dependency):return false
 	return true
+func unlock_hint(id:String)->String:
+	var c=chapter(id)
+	if not c.has("gate"):return ""
+	var label={"wood":"木料采集","stone":"石料采集","explore":"阅读与听力"}[c.gate]
+	return str(label)+" "+str(gate_count(c.gate))+" / "+str(c.threshold)+" · "+str(c.title)
 func site(id:String)->int:return BUILD_IDS.find(id) if id in BUILD_IDS else int(chapter(id).get("site",0))
 func target(id:String)->Vector2:return point(BUILD_CELLS[BUILD_IDS.find(id)]) if id in BUILD_IDS else point(chapter(id).point)
 func progress(id:String)->Vector2:

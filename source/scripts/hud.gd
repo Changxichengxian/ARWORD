@@ -10,13 +10,11 @@ var body:VBoxContainer
 var overlay:ColorRect
 var sites:HBoxContainer
 var site_buttons:Array=[]
-var goal:Label
-var bar:ProgressBar
+var world_progress={}
 var toast_label:Label
 var toast_timer=0.0
 var answers:Array=[]
 var word_label:Button
-var progress_label:Label
 var screen=""
 var stars:Array=[]
 var word_tween:Tween
@@ -54,20 +52,13 @@ func _ready():
 	var theme_new=Theme.new();theme_new.default_font=game.font;theme_new.default_font_size=20;theme=theme_new
 	var rng=RandomNumberGenerator.new();rng.seed=704
 	for i in range(55):stars.append(Vector3(rng.randf(),rng.randf(),rng.randf_range(.7,1.7)))
+	for id in game.world.markers:add_world_progress(id)
 	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=30
 	var top=row(header);var titles=VBoxContainer.new();titles.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(titles)
 	text(titles,"美术预览 · 不保存" if game.art_preview else "词屿 / LITTLE TIDE",11,Color("A6C6C6"));text(titles,"青芽星",28,CREAM)
 	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"工作手记"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
-	var goal_panel=PanelContainer.new();add_child(goal_panel);goal_panel.anchor_right=1;goal_panel.offset_left=22;goal_panel.offset_right=-22;goal_panel.offset_top=101
-	goal_panel.add_theme_stylebox_override("panel",skin(Color(.08,.20,.26,.83),16))
-	var box=VBoxContainer.new();box.add_theme_constant_override("separation",7);goal_panel.add_child(box)
-	var gr=row(box);goal=text(gr,"",18,CREAM);goal.size_flags_horizontal=Control.SIZE_EXPAND_FILL;progress_label=text(gr,"",16,Color("F2CB7B"));progress_label.custom_minimum_size.x=66;progress_label.autowrap_mode=TextServer.AUTOWRAP_OFF;progress_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
-	bar=ProgressBar.new();bar.show_percentage=false;bar.custom_minimum_size.y=5;bar.max_value=1
-	var track=skin(Color("2C5260"),3);var fill=skin(Color("EBC673"),3)
-	for s in [track,fill]:s.content_margin_left=0;s.content_margin_right=0;s.content_margin_top=0;s.content_margin_bottom=0;s.shadow_size=0
-	bar.add_theme_stylebox_override("background",track);bar.add_theme_stylebox_override("fill",fill);box.add_child(bar)
-	toast_label=text(self,"",18,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=170;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	var view=icon(self,"planet",game.explore,"看看星球");view.anchor_left=1;view.anchor_right=1;view.offset_left=-66;view.offset_right=-22;view.offset_top=178;view.offset_bottom=222
+	toast_label=text(self,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=98;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	var view=icon(self,"planet",game.explore,"看看星球");view.anchor_left=1;view.anchor_right=1;view.offset_left=-66;view.offset_right=-22;view.offset_top=133;view.offset_bottom=177
 	sites=HBoxContainer.new();add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
 	sites.hide()
 	card=PanelContainer.new();add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
@@ -84,9 +75,45 @@ func layout_card(height:float):
 	card.offset_top=-height-20;card.offset_bottom=-20
 	sites.offset_top=-height-80;sites.offset_bottom=-height-30
 func sync_goal():
-	var id=str(game.frontier.data.active);var p=game.frontier.progress(id)
-	goal.text=game.frontier.title(id)
-	progress_label.text="✓" if game.frontier.done(id) else str(int(p.x))+" / "+str(int(p.y));bar.value=p.x/p.y
+	for id in world_progress:
+		var item=world_progress[id];var p=game.frontier.progress(id);var selected=id==game.frontier.data.active
+		var ready=game.frontier.available(id);var done=game.frontier.done(id)
+		item.title.text=game.frontier.title(id).trim_suffix(" · 自由照料")
+		if not ready:
+			var chapter=game.frontier.chapter(id)
+			if chapter.has("gate"):p=Vector2(game.frontier.gate_count(chapter.gate),chapter.threshold)
+		item.count.text="✓" if done else str(int(p.x))+"/"+str(int(p.y))
+		item.bar.value=p.x/maxf(1,p.y)
+		item.bar.get_theme_stylebox("fill").bg_color=Color("EBC673") if selected else Color("97C6B2") if ready else Color("7E999F")
+		item.panel.modulate=Color.WHITE if selected else Color(1,1,1,.86)
+	update_world_progress()
+func add_world_progress(id:String):
+	var panel=PanelContainer.new();panel.name="WorldProgress_"+id;panel.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(panel)
+	var background=skin(Color(.08,.20,.26,.88),9);background.content_margin_left=8;background.content_margin_right=8;background.content_margin_top=5;background.content_margin_bottom=5;background.shadow_size=2;panel.add_theme_stylebox_override("panel",background)
+	var box=VBoxContainer.new();box.add_theme_constant_override("separation",3);panel.add_child(box)
+	var line=row(box);line.add_theme_constant_override("separation",6)
+	var title_label=text(line,"",13,CREAM);title_label.autowrap_mode=TextServer.AUTOWRAP_OFF
+	var count_label=text(line,"",12,Color("EBC673"));count_label.autowrap_mode=TextServer.AUTOWRAP_OFF
+	var progress=ProgressBar.new();progress.show_percentage=false;progress.custom_minimum_size.y=4;progress.max_value=1
+	for pair in [["background",Color("42616A")],["fill",Color("EBC673")]]:
+		var style=StyleBoxFlat.new();style.bg_color=pair[1];style.set_corner_radius_all(2);progress.add_theme_stylebox_override(pair[0],style)
+	box.add_child(progress)
+	for child in panel.find_children("*","Control",true,false):child.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	world_progress[id]={"panel":panel,"title":title_label,"count":count_label,"bar":progress}
+func update_world_progress():
+	if not is_instance_valid(card) or not is_instance_valid(overlay):return
+	for id in world_progress:
+		var panel=world_progress[id].panel;var active=id==game.frontier.data.active
+		panel.visible=not overlay.visible and game.frontier.previewable(id) and (active or not game.frontier.done(id))
+		if not panel.visible:continue
+		var marker=game.world.markers[id];var normal=game.world.globe.global_basis*marker.position.normalized()
+		if normal.dot((game.camera.global_position-marker.global_position).normalized())<.20:panel.hide();continue
+		var point=game.world.progress_anchor(id)
+		if game.camera.is_position_behind(point):panel.hide();continue
+		panel.reset_size();panel.position=game.camera.unproject_position(point)-Vector2(panel.size.x*.5,panel.size.y+8)
+		var bottom=card.position.y-8 if card.visible else size.y-100
+		# Never pin a label to the screen edge: it belongs to the object below it.
+		if panel.position.x<5 or panel.position.x+panel.size.x>size.x-5 or panel.position.y<126 or panel.position.y+panel.size.y>bottom:panel.hide()
 
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -175,3 +202,4 @@ func reading(parent:Node,value:String,height=235,font_size=21):
 func toast(value:String):toast_label.text=value;toast_timer=2.8
 func _process(dt):
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
+	update_world_progress()

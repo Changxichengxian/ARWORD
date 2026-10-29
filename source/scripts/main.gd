@@ -70,7 +70,7 @@ func _ready():
 	next_task()
 	if art_preview:
 		explore();camera.size=21.5;camera.look_at(Vector3(0,4.2,0));world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized());hud.toast("美术预览 · 不保存进度")
-	elif learning.data.actions==0:hud.toast("点白圈选工地 · 拖动看四周")
+	elif learning.data.actions==0:hud.toast("点建筑或进度条选工地")
 
 func read_save():
 	if qa:return
@@ -108,6 +108,7 @@ func next_task():
 func next_word():next_task()
 func select_site(site):
 	var id=IslandFrontier.BUILD_IDS[site] if site is int else str(site)
+	if not frontier.available(id):hud.toast(frontier.unlock_hint(id));return
 	if locked or id==frontier.data.active or not frontier.choose(id):return
 	speech.stop();save_progress();hud.close();world.sync_buildings();next_task()
 	if exploring:resume_collect()
@@ -126,7 +127,7 @@ func answer(index:int):
 	complete_action(result)
 func complete_action(result:Dictionary):
 	learning.data.context_help.erase(context_key());save_progress();world.harvest(result);play_fx("chop" if world.active_kind==0 else "stone");hud.sync_goal()
-	if result.complete:hud.toast("这一段做好了 · 点白圈选下一处")
+	if result.complete:hud.toast("这一段做好了 · 点下一处工地")
 	var duration=1.35 if result.complete else 1.15
 	get_tree().create_timer(duration).timeout.connect(func():
 		if is_inside_tree():next_task()
@@ -198,14 +199,14 @@ func sentence_reset():
 
 func explore():
 	if locked:return
-	exploring=true;hud.card.hide();hud.sites.hide();restore_button.show();speech.stop();hud.toast("点白圈选工地 · 双指缩放")
+	exploring=true;hud.card.hide();hud.sites.hide();restore_button.show();speech.stop();hud.toast("点建筑选工地 · 双指缩放")
 	camera.look_at(Vector3.ZERO);camera.size=27.0
 func resume_collect():
 	exploring=false;restore_button.hide();hud.card.show();hud.sites.hide();camera.look_at(Vector3(0,10.0,0));camera.size=world_zoom
 	world.recenter()
 func recenter():world.recenter()
 func world_area(p:Vector2)->bool:
-	return p.y>190 and p.y<(hud.card.position.y-8 if not exploring else hud.size.y-100)
+	return p.y>126 and p.y<(hud.card.position.y-8 if not exploring else hud.size.y-100)
 func _unhandled_input(event):
 	if not is_instance_valid(hud) or hud.overlay.visible:return
 	if event is InputEventScreenTouch:

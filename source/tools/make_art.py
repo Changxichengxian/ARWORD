@@ -37,7 +37,7 @@ def mesh(name,verts,faces,m,parent=None):
 def export(name):
     if ONLY and name not in ONLY.split(','):return
     # Small static props share one vertex-colored mesh instead of one draw per petal/branch.
-    if name in {'oak','coast_garden','cypress','lantern','pier'}:
+    if name in {'oak','coast_garden','cypress','lantern','pier','cliff_rocks','reeds','driftwood'}:
         bpy.ops.object.select_all(action='DESELECT')
         parts=[o for o in bpy.context.scene.objects if o.type=='MESH']
         for part in parts:part.select_set(True)
@@ -316,4 +316,20 @@ cyl('Post',(0,0,.40),.035,.80,wood,root,8)
 cube('Lantern',(0,0,.83),(.19,.19,.25),gold,root,.02)
 cyl('Cap',(0,0,1.01),.17,.13,teal,root,4,.03)
 export('lantern')
+clean();root=empty('CliffRocks')
+for x,y,h,w in [(-.23,0,1.70,.38),(.30,.12,1.1,.35),(.03,-.28,.65,.26)]:
+    o=cyl('Basalt pillar',(x,y,h*.44),w,h,stone if x<0 else lightstone,root,5,w*.62);o.rotation_euler[1]=-.12 if x<0 else .1
+    ico('Pale summit',(x-.07,y,h*.90),(w*.64,w*.64,.19),cream if x<0 else lightstone,root,1)
+export('cliff_rocks')
+clean();root=empty('Reeds')
+for i in range(7):
+    a=i*2.4;x=math.cos(a)*.26;y=math.sin(a)*.2;h=.35+(i%3)*.15
+    beam('Stem',(x,y,0),(x+.06,y,h),.025,leafdark,root)
+    ico('Seed head',(x+.06,y,h),(.045,.045,.12),cut,root,1)
+    mesh('Leaf',[(x,y,.04),(x-.15,y,h*.55),(x+.02,y,h*.65)],[(0,1,2),(2,1,0)],leaf,root)
+export('reeds')
+clean();root=empty('Driftwood')
+beam('Bleached trunk',(-.6,0,.08),(.6,.05,.12),.17,cut,root)
+for x,sign in [(-.25,-1),(.20,1)]:beam('Branch',(x,0,.12),(x+.25,sign*.32,.2),.09,cut,root)
+export('driftwood')
 print('PLANET_ART_COMPLETE')
