@@ -66,7 +66,7 @@ func available(id:String)->bool:
 func gate_count(gate:String)->int:
 	if gate=="wood":return int(learning.data.harvested[0])
 	if gate=="stone":return int(learning.data.harvested[1])
-	return int(learning.data.practice.read)+int(learning.data.practice.listen)
+	return int(learning.data.practice.read)+int(learning.data.practice.listen)+int(learning.data.dev_context.read)+int(learning.data.dev_context.listen)
 func previewable(id:String)->bool:
 	if available(id):return true
 	var c=chapter(id)

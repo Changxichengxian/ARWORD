@@ -1,9 +1,11 @@
-词屿 · 0.6
+词屿 · 0.9
 
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/
 
-原创模型：本项目用 Blender 4.4.3 制作，28 个 glTF 模型及对应 .blend 建模源文件随源码交付。游戏画面为实时三维渲染。
+原创模型：本项目用 Blender 4.4.3 制作，39 个 glTF 模型及对应 .blend 建模源文件随源码交付。游戏画面为实时三维渲染；太阳系中的远景行星与星空由随源码提供的程序网格和着色器生成。
+
+原创轻音乐：Island Drift，80 秒器乐循环，由本项目的 tools/make_music.py 程序创作并合成。音符、音色和完整生成脚本随源码交付。
 
 字体：Noto Sans SC，SIL Open Font License 1.1。应用使用静态 600 字重子集，改名为 Frontier Sans SC；原始字体和转换脚本保留在源码内。完整许可见 fonts/OFL.txt。
 https://github.com/google/fonts/tree/main/ofl/notosanssc

@@ -35,4 +35,6 @@ func run():
 	check(not hud.world_progress.cottage.panel.visible,"far-side progress is hidden behind the planet")
 	game.settings();check(not hud.world_progress.cottage.panel.visible,"floating labels never cover a modal")
 	print("WORLD_PROGRESS_RESULT ",passed," passed / ",failed," failed")
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	game.queue_free();await process_frame;await process_frame
 	quit(0 if failed==0 else 1)

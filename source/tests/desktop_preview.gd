@@ -13,4 +13,6 @@ func run():
 	var target=game.world.surface(game.frontier.target(game.frontier.data.active)).normalized()
 	assert((game.world.desired_rotation*target).distance_to(Vector3.UP)<.001,"Returning to study recenters the worksite")
 	print("DESKTOP_PREVIEW_PASS: isolated saves, complete map, return camera")
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	game.queue_free();await process_frame;await process_frame
 	quit()

@@ -15,4 +15,6 @@ func run():
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(out.path_join("worksite-preview.png"))
 	print("VISUAL_CAPTURE_COMPLETE fps=",Engine.get_frames_per_second()," draws=",Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)," objects=",Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME))
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	game.queue_free();await process_frame;await process_frame
 	quit()

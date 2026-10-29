@@ -51,6 +51,8 @@ func _draw():
 			var pts=PackedVector2Array([c+Vector2(-9,9),c+Vector2(-10,0),c+Vector2(-5,-9),c+Vector2(11,-13),c+Vector2(10,4),c+Vector2(2,10),c+Vector2(-9,9)])
 			draw_polyline(pts,col,2.5,true);draw_line(c+Vector2(-13,14),c+Vector2(6,-7),col,2.3,true)
 		"play":draw_colored_polygon(PackedVector2Array([c+Vector2(-5,-10),c+Vector2(11,0),c+Vector2(-5,10)]),col)
+		"skip":
+			for x in [-8,3]:draw_polyline(PackedVector2Array([c+Vector2(x-4,-9),c+Vector2(x+5,0),c+Vector2(x-4,9)]),col,2.8,true)
 		"close":draw_line(c-Vector2(7,7),c+Vector2(7,7),col,2.5,true);draw_line(c+Vector2(-7,7),c+Vector2(7,-7),col,2.5,true)
 	if not caption.is_empty():draw_string(get_theme_default_font(),Vector2(size.x*.48,size.y*.5+6),caption,HORIZONTAL_ALIGNMENT_LEFT,-1,17,col)
 

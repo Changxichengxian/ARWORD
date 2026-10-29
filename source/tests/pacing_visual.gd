@@ -23,4 +23,6 @@ func run():
 	game.answer(game.current.correct)
 	await create_timer(3).timeout;await shot("earned-work-preview")
 	print("PACING_VISUAL_COMPLETE")
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	game.queue_free();await process_frame;await process_frame
 	quit()

@@ -38,6 +38,13 @@ var scenery:Node3D
 var coast_count=-1
 var terrain=IslandTerrain.new()
 var worker:IslandWorker
+var motion_speed=0.0
+var travelled=0.0
+var motion_previous=Vector3.ZERO
+var travel_heading=0.0
+var road_segments=0
+var wildlife
+var water
 
 func mat(hex:String)->StandardMaterial3D:
 	if mats.has(hex):return mats[hex]
@@ -132,15 +139,17 @@ func terrain_geometry():
 		st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();var material=mat("FFFFFF").duplicate();material.vertex_color_use_as_albedo=true;material.vertex_color_is_srgb=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;n.material_override=material;anchor.add_child(n)
 	if scenery:scenery.queue_free()
 	scenery=Node3D.new();globe.add_child(scenery)
-	# One connected footpath tree, leaving clearings between resource clusters.
-	var queue=[Vector2i(0,1)];var visited={Vector2i(0,1):true}
-	while not queue.is_empty():
-		var cell=queue.pop_front()
-		for step in directions:
-			var next=cell+step
-			if land.has(next) and not visited.has(next):
-				visited[next]=true;queue.append(next)
-				path_segment(IslandFrontier.point(cell),IslandFrontier.point(next))
+	# Short, authored approaches to a few useful places. Most land stays wild.
+	road_segments=0
+	trail([IslandFrontier.point(Vector2i(0,1))+Vector2(.25,-.25),Vector2(2.1,1.25),IslandFrontier.point(Vector2i(1,0))+Vector2(0,.72)])
+	if game.frontier.done("sawmill"):
+		var p=game.frontier.target("sawmill");trail([p+Vector2(.18,.82),p+Vector2(.7,1.05),p+Vector2(.95,1.5)])
+	if game.frontier.done("kiln"):
+		var p=game.frontier.target("kiln");trail([p+Vector2(0,.76),p+Vector2(-.65,1.02)])
+	if game.frontier.available("garden"):
+		var p=game.frontier.target("garden");trail([p+Vector2(0,-.78),p+Vector2(-.30,-1.2),p+Vector2(-.64,-1.55)])
+	if game.frontier.available("windmill"):
+		var p=game.frontier.target("windmill");trail([p+Vector2(-.12,-.86),p+Vector2(-.4,-1.27),p+Vector2(-.22,-1.66)])
 	for cell in land:
 		var p=IslandFrontier.point(cell)
 		for i in range(6):
@@ -152,8 +161,11 @@ func terrain_geometry():
 			var shelf=pebble(scenery,surface(p+edge*1.12).normalized()*11.56,Vector3(.62,.035,.28),"60C5C7")
 			shelf.basis=Basis(Quaternion(Vector3.UP,shelf.position.normalized()));shelf.rotate_object_local(Vector3.UP,-atan2(edge.y,edge.x)+PI/2);shelf.scale=Vector3(.72,.035,.28)
 	coast_count=land.size()
+func trail(points:Array):
+	for i in range(points.size()-1):path_segment(points[i],points[i+1])
 func path_segment(a:Vector2,b:Vector2):
-	var side=Vector2(-(b-a).y,(b-a).x).normalized()*.16;var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	road_segments+=1
+	var side=Vector2(-(b-a).y,(b-a).x).normalized()*.11;var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for i in range(6):
 		var p=a.lerp(b,i/6.0);var q=a.lerp(b,(i+1)/6.0)
 		for v in [p-side,q+side,p+side,p-side,q-side,q+side]:st.add_vertex(surface(v)*1.002)
@@ -207,8 +219,7 @@ func setup(owner_node):
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
 	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.shadow_enabled=true;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
-	var water=ShaderMaterial.new();water.shader=preload("res://assets/water.gdshader")
-	for mesh in ocean.find_children("*","MeshInstance3D",true,false):mesh.material_override=water
+	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
 	var pier=Node3D.new();globe.add_child(pier);place(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
 	for id in IslandFrontier.BUILD_IDS:marker(id)
@@ -232,7 +243,7 @@ func setup(owner_node):
 	for i in range(5):
 		var c=model("cloud",globe);c.scale=Vector3.ONE*(1.1+i*.1);clouds.append(c)
 	boat=model("boat",globe);boat.scale=Vector3.ONE*.7
-	sync_buildings(false);worker=IslandWorker.new(self);worker.settle();prepare_resource(false);recenter()
+	sync_buildings(false);worker=IslandWorker.new(self);worker.settle();prepare_resource(false);recenter();motion_previous=builder.position
 func sync_buildings(animate=true):
 	for cell in game.frontier.cells():
 		if not land.has(cell):tile(cell,animate);decorate_cell(cell,animate)
@@ -297,15 +308,18 @@ func walk_to(target:Vector2,duration_scale=1.0):
 	target=nearest_land(target)
 	if move_tween and move_tween.is_valid():move_tween.kill()
 	var origin=terrain.coordinates(builder.position)
+	var speed=1.1
+	if worker and worker.work_left>0:speed=.95 if worker.phase==1 else 1.8
 	move_tween=create_tween()
 	for waypoint in walking_route(origin,target):
+		if origin.distance_to(waypoint)<.025:continue
 		var heading=atan2(-(waypoint-origin).x,-(waypoint-origin).y)
-		move_tween.tween_method(func(p):place(builder,p,heading),origin,waypoint,clampf(origin.distance_to(waypoint)*.30,.15,.90)*duration_scale)
+		move_tween.tween_method(func(p):
+			travel_heading=lerp_angle(travel_heading,heading,1-exp(-get_process_delta_time()*9))
+			place(builder,p,travel_heading),origin,waypoint,maxf(.15,origin.distance_to(waypoint)/speed))
 		origin=waypoint
-	move_tween.tween_callback(func():
-		var facing=work_point-target
-		place(builder,target,atan2(-facing.x,-facing.y))
-	)
+	var facing=work_point-target;var final_heading=atan2(-facing.x,-facing.y)
+	move_tween.tween_method(func(_t):travel_heading=lerp_angle(travel_heading,final_heading,.2);place(builder,target,travel_heading),0.0,1.0,.2)
 func prepare_resource(animate=true):
 	active_kind=1 if game.frontier.site(game.frontier.data.active)==1 and not resources[1].is_empty() else 0
 	var pool=resources[active_kind];var target=game.frontier.target(game.frontier.data.active)
@@ -366,6 +380,9 @@ func harvest(result:Dictionary):
 func _process(dt):
 	if not is_instance_valid(globe):return
 	time+=dt;work_clock+=dt;swing=maxf(0,swing-dt);globe.quaternion=globe.quaternion.slerp(desired_rotation,1-exp(-dt*10))
+	var distance=builder.position.distance_to(motion_previous);motion_previous=builder.position
+	if distance<1:travelled+=distance
+	motion_speed=lerpf(motion_speed,distance/maxf(dt,.001) if distance<1 else 0.0,1-exp(-dt*14))
 	if worker:worker.update(dt)
 	if is_instance_valid(rotor) and game.learning.data.build[1]>=IslandLearning.NEEDS[1]:rotor.rotate_z(dt*.7)
 	for id in facilities:

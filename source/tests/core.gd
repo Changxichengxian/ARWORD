@@ -18,7 +18,7 @@ func set_mode(mode:String,note=0):
 	game.frontier.data.turns[id]=(note%4)*6+IslandLearning.MODES.find(mode) if note<12 else IslandLearning.MODES.find(mode)
 	game.next_task()
 func run():
-	game=load("res://main.tscn").instantiate();root.add_child(game);await settle()
+	game=load("res://main.tscn").instantiate();root.add_child(game);await settle();game.resume_collect()
 	check(game.qa,"save isolation")
 	check(ProjectSettings.get_setting("display/window/handheld/orientation")==1,"portrait app orientation")
 	check(game.learning.bank.size()==96 and game.notes.size()==12 and game.frontier_notes.size()==5,"96 curated words and 17 contextual work notes")
@@ -104,8 +104,8 @@ func run():
 	check(game.learning.data.flags.get("water",false) and game.learning.data.practice.sentence==1,"organizing garden instruction unlocks water route")
 	await create_timer(1.45).timeout
 	game.journal();game.lookup("the");game.back();check(game.hud.screen=="journal","native back restores reading after lookup")
-	game.hud.close();game.explore();check(not game.hud.card.visible and not game.hud.sites.visible,"world view hides learning controls")
-	game.settings();check(not game.restore_button.visible,"world return button cannot cover modal")
+	game.hud.close();game.explore();await create_timer(.45).timeout;check(not game.hud.card.visible and not game.hud.sites.visible,"world view hides learning controls after the short transition")
+	game.settings();check(game.hud.overlay.visible and not game.hud.card.visible,"world view has no return button covering its modal")
 	game.hud.close();game.resume_collect();check(game.hud.card.visible and not game.exploring,"return restores continuous work")
 	var world=game.world;world.recenter();world.drag(Vector2(80,0));var horizontal=world.desired_rotation;world.recenter();world.drag(Vector2(0,80));var vertical=world.desired_rotation
 	check(not horizontal.is_equal_approx(Quaternion.IDENTITY) and not vertical.is_equal_approx(Quaternion.IDENTITY) and not horizontal.is_equal_approx(vertical),"horizontal and vertical drags rotate distinct camera axes")
@@ -162,7 +162,7 @@ func run():
 	var pinch=InputEventScreenDrag.new();pinch.index=1;pinch.position=Vector2(350,270);pinch.relative=Vector2(50,0);game._unhandled_input(pinch)
 	check(game.camera.size<original_zoom,"spreading two fingers zooms toward the island")
 	for i in range(2):
-		var release=InputEventScreenTouch.new();release.index=i;release.position=Vector2(200+i*100,950);release.pressed=false;game._input(release)
+		var release=InputEventScreenTouch.new();release.index=i;release.position=game.hud.card.get_global_rect().get_center();release.pressed=false;game._input(release)
 	check(game.touch_points.is_empty() and game.drag_id==-1,"releasing over a learning card cannot leave a stuck world gesture")
 	game.camera.size=original_zoom
 	root.size=Vector2i(540,960);await settle();game.help_visible=false;game.mode="word";game.order=[0,1,2,3]
@@ -189,4 +189,5 @@ func run():
 	game.lookup("photosynthesis");await settle();panel=game.hud.overlay.get_child(game.hud.overlay.get_child_count()-1).get_child(0)
 	check(panel.get_global_rect().end.y<=game.hud.size.y and panel.get_global_rect().end.x<=game.hud.size.x,"dictionary modal fits compact portrait screen")
 	print("CORE_RESULT ",passed," passed / ",failed," failed")
-	game.queue_free();await process_frame;quit(1 if failed else 0)
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	game.queue_free();await process_frame;await process_frame;quit(1 if failed else 0)

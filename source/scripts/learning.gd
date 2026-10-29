@@ -5,14 +5,17 @@ const NEEDS=[8,12,16]
 const EXTRA=36
 const MODES=["word","word","read","word","listen","sentence"]
 const PROJECTS=["木屋","风车","花园"]
+const SPACE_DEFAULTS={"nebula":1.45,"color":1.3,"band":1.15,"stars":1.1,"drift":1.0}
+const SPACE_LIMITS={"nebula":Vector2(0,2.5),"color":Vector2(0,2),"band":Vector2(.4,2),"stars":Vector2(.3,2),"drift":Vector2(0,2)}
 const STEPS=[["搭好木屋","沿岸栈道","门前长椅","伙伴的营地"],["让风车转起来","蓄水装置","引水小渠","检修工作台"],["种下第一床","果树小园","木栅栏","蜜蜂的小屋"]]
 var bank:Array=[]
 var by_id={}
 var recent:Array=[]
 var rng=RandomNumberGenerator.new()
-var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{},"frontier":{}}
+var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"music":true,"dev_skip":true,"dev_steps":0,"dev_context":{"read":0,"listen":0},"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{},"frontier":{}}
 
 func _init():
+	data["space_settings"]=SPACE_DEFAULTS.duplicate()
 	rng.randomize()
 	bank=JSON.parse_string(FileAccess.get_file_as_string("res://assets/vocabulary.json"))
 	for q in bank:by_id[q.id]=q
@@ -24,7 +27,7 @@ func accept_save(candidate)->bool:
 		if not (candidate.build[i] is int or candidate.build[i] is float):return false
 	for k in data:
 		if candidate.has(k) and typeof(candidate[k])==typeof(data[k]):data[k]=candidate[k]
-	for k in ["active","actions","band","success_run","miss_run"]:
+	for k in ["active","actions","band","success_run","miss_run","dev_steps"]:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))
 	for i in range(3):data.build[i]=clampi(int(candidate.build[i]),0,NEEDS[i])
 	data.active=clampi(data.active,0,2);data.band=clampi(data.band,0,3)
@@ -33,6 +36,12 @@ func accept_save(candidate)->bool:
 		for i in range(3):
 			data[key][i]=clampi(int(data[key][i]),0,EXTRA if key=="development" else 1000000) if data[key][i] is int or data[key][i] is float else 0
 	for mode in ["read","listen","sentence"]:data.practice[mode]=maxi(0,int(data.practice.get(mode,0))) if data.practice.get(mode,0) is int or data.practice.get(mode,0) is float else 0
+	for mode in ["read","listen"]:data.dev_context[mode]=maxi(0,int(data.dev_context.get(mode,0))) if data.dev_context.get(mode,0) is int or data.dev_context.get(mode,0) is float else 0
+	var space={}
+	for key in SPACE_DEFAULTS:
+		var value=data.space_settings.get(key,SPACE_DEFAULTS[key]);var limits=SPACE_LIMITS[key]
+		space[key]=clampf(float(value),limits.x,limits.y) if (value is int or value is float) and is_finite(float(value)) else SPACE_DEFAULTS[key]
+	data.space_settings=space
 	if data.harvested.size()!=2:data.harvested=[0,0]
 	for i in range(2):data.harvested[i]=maxi(0,int(data.harvested[i])) if data.harvested[i] is int or data.harvested[i] is float else 0
 	for key in data.contexts.keys():

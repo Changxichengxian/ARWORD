@@ -1,0 +1,11 @@
+{
+  "title": "Island Drift",
+  "duration_seconds": 80,
+  "sample_rate": 32000,
+  "channels": 2,
+  "peak_before_export": 0.16249469660046664,
+  "rms": 0.03886330732074829,
+  "original_synthesis": true,
+  "seed": 918,
+  "loop": "circular synthesis including notes and echo tails"
+}

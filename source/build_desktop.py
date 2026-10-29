@@ -46,9 +46,6 @@ application/modify_resources=false
         (output/'desktop-source-sha256.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding='utf-8')
     exe=output/'LittleTide.exe';digest=hashlib.sha256(exe.read_bytes()).hexdigest()
     (output/'desktop-SHA256SUMS.txt').write_text(digest+'  LittleTide.exe\n',encoding='utf-8')
-    (output/'直接看美术.cmd').write_text('@echo off\r\nstart "" "%~dp0LittleTide.exe" -- --art-preview\r\n',encoding='ascii')
-    subprocess.run(['powershell.exe','-NoProfile','-File',str(source/'tools/make_desktop_shortcut.ps1'),
-                    '-Target',str(exe),'-Destination',str(output/'直接看美术.lnk')],check=True)
     print(json.dumps({'exe':str(exe),'bytes':exe.stat().st_size,'sha256':digest},ensure_ascii=False))
 
 if __name__=='__main__':main()

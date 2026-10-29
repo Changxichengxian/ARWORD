@@ -41,4 +41,6 @@ func run():
 	check(worker.work_left==0 and not game.world.tools.Axe.visible,"earned work ends and tools are put away")
 	check(JSON.stringify(game.learning.data)==before,"visual work budget never grants extra unearned learning or land")
 	print("REST_TERRAIN_RESULT ",passed," passed / ",failed," failed")
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	game.queue_free();await process_frame;await process_frame
 	quit(0 if failed==0 else 1)
