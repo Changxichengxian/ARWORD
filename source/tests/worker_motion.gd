@@ -10,6 +10,22 @@ func apply_pose(world,frame:Dictionary):
 	world.actor.rotation=frame.rotation;world.actor.position.y=frame.lift
 	for tool in world.tools.values():tool.rotation.x=frame.get("wrist",0.0)
 	world.worker.plant_feet(frame.get("ground",.015))
+	world.worker.update_skin()
+func skin_bottom(world,actual_ground=false)->float:
+	var mesh=world.actor.find_child("ContinuousBody",true,false)
+	var skeleton=world.worker.skeleton;skeleton.force_update_all_bone_transforms()
+	var arrays=mesh.mesh.surface_get_arrays(0);var lowest=INF;var bind=[]
+	for i in mesh.skin.get_bind_count():
+		var bone=skeleton.find_bone(mesh.skin.get_bind_name(i))
+		bind.append(skeleton.get_bone_global_pose(bone)*mesh.skin.get_bind_pose(i))
+	for i in arrays[Mesh.ARRAY_VERTEX].size():
+		var point=Vector3.ZERO
+		for j in range(4):
+			point+=(bind[arrays[Mesh.ARRAY_BONES][i*4+j]]*arrays[Mesh.ARRAY_VERTEX][i])*arrays[Mesh.ARRAY_WEIGHTS][i*4+j]
+		if actual_ground:
+			var p=world.globe.to_local(skeleton.to_global(point));lowest=minf(lowest,p.length()-world.ground_point(world.terrain.coordinates(p)).length())
+		else:lowest=minf(lowest,world.builder.to_local(skeleton.to_global(point)).y)
+	return lowest
 func run():
 	var game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.8).timeout
@@ -17,7 +33,7 @@ func run():
 	world.set_process(false)
 	if world.move_tween and world.move_tween.is_valid():world.move_tween.kill()
 	apply_pose(world,{"pose":{},"rotation":Vector3.ZERO,"lift":0.0})
-	check(abs(world.actor.to_local(world.limbs.ArmR.global_position).y-1.12)<.001,"moving the torso pivot preserves the shoulder rest position")
+	check(abs(world.actor.to_local(world.limbs.ArmR.global_position).y-1.24)<.001,"the new waist pivot preserves the authored shoulder rest position")
 	var grip=world.tools.Axe.get_parent()
 	var rest=world.actor.to_local(grip.global_position)
 	apply_pose(world,worker.strike_pose(.48,0));var raised=world.actor.to_local(grip.global_position)
@@ -26,6 +42,23 @@ func run():
 	check(impact.z<-.25 and raised.y>impact.y+.25,"the downstroke lands forward instead of throwing the hand behind the character")
 	check(world.limbs.Body.rotation.x>.2 and world.limbs.KneeL.rotation.x<-.2,"a committed strike engages the torso and knees")
 	check(abs(worker.feet_height()-.015)<.002,"the supporting foot stays planted during a committed strike")
+	var actual_bottom=skin_bottom(world);print("ACTUAL_SKIN_BOTTOM ",actual_bottom)
+	check(actual_bottom>-.03 and actual_bottom<.09,"the visible skinned foot agrees with its ground contact probe")
+	var skin=world.actor.find_child("ContinuousBody",true,false);var material=skin.get_active_material(0)
+	check(material.transparency==BaseMaterial3D.TRANSPARENCY_DISABLED and material.roughness>.35 and material.roughness<.5 and material.vertex_color_use_as_albedo,"the soft highlights and subtle vertex colors stay fully opaque")
+	var head_width=0.0
+	for vertex in skin.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]:
+		if vertex.y>1.30:head_width=maxf(head_width,absf(vertex.x)*2)
+	print("ACTUAL_HEAD_WIDTH ",head_width)
+	check(head_width<.44 and head_width>.40,"the small head keeps a clear silhouette above the longer limbs")
+	var support_ok=true;var smallest=1.0;var biggest=1.0
+	worker.work_left=8;worker.phase=2;worker.waking=0;worker.stroke_time=1.35*.60;worker.phase_time=0
+	for frame in range(32):
+		worker.update(.016);smallest=minf(smallest,world.actor.scale.y/.9);biggest=maxf(biggest,world.actor.scale.y/.9)
+		support_ok=support_ok and abs(worker.feet_height()-.015)<.003
+	check(smallest>.94 and smallest<.985 and biggest>1.005 and support_ok,"one impact compresses and rebounds gently while the support foot stays grounded")
+	check(worker.head_pivot!=null and worker.head_pivot.rotation.length()>.01 and worker.head_pivot.rotation.length()<.15,"the head follows the working torso with a restrained independent reaction")
+	world.actor.scale=Vector3.ONE*.9
 	var slow=worker.locomotion_pose(.25,1.05);var fast=worker.locomotion_pose(.25,1.8)
 	check(fast.pose.ElbowR.x>slow.pose.ElbowR.x+.4 and fast.pose.Body.x>slow.pose.Body.x,"running has bent elbows and a distinct forward body lean")
 	var travelled=worker.locomotion_pose(.25,1.05);var later=worker.locomotion_pose(.25,1.05)
@@ -36,6 +69,12 @@ func run():
 	check(worker.carry.visible and worker.cargo[1].visible and not worker.cargo[0].visible,"stone work carries stone instead of wooden logs")
 	var before=JSON.stringify(game.learning.data);worker.work_left=.01;worker.update(.05)
 	check(worker.work_left==0 and not worker.carry.visible and JSON.stringify(game.learning.data)==before,"finishing the animation returns to rest without granting progress")
+	if world.move_tween and world.move_tween.is_valid():world.move_tween.kill()
+	worker.rest_variant=0;worker.rest_time=0;worker.update(1.0)
+	var sitting_bottom=skin_bottom(world,true)
+	worker.rest_variant=1;worker.rest_time=0;worker.update(1.0)
+	var lying_bottom=skin_bottom(world,true)
+	check(sitting_bottom>=-.01 and sitting_bottom<.05 and lying_bottom>=-.01 and lying_bottom<.05,"the actual seated and lying skin touches the ground without sinking")
 	print("WORKER_MOTION_RESULT ",passed," passed / ",failed," failed")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--visual-out="):await visual(game,arg.trim_prefix("--visual-out="))
@@ -53,11 +92,20 @@ func visual(game,directory:String):
 	world.globe.quaternion=Quaternion.IDENTITY;world.place(world.builder,Vector2.ZERO)
 	var ground=MeshInstance3D.new();var shape=CylinderMesh.new();shape.top_radius=1.8;shape.bottom_radius=1.9;shape.height=.12;shape.radial_segments=6;ground.mesh=shape;ground.material_override=world.mat("82B569");world.builder.add_child(ground);ground.position.y=-.08
 	game.camera.size=2.65;game.camera.position=world.builder.global_position+Vector3(2.6,2.9,-4.3);game.camera.look_at(world.builder.global_position+Vector3(0,.75,0))
+	var fill=DirectionalLight3D.new();fill.light_energy=.55;world.add_child(fill);fill.rotation_degrees=Vector3(-35,145,0)
 	worker.carry.hide();world.set_tool(-1)
 	for entry in [["walk",worker.locomotion_pose(.16,1.1)],["run",worker.locomotion_pose(.22,1.8)],["axe-raised",worker.strike_pose(.48,0)],["axe-impact",worker.strike_pose(.64,0)],["pick-impact",worker.strike_pose(.64,1)]]:
 		world.set_tool(0 if str(entry[0]).begins_with("axe") else 1 if str(entry[0]).begins_with("pick") else -1);apply_pose(world,entry[1])
 		await create_timer(.15).timeout;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory.path_join(str(entry[0])+".png"))
 	worker.work_left=0;worker.waking=0;worker.rest_variant=0;worker.rest_time=0;worker.update(1.0)
+	print("SITTING_SKIN_BOTTOM ",skin_bottom(world)," LIFT ",world.actor.position.y)
 	await create_timer(.15).timeout;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory.path_join("sitting.png"))
 	worker.rest_variant=1;worker.rest_time=0;worker.update(1.0)
+	print("LYING_SKIN_BOTTOM ",skin_bottom(world)," LIFT ",world.actor.position.y)
 	await create_timer(.15).timeout;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory.path_join("lying.png"))
+	worker.work_left=8;worker.phase=2;worker.phase_time=0;worker.waking=0;worker.stroke_time=1.35*.60
+	apply_pose(world,worker.strike_pose(.60,2))
+	for frame in range(30):
+		worker.update(.016)
+		await RenderingServer.frame_post_draw
+		if frame in [6,16,28]:root.get_texture().get_image().save_png(directory.path_join("elastic-"+str(frame)+".png"))

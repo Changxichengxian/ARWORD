@@ -1,0 +1,10 @@
+{
+  "source": "ECDICT full stardict.csv",
+  "url": "https://raw.githubusercontent.com/skywind3000/ECDICT/master/stardict.7z",
+  "license": "MIT",
+  "archive_sha256": "f370a0ecb58ada758d9dfe739db1667fd4ed87ed3055a4a7cb6c7054ecdf83d6",
+  "csv_sha256": "88fce01e0a30524192a62e363d47eeb036fa17820d5826121b3b419fd67a3996",
+  "selected_count": 10303,
+  "requested_count": 10692,
+  "use": "Order available dictionary POS groups by measured corpus proportions; do not change any source wordbook membership."
+}

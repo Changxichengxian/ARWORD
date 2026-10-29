@@ -13,11 +13,14 @@ var space:Node3D
 var canvas:CanvasLayer
 var display:TextureRect
 var star_material:ShaderMaterial
+var cloud_texture:NoiseTexture3D
+var cloud_regions:Array=[]
 var bodies:Array=[]
 var sun:Node3D
 var solar_surface:MeshInstance3D
 var clock=0.0
 var nebula_clock=0.0
+var sky_seed=0
 var settings=DEFAULT_SETTINGS.duplicate()
 var focus_index=-1
 var focus_time=0.0
@@ -27,11 +30,13 @@ var meteor_clock=0.0
 
 func setup(owner_game):
 	game=owner_game
-	viewport=SubViewport.new();viewport.name="SolarSystemView";viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_2X;add_child(viewport)
+	viewport=SubViewport.new();viewport.name="SolarSystemView";viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_2X if OS.has_feature("android") else Viewport.MSAA_4X;add_child(viewport)
 	space=Node3D.new();viewport.add_child(space)
 	var env=WorldEnvironment.new();var atmosphere=Environment.new();env.environment=atmosphere;space.add_child(env)
 	atmosphere.background_mode=Environment.BG_CANVAS;atmosphere.background_canvas_max_layer=-20;atmosphere.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;atmosphere.ambient_light_color=Color("718FA9");atmosphere.ambient_light_energy=.28
 	star_material=ShaderMaterial.new();star_material.shader=preload("res://assets/cosmos_sky.gdshader")
+	make_cloud_regions()
+	randomize_sky()
 	apply_settings(game.learning.data.get("space_settings",{}))
 	var sky_canvas=CanvasLayer.new();sky_canvas.layer=-20;viewport.add_child(sky_canvas)
 	var sky_field=ColorRect.new();sky_field.mouse_filter=Control.MOUSE_FILTER_IGNORE;sky_field.material=star_material;sky_canvas.add_child(sky_field);sky_field.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -40,18 +45,28 @@ func setup(owner_game):
 	sun=Node3D.new();space.add_child(sun);sun.position=CENTER
 	solar_surface=sphere(sun,1.48,Color("FFD783"),28,14);var solar_material=ShaderMaterial.new();solar_material.shader=preload("res://assets/cosmos_sun.gdshader");solar_surface.material_override=solar_material
 	glow(sun,8.0,Color(1,.46,.12,.22));glow(sun,4.6,Color(1,.76,.30,.36))
-	add_body("ring",14.0,.4,.0060,1.05,Color("8179A6"),Color("B1D1CD"),0)
-	add_body("ice",20.0,-1.3,.0043,1.05,Color("487BA1"),Color("B3ECEB"),1)
-	add_body("ember",26.0,-1.05,.0031,.72,Color("493D52"),Color("E8A47C"),2)
-	add_body("garden",8.0,-2.25,.0081,.67,Color("297C79"),Color("87C9A0"),0)
+	add_body("ring",14.0,.4,.0060,1.05,Color("4B6372"),Color("D8BD87"),0)
+	add_body("ice",20.0,-1.3,.0043,1.05,Color("224866"),Color("BDE9EC"),1)
+	add_body("ember",26.0,-1.05,.0031,.72,Color("292334"),Color("EAAA64"),2)
+	add_body("garden",8.0,-2.25,.0081,.67,Color("153D4E"),Color("76A78D"),3)
 	add_meteor()
 	canvas=CanvasLayer.new();canvas.name="SolarBackground";canvas.layer=-10;add_child(canvas)
-	display=TextureRect.new();display.texture=viewport.get_texture();display.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;display.stretch_mode=TextureRect.STRETCH_SCALE;display.mouse_filter=Control.MOUSE_FILTER_IGNORE;canvas.add_child(display);display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	display=TextureRect.new();display.texture=viewport.get_texture();display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;display.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;display.stretch_mode=TextureRect.STRETCH_SCALE;display.mouse_filter=Control.MOUSE_FILTER_IGNORE;canvas.add_child(display);display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for child in game.world.get_children():
 		if child is WorldEnvironment:
 			child.environment.background_mode=Environment.BG_CANVAS;child.environment.background_canvas_max_layer=-10
 	resize();get_viewport().size_changed.connect(resize)
 	advance(0)
+func set_sky_seed(value:int):
+	sky_seed=posmod(value,1048576);nebula_clock=0.0
+	if is_instance_valid(star_material):
+		star_material.set_shader_parameter("sky_seed",float(sky_seed));star_material.set_shader_parameter("drift",0.0)
+	arrange_cloud_regions()
+func randomize_sky():
+	var random=RandomNumberGenerator.new();random.randomize()
+	var next_seed=random.randi_range(0,1048575)
+	if next_seed==sky_seed:next_seed=(next_seed+1)%1048576
+	set_sky_seed(next_seed)
 func apply_settings(values:Dictionary):
 	# Speed changes keep the existing cloud phase, so moving a slider never jumps the sky.
 	for key in DEFAULT_SETTINGS:
@@ -60,13 +75,44 @@ func apply_settings(values:Dictionary):
 	if not is_instance_valid(star_material):return
 	for pair in [["nebula","nebula_strength"],["color","color_strength"],["band","band_width"],["stars","star_density"]]:
 		star_material.set_shader_parameter(pair[1],settings[pair[0]])
+	for region in cloud_regions:
+		region.material.set_shader_parameter("nebula_strength",settings.nebula)
+		region.material.set_shader_parameter("color_strength",settings.color)
+		var radius=region.radii*pow(settings.band/1.15,.55)
+		region.material.set_shader_parameter("cloud_radii",radius)
+		region.node.mesh.size=Vector2(radius.x,radius.y)*2.8
+func make_cloud_regions():
+	var noise=FastNoiseLite.new();noise.seed=18775;noise.noise_type=FastNoiseLite.TYPE_SIMPLEX_SMOOTH;noise.frequency=.075;noise.fractal_octaves=3
+	cloud_texture=NoiseTexture3D.new();cloud_texture.width=64;cloud_texture.height=64;cloud_texture.depth=64;cloud_texture.seamless=true;cloud_texture.noise=noise
+	for i in range(3):
+		var node=MeshInstance3D.new();node.name="NebulaVolume"+str(i);node.mesh=QuadMesh.new();node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;space.add_child(node)
+		var material=ShaderMaterial.new();material.shader=preload("res://assets/cosmos_volume.gdshader");material.set_shader_parameter("cloud_noise",cloud_texture);material.set_shader_parameter("ray_steps",8 if OS.has_feature("android") else 12);material.set_shader_parameter("density_scale",[1.0,.72,.50][i]);node.material_override=material
+		cloud_regions.append({"node":node,"material":material,"radii":Vector3.ONE,"center":Vector3.ZERO})
+func arrange_cloud_regions():
+	var random=RandomNumberGenerator.new();random.seed=sky_seed
+	for i in range(cloud_regions.size()):
+		var region=cloud_regions[i];var depth=[104.0,132.0,158.0][i]
+		var center=Vector3([-14.0,18.0,-3.0][i]+random.randf_range(-7,7),[24.0,34.0,51.0][i]+random.randf_range(-6,6),-depth)
+		var radius=Vector3(random.randf_range(14,20),random.randf_range(6,10),random.randf_range(9,14));var angle=random.randf_range(-.65,.65)
+		var orientation=Basis(Vector3.FORWARD,angle)*Basis(Vector3.RIGHT,random.randf_range(-.18,.18))
+		region.center=center;region.radii=radius;region.node.position=center;region.node.rotation.z=-angle
+		region.material.set_shader_parameter("cloud_center",center);region.material.set_shader_parameter("cloud_inverse",orientation.inverse());region.material.set_shader_parameter("noise_phase",Vector3(random.randf_range(0,1),random.randf_range(0,1),random.randf_range(0,1)))
+		region.material.set_shader_parameter("cold_color",[Color("416C84"),Color("477E82"),Color("52627D")][i]);region.material.set_shader_parameter("warm_color",Color("A48456"))
+		region.material.set_shader_parameter("drift",nebula_clock)
+	apply_settings(settings.duplicate())
 func resize():
 	if not is_instance_valid(viewport):return
 	var view_size=get_viewport().get_visible_rect().size
-	var factor=minf(1.0,720.0/maxf(1,view_size.x))
-	viewport.size=Vector2i(maxi(270,int(view_size.x*factor)),maxi(480,int(view_size.y*factor)))
+	# Canvas coordinates stay logical when the desktop window grows. Render the planets at its physical pixels.
+	var physical_size=Vector2(DisplayServer.window_get_size()) if DisplayServer.get_name()!="headless" else view_size
+	var ratio=maxf(physical_size.x/maxf(1,view_size.x),physical_size.y/maxf(1,view_size.y))
+	var desired=view_size*ratio
+	var max_pixels=1500000.0 if OS.has_feature("android") else 4200000.0
+	var max_edge=1800.0 if OS.has_feature("android") else 2880.0
+	var factor=minf(1.0,minf(max_edge/maxf(desired.x,desired.y),sqrt(max_pixels/maxf(1,desired.x*desired.y))))
+	viewport.size=Vector2i(maxi(270,roundi(desired.x*factor)),maxi(480,roundi(desired.y*factor)))
 	star_material.set_shader_parameter("aspect",float(viewport.size.x)/float(viewport.size.y))
-func sphere(parent:Node3D,radius:float,color:Color,segments=18,rings=10)->MeshInstance3D:
+func sphere(parent:Node3D,radius:float,color:Color,segments=32,rings=16)->MeshInstance3D:
 	var mesh=SphereMesh.new();mesh.radius=radius;mesh.height=radius*2;mesh.radial_segments=segments;mesh.rings=rings
 	var visual=MeshInstance3D.new();visual.mesh=mesh;var material=StandardMaterial3D.new();material.albedo_color=color;material.roughness=.9;visual.material_override=material;parent.add_child(visual);return visual
 func glow(parent:Node3D,width:float,color:Color):
@@ -89,8 +135,8 @@ func rings(parent:Node3D,size:float):
 	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for band in range(3):
 		var inner=size*(1.35+band*.27);var outer=inner+size*.19
-		for i in range(80):
-			var a=i*TAU/80;var b=(i+1)*TAU/80
+		for i in range(128):
+			var a=i*TAU/128;var b=(i+1)*TAU/128
 			st.set_color([Color("9FC9CA"),Color("C7BDA7"),Color("7789A9")][band])
 			for v in [Vector3(cos(a)*inner,0,sin(a)*inner),Vector3(cos(b)*outer,0,sin(b)*outer),Vector3(cos(a)*outer,0,sin(a)*outer),Vector3(cos(a)*inner,0,sin(a)*inner),Vector3(cos(b)*inner,0,sin(b)*inner),Vector3(cos(b)*outer,0,sin(b)*outer)]:st.add_vertex(v)
 	st.generate_normals();var visual=MeshInstance3D.new();visual.mesh=st.commit();var material=StandardMaterial3D.new();material.vertex_color_use_as_albedo=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;material.roughness=.9;visual.material_override=material;parent.add_child(visual)
@@ -101,6 +147,9 @@ func advance(dt:float):
 	nebula_clock+=dt*settings.drift
 	star_material.set_shader_parameter("drift",nebula_clock)
 	star_material.set_shader_parameter("twinkle_time",clock)
+	for i in range(cloud_regions.size()):
+		var region=cloud_regions[i];var offset=Vector3(sin(nebula_clock*.011+i)-sin(float(i)),sin(nebula_clock*.008+i*.7)-sin(i*.7),0)*.45
+		region.node.position=region.center+offset;region.material.set_shader_parameter("cloud_center",region.node.position);region.material.set_shader_parameter("drift",nebula_clock)
 	for body in bodies:
 		var angle=body.phase+clock*body.speed;var dz=sin(angle)*body.radius
 		var tilt={"ring":.09,"ice":.34,"ember":-.22,"garden":.29}[body.id]

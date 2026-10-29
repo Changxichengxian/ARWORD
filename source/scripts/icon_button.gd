@@ -33,6 +33,10 @@ func _draw():
 		"book":
 			draw_polyline(PackedVector2Array([c+Vector2(-13,-10),c+Vector2(-4,-11),c,c+Vector2(4,-11),c+Vector2(13,-10),c+Vector2(13,11),c+Vector2(4,10),c+Vector2(0,13),c+Vector2(-4,10),c+Vector2(-13,11),c+Vector2(-13,-10)]),col,2,true)
 			draw_line(c+Vector2(0,-8),c+Vector2(0,12),col,2,true)
+		"books":
+			for i in range(3):
+				var rect=Rect2(c+Vector2(-12+i*8,-11+(i%2)*3),Vector2(6,23-(i%2)*3));draw_style_box(pad(col),rect)
+				draw_line(rect.position+Vector2(1,5),rect.position+Vector2(5,5),Color("F3C671"),1.5,true)
 		"gear":
 			draw_arc(c,8,0,TAU,24,col,2.5,true);draw_circle(c,3,col)
 			for i in range(8):var v=Vector2.from_angle(i*TAU/8);draw_line(c+v*10,c+v*14,col,3,true)

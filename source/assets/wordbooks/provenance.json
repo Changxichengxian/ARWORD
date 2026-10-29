@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "normalization": "lowercase and trim only; no stemming or lemmatization",
+  "subtraction": "compare against original lower-stage source lists, not already-filtered lists",
+  "dictionary": {
+    "name": "ECDICT",
+    "url": "https://github.com/skywind3000/ECDICT",
+    "license": "MIT",
+    "sha256": "1a6947e04785db63613a92e14903cdae7954f7e84860b10e68e5c7cbb3f9c3cf"
+  },
+  "primary": {
+    "name": "Little Tide elementary foundation",
+    "scope": "Independently selected basic reference vocabulary; not an official syllabus or textbook transcription",
+    "license": "CC0-1.0",
+    "sha256": "65f2f19ae1a4672992901f50e6d8c3bd0b7853e63a3bcef862bceeac22fdb7cb"
+  },
+  "tem8": {
+    "name": "OpenEtymology TEM8",
+    "scope": "3984-headword reference wordbook, not a claim of complete official TEM8 coverage",
+    "url": "https://github.com/openetymology/OpenEtymology/blob/main/TEM8/TEM8.txt",
+    "license": "CC-BY-SA-4.0",
+    "sha256": "0d70fd4779399ec222308eaea7d81c0343e6a8416f887445c5687abb08561d6f"
+  },
+  "changes": [
+    "Extracted headwords only from OpenEtymology; no examples or etymology copied.",
+    "Applied requested two-stage subtraction and documented malformed-headword exclusions.",
+    "ECDICT Chinese meanings shortened; common basic meanings reviewed in definition-overrides.json.",
+    "Created deterministic four-choice exercises; generated local af_heart English speech."
+  ],
+  "dataset_license": "CC-BY-SA-4.0; preserve ECDICT MIT notice and original source notices",
+  "pos_frequency": {
+    "source": "ECDICT full stardict.csv",
+    "url": "https://raw.githubusercontent.com/skywind3000/ECDICT/master/stardict.7z",
+    "license": "MIT",
+    "archive_sha256": "f370a0ecb58ada758d9dfe739db1667fd4ed87ed3055a4a7cb6c7054ecdf83d6",
+    "csv_sha256": "88fce01e0a30524192a62e363d47eeb036fa17820d5826121b3b419fd67a3996",
+    "selected_count": 10303,
+    "requested_count": 10692,
+    "use": "Order available dictionary POS groups by measured corpus proportions; do not change any source wordbook membership."
+  },
+  "meaning_selection": "Reviewed compact meaning first; otherwise prefer dictionary POS groups with the highest observed ECDICT corpus proportion. Fall back to dictionary order only where corpus POS evidence is absent.",
+  "removed_unreadable_aliases": {
+    "rabid": "Removed only the medical alias containing private-use U+E7B3.",
+    "rabies": "Removed only the medical alias containing private-use U+E7B3."
+  },
+  "pronunciation_corrections": {
+    "live": {
+      "phonemes": "lˈɪv",
+      "phonetic": "lɪv",
+      "sense": "动词：居住；生活。单独拼读默认给出形容词 /laɪv/，此处纠正为主释义读法。"
+    },
+    "close": {
+      "phonemes": "klˈoʊz",
+      "phonetic": "kloʊz",
+      "sense": "动词：关闭。单独拼读默认给出形容词 /kloʊs/，此处纠正为主释义读法。"
+    },
+    "ms.": {
+      "phonemes": "mˈɪz",
+      "phonetic": "mɪz",
+      "sense": "称谓：女士。保留缩写词头，读作 Ms.，不逐个念 M、S 字母。"
+    },
+    "no.": {
+      "phonemes": "nˈʌmbɚ",
+      "phonetic": "ˈnʌmbɚ",
+      "sense": "缩写：号码，展开读作 number，不读成否定词 no。"
+    }
+  }
+}

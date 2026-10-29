@@ -1,0 +1,34 @@
+词书来源与使用说明
+
+小学：本项目独立选编的 1,030 个基础词头，供基础复习参考。不是某套教材的抄录，也不宣称对应官方完整小学大纲。
+初中、高中、四级、六级：来自 ECDICT 公开数据库的 zk、gk、cet4、cet6 标签。源项目按 MIT 许可证提供。标签是该词典的分类，不代表本应用核定了考试要求。
+专八：本应用指英语专业八级（TEM8）。使用 OpenEtymology 公开 TEM8.txt 中的 3,984 个参考词头。其 DATA_LICENSE.md 明确将公开词书数据按 CC BY-SA 4.0 许可提供。这是一份参考词书，不宣称覆盖官方完整专八大纲。
+
+按要求只做 lowercase + trim 后的精确词头比较：
+高中减去小学；四级减去初中；六级减去高中原表；专八减去四级原表。
+小学、初中保留原词头表。develop 与 development、单复数和其他不同词形不会因词干相同而被删除。
+专八原表的 gonorrh、premi 疑似截断词头，未猜测其原词或编造释义，单独列入 sources/rejected.json。
+
+最终词数：
+小学 1,030；初中 1,603；高中 2,724；四级 3,154；六级 3,307；专八 3,929。
+跨书共用 10,696 个独立词条。相同词头共用词条 ID 和音频。
+短释义用于选项；definition 保存较完整的词典解释，部分常用或有问题的旧义已单独修订。原始记录保存在 sources/ecdict-selected.json，修改在 sources/definition-overrides.json 可追溯。
+基础 ECDICT CSV 的词性频率为空。本项目从官方完整 stardict.csv 补取 10,303 个词头的语料词性比例，优先选取实际占比最高且词典有解释的词性，再应用人工复核修订，避免名词排在前面就误把 give 解释成“弹性”。语料比例并不等于每个词义的频率。相关证据和源文件哈希在 sources/ecdict-pos-frequency.json 与 ecdict-pos-source.json。
+四选题由确定性规则生成，排除重复、包含、词典释义交集、常用同义干扰词及部分表达变体，并按难度层选择干扰项。option_ids 记录每个选项的来源词。这些检查不等于对全部题目做了人工教学审定，不用于宣称精确词汇量或学习效果。
+例句字段为空时不编造例句；阅读、听力和组句继续使用应用已有内容。
+
+来源：
+ECDICT：https://github.com/skywind3000/ECDICT
+OpenEtymology TEM8：https://github.com/openetymology/OpenEtymology/blob/main/TEM8/TEM8.txt
+数据授权：https://github.com/openetymology/OpenEtymology/blob/main/DATA_LICENSE.md
+CC BY-SA 4.0：https://creativecommons.org/licenses/by-sa/4.0/
+
+本目录的派生词书数据按 CC BY-SA 4.0 提供；请保留以上署名、来源、变更说明及 licenses 内的原许可证。独立选编的小学原始词头列表以 CC0-1.0 提供。ECDICT 的 MIT 声明须同时保留。此说明只针对本目录的数据，不替换应用其余代码和资产的许可证。
+
+发音：
+本地 Kokoro v1.0 模型，af_heart 英语音色。Kokoro 模型按 Apache-2.0 提供，工具 kokoro-onnx 按 MIT 提供。
+https://huggingface.co/hexgrad/Kokoro-82M
+https://github.com/thewh1teagle/kokoro-onnx
+模型仅用于本地预生成，没有在线或付费接口。新音频使用 .94 语速；复用旧版本且文字哈希核对一致的同音色词音频，部分为 .97 语速。独立词发音使用一种常见读法，不覆盖同形异音词的每个语境。
+audio-audit.json 逐条记录输入、来源、音色、时长、文件哈希和是否复用。
+live 和 close 按主释义的动词读法单独纠正为 /lɪv/、/kloʊz/；Ms. 按称谓读作 /mɪz/，No. 按号码展开读作 number。更正记录在 sources/pronunciation-overrides.json。

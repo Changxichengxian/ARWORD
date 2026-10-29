@@ -6,7 +6,8 @@ from fontTools import subset
 root=Path(__file__).resolve().parents[1]
 font=TTFont(root/'assets/fonts/NotoSansSC.ttf')
 instantiateVariableFont(font,{'wght':600},inplace=True)
-chars=''.join(p.read_text(encoding='utf-8') for p in list((root/'scripts').glob('*.gd'))+list((root/'assets').glob('*.json')))
+runtime_json=list((root/'assets').glob('*.json'))+[root/'assets/wordbooks/lexicon.json',root/'assets/wordbooks/catalog.json']
+chars=''.join(p.read_text(encoding='utf-8-sig') for p in list((root/'scripts').glob('*.gd'))+runtime_json if p.exists())
 codes=set(map(ord,chars))|set(range(32,0x300))|set(range(0x2000,0x2070))|set(range(0x3000,0x3040))|set(range(0xff00,0xfff0))
 options=subset.Options();options.name_IDs=['*'];options.name_languages=['*'];options.layout_features=['*']
 s=subset.Subsetter(options=options);s.populate(unicodes=codes);s.subset(font)

@@ -135,7 +135,7 @@ func answer(index:int):
 	locked=true;speech.stop();hud.feedback(index)
 	if mode=="word":learning.record(current.id,helped,Time.get_unix_time_from_system(),false,world.active_kind)
 	else:learning.finish_context(mode,mission.id,context_assisted,false)
-	var result=frontier.advance()
+	var result=frontier.study_advance()
 	complete_action(result)
 func skip_learning():
 	if locked or exploring or hud.overlay.visible or not learning.data.dev_skip:return
@@ -208,7 +208,7 @@ func select_word(index:int):
 		locked=true;hud.show_task()
 		if int(learning.data.active)==2:learning.data.flags.water=true
 		learning.finish_context("sentence",mission.id,context_assisted,false)
-		complete_action(frontier.advance())
+		complete_action(frontier.study_advance())
 	else:hud.show_task()
 func sentence_help():
 	if locked:return
@@ -319,20 +319,36 @@ func settings():
 	speech.stop();var box=hud.modal("歇一会儿");hud.screen="settings"
 	hud.text(box,"独立辨认过 "+str(learning.independent_count())+" 个词",20)
 	hud.text(box,"短文 "+str(learning.data.practice.read)+"  ·  听力 "+str(learning.data.practice.listen)+"  ·  组句 "+str(learning.data.practice.sentence),16)
+	if not learning.wordbooks.books.is_empty():hud.button(box,"词书 · "+str(learning.current_book().get("title","选择")),show_wordbooks)
 	hud.button(box,"词汇起点 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();settings())
 	hud.button(box,"音效 · "+("开" if learning.data.sound else "关"),func():learning.data.sound=not learning.data.sound;save_progress();settings())
 	hud.button(box,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
 	hud.button(box,"星空与星云",space_settings)
 	hud.button(box,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();settings())
 	hud.button(box,"收藏的词",func():bookmarks(0))
-	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),toggle_developer)
+	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),show_developer)
 	hud.ghost(box,"关闭",func():hud.close())
 func space_settings():
 	if not exploring:explore()
 	speech.stop();var box=hud.modal("星空与星云",true,false);hud.screen="space_settings"
 	box.add_theme_constant_override("separation",7)
-	for item in [["星云浓度","nebula"],["色彩强度","color"],["银河宽度","band"],["星星密度","stars"],["漂移速度","drift"]]:hud.parameter(box,item[0],item[1],IslandLearning.SPACE_LIMITS[item[1]])
-	var line=hud.row(box);hud.ghost(line,"恢复默认",reset_space_settings,42);hud.button(line,"完成",hud.close,true,42)
+	for item in [["星云浓度","nebula"],["色彩强度","color"],["星云范围","band"],["星星密度","stars"],["漂移速度","drift"]]:hud.parameter(box,item[0],item[1],IslandLearning.SPACE_LIMITS[item[1]])
+	var line=hud.row(box);hud.ghost(line,"恢复默认",reset_space_settings,42);hud.ghost(line,"换片星空",cosmos.randomize_sky,42);hud.button(line,"完成",hud.close,true,42)
+func show_wordbooks():
+	if locked:return
+	speech.stop();var box=hud.modal("选一本词书");hud.screen="wordbooks"
+	box.add_theme_constant_override("separation",8)
+	for book in learning.wordbooks.books:
+		var selected=book.id==learning.data.book_id;var count=book.words.size();var known=learning.book_independent(book.id)
+		var label=("✓  " if selected else "")+str(book.title)+"  ·  "+str(count)+" 词"
+		var excluded=int(book.get("excluded_count",0));var lower=learning.wordbooks.find(str(book.get("excluded_book","")))
+		label+="\n已辨认 "+str(known)+" 词" if excluded==0 else "\n略去"+str(lower.get("title","基础"))+" "+str(excluded)+" 词 · 已辨认 "+str(known)
+		var button=hud.button(box,label,choose_wordbook.bind(str(book.id)),selected,66);button.add_theme_font_size_override("font_size",17)
+	var rate=frontier.study_quota();hud.text(box,"当前每小步约 "+str(rate)+" 次练习",16,IslandHUD.GREEN)
+	hud.ghost(box,"关闭",hud.close)
+func choose_wordbook(id:String):
+	if locked or not learning.select_book(id):return
+	frontier.refresh_plan();save_progress();speech.stop();hud.close();next_task();hud.sync_goal()
 func set_space_parameter(key:String,value:float):
 	if not IslandLearning.SPACE_LIMITS.has(key):return
 	var limits=IslandLearning.SPACE_LIMITS[key];learning.data.space_settings[key]=clampf(value,limits.x,limits.y)
@@ -344,6 +360,23 @@ func toggle_developer():
 	if help_visible:hud.show_help()
 	else:hud.show_task()
 	settings()
+func show_developer():
+	if locked:return
+	speech.stop();var box=hud.modal("开发特权");hud.screen="developer"
+	hud.button(box,"跳过学习 · "+("开" if learning.data.dev_skip else "关"),func():
+		learning.data.dev_skip=not learning.data.dev_skip;save_progress()
+		if help_visible:hud.show_help()
+		else:hud.show_task()
+		show_developer())
+	hud.button(box,"完成当前工地",fast_forward.bind(false),true,54).disabled=not learning.data.dev_skip
+	hud.button(box,"全部建设完成",fast_forward.bind(true),true,54).disabled=not learning.data.dev_skip
+	hud.text(box,"只推进建设，保留真实学习记录。",16,IslandHUD.GREEN)
+	hud.ghost(box,"关闭",hud.close)
+func fast_forward(everything=false):
+	if locked or not learning.data.dev_skip:return
+	frontier.finish_for_development(everything);save_progress();hud.close()
+	world.sync_buildings(true);next_task();explore(everything)
+	hud.toast("建设已完成" if everything else "这处工地已完成")
 func bookmarks(page:int):
 	var ids=learning.data.bookmarks.keys();var box=hud.modal("收藏的词");hud.screen="bookmarks"
 	if ids.is_empty():hud.text(box,"点空心星星，把一个词留在这里。",19)
@@ -363,6 +396,8 @@ func journal():
 func lookup(word:String,play=true):
 	if hud.screen!="lookup":lookup_return=journal if hud.screen=="journal" else (func():hud.close()) if hud.screen not in ["bookmarks"] else lookup_return
 	var d=dictionary.get(word,{})
+	if d.is_empty() and learning.by_id.has(word):
+		var q=learning.by_id[word];d={"translation":q.get("definition",q.zh)}
 	if mode=="word" and word==str(current.get("id","")):helped=true;learning.mark_help(word);save_progress()
 	var box=hud.modal("");hud.screen="lookup";var r=hud.row(box)
 	var title=hud.ghost(r,word,func():play_speech(word_audio(word)));title.add_theme_font_size_override("font_size",30)

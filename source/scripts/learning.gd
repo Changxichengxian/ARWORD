@@ -12,13 +12,44 @@ var bank:Array=[]
 var by_id={}
 var recent:Array=[]
 var rng=RandomNumberGenerator.new()
+var wordbooks=preload("res://scripts/wordbooks.gd").new()
+var active_bank:Array=[]
 var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"music":true,"dev_skip":true,"dev_steps":0,"dev_context":{"read":0,"listen":0},"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{},"frontier":{}}
 
 func _init():
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
+	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
 	rng.randomize()
 	bank=JSON.parse_string(FileAccess.get_file_as_string("res://assets/vocabulary.json"))
 	for q in bank:by_id[q.id]=q
+	for id in wordbooks.entries:
+		if not by_id.has(id):by_id[id]=wordbooks.entries[id]
+	refresh_book()
+
+func refresh_book():
+	if not str(data.help_pending).is_empty():data.pending_help[data.help_pending]=true
+	active_bank=[]
+	var book=wordbooks.find(str(data.book_id))
+	if book.is_empty():
+		data.book_id=wordbooks.default_id();book=wordbooks.find(str(data.book_id))
+	if book.is_empty():active_bank=bank.duplicate()
+	else:
+		for id in book.words:active_bank.append(by_id[id])
+	data.help_pending=""
+	for q in active_bank:
+		if data.pending_help.has(q.id):data.help_pending=q.id;break
+	recent.clear()
+func select_book(id:String)->bool:
+	if wordbooks.find(id).is_empty():return false
+	data.book_id=id;data.study_plan={};refresh_book();return true
+func current_book()->Dictionary:return wordbooks.find(str(data.book_id))
+func book_independent(id:String="")->int:
+	var book=wordbooks.find(id if not id.is_empty() else str(data.book_id));var count=0
+	for word in book.get("words",[]):
+		if int(data.words.get(word,{}).get("correct",0))>0:count+=1
+	return count
+func book_remaining()->int:
+	var book=current_book();return maxi(0,book.get("words",[]).size()-book_independent())
 
 func accept_save(candidate)->bool:
 	if not candidate is Dictionary or candidate.get("version",0)!=4:return false
@@ -53,40 +84,41 @@ func accept_save(candidate)->bool:
 		if not by_id.has(id) or not s is Dictionary:data.words.erase(id);continue
 		for k in ["seen","correct","strength","last","due","helped"]:
 			if not (s.get(k) is int or s.get(k) is float):s[k]=0
+	refresh_book()
 	return true
 
 func next_word(now:float,focus:Array=[])->Dictionary:
-	if by_id.has(data.help_pending):return by_id[data.help_pending]
+	if by_id.has(data.help_pending) and (data.book_id.is_empty() or wordbooks.contains(data.book_id,data.help_pending)):return by_id[data.help_pending]
 	var due=[];var fresh=[];var other=[]
-	for q in bank:
+	for q in active_bank:
 		var s=data.words.get(q.id,{})
 		if not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):due.append(q)
 		elif s.is_empty() and absi(int(q.band)-data.band)==0:fresh.append(q)
 		elif s.is_empty():other.append(q)
 	var result={}
-	if not due.is_empty():
+	if not due.is_empty() and ((fresh.is_empty() and other.is_empty()) or int(data.actions)%3==0):
 		due.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due);result=due[0]
 	elif not focus.is_empty():
 		var targets=[]
 		for id in focus:
-			if by_id.has(id) and not recent.has(id) and int(by_id[id].band)<=data.band+1:targets.append(by_id[id])
+			if by_id.has(id) and (data.book_id.is_empty() or wordbooks.contains(data.book_id,id)) and not recent.has(id) and not data.words.has(id) and int(by_id[id].band)<=data.band+1:targets.append(by_id[id])
 		if not targets.is_empty():result=targets[rng.randi_range(0,targets.size()-1)]
 	if result.is_empty() and not fresh.is_empty():result=fresh[rng.randi_range(0,fresh.size()-1)]
 	elif result.is_empty() and not other.is_empty():
 		other.sort_custom(func(a,b):return absi(a.band-data.band)<absi(b.band-data.band));result=other[0]
 	elif result.is_empty():
-		var pool=bank.filter(func(q):return not recent.has(q.id))
-		pool.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due)
-		result=pool[0] if not pool.is_empty() else bank[0]
+		var pool=active_bank.filter(func(q):return not recent.has(q.id))
+		pool.sort_custom(func(a,b):return float(data.words.get(a.id,{}).get("due",0))<float(data.words.get(b.id,{}).get("due",0)))
+		result=pool[0] if not pool.is_empty() else active_bank[0]
 	recent.append(result.id)
 	if recent.size()>8:recent.pop_front()
 	return result
 
-func mark_help(id:String):data.help_pending=id
+func mark_help(id:String):data.help_pending=id;data.pending_help[id]=true
 
 func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)->Dictionary:
 	var s=data.words.get(id,{"seen":0,"correct":0,"strength":0,"last":0,"due":0,"helped":0})
-	helped=helped or data.help_pending==id
+	helped=helped or data.help_pending==id or data.pending_help.has(id)
 	var spaced=now-float(s.last)>=120
 	s.seen+=1
 	if helped:
@@ -98,7 +130,8 @@ func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)-
 		var gaps=[120,120,600,14400,86400,259200]
 		s.due=maxf(float(s.due),now+gaps[int(s.strength)]);data.miss_run=0;data.success_run+=1
 		if data.success_run>=4:data.band=mini(3,data.band+1);data.success_run=0
-	s.last=now;data.words[id]=s;data.help_pending=""
+	s.last=now;data.words[id]=s;data.pending_help.erase(id)
+	if data.help_pending==id:data.help_pending=""
 	data.harvested[harvest_kind if harvest_kind>=0 else (1 if data.active==1 else 0)]+=1
 	return advance() if advance_build else {}
 

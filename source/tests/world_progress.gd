@@ -19,7 +19,10 @@ func run():
 	check(label.position.distance_to(expected)<1,"progress remains anchored to the worksite instead of the screen header")
 	check(world.site_at(label.get_global_rect().get_center())=="grove","tapping an anchored label selects the same worksite")
 	game.select_site("cottage");await create_timer(.4).timeout
-	check(world.cursor.position.distance_to(world.surface(game.frontier.target("cottage")))<.001,"the only selection ring moves to the selected building")
+	var center=Vector2.ZERO;var vertices=world.cursor.get_child(0).get_child(0).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	for vertex in vertices:center+=world.terrain.coordinates(vertex)
+	center/=vertices.size()
+	check(center.distance_to(game.frontier.target("cottage"))<.001,"the actual selection ring vertices move around the selected building")
 	var extra_rings=0
 	for marker in world.markers.values():
 		for child in marker.get_children():

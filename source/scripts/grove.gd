@@ -45,6 +45,17 @@ var travel_heading=0.0
 var road_segments=0
 var wildlife
 var water
+var obstacles:Array=[]
+var fixed_obstacles:Array=[]
+var navigation=AStar2D.new()
+var nav_grid={}
+var nav_components={}
+var navigation_signature=""
+var ground_faces={}
+var walk_goal=Vector2.ZERO
+var ring_clock=0.0
+const WALK_CLEARANCE=.33
+const NAV_STEP=.24
 
 func mat(hex:String)->StandardMaterial3D:
 	if mats.has(hex):return mats[hex]
@@ -52,11 +63,20 @@ func mat(hex:String)->StandardMaterial3D:
 func model(name:String,parent:Node3D)->Node3D:
 	var n=load("res://assets/models/"+name+".glb").instantiate();parent.add_child(n);return n
 func surface(p:Vector2)->Vector3:return terrain.point(p)
+func ground_point(p:Vector2)->Vector3:
+	var normal=surface(p).normalized();var found=Vector3.ZERO
+	for cell in ground_faces:
+		if IslandFrontier.point(cell).distance_squared_to(p)>IslandFrontier.HEX*IslandFrontier.HEX*1.1:continue
+		for face in ground_faces[cell]:
+			var hit=Geometry3D.ray_intersects_triangle(normal*30,-normal,face[0],face[1],face[2])
+			if hit is Vector3 and hit.length_squared()>found.length_squared():found=hit
+	return found if found.length_squared()>1.0 else surface(p)
 func place(node:Node3D,p:Vector2,angle=0.0):
 	var v=surface(p);node.position=v;node.basis=Basis(Quaternion(Vector3.UP,v.normalized()));node.rotate_object_local(Vector3.UP,angle)
 func pebble(parent:Node3D,p:Vector3,s:Vector3,color:String)->MeshInstance3D:
 	var n=MeshInstance3D.new();var mesh=SphereMesh.new();mesh.radius=.5;mesh.height=1;mesh.radial_segments=6;mesh.rings=3;n.mesh=mesh;n.material_override=mat(color);parent.add_child(n);n.position=p;n.scale=s;return n
 func pop(node:Node3D,delay=0.0,base=Vector3.ONE):
+	node.set_meta("full_scale",base)
 	if node.has_meta("pop"):
 		var old=node.get_meta("pop")
 		if old is Tween and old.is_valid():old.kill()
@@ -96,18 +116,27 @@ func measure_progress_height(id:String,visual:Node3D):
 	markers[id].set_meta("label_height",height+.16)
 func ring(parent:Node3D,radius:float,material:Material)->Node3D:
 	var root=Node3D.new();parent.add_child(root)
+	var n=MeshInstance3D.new();n.material_override=material;root.add_child(n);n.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	update_selection_ring();return root
+func update_selection_ring():
+	if not is_instance_valid(cursor) or cursor.get_child_count()==0:return
+	cursor.transform=Transform3D.IDENTITY
+	var radius=1.17*(1.35 if game.frontier.data.active in IslandFrontier.BUILD_IDS else 1.0)
+	var center=game.frontier.target(game.frontier.data.active)
 	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for segment in range(14):
 		for j in range(4):
-			var a=(segment+float(j)/5)*TAU/14;var b=(segment+float(j+1)/5)*TAU/14
-			var p0=Vector3(cos(a)*(radius-.055),.065,sin(a)*(radius-.055));var p1=Vector3(cos(a)*(radius+.055),.065,sin(a)*(radius+.055))
-			var p2=Vector3(cos(b)*(radius+.055),.065,sin(b)*(radius+.055));var p3=Vector3(cos(b)*(radius-.055),.065,sin(b)*(radius-.055))
-			for v in [p0,p2,p1,p0,p3,p2]:st.add_vertex(v)
-	st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();n.material_override=material;root.add_child(n);return root
+			var a=(segment+float(j)/5)*TAU/14+time*.35;var b=(segment+float(j+1)/5)*TAU/14+time*.35
+			var p0=center+Vector2(cos(a),sin(a))*(radius-.055);var p1=center+Vector2(cos(a),sin(a))*(radius+.055)
+			var p2=center+Vector2(cos(b),sin(b))*(radius+.055);var p3=center+Vector2(cos(b),sin(b))*(radius-.055)
+			for p in [p0,p2,p1,p0,p3,p2]:
+				var v=ground_point(p);st.add_vertex(v+v.normalized()*.085)
+	st.generate_normals();cursor.get_child(0).get_child(0).mesh=st.commit()
 func tile(cell:Vector2i,animate:bool):
 	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,IslandFrontier.point(cell));land[cell]=anchor
 	if animate:pop(anchor,float(land.size()%3)*.07)
 func terrain_geometry():
+	ground_faces.clear()
 	var directions=[Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1),Vector2i(1,0)]
 	for cell in land:
 		var anchor=land[cell];var p=IslandFrontier.point(cell);var center=surface(p);var inv=anchor.basis.orthonormalized().inverse()
@@ -121,8 +150,10 @@ func terrain_geometry():
 			var point=surface(p+off);corners.append(point-point.normalized()*(.14 if coast else 0))
 			inside.append(surface(p+off*.88));summit.append(surface(p+off*.60))
 		var region=terrain.kind(cell);var green=Color(IslandTerrain.COLORS[region])
+		var faces=[]
 		for i in range(6):
 			var j=(i+1)%6;var a=inside[i];var b=inside[j];var c=corners[i];var d=corners[j]
+			for face in [[center,summit[j],summit[i]],[summit[i],summit[j],b],[summit[i],b,a],[a,b,d],[a,d,c]]:faces.append(face)
 			st.set_color(green.lightened(.04 if i%3==0 else 0))
 			for v in [center,summit[j],summit[i]]:st.add_vertex(inv*(v-center))
 			st.set_color(green.darkened(.08 if region in ["quarry","mountain","plateau"] else .035))
@@ -136,6 +167,7 @@ func terrain_geometry():
 				for v in [c,d,mid_b,c,mid_b,mid_a]:st.add_vertex(inv*(v-center))
 				st.set_color(Color("768B8D") if region in ["quarry","mountain","plateau","crystal"] else Color("A29174"))
 				for v in [mid_a,mid_b,low_b,mid_a,low_b,low_a]:st.add_vertex(inv*(v-center))
+		ground_faces[cell]=faces
 		st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();var material=mat("FFFFFF").duplicate();material.vertex_color_use_as_albedo=true;material.vertex_color_is_srgb=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;n.material_override=material;anchor.add_child(n)
 	if scenery:scenery.queue_free()
 	scenery=Node3D.new();globe.add_child(scenery)
@@ -221,6 +253,7 @@ func setup(owner_node):
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
+	fixed_obstacles.append(pod_anchor)
 	var pier=Node3D.new();globe.add_child(pier);place(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
 	for id in IslandFrontier.BUILD_IDS:marker(id)
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
@@ -269,8 +302,7 @@ func sync_buildings(animate=true):
 			var extra=additions[i][j];var show_extra=int(game.learning.data.development[i])>=(j+1)*12;var was=extra.visible;extra.visible=show_extra
 			if show_extra and not was and animate:pop(extra,0.0,Vector3.ONE*.64)
 		measure_progress_height(IslandFrontier.BUILD_IDS[i],buildings[i])
-	place(cursor,game.frontier.target(game.frontier.data.active))
-	cursor.scale=Vector3.ONE*(1.35 if game.frontier.data.active in IslandFrontier.BUILD_IDS else 1.0)
+	update_selection_ring();rebuild_navigation()
 	if animate:
 		get_tree().create_timer(.75).timeout.connect(func():
 			if not is_inside_tree():return
@@ -290,36 +322,126 @@ func nearest_cell(p:Vector2)->Vector2i:
 		var d=IslandFrontier.point(cell).distance_squared_to(p)
 		if d<distance:result=cell;distance=d
 	return result
+func stable_point(node:Node3D,point:Vector3)->Vector3:
+	# Collision bounds use the final scale while a newly built model pops in.
+	var current=node
+	while current!=globe and current is Node3D:
+		var basis=Basis.from_euler(Vector3.ZERO if current.name=="Rotor" else current.rotation).scaled(current.get_meta("full_scale",current.scale))
+		point=basis*point+current.position;current=current.get_parent()
+	return point
+func add_obstacle(visual:Node3D,label:String,reserve_finished=false):
+	if not visual.is_visible_in_tree():return
+	var points=PackedVector2Array()
+	for mesh in visual.find_children("*","MeshInstance3D",true,false):
+		if not reserve_finished and not mesh.is_visible_in_tree():continue
+		var box=mesh.get_aabb()
+		for i in range(8):points.append(terrain.coordinates(stable_point(mesh,box.get_endpoint(i))))
+	if points.size()>2:
+		var bounds=Rect2(points[0],Vector2.ZERO)
+		for point in points:bounds=bounds.expand(point)
+		obstacles.append({"id":label,"polygon":Geometry2D.convex_hull(points),"bounds":bounds})
+func on_land(p:Vector2)->bool:
+	# Axial hex rounding is constant-time even after all 33 tiles are present.
+	var r=p.y/(1.5*IslandFrontier.HEX);var q=p.x/(sqrt(3.0)*IslandFrontier.HEX)-r*.5;var s=-q-r
+	var iq=roundi(q);var ir=roundi(r);var ids=roundi(s)
+	var dq=absf(iq-q);var dr=absf(ir-r);var ds=absf(ids-s)
+	if dq>dr and dq>ds:iq=-ir-ids
+	elif dr>ds:ir=-iq-ids
+	return land.has(Vector2i(iq,ir))
+func clear_ground(p:Vector2,clearance=WALK_CLEARANCE)->bool:
+	if not on_land(p):return false
+	for i in range(8):
+		if not on_land(p+Vector2.from_angle(i*TAU/8)*minf(clearance,.20)):return false
+	for obstacle in obstacles:
+		if not obstacle.bounds.grow(clearance).has_point(p):continue
+		var polygon:PackedVector2Array=obstacle.polygon
+		if Geometry2D.is_point_in_polygon(p,polygon):return false
+		for i in range(polygon.size()-1):
+			if p.distance_to(Geometry2D.get_closest_point_to_segment(p,polygon[i],polygon[i+1]))<clearance:return false
+	return true
+func clear_segment(a:Vector2,b:Vector2,clearance=WALK_CLEARANCE)->bool:
+	var count=maxi(1,ceili(a.distance_to(b)/.10))
+	for i in range(count+1):
+		if not clear_ground(a.lerp(b,float(i)/count),clearance):return false
+	return true
+func rebuild_navigation():
+	obstacles.clear()
+	for node in fixed_obstacles:add_obstacle(node,"landing")
+	for i in range(buildings.size()):
+		add_obstacle(buildings[i],IslandFrontier.BUILD_IDS[i],true)
+		for j in range(additions[i].size()):add_obstacle(additions[i][j],ADDITIONS[i][j])
+	for id in facilities:add_obstacle(facilities[id],id)
+	var signature=str(land.size())
+	for obstacle in obstacles:
+		signature+=obstacle.id
+		for point in obstacle.polygon:signature+=str(Vector2i(roundi(point.x*1000),roundi(point.y*1000)))
+	if signature==navigation_signature:return
+	navigation_signature=signature
+	navigation.clear();nav_grid.clear();nav_components.clear()
+	var lower=Vector2(INF,INF);var upper=Vector2(-INF,-INF)
+	for cell in land:
+		var center=IslandFrontier.point(cell);lower=lower.min(center-Vector2.ONE*IslandFrontier.HEX);upper=upper.max(center+Vector2.ONE*IslandFrontier.HEX)
+	for x in range(floori(lower.x/NAV_STEP),ceili(upper.x/NAV_STEP)+1):
+		for y in range(floori(lower.y/NAV_STEP),ceili(upper.y/NAV_STEP)+1):
+			var key=Vector2i(x,y);var point=Vector2(key)*NAV_STEP
+			if clear_ground(point):
+				var id=nav_grid.size();nav_grid[key]=id;navigation.add_point(id,point)
+	for key in nav_grid:
+		for step in [Vector2i(1,0),Vector2i(0,1),Vector2i(1,1),Vector2i(1,-1)]:
+			if nav_grid.has(key+step) and clear_segment(Vector2(key)*NAV_STEP,Vector2(key+step)*NAV_STEP):navigation.connect_points(nav_grid[key],nav_grid[key+step])
+	for id in navigation.get_point_ids():
+		if nav_components.has(id):continue
+		var queue=[id];nav_components[id]=id
+		while not queue.is_empty():
+			var next=queue.pop_back()
+			for neighbor in navigation.get_point_connections(next):
+				if not nav_components.has(neighbor):nav_components[neighbor]=id;queue.append(neighbor)
+	if worker and move_tween and move_tween.is_running():walk_to(walk_goal)
+func safe_point(wanted:Vector2,clearance=WALK_CLEARANCE,from=Vector2(INF,INF))->Vector2:
+	if navigation.get_point_count()==0:return wanted
+	if not from.is_finite():from=terrain.coordinates(builder.position) if is_instance_valid(builder) else Vector2.ZERO
+	var component=nav_components[navigation.get_closest_point(from)]
+	if clear_ground(wanted,clearance) and nav_components[navigation.get_closest_point(wanted)]==component:return wanted
+	var best=wanted;var score=INF
+	for id in navigation.get_point_ids():
+		var p=navigation.get_point_position(id);var distance=p.distance_squared_to(wanted)
+		if distance<score and nav_components[id]==component and clear_ground(p,clearance):score=distance;best=p
+	return best
 func walking_route(origin:Vector2,target:Vector2)->Array:
-	var first=nearest_cell(origin);var last=nearest_cell(target)
-	var queue=[first];var previous={first:first};var directions=[Vector2i(1,0),Vector2i(-1,0),Vector2i(0,1),Vector2i(0,-1),Vector2i(1,-1),Vector2i(-1,1)]
-	while not queue.is_empty():
-		var cell=queue.pop_front()
-		if cell==last:break
-		for step in directions:
-			var next=cell+step
-			if land.has(next) and not previous.has(next):previous[next]=cell;queue.append(next)
-	var route=[];var cell=last
-	if not previous.has(last):return [nearest_land(origin)]
-	while cell!=first:route.push_front(IslandFrontier.point(cell));cell=previous[cell]
-	if not route.is_empty():route.push_front(IslandFrontier.point(first))
-	route.append(target);return route
+	if navigation.get_point_count()==0:return []
+	target=safe_point(target,WALK_CLEARANCE,origin)
+	if clear_segment(origin,target):return [target]
+	var first=navigation.get_closest_point(origin);var last=navigation.get_closest_point(target)
+	var path=Array(navigation.get_point_path(first,last))
+	if path.is_empty():return []
+	path.append(target)
+	var route=[];var from=origin;var index=0
+	while index<path.size():
+		var far=index
+		for next in range(index,path.size()):
+			if clear_segment(from,path[next]):far=next
+			else:break
+		route.append(path[far]);from=path[far];index=far+1
+	return route
 func walk_to(target:Vector2,duration_scale=1.0):
-	target=nearest_land(target)
+	target=safe_point(nearest_land(target))
+	walk_goal=target
 	if move_tween and move_tween.is_valid():move_tween.kill()
 	var origin=terrain.coordinates(builder.position)
 	var speed=1.1
 	if worker and worker.work_left>0:speed=.95 if worker.phase==1 else 1.8
 	move_tween=create_tween()
-	for waypoint in walking_route(origin,target):
+	var route=walking_route(origin,target)
+	if route.is_empty():move_tween.kill();return
+	for waypoint in route:
 		if origin.distance_to(waypoint)<.025:continue
 		var heading=atan2(-(waypoint-origin).x,-(waypoint-origin).y)
 		move_tween.tween_method(func(p):
 			travel_heading=lerp_angle(travel_heading,heading,1-exp(-get_process_delta_time()*9))
 			place(builder,p,travel_heading),origin,waypoint,maxf(.15,origin.distance_to(waypoint)/speed))
 		origin=waypoint
-	var facing=work_point-target;var final_heading=atan2(-facing.x,-facing.y)
-	move_tween.tween_method(func(_t):travel_heading=lerp_angle(travel_heading,final_heading,.2);place(builder,target,travel_heading),0.0,1.0,.2)
+	var reached:Vector2=route[-1];var facing=work_point-reached;var final_heading=atan2(-facing.x,-facing.y)
+	move_tween.tween_method(func(_t):travel_heading=lerp_angle(travel_heading,final_heading,.2);place(builder,reached,travel_heading),0.0,1.0,.2)
 func prepare_resource(animate=true):
 	active_kind=1 if game.frontier.site(game.frontier.data.active)==1 and not resources[1].is_empty() else 0
 	var pool=resources[active_kind];var target=game.frontier.target(game.frontier.data.active)
@@ -331,7 +453,7 @@ func prepare_resource(animate=true):
 	if not candidates.is_empty():
 		selected_entry=candidates[int(game.learning.data.harvested[active_kind])%mini(3,candidates.size())]
 		active_resource=pool.find(selected_entry)
-	place(cursor,target)
+	update_selection_ring()
 	if last_target!=game.frontier.data.active and animate:recenter()
 	last_target=game.frontier.data.active
 func set_tool(index:int):
@@ -342,7 +464,8 @@ func work_stance(phase:int)->Vector2:
 		var local_camera=globe.to_local(game.camera.global_position);var delta=local_camera-surface(work_point)
 		front=Vector2(delta.x,delta.z).normalized()
 	var side=Vector2(front.y,-front.x)
-	return work_point+front*1.05+side*([-.24,.3,0.0,.4][phase%4])
+	var wanted=work_point+front*1.15+side*([-.24,.3,0.0,.4][phase%4])
+	return safe_point(wanted)
 func send_material(start:Vector3,target:Vector3,kind:String,count=4,duration=.7,delay=0.0):
 	for i in range(count):
 		var chip=model(kind,globe);chip.scale=Vector3.ONE*(.85 if kind in ["timber","plank","brick"] else .18)
@@ -392,7 +515,9 @@ func _process(dt):
 		clouds[i].position=p;clouds[i].basis=Basis(Quaternion(Vector3.UP,p.normalized()));clouds[i].scale=Vector3.ONE*(1.0+i*.08)
 	var ba=time*.018;boat.position=Vector3(sin(ba)*10.4,5.2,cos(ba)*10.4)
 	var normal=boat.position.normalized();var forward=Vector3(cos(ba),0,-sin(ba)).normalized();boat.basis=Basis(forward.cross(normal).normalized(),normal,-forward);boat.scale=Vector3.ONE*.7
-	cursor.get_child(0).rotation.y=time*.35;ring_material.albedo_color=Color(1,1,.98,.72+.26*sin(time*2.6))
+	ring_clock+=dt
+	if ring_clock>.05:ring_clock=0;update_selection_ring()
+	ring_material.albedo_color=Color(1,1,.98,.72+.26*sin(time*2.6))
 	for id in markers:
 		markers[id].get_node("Sign").position.y=.38+sin(time*2+id.length())*.07
 	for pool in resources:

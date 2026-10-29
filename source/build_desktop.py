@@ -26,8 +26,8 @@ name="Windows Desktop"
 platform="Windows Desktop"
 runnable=true
 export_filter="all_resources"
-include_filter="assets/*.json,assets/*LICENSE*.txt,assets/*COPYRIGHT*.txt,assets/CREDITS.txt,assets/fonts/*OFL.txt"
-exclude_filter="art-source/*,tools/*,tests/*,*.blend,assets/fonts/NotoSansSC.ttf,assets/fonts/NotoSans.ttf"
+include_filter="assets/*.json,assets/*LICENSE*.txt,assets/*COPYRIGHT*.txt,assets/CREDITS.txt,assets/fonts/*OFL.txt,assets/wordbooks/*.json,assets/wordbooks/*.txt,assets/wordbooks/licenses/*"
+exclude_filter="art-source/*,tools/*,tests/*,*.blend,assets/wordbooks/sources/*,assets/wordbooks/content-review.json,assets/wordbooks/audio-audit.json,assets/fonts/NotoSansSC.ttf,assets/fonts/NotoSans.ttf"
 [preset.0.options]
 custom_template/release="TEMPLATE"
 binary_format/architecture="x86_64"

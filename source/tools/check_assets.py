@@ -42,7 +42,8 @@ assert len(models)==39
 from fontTools.ttLib import TTFont
 codes=set()
 for name in ['FrontierSC.ttf','FrontierLatin.ttf']:codes.update(TTFont(r/'assets/fonts'/name).getBestCmap())
-chars=''.join(p.read_text('utf-8-sig') for p in [*(r/'scripts').glob('*.gd'),*(r/'assets').glob('*.json')])
+runtime_json=[*(r/'assets').glob('*.json'),r/'assets/wordbooks/lexicon.json',r/'assets/wordbooks/catalog.json']
+chars=''.join(p.read_text('utf-8-sig') for p in [*(r/'scripts').glob('*.gd'),*runtime_json] if p.exists())
 missing=set(ord(c) for c in chars if not c.isspace())-codes
 assert not missing,[(hex(c),chr(c)) for c in missing]
 report={'words':96,'unique_meaning_choices':True,'work_notes':17,'short_and_expanded_readings':34,'listening_instructions':17,'sentence_tasks':17,'lookup_entries':len(dictionary),'every_content_word_has_lookup_and_audio':True,'audio_text_hashes_verified':len(manifest),'models':models,'fonts_complete':True}

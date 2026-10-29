@@ -1,4 +1,4 @@
-词屿 · 0.9
+词屿 · 0.10
 
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/
@@ -15,6 +15,9 @@ https://github.com/google/fonts/tree/main/ofl/notosans
 
 词典：ECDICT（MIT），本地筛选词形与释义。完整许可见 ECDICT-LICENSE.txt。
 https://github.com/skywind3000/ECDICT
+
+词书：小学为本项目选编；初中到六级使用 ECDICT 分类，专八参考词头使用 OpenEtymology，数据许可 CC BY-SA 4.0。按隔两级规则筛选、修订短释义并生成题目。完整来源、修改说明及许可证随应用保留在 wordbooks/SOURCE_NOTES.txt、provenance.json 和 licenses/。这些参考分类不宣称官方完整考试大纲。
+https://github.com/openetymology/OpenEtymology/tree/main/TEM8
 
 语音：Kokoro-82M 的 af_heart 美式英语合成录音；模型为 Apache 2.0，使用的 kokoro-onnx 工具为 MIT。应用仅包含输出音频，不包含模型和推理库；这些录音不是真人录音。音效为本项目合成。
 https://huggingface.co/hexgrad/Kokoro-82M

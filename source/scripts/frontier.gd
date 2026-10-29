@@ -25,10 +25,10 @@ var data:Dictionary
 func _init(owner_learning:IslandLearning):
 	learning=owner_learning
 	var stored=learning.data.frontier
-	data={"active":"grove","progress":{},"turns":{}}
+	data={"active":"grove","progress":{},"turns":{},"effort":{}}
 	if not stored.is_empty():
 		if stored.get("active") is String:data.active=stored.active
-		for key in ["progress","turns"]:
+		for key in ["progress","turns","effort"]:
 			if stored.get(key) is Dictionary:data[key]=stored[key].duplicate(true)
 	else:
 		# Old buildings remain where they were earned; expose their new supporting land.
@@ -41,6 +41,8 @@ func _init(owner_learning:IslandLearning):
 		data.progress[c.id]=clampi(int(data.progress.get(c.id,0)),0,c.need) if data.progress.get(c.id,0) is int or data.progress.get(c.id,0) is float else 0
 	for id in data.turns.keys():
 		data.turns[id]=clampi(int(data.turns[id]),0,1000000) if data.turns[id] is int or data.turns[id] is float else 0
+	for id in data.effort.keys():
+		var value=data.effort[id];data.effort[id]=clampf(float(value),0,.999999) if (value is int or value is float) and is_finite(float(value)) else 0.0
 	learning.data.frontier=data
 	if not available(data.active):data.active="grove"
 	learning.data.active=site(data.active)
@@ -82,8 +84,12 @@ func unlock_hint(id:String)->String:
 func site(id:String)->int:return BUILD_IDS.find(id) if id in BUILD_IDS else int(chapter(id).get("site",0))
 func target(id:String)->Vector2:return point(BUILD_CELLS[BUILD_IDS.find(id)]) if id in BUILD_IDS else point(chapter(id).point)
 func progress(id:String)->Vector2:
-	if id in BUILD_IDS:return learning.progress(site(id))
-	var c=chapter(id);return Vector2(data.progress[id],c.need)
+	var result:Vector2
+	if id in BUILD_IDS:result=learning.progress(site(id))
+	else:
+		var c=chapter(id);result=Vector2(data.progress[id],c.need)
+	if not done(id):result.x+=float(data.effort.get(id,0))
+	return result
 func title(id:String)->String:
 	if id in BUILD_IDS:
 		var i=site(id);return IslandLearning.STEPS[i][learning.stage(i)] if not done(id) else IslandLearning.PROJECTS[i]+" · 自由照料"
@@ -93,11 +99,67 @@ func choose(id:String)->bool:
 	if not available(id):return false
 	data.active=id;learning.select_site(site(id));return true
 func advance()->Dictionary:
-	var id=str(data.active);data.turns[id]=int(data.turns.get(id,0))+1
+	var id=str(data.active);data.effort[id]=0.0;data.turns[id]=int(data.turns.get(id,0))+1
 	if id in BUILD_IDS:return learning.advance()
 	var c=chapter(id);var old=int(data.progress[id]);data.progress[id]=mini(c.need,old+1)
 	learning.data.actions+=1
 	return {"complete":old<c.need and data.progress[id]==c.need,"project":site(id),"fraction":float(data.progress[id])/c.need}
+func content_units()->int:
+	var total=IslandLearning.EXTRA*3
+	for need in IslandLearning.NEEDS:total+=need
+	for c in CHAPTERS:total+=c.need
+	return total
+func finished_units()->int:
+	var total=0
+	for i in range(3):total+=int(learning.data.build[i])+int(learning.data.development[i])
+	for c in CHAPTERS:total+=int(data.progress[c.id])
+	return total
+func refresh_plan():
+	var plan=learning.data.study_plan;var capacity=content_units();var book=str(learning.data.book_id)
+	var saved_capacity=plan.get("capacity",0);var saved_quota=plan.get("quota",0)
+	var valid=(saved_capacity is int or saved_capacity is float) and (saved_quota is int or saved_quota is float)
+	valid=valid and is_finite(float(saved_capacity)) and is_finite(float(saved_quota)) and float(saved_quota)>=1 and float(saved_quota)<=48
+	if not valid or plan.get("book","")!=book or int(saved_capacity)!=capacity:
+		var remaining=maxi(1,capacity-finished_units());var words=learning.book_remaining()
+		# Three of six recurring tasks are words; approximate book coverage without
+		# demanding hundreds of repetitions for the last unfinished structure.
+		var quota=clampi(int(ceil(float(words)*2.0/remaining)),1,48) if not book.is_empty() else 1
+		learning.data.study_plan={"book":book,"capacity":capacity,"quota":quota,"planned_words":words,"planned_steps":remaining}
+	else:learning.data.study_plan.quota=int(saved_quota)
+func study_quota(id:String="")->int:
+	refresh_plan()
+	if done(str(data.active) if id.is_empty() else id):return 1
+	# A new landing shows the first visible changes promptly. Completed work is
+	# never reset when books change or later content adds more destinations.
+	if finished_units()<3:return mini(2,int(learning.data.study_plan.quota))
+	# Ease into the selected book instead of jumping from two exercises to dozens.
+	var target=int(learning.data.study_plan.quota)
+	var introduction=clampf(float(finished_units()-3)/15.0,0.0,1.0)
+	return maxi(1,roundi(lerpf(float(mini(2,target)),float(target),smoothstep(0.0,1.0,introduction))))
+func study_advance()->Dictionary:
+	var id=str(data.active);var quota=study_quota(id)
+	var part=float(data.effort.get(id,0))+1.0/quota
+	if done(id):return advance()
+	if part>=1.0-.000001:
+		var result=advance()
+		if not done(id):data.effort[id]=maxf(0,part-1.0)
+		return result
+	data.effort[id]=part;data.turns[id]=int(data.turns.get(id,0))+1;learning.data.actions+=1
+	if id in BUILD_IDS:learning.data.work_turns[site(id)]+=1
+	var fraction=float(learning.data.build[site(id)])/IslandLearning.NEEDS[site(id)] if id in BUILD_IDS else float(data.progress[id])/chapter(id).need
+	return {"complete":false,"project":site(id),"fraction":fraction,"unit_progress":part,"word_quota":quota}
+func finish_for_development(everything=false)->int:
+	var before=finished_units();var targets=BUILD_IDS.duplicate() if everything else [str(data.active)]
+	if everything:
+		for c in CHAPTERS:targets.append(c.id)
+	for id in targets:
+		if id in BUILD_IDS:
+			var index=site(id);learning.data.build[index]=IslandLearning.NEEDS[index];learning.data.development[index]=IslandLearning.EXTRA
+		else:data.progress[id]=chapter(id).need
+		data.effort[id]=0.0
+	var advanced=finished_units()-before
+	learning.data.dev_steps+=advanced;learning.data.actions+=advanced
+	return advanced
 func cells()->Array:
 	var result=START.duplicate()
 	for c in CHAPTERS:

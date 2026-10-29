@@ -17,17 +17,49 @@ var stroke_time=0.0
 var last_impact=-1
 var cargo:Array=[]
 var feet:Array=[]
+var skeleton:Skeleton3D
+var skin_bindings:Array=[]
+var head_pivot:Node3D
+var seated_lift=-.39
+var rest_support:Array=[]
+var rest_support_binds:Array=[]
+var rest_ground_offset=0.0
+var rest_ground_ready=false
+var rest_ground_variant=-1
+var rest_ground_anchor=Vector3.INF
+var rest_ground_land=0
+var rest_ground_samples=0
 
 func _init(owner_world):
 	world=owner_world
 	# The model faces -Z. Positive shoulder X lifts the hand forward.
 	# Put the upper body and shoulders on one waist pivot so a strike uses the torso.
 	var torso=world.limbs.Body
-	for part in torso.get_children():
-		if part is Node3D:part.position.y-=.66
-	torso.position.y=.66
+	if absf(torso.position.y)<.01:
+		for part in torso.get_children():
+			if part is Node3D:part.position.y-=.66
+		torso.position.y=.66
 	for side in ["L","R"]:world.limbs["Arm"+side].reparent(torso,true)
+	seated_lift=-.39-(world.limbs.LegL.position.y-.62)*.9
+	head_pivot=world.actor.find_child("HeadPivot",true,false)
 	feet=world.actor.find_children("Foot*","MeshInstance3D",true,false)
+	for foot in feet:
+		if str(foot.name).begins_with("FootProbe"):foot.hide()
+	var skeletons=world.actor.find_children("*","Skeleton3D",true,false)
+	if not skeletons.is_empty():
+		skeleton=skeletons[0]
+		for name in world.limbs:
+			var bone=skeleton.find_bone("Skin"+name)
+			if bone>=0:
+				var driver=world.limbs[name]
+				var correction=driver.global_basis.inverse()*skeleton.global_basis*skeleton.get_bone_global_rest(bone).basis
+				skin_bindings.append({"bone":bone,"driver":driver,"correction":correction})
+		if is_instance_valid(head_pivot):
+			var head_bone=skeleton.find_bone("SkinHead")
+			if head_bone>=0:
+				var correction=head_pivot.global_basis.inverse()*skeleton.global_basis*skeleton.get_bone_global_rest(head_bone).basis
+				skin_bindings.append({"bone":head_bone,"driver":head_pivot,"correction":correction})
+		prepare_rest_support()
 	carry=Node3D.new();torso.add_child(carry)
 	for name in ["Wood","Stone"]:
 		var group=Node3D.new();group.name=name;carry.add_child(group);cargo.append(group)
@@ -39,11 +71,11 @@ func _init(owner_world):
 func rest_spot()->Vector2:
 	var best=Vector2.ZERO;var score=INF
 	var current=world.terrain.coordinates(world.builder.position)
-	for cell in world.land:
-		if cell in IslandFrontier.BUILD_CELLS or cell in [Vector2i(0,1),Vector2i(0,-1),Vector2i(3,0)]:continue
-		var p=IslandFrontier.point(cell)+Vector2(0,-.27);var d=p.distance_squared_to(current)
-		if d<score:score=d;best=p
-	return best
+	var component=world.nav_components.get(world.navigation.get_closest_point(current),-1)
+	for id in world.navigation.get_point_ids():
+		var p=world.navigation.get_point_position(id);var d=p.distance_squared_to(current)
+		if d<score and world.nav_components.get(id,-2)==component and world.clear_segment(p,p+Vector2(0,1.45),.38):score=d;best=p
+	return best if is_finite(score) else world.safe_point(current,.45)
 func settle():
 	world.set_tool(-1);carry.hide();rest_time=0;rest_variant=0
 	var spot=rest_spot();world.work_point=spot+Vector2(0,-1);world.walk_to(spot,.75)
@@ -83,15 +115,19 @@ func update(dt:float):
 	world.set_tool((kind if phase==0 else 2) if working and phase!=1 and waking<=0 else -1)
 	var pose={}
 	for name in world.limbs:pose[name]=Vector3.ZERO
-	var rot=Vector3.ZERO;var lift=0.0;var wrist=0.0;var contact_height=.015
+	var rot=Vector3.ZERO;var lift=0.0;var wrist=0.0;var contact_height=.015;var elasticity=0.0
 	if walking:
 		var moving=locomotion_pose(world.travelled,world.motion_speed,carry.visible)
 		pose.merge(moving.pose,true);rot=moving.rotation;lift=moving.lift;contact_height=moving.ground
+		# A restrained soft landing follows actual footsteps, never a looping idle wobble.
+		var stride=lerpf(1.22,1.65,clampf((world.motion_speed-1.25)/.50,0,1))
+		elasticity=-.018*pow(abs(sin(world.travelled*TAU/stride)),12)
 	elif working and waking<=0:
 		stroke_time+=dt
 		if phase!=1:
 			var action=2 if phase==2 else kind
 			var cycle=[1.65,1.9,1.35][action];var beat=fmod(stroke_time,cycle)/cycle
+			elasticity=impact_elasticity(beat)
 			var strike=strike_pose(beat,action);pose.merge(strike.pose,true);rot=strike.rotation;lift=strike.lift;wrist=strike.wrist
 			var impact=int(floor(stroke_time/cycle))
 			if beat>=.64 and impact!=last_impact:
@@ -104,21 +140,81 @@ func update(dt:float):
 	elif waking<=0:
 		match rest_variant:
 			0: # Sitting on the grass.
-				rot.y=PI;lift=-.39;pose.LegL.x=1.50;pose.LegR.x=1.48;pose.KneeL.x=-.12;pose.KneeR.x=-.10;pose.ArmL=Vector3(.12,0,.12);pose.ArmR=Vector3(.12,0,-.12);pose.ElbowL.x=.08;pose.ElbowR.x=.08;pose.Body.x=.05
-			1: # Lying back, hands behind the head; no tool or construction effects.
-				rot.x=PI/2;lift=.24;pose.ArmL.z=-1.9;pose.ArmR.z=1.9;pose.ElbowL.x=1.0;pose.ElbowR.x=1.0;pose.LegL.z=-.12;pose.LegR.z=.12
+				rot.y=PI;lift=seated_lift;pose.LegL.x=1.50;pose.LegR.x=1.48;pose.KneeL.x=-.12;pose.KneeR.x=-.10;pose.ArmL=Vector3(.12,0,.12);pose.ArmR=Vector3(.12,0,-.12);pose.ElbowL.x=.08;pose.ElbowR.x=.08;pose.Body.x=.05
+			1: # Lying back with arms resting beside the body; no tools or effects.
+				rot.x=PI/2;lift=.18;pose.ArmL.z=-.32;pose.ArmR.z=.32;pose.ElbowL.x=-.25;pose.ElbowR.x=-.25;pose.LegL.z=-.12;pose.LegR.z=.12
 			2: # A slow stretch.
 				rot.y=PI;pose.ArmL.z=-2.6;pose.ArmR.z=2.6;pose.ElbowL.x=.3;pose.ElbowR.x=.3;pose.Body.z=sin(rest_time*1.4)*.10;pose.Body.x=-.07
 			3: # Sitting and gently swinging one foot.
-				rot.y=PI;lift=-.39;pose.LegL.x=1.50;pose.LegR.x=1.48;pose.KneeL.x=sin(world.time*1.8)*.10;pose.KneeR.x=-.10;pose.ArmL=Vector3(.12,0,.12);pose.ArmR=Vector3(.12,0,-.12);pose.ElbowL.x=.08;pose.ElbowR.x=.08;pose.Body.x=.05
+				rot.y=PI;lift=seated_lift;pose.LegL.x=1.50;pose.LegR.x=1.48;pose.KneeL.x=sin(world.time*1.8)*.10;pose.KneeR.x=-.10;pose.ArmL=Vector3(.12,0,.12);pose.ArmR=Vector3(.12,0,-.12);pose.ElbowL.x=.08;pose.ElbowR.x=.08;pose.Body.x=.05
 	if carry.visible:
 		pose.ArmL=Vector3(.95,0,.34);pose.ArmR=Vector3(.95,0,-.34);pose.ElbowL.x=.40;pose.ElbowR.x=.40;pose.Body.x=.08
+	var grounded_rest=not working and not walking and waking<=0 and rest_variant in [0,1,3]
+	if not grounded_rest or rest_variant!=rest_ground_variant or world.builder.position.distance_squared_to(rest_ground_anchor)>.0001 or world.land.size()!=rest_ground_land:
+		rest_ground_ready=false;rest_ground_offset=0.0;rest_ground_variant=rest_variant;rest_ground_anchor=world.builder.position;rest_ground_land=world.land.size()
 	var blend=1-exp(-dt*(13.0 if working or walking else 6.0))
 	for name in world.limbs:world.limbs[name].rotation=world.limbs[name].rotation.lerp(pose[name],blend)
 	world.actor.rotation=world.actor.rotation.lerp(rot,blend)
-	world.actor.position.y=lerpf(world.actor.position.y,lift+sin(world.time*1.5)*.005,blend)
+	var stretch=1.0+elasticity;var width=sqrt(1.0/stretch)
+	world.actor.scale=world.actor.scale.lerp(Vector3(width,stretch,width)*.9,1-exp(-dt*22))
+	world.actor.position.y=lerpf(world.actor.position.y,lift+rest_ground_offset+sin(world.time*1.5)*.005,blend)
 	for tool in world.tools.values():tool.rotation.x=lerpf(tool.rotation.x,wrist,blend)
+	if is_instance_valid(head_pivot):
+		# A delayed, small counter-turn lets the head settle after the torso. No idle oscillation.
+		var follow=Vector3(-pose.Body.x*.25,-pose.Body.y*.30,-pose.Body.z*.25)
+		head_pivot.rotation=head_pivot.rotation.lerp(follow,1-exp(-dt*7.0))
 	if walking or working:plant_feet(contact_height)
+	update_skin()
+	if grounded_rest and not rest_ground_ready and rest_time>=.9 and world.actor.rotation.distance_squared_to(rot)<.0001:
+		settle_rest_support()
+
+func prepare_rest_support():
+	# One initialization scan picks a small fixed set of skin support probes.
+	# During play only these probes are transformed, once after a pose/location change.
+	var mesh=world.actor.find_child("ContinuousBody",true,false)
+	if mesh==null or mesh.skin==null:return
+	var arrays=mesh.mesh.surface_get_arrays(0);var chosen={}
+	for i in arrays[Mesh.ARRAY_VERTEX].size():
+		var p:Vector3=arrays[Mesh.ARRAY_VERTEX][i];var dominant=0;var highest=0.0
+		for j in range(4):
+			if arrays[Mesh.ARRAY_WEIGHTS][i*4+j]>highest:highest=arrays[Mesh.ARRAY_WEIGHTS][i*4+j];dominant=arrays[Mesh.ARRAY_BONES][i*4+j]
+		for axis in range(8):
+			var key=str(dominant)+"/"+str(axis);var angle=axis*TAU/8.0;var score=p.y*cos(angle)+p.z*sin(angle)
+			if not chosen.has(key) or score<chosen[key].score:chosen[key]={"index":i,"score":score}
+	for pick in chosen.values():
+		var i=pick.index;var weights=[]
+		for j in range(4):weights.append({"bind":arrays[Mesh.ARRAY_BONES][i*4+j],"weight":arrays[Mesh.ARRAY_WEIGHTS][i*4+j]})
+		rest_support.append({"position":arrays[Mesh.ARRAY_VERTEX][i],"weights":weights})
+	for i in mesh.skin.get_bind_count():rest_support_binds.append({"bone":skeleton.find_bone(mesh.skin.get_bind_name(i)),"pose":mesh.skin.get_bind_pose(i)})
+
+func settle_rest_support():
+	if rest_support.is_empty():return
+	skeleton.force_update_all_bone_transforms()
+	var binds=[];var gap=INF
+	for bind in rest_support_binds:binds.append(skeleton.get_bone_global_pose(bind.bone)*bind.pose)
+	for probe in rest_support:
+		var point=Vector3.ZERO
+		for weight in probe.weights:point+=(binds[weight.bind]*probe.position)*weight.weight
+		var p=world.globe.to_local(skeleton.to_global(point));var ground=world.ground_point(world.terrain.coordinates(p))
+		gap=minf(gap,(p-ground).dot(world.builder.basis.y))
+	if is_finite(gap):
+		rest_ground_offset=clampf(.025-gap,-.18,.25)
+		world.actor.position.y+=rest_ground_offset
+		update_skin()
+	rest_ground_ready=true;rest_ground_samples+=1
+
+func update_skin():
+	if not is_instance_valid(skeleton):return
+	for binding in skin_bindings:
+		var driver=binding.driver
+		var pose=Transform3D(skeleton.global_basis.inverse()*driver.global_basis*binding.correction,skeleton.to_local(driver.global_position))
+		skeleton.set_bone_global_pose_override(binding.bone,pose,1.0,true)
+
+func impact_elasticity(beat:float)->float:
+	# Compress once on impact and give a smaller rebound; the remaining stroke is still.
+	if beat>=.64 and beat<.74:return -.045*sin((beat-.64)/.10*PI)
+	if beat>=.74 and beat<.87:return .018*sin((beat-.74)/.13*PI)
+	return 0.0
 
 func feet_height()->float:
 	var height=INF

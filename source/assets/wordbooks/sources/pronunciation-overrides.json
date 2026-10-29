@@ -1,0 +1,6 @@
+{
+  "live": {"phonemes":"lˈɪv","phonetic":"lɪv","sense":"动词：居住；生活。单独拼读默认给出形容词 /laɪv/，此处纠正为主释义读法。"},
+  "close": {"phonemes":"klˈoʊz","phonetic":"kloʊz","sense":"动词：关闭。单独拼读默认给出形容词 /kloʊs/，此处纠正为主释义读法。"},
+  "ms.": {"phonemes":"mˈɪz","phonetic":"mɪz","sense":"称谓：女士。保留缩写词头，读作 Ms.，不逐个念 M、S 字母。"},
+  "no.": {"phonemes":"nˈʌmbɚ","phonetic":"ˈnʌmbɚ","sense":"缩写：号码，展开读作 number，不读成否定词 no。"}
+}

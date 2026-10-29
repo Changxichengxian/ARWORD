@@ -22,14 +22,14 @@ func run():
 	check(game.qa,"save isolation")
 	check(ProjectSettings.get_setting("display/window/handheld/orientation")==1,"portrait app orientation")
 	check(game.learning.bank.size()==96 and game.notes.size()==12 and game.frontier_notes.size()==5,"96 curated words and 17 contextual work notes")
-	var m=IslandLearning.new();m.rng.seed=1
+	var m=IslandLearning.new();m.select_book("cet4");m.rng.seed=1
 	m.data.words["retain"]={"seen":1,"correct":0,"strength":0,"last":1,"due":2,"helped":1}
 	check(m.next_word(1000).id=="retain","due review precedes unseen word")
 	check(m.next_word(1000).id!="retain","immediate repeats are avoided")
-	m.mark_help("repair");m.data.context_help.work00_read=true
+	m.mark_help("retain");m.data.context_help.work00_read=true
 	var restarted=IslandLearning.new();restarted.accept_save(JSON.parse_string(JSON.stringify(m.data)))
-	check(restarted.next_word(1000).id=="repair" and restarted.data.context_help.work00_read,"unfinished word and context help survive restart")
-	m.data.help_pending="";m.record("retain",false,1000)
+	check(restarted.next_word(1000).id=="retain" and restarted.data.context_help.work00_read,"unfinished word and context help survive restart")
+	m.data.help_pending="";m.data.pending_help.clear();m.record("retain",false,1000)
 	check(m.data.words.retain.strength==1 and m.data.words.retain.due==1120,"first independent recall returns after two minutes")
 	m.record("retain",false,1001);check(m.data.words.retain.strength==1,"instant repetition does not inflate memory strength")
 	m.record("retain",false,1300);check(m.data.words.retain.strength==2 and m.data.words.retain.due==1900,"second spaced recall returns after ten minutes")
@@ -83,7 +83,9 @@ func run():
 	check(game.learning.data.actions==before+1 and game.learning.data.words[id].strength==0,"assisted recall builds without counting independent mastery")
 	await create_timer(1.45).timeout
 	check(game.mode=="read","two recalls lead directly into a reading task")
-	var compact_land=game.world.land.size()==4
+	# Expanded wordbooks pace construction across several exercises; inspect the
+	# actual earned tile count, rather than assuming one exercise is one world step.
+	var compact_land=game.world.land.size()==game.frontier.cells().size()
 	for anchor in game.world.land.values():
 		for mesh in anchor.get_children():
 			if mesh is MeshInstance3D and mesh.get_aabb().size.length()>5:compact_land=false
@@ -150,10 +152,11 @@ func run():
 	for c in IslandFrontier.CHAPTERS:
 		for cell in c.cells:
 			if world.land.has(cell):
-				var destination=IslandFrontier.point(cell);var path=world.walking_route(Vector2.ZERO,destination);var last=Vector2.ZERO
-				if path.is_empty() or not path[-1].is_equal_approx(destination):connected=false
+				var last=world.safe_point(Vector2.ZERO);var destination=world.safe_point(IslandFrontier.point(cell));var path=world.walking_route(last,destination)
+				if path.is_empty() or not path[-1].is_equal_approx(destination):
+					connected=false;print("ROUTE_TARGET_FAILED ",cell," destination=",destination," path=",path)
 				for waypoint in path:
-					if waypoint.distance_to(last)>sqrt(3.0)*IslandFrontier.HEX+.01:connected=false
+					if not world.clear_segment(last,waypoint):connected=false;print("ROUTE_BLOCKED ",cell," from=",last," to=",waypoint)
 					last=waypoint
 	check(connected,"worker routes follow connected land")
 	var original_zoom=game.camera.size

@@ -59,12 +59,16 @@ func _ready():
 	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
 	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
 	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"工作手记"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
+	if not game.learning.wordbooks.books.is_empty():
+		var books=icon(top,"books",game.show_wordbooks,"词书");top.move_child(books,1)
 	toast_label=text(self,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label=text(self,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.135;clock_label.anchor_bottom=.135;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	clock_label.add_theme_color_override("font_shadow_color",Color(.01,.025,.05,.75));clock_label.add_theme_constant_override("shadow_offset_x",1);clock_label.add_theme_constant_override("shadow_offset_y",2);clock_label.add_theme_constant_override("shadow_outline_size",3)
 	sites=HBoxContainer.new();add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
 	sites.hide()
 	card=PanelContainer.new();add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
 	card.add_theme_stylebox_override("panel",skin(CREAM,26));body=VBoxContainer.new();body.add_theme_constant_override("separation",6);card.add_child(body)
+	card.grow_vertical=Control.GROW_DIRECTION_BEGIN
 	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
 	sync_goal()
 func clear_body():
@@ -98,6 +102,10 @@ func sync_goal():
 		item.bar.value=p.x/maxf(1,p.y)
 		item.bar.get_theme_stylebox("fill").bg_color=Color("EBC673") if selected else Color("97C6B2") if ready else Color("7E999F")
 		item.panel.modulate=Color.WHITE if selected else Color(1,1,1,.86)
+		var quota=game.frontier.study_quota(id);var part=float(game.frontier.data.effort.get(id,0))
+		item.small.visible=selected and ready and not done and quota>1
+		item.small.text="这一步  "+str(roundi(part*quota))+" / "+str(quota)
+		item.stepbar.visible=item.small.visible;item.stepbar.value=part
 	update_world_progress()
 func add_world_progress(id:String):
 	var panel=PanelContainer.new();panel.name="WorldProgress_"+id;panel.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(panel)
@@ -110,8 +118,10 @@ func add_world_progress(id:String):
 	for pair in [["background",Color("42616A")],["fill",Color("EBC673")]]:
 		var style=StyleBoxFlat.new();style.bg_color=pair[1];style.set_corner_radius_all(2);progress.add_theme_stylebox_override(pair[0],style)
 	box.add_child(progress)
+	var small=text(box,"",11,Color("BBDCD6"));small.autowrap_mode=TextServer.AUTOWRAP_OFF
+	var stepbar=progress.duplicate();box.add_child(stepbar);stepbar.custom_minimum_size.y=3;stepbar.get_theme_stylebox("fill").bg_color=Color("EBC673")
 	for child in panel.find_children("*","Control",true,false):child.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	world_progress[id]={"panel":panel,"title":title_label,"count":count_label,"bar":progress}
+	world_progress[id]={"panel":panel,"title":title_label,"count":count_label,"bar":progress,"small":small,"stepbar":stepbar}
 func update_world_progress():
 	if not is_instance_valid(card) or not is_instance_valid(overlay):return
 	for id in world_progress:
@@ -143,17 +153,22 @@ func show_word():
 	layout_card(365);var q=game.current;var r=task_heading("听音 · 采集" if game.learning.data.listen else "回忆 · 采集")
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
 	word_label=ghost(body,"点一下，再听一遍" if game.learning.data.listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if game.learning.data.listen else 34)
+	if not game.learning.data.listen:
+		var width=game.font.get_string_size(q.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x
+		word_label.add_theme_font_size_override("font_size",clampi(int(34*minf(1.0,(size.x-80)/maxf(1,width))),19,34))
 	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	var grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",10);grid.add_theme_constant_override("v_separation",9);body.add_child(grid)
 	for i in range(4):
 		var answer=game.order[i];var b=button(grid,q.options[answer],game.answer.bind(answer),false,57);b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)
+		if str(q.options[answer]).length()>18:b.add_theme_font_size_override("font_size",15)
 	spacer(body,5);divider(body);ghost(body,"想不起来？看提示",game.reveal,35)
 	if not game.exploring and (game.learning.data.listen or game.learning.data.speech):game.call_deferred("speak_word")
 func show_help():
 	clear_body();screen="help";layout_card(365);var q=game.current
 	var r=row(body);word_label=ghost(r,q.word,game.speak_word,48);word_label.add_theme_font_size_override("font_size",30)
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
-	text(body,q.zh,23,GREEN);reading(body,q.example,72,20);text(body,q.translation,17,Color("70857B"))
+	text(body,q.zh,23,GREEN)
+	if not str(q.get("example","")).is_empty():reading(body,q.example,72,20);text(body,q.translation,17,Color("70857B"))
 	spacer(body,5);button(body,"遮住释义，再想一次",game.retry,true,47)
 func show_read():
 	layout_card(430);var m=game.mission;var r=task_heading(m.title)
