@@ -31,8 +31,8 @@ func run():
 	var life=IslandWildlife.new();world.add_child(life);life.setup(world)
 	var ambient=IslandAmbience.new();game.add_child(ambient);ambient.setup(game)
 	await create_timer(.15).timeout
-	check(life.animals.size()==21,"small initial island has eighteen sea creatures of five kinds and one whale")
-	check(ambient.player.stream.get_length()>79.9 and ambient.player.stream.loop,"original soundtrack is an eighty-second loop")
+	check(life.animals.size()==24 and life.tidepool.visible,"initial marine and shoreline habitats are populated")
+	check(ambient.player.stream.get_length()>55 and not ambient.player.stream.loop,"a complete soundtrack plays before advancing to the next track")
 	var fish_safe=true
 	for i in range(600):
 		life._process(.016)
@@ -43,7 +43,7 @@ func run():
 	for chapter in IslandFrontier.CHAPTERS:
 		for cell in chapter.cells:world.land[cell]=true
 	life.refresh_habitats();life._process(.016)
-	check(life.animals.size()==34,"expanded island keeps a limited mixed population and two whales")
+	check(life.animals.size()==37,"expanded island keeps a limited mixed population, two blue whales and one orca")
 	var reacted=false
 	for animal in life.animals:
 		var p=animal.anchor.global_position;var normal=p.normalized()

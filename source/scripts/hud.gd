@@ -292,10 +292,7 @@ func _process(dt):
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
 	clock_label.visible=game.exploring and not overlay.visible
-	var clock_top=.19 if game.learning.data.black_hole else .135
-	clock_label.anchor_left=.74 if game.learning.data.black_hole else .5
-	clock_label.anchor_right=clock_label.anchor_left
-	clock_label.anchor_top=clock_top;clock_label.anchor_bottom=clock_top
+	clock_label.anchor_top=.19;clock_label.anchor_bottom=.19
 	clock_label.modulate.a=1.0-card.modulate.a if card.visible else 1.0
 	var second=int(Time.get_unix_time_from_system())
 	if clock_label.visible and second!=clock_second:

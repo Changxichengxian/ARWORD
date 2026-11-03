@@ -32,7 +32,7 @@ func run():
 		if animal.kind=="fish" and animal.anchor.visible:seen[animal.species]=true
 		if animal.kind=="whale" and animal.index==0:adult=animal
 	print("VISIBLE_SEA_KINDS ",seen.keys())
-	check(seen.size()==5,"five distinct aquatic silhouettes have usable routes at the starting island")
+	check(seen.size()==6 and seen.has("jelly"),"six distinct aquatic silhouettes have usable routes at the starting island")
 	check(not adult.is_empty() and adult.scale>1.5 and adult.route_valid,"the adult whale is substantially larger and has a valid deep-sea route")
 	var safe_fish=true;var safe_whale=true;var fish_under=true;var whale_under=true;var visible=0
 	for step in range(0,650,5):

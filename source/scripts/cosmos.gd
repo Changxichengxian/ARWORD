@@ -62,7 +62,7 @@ func setup(owner_game):
 	accretion.set_shader_parameter("disk_orbits",preload("res://assets/cosmos/disk_orbits.png"))
 	accretion.set_shader_parameter("disk_light",preload("res://assets/cosmos/disk_light.png"))
 	black_hole.look_at(Vector3.ZERO,Vector3.UP)
-	set_black_hole(game.learning.data.get("black_hole",false))
+	set_black_hole(game.learning.data.get("black_hole",IslandLearning.DEFAULT_BLACK_HOLE))
 	add_body("ring",14.0,.4,.0060,1.05,Color("71655F"),Color("D9BE96"),0)
 	add_body("ice",20.0,-1.3,.0043,1.05,Color("224866"),Color("BDE9EC"),1)
 	add_body("ember",26.0,-1.05,.0031,.72,Color("292334"),Color("EAAA64"),2)

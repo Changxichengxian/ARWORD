@@ -507,7 +507,7 @@ func toggle_central_body():
 	cosmos.set_black_hole(learning.data.black_hole);save_progress();space_settings()
 
 func reset_space_settings():
-	learning.data.black_hole=false;cosmos.set_black_hole(false)
+	learning.data.black_hole=IslandLearning.DEFAULT_BLACK_HOLE;cosmos.set_black_hole(learning.data.black_hole)
 	learning.data.space_settings=IslandLearning.SPACE_DEFAULTS.duplicate();cosmos.apply_settings(learning.data.space_settings);save_progress();space_settings()
 func toggle_developer():
 	learning.data.dev_skip=not learning.data.dev_skip;save_progress()
@@ -563,6 +563,7 @@ func show_explore_tools():
 		var id=str(pair[0]);var available=frontier.done(id) or id=="rocket"
 		hud.button(box,str(pair[1])+("" if available else " · 尚未建好"),tour_site.bind(id),false,46).disabled=not available
 	var row=hud.row(box);hud.button(row,"蓝鲸",preview_nature.bind("whale"),false,46);hud.button(row,"深海洞窟",preview_nature.bind("cave"),false,46)
+	var coast=hud.row(box);hud.button(coast,"虎鲸",preview_nature.bind("orca"),false,46);hud.button(coast,"潮间岩台",preview_nature.bind("tidepool"),false,46).disabled=not world.wildlife.tidepool.visible
 	hud.ghost(box,"返回",show_developer)
 
 func show_rocket():
@@ -668,7 +669,8 @@ func preview_nature(kind:String):
 	if not learning.data.dev_skip:return
 	hud.close();explore(false);var normal=world.wildlife.preview_event(kind)
 	world.desired_rotation=Quaternion(normal,Vector3.UP)
-	frame_view(Vector3(0,9.2,0),16.0 if kind=="whale" else 12.0)
+	var zoom={"whale":16.0,"orca":8.2,"tidepool":3.6,"cave":12.0}
+	frame_view(Vector3(0,11.5,0) if kind=="tidepool" else Vector3(0,9.6,0),zoom[kind])
 func open_observatory(primary=false):
 	if cosmos.observatory_active:return
 	if primary and not learning.data.black_hole:return

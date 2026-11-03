@@ -1,4 +1,4 @@
-ARWORD · 0.13.1
+ARWORD · 0.13.2
 
 新配乐 Harbor Six、Orchard Keys、Glass Orbit 为本项目原创合成的器乐小品，谱面与音色生成程序见 tools/make_island_suite.py。黑洞吸积盘、行星尘埃环与观星镜内的亮弧由实时着色器绘制。
 黑洞使用 tools/make_lens_transfer.py 预计算的非旋转黑洞薄盘光路，手机根据盘面交点生成流动纹理。电影成像参考 Oliver James 等《Gravitational Lensing by Spinning Black Holes in Astrophysics, and in the Movie Interstellar》第 4 节，https://doi.org/10.1088/0264-9381/32/6/065001。游戏未使用电影或论文的画面素材。
@@ -6,7 +6,7 @@ ARWORD · 0.13.1
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/
 
-本项目用 Blender 4.4.3 制作 79 套地景、建筑、材料、默认人物和生物模型。GLB、可编辑的 .blend 工程与生成脚本随源码保存。太阳系与三处星云由实时网格和着色器生成。
+本项目用 Blender 4.4.3 制作 84 套地景、建筑、材料、默认人物和生物模型。GLB、可编辑的 .blend 工程与生成脚本随源码保存。太阳系与三处星云由实时网格和着色器生成。
 火箭岛的深海巨型触手为本项目原创。四段肌肤、吸盘和退海形态保存在 art-source/rocket_kraken.blend，由 tools/make_rocket_kraken.py 生成。游戏模型只制作露出水面和抓住岛屿的局部。
 
 个人首装版使用木子恶魔的《【MZEM】蓝色小肥鱼 Deepseek 鲸鱼娘》。人物原件与作者署名保留。公开仓库和公开安装包不包含该模型。
@@ -31,3 +31,5 @@ https://github.com/openetymology/OpenEtymology/tree/main/TEM8
 语音：Kokoro-82M 的 af_heart 美式英语合成录音；模型为 Apache 2.0，使用的 kokoro-onnx 工具为 MIT。应用仅包含输出音频，不包含模型和推理库；这些录音不是真人录音。音效为本项目合成。
 https://huggingface.co/hexgrad/Kokoro-82M
 https://github.com/thewh1teagle/kokoro-onnx
+
+潮间岩台和四种新增动物由 tools/make_tidepool_animals.py 建模并导出。

@@ -19,6 +19,8 @@ var seabed_obstacles:Array=[]
 var bird_scene=preload("res://assets/models/wild_bird.glb")
 var butterfly_scene=preload("res://assets/models/wild_butterfly.glb")
 var whale_scene=preload("res://assets/models/wild_whale.glb")
+var orca_scene=preload("res://assets/models/wild_orca.glb")
+var tidepool=preload("res://scripts/tidepool.gd").new()
 var fish_scenes={"gold":preload("res://assets/models/wild_fish.glb"),"silver":preload("res://assets/models/wild_silver_fish.glb"),"reef":preload("res://assets/models/wild_reef_fish.glb"),"ray":preload("res://assets/models/wild_ray.glb"),"turtle":preload("res://assets/models/wild_turtle.glb")}
 var coral_scene=preload("res://assets/models/sea_coral.glb")
 var grass_scene=preload("res://assets/models/sea_grass.glb")
@@ -27,9 +29,9 @@ var cave_scene=preload("res://assets/models/sea_cave.glb")
 var water_math=preload("res://scripts/water.gd")
 var spray_material:StandardMaterial3D
 const SPECIES=["gold","silver","reef","ray","turtle"]
-const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66}
-const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22}
-const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65}
+const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66,"jelly":.81}
+const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22,"jelly":.32}
+const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65,"jelly":.26}
 const WHALE_RATE=.085
 const WHALE_HALF_LENGTH=2.31
 
@@ -37,6 +39,8 @@ func setup(owner_world):
 	world=owner_world
 	if get_parent()!=world.globe:reparent(world.globe,false)
 	position=Vector3.ZERO;basis=Basis.IDENTITY
+	add_child(tidepool)
+	fish_scenes["jelly"]=preload("res://assets/models/wild_jelly.glb")
 	spray_material=StandardMaterial3D.new();spray_material.albedo_color=Color("D1F3F0");spray_material.roughness=.18
 	refresh_habitats()
 
@@ -100,7 +104,9 @@ func refresh_habitats():
 	if meadows.is_empty():meadows.append(IslandFrontier.point(world.land.keys()[0]) if not world.land.is_empty() else Vector2.ZERO)
 	if coast.is_empty():coast.assign(offshore)
 	rebuild_seabed_life()
-	var desired={"bird":mini(4,1+land_count/8),"fish":22 if land_count>=18 else 18,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1}
+	tidepool.choose_coast(self)
+	if tidepool.visible:seabed_obstacles.append({"normal":tidepool.normal,"radius":1.42,"depth":0.})
+	var desired={"bird":mini(4,1+land_count/8),"fish":24 if land_count>=18 else 20,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
 	for kind in desired:
 		var count=0
 		for animal in animals:
@@ -110,6 +116,10 @@ func refresh_habitats():
 	for animal in animals:
 		if animal.kind=="fish":configure_fish(animal)
 		elif animal.kind=="whale":configure_whale(animal)
+	# Calves may be added after the orca when a save first expands. Plan the
+	# orca's patrol after both blue-whale lanes are established.
+	for animal in animals:
+		if animal.kind=="orca":configure_whale(animal)
 
 func species(index:int)->String:
 	if index<4:return "gold"
@@ -117,13 +127,15 @@ func species(index:int)->String:
 	if index<14:return "reef"
 	if index<16:return "ray"
 	if index<18:return "turtle"
-	return "silver" if index<20 else "reef"
+	if index<20:return "jelly"
+	return "silver" if index<22 else "reef"
 func spawn(kind:String,index:int):
 	var anchor=Node3D.new();add_child(anchor)
 	var type=species(index) if kind=="fish" else kind
-	var scene=fish_scenes[type] if kind=="fish" else bird_scene if kind=="bird" else whale_scene if kind=="whale" else butterfly_scene
+	var scene=fish_scenes[type] if kind=="fish" else {"bird":bird_scene,"butterfly":butterfly_scene,"whale":whale_scene,"orca":orca_scene}[kind]
 	var model=scene.instantiate();anchor.add_child(model)
 	var scale_factor=float(SCALES[type]) if kind=="fish" else .68 if kind=="bird" else (1.62 if index==0 else .82) if kind=="whale" else .66
+	if kind=="orca":scale_factor=1.52
 	model.scale=Vector3.ONE*scale_factor
 	for mesh in model.find_children("*","MeshInstance3D",true,false):mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	animals.append({"kind":kind,"species":type,"index":index,"anchor":anchor,"model":model,"scale":scale_factor,"home":meadows[(index*5)%meadows.size()],"normal":Vector3.UP,"radius":.7,"phase":float(index)*.63,"action_offset":0.0,"startle":0.0,"left":model.find_child("FlipperL" if kind=="whale" or type in ["ray","turtle"] else "WingL",true,false),"right":model.find_child("FlipperR" if kind=="whale" or type in ["ray","turtle"] else "WingR",true,false),"tail":model.find_child("Tail",true,false),"fluke":model.find_child("Fluke",true,false),"blowhole":model.find_child("Blowhole",true,false),"last":Vector3.ZERO,"state":"swim","breath_cycle":-1,"route_valid":true,"depth":.3})
@@ -165,16 +177,25 @@ func configure_whale(animal:Dictionary):
 	animal.route_valid=false
 	var candidates=sea_candidates()
 	if animal.index==1:candidates=candidates.slice(2)+candidates.slice(0,2)
+	if animal.kind=="orca":candidates=candidates.slice(1)+candidates.slice(0,1)
 	# The complete long blue-whale hull, flippers and animated flukes need a
 	# larger footprint than the old short-bodied stylised whale.
 	var margin=WHALE_HALF_LENGTH*float(animal.scale)+.32;var minimum=2.85 if animal.index==0 else 1.8
+	if animal.kind=="orca":margin=3.24;minimum=2.7
 	for home in candidates:
 		animal.route_center=home
 		for radius in [3.6,2.4,1.4,.7]:
 			animal.radius=radius;var safe=true
+			if animal.kind=="orca":
+				for other in animals:
+					if other.kind!="whale" or not other.route_valid:continue
+					var separation=radius+other.radius+margin+WHALE_HALF_LENGTH*other.scale
+					if home.distance_to(other.route_center)*water_math.BASE_RADIUS<separation:safe=false;break
+				if not safe:continue
 			for i in range(32):
 				var normal=whale_direction(animal,i*TAU/32/WHALE_RATE)
 				if not deep_sea(normal,margin,minimum) or not clear_of_cave(normal,margin):safe=false;break
+				if tidepool.visible and normal.distance_to(tidepool.normal)*water_math.BASE_RADIUS<margin+1.5:safe=false;break
 			if safe:animal.route_valid=true;return
 
 func frame_at(point:Vector3,forward:Vector3)->Basis:
@@ -206,6 +227,23 @@ func whale_position(animal:Dictionary,t:float)->Vector3:
 	animal.tail.rotation.x=sin(t*.92)*.15;animal.fluke.rotation.x=sin(t*.92-.65)*.13
 	animal.left.rotation.z=-.065+sin(t*.45)*.065;animal.right.rotation.z=.065-sin(t*.45)*.065
 	return water_point_normal(normal,depth)
+
+func orca_position(animal:Dictionary,t:float)->Vector3:
+	var n=whale_direction(animal,t)
+	# A shallow pass cuts the surface with the dorsal fin, then the white flank
+	# rolls into view on the way down. The horizontal patrol never resets.
+	var phase=fposmod(t+animal.action_offset,26.)
+	var surface_pass=smoothstep(4.,8.,phase)*(1.-smoothstep(13.,17.,phase))
+	animal.depth=lerpf(1.84,.47,surface_pass)
+	animal.anchor.visible=animal.route_valid
+	animal.model.rotation.z=.33*sin(t*.38)*surface_pass
+	animal.model.rotation.x=.075*sin(phase*.47)
+	animal.tail.rotation.x=.22*sin(t*1.75);animal.fluke.rotation.x=.17*sin(t*1.75-.55)
+	var cycle=int(floor((t+animal.action_offset)/26.))
+	if phase>=8. and phase<12. and animal.breath_cycle!=cycle and animal.anchor.visible:
+		animal.breath_cycle=cycle;world.water.ripple(n,1.6)
+	animal.state="surface" if surface_pass>.8 else "swim"
+	return water_point_normal(n,animal.depth)
 
 func rebuild_seabed_life():
 	if scenery:scenery.queue_free()
@@ -245,8 +283,12 @@ func update_seagrass():
 	for plant in grass:plant.node.rotation.z=sin(clock*.85+plant.phase)*.065
 func preview_event(event:String)->Vector3:
 	if event=="cave" and not cave.is_empty():return cave.normal
+	if event=="tidepool":return tidepool.normal
 	for animal in animals:
-		if animal.kind=="whale" and animal.index==0:
+		if event=="orca" and animal.kind=="orca":
+			animal.action_offset=8.-fposmod(animal.phase,26.)
+			return whale_direction(animal,animal.phase)
+		if event in ["whale","whale_breach"] and animal.kind=="whale" and animal.index==0:
 			animal.action_offset=(44.4 if event=="whale_breach" else 16.5)-fmod(animal.phase,124.0)
 			animal.breath_cycle=-1
 			return whale_direction(animal,animal.phase)
@@ -256,14 +298,20 @@ func _process(dt):
 	if not is_instance_valid(world):return
 	clock+=dt
 	if land_count!=world.land.size():refresh_habitats()
+	tidepool.animate(clock,dt)
 	for animal in animals:
 		animal.startle=maxf(0,animal.startle-dt);animal.phase+=dt*(1.8 if animal.startle>0 and animal.kind!="whale" else 1.0)
 		var t=animal.phase;var pos:Vector3
 		if animal.kind=="fish":
 			var broad=animal.species in ["ray","turtle"];var rate=.25 if broad else .48
+			if animal.species=="jelly":rate=.16
 			var n=offset_direction(animal.normal,Vector2(sin(t*rate),cos(t*rate)*.65)*animal.radius)
 			var bed=body_depth_normal(n,float(BODY_RADIUS[animal.species]));var height=float(BODY_HEIGHT[animal.species])
 			var depth=fish_depth(animal.species)+sin(t*.75)*.045
+			if animal.species=="jelly":
+				var beat=sin(t*2.+.4)
+				animal.model.scale=Vector3(1.-.10*beat,1.+.19*beat,1.-.10*beat)*animal.scale
+				depth=.72-.11*beat
 			depth=clampf(depth,height+.13,maxf(height+.13,bed-height-.13));animal.depth=depth
 			animal.anchor.visible=animal.route_valid and bed>height*2+.27;pos=water_point_normal(n,depth)
 			if animal.tail:animal.tail.rotation.y=sin(t*(1.8 if broad else 7.5))*(.13 if broad else .34)
@@ -273,6 +321,7 @@ func _process(dt):
 				if animal.species=="turtle":animal.left.rotation.y=sin(t*2.0)*.30;animal.right.rotation.y=-sin(t*2.0)*.30
 			animal.model.rotation.z=sin(t*.65)*.045
 		elif animal.kind=="whale":pos=whale_position(animal,t)
+		elif animal.kind=="orca":pos=orca_position(animal,t)
 		else:
 			var p:Vector2=animal.home
 			if animal.kind=="bird":
@@ -302,6 +351,11 @@ func update_water_effects(dt:float):
 func handle_tap(screen_pos:Vector2)->bool:
 	if not is_instance_valid(world.game.camera):return false
 	var camera=world.game.camera;var nearest={};var distance=30.0
+	if tidepool.visible and (world.globe.global_basis*tidepool.normal).dot((camera.global_position-tidepool.global_position).normalized())>.12:
+		for kind in ["crab","seal"]:
+			var target=tidepool.get(kind).global_position
+			if not camera.is_position_behind(target) and camera.unproject_position(target).distance_to(screen_pos)<18.:
+				tidepool.notice(kind);return true
 	for animal in animals:
 		if not animal.anchor.visible:continue
 		var p=animal.anchor.global_position;var normal=world.globe.global_basis*animal.anchor.position.normalized()
@@ -310,6 +364,7 @@ func handle_tap(screen_pos:Vector2)->bool:
 		if d<distance:nearest=animal;distance=d
 	if nearest.is_empty():return false
 	if nearest.kind=="whale":nearest.action_offset=12.0-fmod(nearest.phase,124.0);nearest.breath_cycle=-1
+	elif nearest.kind=="orca":nearest.action_offset=4.-fposmod(nearest.phase,26.)
 	elif nearest.kind=="fish":
 		for animal in animals:
 			if animal.kind=="fish" and animal.species==nearest.species:animal.startle=2.4

@@ -24,7 +24,9 @@ func run():
 	game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.4).timeout
 	game.cosmos.set_sky_seed(103)
-	game.space_settings();game.toggle_central_body();game.hud.close()
+	game.space_settings();game.toggle_central_body()
+	check(game.cosmos.sun.visible and not game.learning.data.black_hole,"the sun remains selectable")
+	game.toggle_central_body();game.hud.close()
 	check(game.learning.data.black_hole and game.cosmos.black_hole.visible and not game.cosmos.sun.visible,"central body switches from settings")
 	var reloaded=IslandLearning.new();reloaded.accept_save(JSON.parse_string(JSON.stringify(game.learning.data)))
 	check(reloaded.data.black_hole,"central body preference survives save decoding")

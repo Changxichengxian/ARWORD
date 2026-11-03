@@ -5,6 +5,7 @@ const NEEDS=[8,12,16]
 const EXTRA=36
 const MODES=["word","word","read","word","listen","sentence"]
 const PROJECTS=["木屋","风车","花园"]
+const DEFAULT_BLACK_HOLE=true
 const SPACE_DEFAULTS={"nebula":1.45,"color":1.3,"band":1.15,"stars":1.1,"drift":1.0}
 const SPACE_LIMITS={"nebula":Vector2(0,2.5),"color":Vector2(0,2),"band":Vector2(.4,2),"stars":Vector2(.3,2),"drift":Vector2(0,2)}
 const STEPS=[["搭好木屋","沿岸栈道","门前长椅","伙伴的营地"],["让风车转起来","蓄水装置","引水小渠","检修工作台"],["种下第一床","果树小园","木栅栏","蜜蜂的小屋"]]
@@ -19,7 +20,8 @@ var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{}
 func _init():
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
 	data["lesson_schedule"]={}
-	data["black_hole"]=false
+	data["black_hole"]=DEFAULT_BLACK_HOLE
+	data["sky_default_version"]=1
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
 	rng.randomize()
 	bank=JSON.parse_string(FileAccess.get_file_as_string("res://assets/vocabulary.json"))
@@ -60,6 +62,8 @@ func accept_save(candidate)->bool:
 		if not (candidate.build[i] is int or candidate.build[i] is float):return false
 	for k in data:
 		if candidate.has(k) and typeof(candidate[k])==typeof(data[k]):data[k]=candidate[k]
+	# Earlier saves wrote the old default even when the sky setting had never been opened.
+	if not candidate.has("sky_default_version"):data.black_hole=DEFAULT_BLACK_HOLE
 	for k in ["active","actions","band","success_run","miss_run","dev_steps"]:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))
 	for i in range(3):data.build[i]=clampi(int(candidate.build[i]),0,NEEDS[i])
