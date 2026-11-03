@@ -1,4 +1,4 @@
-ARWORD · 0.12.2
+ARWORD · 0.12.3
 
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/

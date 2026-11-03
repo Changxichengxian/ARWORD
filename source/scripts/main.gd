@@ -126,16 +126,20 @@ func next_task():
 func next_word():next_task()
 func select_site(site):
 	var id=IslandFrontier.BUILD_IDS[site] if site is int else str(site)
-	if id=="rocket":show_rocket();return
+	if id=="rocket":
+		if frontier.done("shipyard"):world.worker.visit(frontier.target(id))
+		show_rocket();return
 	if not frontier.available(id):hud.toast(frontier.unlock_hint(id));return
 	if locked:
 		if exploring and id==frontier.data.active:resume_collect()
 		return
 	if id==frontier.data.active:
+		world.worker.visit(frontier.target(id))
 		if exploring:resume_collect()
 		return
 	if not frontier.choose(id):return
 	speech.stop();save_progress();hud.close();world.sync_buildings();next_task()
+	world.worker.visit(frontier.target(id))
 	if exploring:resume_collect()
 
 func answer(index:int):
@@ -596,9 +600,11 @@ func pay_trader():
 	elif frontier.data.voyage.paid>=IslandFrontier.TRADE_PRICE:hud.toast("海怪让开了泊位")
 func tour_site(id:String):
 	if not learning.data.dev_skip or (not frontier.done(id) and id!="rocket"):return
-	if id=="rocket":show_rocket();return
+	if id=="rocket":
+		if frontier.done("shipyard"):world.worker.visit(frontier.target(id))
+		show_rocket();return
 	hud.close();frontier.choose(id);save_progress();next_task();explore(false)
-	world.recenter();frame_view(Vector3(0,9.3,0),13.5)
+	world.worker.visit(frontier.target(id));world.recenter();frame_view(Vector3(0,9.3,0),13.5)
 func preview_nature(kind:String):
 	if not learning.data.dev_skip:return
 	hud.close();explore(false);var normal=world.wildlife.preview_event(kind)

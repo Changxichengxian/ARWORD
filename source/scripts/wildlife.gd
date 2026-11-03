@@ -60,9 +60,11 @@ func body_depth_normal(n:Vector3,radius:float)->float:
 	return depth
 func body_depth(p:Vector2,radius:float)->float:return body_depth_normal(sea_direction(p),radius)
 func water_at(p:Vector2,margin=0.0)->bool:return outside_land(sea_direction(p),margin)
+var shore_centers=PackedVector3Array()
 func outside_land(n:Vector3,margin:float)->bool:
-	for cell in world.land:
-		if n.distance_to(sea_direction(IslandFrontier.point(cell)))*water_math.BASE_RADIUS<IslandFrontier.HEX*1.10+margin:return false
+	var limit=pow((IslandFrontier.HEX*1.10+margin)/water_math.BASE_RADIUS,2)
+	for center in shore_centers:
+		if n.distance_squared_to(center)<limit:return false
 	return true
 func deep_sea(normal:Vector3,margin:float,minimum_depth:float)->bool:
 	return outside_land(normal,margin) and body_depth_normal(normal,margin)>=minimum_depth
@@ -80,6 +82,8 @@ func refresh_habitats():
 	var water=world.get("water")
 	if water and water.has_method("rebuild") and water.get("land_count")!=world.land.size():water.rebuild()
 	land_count=world.land.size();coast.clear();offshore.clear();outer_sea.clear();meadows.clear()
+	shore_centers.clear()
+	for cell in world.land:shore_centers.append(sea_direction(IslandFrontier.point(cell)))
 	var steps=[Vector2i(1,0),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1)]
 	for cell in world.land:
 		var center=IslandFrontier.point(cell);var region=world.terrain.kind(cell)

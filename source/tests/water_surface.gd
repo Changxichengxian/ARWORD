@@ -9,7 +9,7 @@ func run():
 	var game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.7).timeout
 	var water=game.world.water;var normal=Vector3.UP
-	check(root.msaa_3d==Viewport.MSAA_DISABLED,"Mobile depth texture is not broken by Godot 4.5 MSAA")
+	check(not "hint_depth_texture" in water.material.shader.code and not "hint_screen_texture" in water.material.shader.code,"ocean composition does not copy opaque color or depth")
 	check(water!=null and water.floor_mesh.mesh!=null,"the ocean contains an actual closed seabed mesh")
 	var near=water.depth_at(normal);var far=water.depth_at(Vector3.RIGHT)
 	check(near<.3 and far>3.0,"a shallow coastal shelf and a deep basin have different real depths")

@@ -18,11 +18,12 @@ func run():
 	var expected=game.camera.unproject_position(world.progress_anchor("grove"))-Vector2(label.size.x*.5,label.size.y+8)
 	check(label.position.distance_to(expected)<1,"progress remains anchored to the worksite instead of the screen header")
 	check(world.site_at(label.get_global_rect().get_center())=="grove","tapping an anchored label selects the same worksite")
+	var initial_actor=world.builder.position
+	var actions=game.learning.data.actions
 	game.select_site("cottage");await create_timer(.4).timeout
-	var center=Vector2.ZERO;var vertices=world.cursor.get_child(0).get_child(0).mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
-	for vertex in vertices:center+=world.terrain.coordinates(vertex)
-	center/=vertices.size()
-	check(center.distance_to(game.frontier.target("cottage"))<.001,"the actual selection ring vertices move around the selected building")
+	var center=world.terrain.coordinates(world.cursor.position)
+	check(center.distance_to(game.frontier.target("cottage"))<.001,"the floating ring is centered on the selected building")
+	check(world.builder.position.distance_to(initial_actor)>.04 and world.worker.work_left==0 and game.learning.data.actions==actions,"selecting the site starts travel before any study or production")
 	var extra_rings=0
 	for marker in world.markers.values():
 		for child in marker.get_children():

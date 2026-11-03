@@ -38,7 +38,7 @@ var observation_blend=0.0
 
 func setup(owner_game):
 	game=owner_game
-	viewport=SubViewport.new();viewport.name="SolarSystemView";viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_2X if OS.has_feature("android") else Viewport.MSAA_4X;add_child(viewport)
+	viewport=SubViewport.new();viewport.name="SolarSystemView";viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_DISABLED if OS.has_feature("android") else Viewport.MSAA_4X;add_child(viewport)
 	space=Node3D.new();viewport.add_child(space)
 	var env=WorldEnvironment.new();var atmosphere=Environment.new();env.environment=atmosphere;space.add_child(env)
 	atmosphere.background_mode=Environment.BG_CANVAS;atmosphere.background_canvas_max_layer=-20;atmosphere.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;atmosphere.ambient_light_color=Color("718FA9");atmosphere.ambient_light_energy=.28
@@ -169,6 +169,9 @@ func resize():
 	var physical_size=Vector2(DisplayServer.window_get_size()) if DisplayServer.get_name()!="headless" else view_size
 	var ratio=maxf(physical_size.x/maxf(1,view_size.x),physical_size.y/maxf(1,view_size.y))
 	var desired=view_size*ratio
+	if OS.has_feature("android"):
+		# Budget world pixels independently from the full-resolution learning UI.
+		get_viewport().scaling_3d_scale=clampf(sqrt(1050000./maxf(1,physical_size.x*physical_size.y)),.35,.85)
 	var max_pixels=1500000.0 if OS.has_feature("android") else 4200000.0
 	var max_edge=1800.0 if OS.has_feature("android") else 2880.0
 	var factor=minf(1.0,minf(max_edge/maxf(desired.x,desired.y),sqrt(max_pixels/maxf(1,desired.x*desired.y))))
@@ -228,8 +231,17 @@ func advance(dt:float):
 		var body=bodies[focus_index];body.axis.scale=Vector3.ONE*(1.0+sin((1.0-focus_time/1.5)*PI)*.12)
 		if focus_time<=0:body.axis.scale=Vector3.ONE;focus_index=-1
 	advance_observation(dt)
+var sky_frame_time=0.
 func _process(dt):
-	if is_instance_valid(viewport):advance(dt)
+	if not is_instance_valid(viewport):return
+	if OS.has_feature("android") and not observatory_active:
+		sky_frame_time+=dt
+		if sky_frame_time<.05:return
+		dt=sky_frame_time;sky_frame_time=0.
+		viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
+	elif viewport.render_target_update_mode!=SubViewport.UPDATE_ALWAYS:
+		viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
+	advance(dt)
 func screen_position(index:int)->Vector2:
 	var position=space_camera.unproject_position(bodies[index].orbit.position)
 	return position*get_viewport().get_visible_rect().size/Vector2(viewport.size)

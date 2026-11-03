@@ -7,6 +7,7 @@ Run inside Blender 4.4 with --background --python.
 """
 from pathlib import Path
 from math import sin, cos, tau, pi, exp
+import json
 import bpy
 from mathutils import Vector, Quaternion
 
@@ -17,18 +18,19 @@ STEPS = 4
 ARMS = {
     "CrownCoil": [
         (-4.05,-2.5,-4.20,.98),(-3.35,-2.15,-2.38,.85),
-        (-2.82,-1.78,-.78,.71),(-2.41,-1.55,.25,.61),(-1.81,-1.28,.96,.52),
-        (-1.13,-.85,1.05,.46),(-.89,-.28,.96,.43),(-.86,.36,1.00,.40),
-        (-.43,.83,1.12,.36),(.18,.84,1.31,.31),(.67,.48,1.51,.26),
-        (.73,-.10,1.70,.21),(.42,-.51,1.91,.16),(-.05,-.60,2.10,.12),
-        (-.41,-.43,2.25,.08),(-.54,-.17,2.32,.042),(-.52,.02,2.31,.012)
+        (-2.78,-1.68,-.70,.66),(-2.29,-1.42,.12,.51),(-1.63,-1.14,.43,.40),
+        (-1.06,-.79,.61,.34),(-.87,-.41,.72,.31),
     ],
     "ShelfGrip": [
         (6.05,.12,-5.0,1.14),(5.55,-.36,-3.08,1.0),(4.84,-.68,-1.45,.84),
-        (4.38,-.73,-.19,.73),(3.94,-.64,.59,.64),(3.34,-.46,.82,.56),
-        (2.85,-.16,.65,.47),(2.55,.18,.39,.39),(2.41,.56,.19,.29),
-        (2.51,.92,.095,.20),(2.78,1.10,-.03,.125),(3.0,1.10,-.20,.062),
-        (3.06,.99,-.35,.016)
+        (4.12,-.86,-.69,.63),(3.55,-1.03,-.45,.52),(2.90,-1.18,-.28,.45),
+        (2.08,-1.30,-.15,.42),(1.35,-1.20,-.08,.40),(.65,-1.27,-.04,.37),
+        (-.14,-1.32,-.02,.35),(-.89,-.94,.01,.34),(-1.26,-.30,.02,.32),
+        (-1.26,.36,.03,.31),(-.99,.87,.05,.29),(-.40,1.22,.06,.28),
+        (.00,1.68,.02,.27),(.00,2.13,-.03,.26),(.26,2.68,-.08,.25),
+        (.85,3.06,-.13,.24),(1.53,3.03,-.16,.23),(2.07,2.65,-.12,.22),
+        (2.36,2.13,-.06,.21),(2.25,1.69,.02,.18),(1.91,1.46,.10,.13),
+        (1.68,1.60,.19,.073),(1.62,1.79,.21,.014)
     ],
     "BreachArch": [
         (-3.72,3.10,-4.76,1.12),(-3.76,2.94,-3.02,1.02),(-3.25,2.67,-1.39,.94),
@@ -43,6 +45,16 @@ ARMS = {
         (2.48,-2.98,-.36,.080),(2.29,-3.05,-.48,.018)
     ],
 }
+# One continuous climbing sweep makes two visible crossings of the front of
+# the fuselage. Follow its narrowing shoulder and the cone near the tip.
+for i in range(29):
+    u=i/28
+    height=.78+2.12*u
+    girth=.30*(1-u)**.70+.012
+    hull=.60-.10*u if height<2.40 else .51*(3.25-height)/.85
+    angle=pi-1.73*tau*u
+    radius=hull+girth*.78
+    ARMS["CrownCoil"].append((radius*cos(angle),radius*sin(angle),height,girth))
 # Rolling the sucker fields about their local tangent shows selected sections of
 # the underside. The remaining surface is uninterrupted muscle rather than dots.
 ROLL = {"CrownCoil":.42,"ShelfGrip":-.52,"BreachArch":-.34,"SpurHook":.55}
@@ -60,13 +72,13 @@ def linear(rgb):
         return x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4
     return Vector([c(rgb[i:i+2]) for i in (0,2,4)])
 
-DORSAL=linear("244B57")
-FLANK=linear("464159")
-BELLY=linear("795663")
-RIDGE=linear("388481")
-CUP=linear("AB8C99")
-CUP_WALL=linear("856577")
-CUP_HOLE=linear("584455")
+DORSAL=linear("37565E")
+FLANK=linear("405960")
+BELLY=linear("566665")
+RIDGE=linear("527376")
+CUP=linear("80918D")
+CUP_WALL=linear("697B78")
+CUP_HOLE=linear("4C605F")
 
 def sample(knots,t):
     x=max(0,min(t,1))*(len(knots)-1)
@@ -77,6 +89,8 @@ def sample(knots,t):
 
 def center(name,t,pose):
     x,z,h,r=sample(ARMS[name],t)
+    if name=="BreachArch": h-=.70;r*=.73
+    if name=="SpurHook": h-=.48;r*=.78
     # Bury the unseen cut ends below the deepest possible seabed (radius 7.62).
     foot=1-smooth(.0,.23,t)
     h-=5.4*foot
@@ -93,7 +107,7 @@ def center(name,t,pose):
             clearance=2.5*smooth(.28,.70,t)
             x+=outward.x*clearance-.53*edge
             z+=outward.y*clearance-.54*edge
-            h-=edge*(3.20+1.45*smooth(.30,.8,t))+2.25*smooth(.0,.22,t)
+            h-=edge*(4.10+1.70*smooth(.30,.8,t))+2.25*smooth(.0,.22,t)
         elif name=="ShelfGrip":
             x+=1.7*edge;z-=.77*edge;h-=2.8*edge+2.4*smooth(.0,.27,t)
         elif name=="BreachArch":
@@ -230,6 +244,16 @@ def build():
     vertex=m.node_tree.nodes.new("ShaderNodeVertexColor");vertex.layer_name="TideSkin"
     m.node_tree.links.new(vertex.outputs["Color"],bs.inputs["Base Color"])
     for name in ARMS:create_arm(name,m)
+    paths={}
+    for name,knots in ARMS.items():
+        samples=[]
+        for i in range((len(knots)-1)*2+1):
+            t=i/((len(knots)-1)*2)
+            p,r=center(name,t,"Grip")
+            end,_=center(name,t,"Release")
+            samples.append([round(v,4) for v in (p.x,p.z,-p.y,r,end.x,end.z,-end.y)])
+        paths[name]=samples
+    (ROOT/"assets/kraken_paths.json").write_text(json.dumps(paths,separators=(",",":")),"utf-8")
     bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/"art-source/rocket_kraken.blend"))
     bpy.ops.export_scene.gltf(filepath=str(ROOT/"assets/models/rocket_kraken.glb"),export_format="GLB",export_yup=True,export_animations=False,export_morph=True,export_morph_normal=True,export_vertex_color="MATERIAL")
 

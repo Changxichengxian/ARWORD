@@ -54,7 +54,11 @@ var nav_components={}
 var navigation_signature=""
 var ground_faces={}
 var walk_goal=Vector2.ZERO
-var ring_clock=0.0
+var ring_site=""
+var ring_land_count=-1
+var machine_rotors={}
+var decoration_groups={}
+var dirty_groups={}
 var production_route={}
 var transporting=false
 var ferry:Node3D
@@ -159,24 +163,37 @@ func measure_progress_height(id:String,visual:Node3D):
 		var box=mesh.get_aabb()
 		for i in range(8):height=maxf(height,visual.to_local(mesh.to_global(box.get_endpoint(i))).y)
 	markers[id].set_meta("label_height",height+.16)
-func ring(parent:Node3D,radius:float,material:Material)->Node3D:
-	var root=Node3D.new();parent.add_child(root)
-	var n=MeshInstance3D.new();n.material_override=material;root.add_child(n);n.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	update_selection_ring();return root
+func make_selection_ring():
+	cursor=Node3D.new()
+	globe.add_child(cursor)
+	var ribbon=MeshInstance3D.new()
+	var st=SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for segment in 16:
+		for step in 4:
+			var a=TAU*(segment+step*.19)/16.
+			var b=a+TAU*.19/16.
+			var near_a=Vector3(cos(a),0,sin(a));var near_b=Vector3(cos(b),0,sin(b))
+			for v in [near_a*.965,near_b*1.035,near_a*1.035,near_a*.965,near_b*.965,near_b*1.035]:st.add_vertex(v)
+	ribbon.mesh=st.commit();ribbon.material_override=ring_material
+	ribbon.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	cursor.add_child(ribbon)
+
 func update_selection_ring():
-	if not is_instance_valid(cursor) or cursor.get_child_count()==0:return
-	cursor.transform=Transform3D.IDENTITY
-	var radius=1.17*(1.35 if game.frontier.data.active in IslandFrontier.BUILD_IDS else 1.0)
-	var center=game.frontier.target(game.frontier.data.active)
-	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for segment in range(14):
-		for j in range(4):
-			var a=(segment+float(j)/5)*TAU/14+time*.35;var b=(segment+float(j+1)/5)*TAU/14+time*.35
-			var p0=center+Vector2(cos(a),sin(a))*(radius-.055);var p1=center+Vector2(cos(a),sin(a))*(radius+.055)
-			var p2=center+Vector2(cos(b),sin(b))*(radius+.055);var p3=center+Vector2(cos(b),sin(b))*(radius-.055)
-			for p in [p0,p2,p1,p0,p3,p2]:
-				var v=ground_point(p);st.add_vertex(v+v.normalized()*.085)
-	st.generate_normals();cursor.get_child(0).get_child(0).mesh=st.commit()
+	var id=game.frontier.data.active
+	if not is_instance_valid(cursor) or (id==ring_site and land.size()==ring_land_count):return
+	ring_site=id;ring_land_count=land.size()
+	var radius=1.17*(1.35 if id in IslandFrontier.BUILD_IDS else 1.0)
+	var center=game.frontier.target(id)
+	var origin=ground_point(center)
+	var up=origin.normalized()
+	var top=0.0
+	for i in 64:
+		var sample_point=ground_point(center+Vector2.from_angle(TAU*i/64.)*radius)
+		top=maxf(top,(sample_point-origin).dot(up))
+	cursor.position=origin+up*(top+.20)
+	cursor.basis=terrain.surface_basis(center)
+	cursor.scale=Vector3.ONE*radius
 func tile(cell:Vector2i,animate:bool):
 	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,IslandFrontier.point(cell));land[cell]=anchor
 	if animate:pop(anchor,float(land.size()%3)*.07)
@@ -261,7 +278,35 @@ func decor_prop(name:String,p:Vector2,scale_factor=1.0,angle=0.0,solid=false)->N
 	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,p,angle)
 	var visual=model(name,anchor);visual.scale=Vector3.ONE*scale_factor
 	if solid:fixed_obstacles.append(anchor)
+	elif terrain.chart_at(p)!=4:
+		var chart=terrain.chart_at(p)
+		for part in visual.find_children("*","MeshInstance3D",true,false):
+			if part.skin or not part.visible or not part.mesh:continue
+			var key=str(chart)+"/"+str(part.mesh.get_instance_id())
+			if not decoration_groups.has(key):decoration_groups[key]={"parts":[],"batch":null}
+			decoration_groups[key].parts.append(part)
+			dirty_groups[key]=true
 	return anchor
+
+func batch_static_decor():
+	for key in dirty_groups:
+		var group=decoration_groups[key]
+		if group.parts.size()<2:continue
+		if group.batch==null:
+			group.batch=MultiMeshInstance3D.new()
+			globe.add_child(group.batch)
+			var instances=MultiMesh.new()
+			instances.transform_format=MultiMesh.TRANSFORM_3D
+			instances.mesh=group.parts[0].mesh
+			group.batch.multimesh=instances
+		var batch=group.batch.multimesh
+		batch.instance_count=group.parts.size()
+		var to_globe=globe.global_transform.affine_inverse()
+		for i in group.parts.size():
+			var part=group.parts[i]
+			batch.set_instance_transform(i,to_globe*part.global_transform)
+			part.hide()
+	dirty_groups.clear()
 func decorate_cell(cell:Vector2i,animate:bool):
 	var p=IslandFrontier.point(cell);var region=terrain.kind(cell);var v=terrain.variant(cell)
 	var rng=RandomNumberGenerator.new();rng.seed=915+cell.x*101+cell.y*29
@@ -368,7 +413,7 @@ func setup(owner_node):
 	game=owner_node
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
-	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
+	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_ORTHOGONAL;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
@@ -390,6 +435,10 @@ func setup(owner_node):
 		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(id),PI)
 		var n=model(FACILITY_MODELS[id],a);n.scale=Vector3.ONE*(.62 if id=="mountain" else .85 if id=="shipyard" else .72)
 		facilities[id]=a
+		var part={"sawmill":"SawWheel","quarry":"CutterWheel","hill":"PumpRotor","tideworks":"TideWheel"}.get(id,"")
+		if not part.is_empty():
+			var moving=a.find_child(part,true,false)
+			if moving:machine_rotors[id]=moving
 	for pair in [["goldmine","gold_mine"],["smelter","gold_mint"],["rocket","rocket"]]:
 		var id:String=pair[0]
 		var anchor=Node3D.new()
@@ -406,7 +455,7 @@ func setup(owner_node):
 	rocket_hatch=facilities.rocket.find_child("Hatch",true,false)
 	fixed_obstacles.append(trader.coin_socket)
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
-	cursor=Node3D.new();globe.add_child(cursor);ring(cursor,1.17,ring_material)
+	make_selection_ring()
 	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
 	for part in ["ArmL","ArmR","LegL","LegR","Body","KneeL","KneeR","ElbowL","ElbowR"]:limbs[part]=actor.find_child(part,true,false)
 	for name in ["Axe","Pickaxe","Mallet"]:tools[name]=actor.find_child(name,true,false);avatar_tool_homes[name]=tools[name].position
@@ -420,6 +469,7 @@ func sync_buildings(animate=true):
 	for cell in game.frontier.cells():
 		if not land.has(cell):tile(cell,animate);decorate_cell(cell,animate)
 	if coast_count!=land.size():terrain_geometry()
+	batch_static_decor()
 	for id in markers:
 		var ready=game.frontier.available(id);var old_ready=markers[id].get_meta("available",ready)
 		markers[id].set_meta("available",ready)
@@ -506,18 +556,21 @@ func clear_segment(a:Vector2,b:Vector2,clearance=WALK_CLEARANCE)->bool:
 		if not clear_ground(a.lerp(b,float(i)/count),clearance):return false
 	return true
 func rebuild_navigation():
+	# Buildings reserve their finished footprint. Only a new site, addition,
+	# island or character clearance changes the walkable map.
+	var signature=str(land.size())+"/"+str(avatar.clearance if is_instance_valid(avatar) else WALK_CLEARANCE)
+	for building in buildings:signature+="1" if building.visible else "0"
+	for group in additions:
+		for addition in group:signature+="1" if addition.is_visible_in_tree() else "0"
+	for site in facilities.values():signature+="1" if site.visible else "0"
+	if signature==navigation_signature:return
+	navigation_signature=signature
 	obstacles.clear()
 	for node in fixed_obstacles:add_obstacle(node,"landing")
 	for i in range(buildings.size()):
 		add_obstacle(buildings[i],IslandFrontier.BUILD_IDS[i],true)
 		for j in range(additions[i].size()):add_obstacle(additions[i][j],ADDITIONS[i][j])
 	for id in facilities:add_obstacle(facilities[id],id)
-	var signature=str(land.size())+str(avatar.clearance if is_instance_valid(avatar) else WALK_CLEARANCE)
-	for obstacle in obstacles:
-		signature+=obstacle.id
-		for point in obstacle.polygon:signature+=str(Vector2i(roundi(point.x*1000),roundi(point.y*1000)))
-	if signature==navigation_signature:return
-	navigation_signature=signature
 	navigation.clear();nav_grid.clear();nav_components.clear()
 	var candidates={}
 	for cell in land:
@@ -695,21 +748,16 @@ func _process(dt):
 	if worker:worker.update(dt)
 	animate_voyage(dt)
 	if is_instance_valid(rotor) and game.learning.data.build[1]>=IslandLearning.NEEDS[1]:rotor.rotate_z(dt*.7)
-	for id in facilities:
+	for id in machine_rotors:
 		if not facilities[id].visible:continue
-		var part_name={"sawmill":"SawWheel","quarry":"CutterWheel","hill":"PumpRotor","tideworks":"TideWheel"}.get(id,"")
-		if not part_name.is_empty():
-			var moving_part=facilities[id].find_child(part_name,true,false)
-			if moving_part:
-				if id=="tideworks":moving_part.rotate_x(dt*.45)
-				else:moving_part.rotate_z(dt*(2.4 if id=="sawmill" else .8))
+		if id=="tideworks":machine_rotors[id].rotate_x(dt*.45)
+		else:machine_rotors[id].rotate_z(dt*(2.4 if id=="sawmill" else .8))
 	for i in range(clouds.size()):
 		var a=time*.007+i*TAU/clouds.size();var p=Vector3(cos(a),.12+sin(a*2+i)*.16,sin(a)).normalized()*13.3
 		clouds[i].position=p;clouds[i].basis=Basis(Quaternion(Vector3.UP,p.normalized()));clouds[i].scale=Vector3.ONE*(1.0+i*.08)
 	var ba=time*.018;boat.position=Vector3(sin(ba)*10.4,5.2,cos(ba)*10.4)
 	var normal=boat.position.normalized();var forward=Vector3(cos(ba),0,-sin(ba)).normalized();boat.basis=Basis(forward.cross(normal).normalized(),normal,-forward);boat.scale=Vector3.ONE*.7
-	ring_clock+=dt
-	if ring_clock>.05:ring_clock=0;update_selection_ring()
+	cursor.get_child(0).rotation.y=time*.35
 	ring_material.albedo_color=Color(1,1,.98,.72+.26*sin(time*2.6))
 	for id in markers:
 		markers[id].get_node("Sign").position.y=.38+sin(time*2+id.length())*.07

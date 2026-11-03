@@ -28,10 +28,13 @@ func inspect_world(game):
 	var minimum=INF;var maximum=-INF
 	for id in IslandFrontier.BUILD_IDS:
 		game.frontier.data.active=id;world.update_selection_ring()
-		var mesh=world.cursor.get_child(0).get_child(0).mesh
+		var ribbon=world.cursor.get_child(0)
+		var mesh=ribbon.mesh
 		for vertex in mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]:
-			var height=vertex.length()-world.ground_point(world.terrain.coordinates(vertex)).length();minimum=minf(minimum,height);maximum=maxf(maximum,height)
-	check(minimum>.08 and maximum<.09,"every selected ring vertex follows local terrain with a small clear offset")
+			var p=world.globe.to_local(ribbon.to_global(vertex))
+			var height=p.length()-world.ground_point(world.terrain.coordinates(p)).length()
+			minimum=minf(minimum,height);maximum=maxf(maximum,absf(vertex.y))
+	check(minimum>.07 and maximum<.001,"the entire dashed ring floats above the slopes in a single tangent plane")
 	check(world.cursor.get_child_count()==1 and not world.ring_material.no_depth_test,"one selection ring keeps normal depth occlusion")
 func run():
 	var game=load("res://main.tscn").instantiate();root.add_child(game)

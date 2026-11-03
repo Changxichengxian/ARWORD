@@ -2,8 +2,6 @@ shader_type spatial;
 render_mode blend_mix, depth_draw_never, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform sampler2D bed_depth : filter_linear, repeat_disable;
-uniform sampler2D scene_depth : hint_depth_texture, filter_nearest, repeat_disable;
-uniform sampler2D scene_color : hint_screen_texture, filter_linear, repeat_disable;
 uniform float water_time = 0.0;
 uniform float radius = 11.62;
 uniform float max_depth = 4.0;
@@ -63,12 +61,9 @@ void fragment() {
 
     float radial_depth = depth_at(n);
     float trench = smoothstep(.68,.94,dot(n,berth_normal)+.014*sin(p.x*1.1)*sin(p.z*.9));
-    // Godot 4.5 Mobile cannot resolve this texture with MSAA enabled. The
-    // project deliberately uses FXAA so real seabed and animals supply depth.
-    float depth_sample=texture(scene_depth,SCREEN_UV).r;
-    vec4 scene_position=INV_PROJECTION_MATRIX*vec4(SCREEN_UV*2.0-1.0,depth_sample,1.0);
-    vec3 behind=scene_position.xyz/scene_position.w;
-    float thickness=depth_sample>0.00001 ? max(0.0,length(behind-VERTEX)) : 100.0;
+    // The seabed uses this same radial depth map. Hardware blends water over
+    // opaque fish and sand, and depth-tests it against the dry shore.
+    float thickness=radial_depth/max(.18,surface_angle);
     float absorption = 1.0-exp(-thickness*mix(.70,2.65,trench));
     vec3 shallow = vec3(0.045,0.56,0.60);
     vec3 deep = vec3(0.003,0.025,0.080);
@@ -82,20 +77,8 @@ void fragment() {
     ROUGHNESS = 0.32 + (1.0-absorption)*0.08 + .19*trench;
     SPECULAR = .36*(1.0-smoothstep(.25,.85,trench));
     METALLIC = 0.02;
-    // Water becomes opaque before the far hemisphere; rays that miss the
-    // solid seabed cannot blend stars or a distant animal into the ocean rim.
-    float transmission_alpha=clamp(0.16+absorption*0.83+fresnel*.16,0.22,1.0);
-    float opacity=mix(transmission_alpha,1.0,smoothstep(3.0,6.0,thickness));
-    // Only the moving normal perturbs the image; a smooth spherical normal
-    // would bend the whole island as if the ocean were a glass lens.
-    vec3 view_slope=mat3(VIEW_MATRIX)*mat3(MODEL_MATRIX)*slope;
-    vec2 refracted_uv=SCREEN_UV+view_slope.xy*0.038*smoothstep(0.03,0.5,thickness);
-    float refracted_depth=texture(scene_depth,refracted_uv).r;
-    if (refracted_depth>=FRAGCOORD.z || refracted_depth<0.00001) { refracted_uv=SCREEN_UV; }
-    vec3 transmitted=texture(scene_color,refracted_uv).rgb;
-    // The opaque screen sample already includes the seabed and underwater
-    // animals. Optical transmission here lets waves refract those objects.
-    ALBEDO=surface_color*opacity;
-    EMISSION=transmitted*(1.0-opacity)+vec3(0.09,0.22,0.31)*fresnel*0.045;
-    ALPHA=1.0;
+    float opacity=mix(.22+.52*absorption,.46+.53*absorption,trench);
+    ALBEDO=surface_color;
+    EMISSION=vec3(.09,.22,.31)*fresnel*.045;
+    ALPHA=mix(opacity,1.0,1.0-smoothstep(.12,.52,surface_angle));
 }

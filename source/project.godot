@@ -5,7 +5,7 @@ boot_splash/bg_color=Color(0.027, 0.11, 0.18, 1)
 boot_splash/image="res://assets/icon-foreground.png"
 boot_splash/fullsize=false
 config/name="ARWORD"
-config/version="0.12.2"
+config/version="0.12.3"
 run/max_fps=60
 config/icon="res://assets/icon.png"
 run/main_scene="res://main.tscn"
@@ -40,6 +40,7 @@ driver/enable_input=false
 
 [input_devices]
 pointing/emulate_touch_from_mouse=false
+pointing/android/disable_scroll_deadzone=true
 pointing/emulate_mouse_from_touch=true
 
 [physics]

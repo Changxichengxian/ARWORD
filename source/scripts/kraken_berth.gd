@@ -9,13 +9,7 @@ const WATER_CONTACTS=[Vector3(-3,-1.3,-1.8),Vector3(4.6,-1.25,-.6),Vector3(-2.8,
 const LOOSEN_START=[.42,.10,.0,.26]
 # The touch paths follow the exposed middle of each sculpt, including the arch
 # that remains offshore. Buried sections never intercept a tap on the water.
-const TOUCH_PATHS=[
-	[Vector4(-2.8,-.74,-1.78,.68),Vector4(-2.4,.25,-1.55,.6),Vector4(-1.8,.96,-1.28,.5),Vector4(-1.13,1.05,-.85,.43),Vector4(-.86,1.0,.36,.4),Vector4(.18,1.31,.84,.34),Vector4(.68,1.55,.49,.26)],
-	[Vector4(4.84,-1.45,-.68,.8),Vector4(4.38,-.19,-.73,.73),Vector4(3.94,.59,-.64,.64),Vector4(3.34,.82,-.46,.55),Vector4(2.85,.65,-.16,.47),Vector4(2.41,.19,.56,.31)],
-	[Vector4(-3.25,-1.39,2.67,.92),Vector4(-2.7,-.30,2.33,.85),Vector4(-2.15,.15,2.17,.78),Vector4(-1.38,.28,2.14,.71),Vector4(-.65,.11,2.37,.62),Vector4(.05,-.27,2.81,.55),Vector4(.55,-1.1,3.5,.48)],
-	[Vector4(.85,-1.63,-3.35,.46),Vector4(1.17,-.60,-2.94,.39),Vector4(1.58,.02,-2.62,.32),Vector4(1.99,.2,-2.47,.27)]
-]
-const RELEASE_OFFSETS=[Vector3(-.6,-4.4,-.48),Vector3(1.55,-4.2,-.65),Vector3(-.95,-1.02,.80),Vector3(0,-1.9,-.6)]
+var touch_paths=preload("res://assets/kraken_paths.json").data
 var world
 var arms:Array[MeshInstance3D]=[]
 var channels:Array=[]
@@ -40,6 +34,10 @@ func setup(owner_world):
 	for arm_name in ARM_NAMES:
 		var arm=visual.find_child(arm_name,true,false) as MeshInstance3D
 		if arm==null:push_error("Missing arm: "+arm_name);continue
+		var skin=ShaderMaterial.new()
+		skin.shader=preload("res://assets/kraken_skin.gdshader")
+		skin.set_shader_parameter("planet_center",arm.to_local(world.globe.global_position))
+		arm.material_override=skin
 		arms.append(arm)
 		channels.append([arm.find_blend_shape_by_name("Release"),arm.find_blend_shape_by_name("Breath"),arm.find_blend_shape_by_name("Pulse")])
 	coin_socket=Node3D.new()
@@ -119,13 +117,13 @@ func hit(screen:Vector2)->bool:
 	var camera=world.game.camera
 	if global_basis.y.dot((camera.global_position-global_position).normalized())<.18:return false
 	if screen_hit(camera,coin_socket.global_position,screen,.42):return true
-	for i in TOUCH_PATHS.size():
-		var offset:Vector3=RELEASE_OFFSETS[i]*smoothstep(LOOSEN_START[i],1.0,release)
-		for sample in TOUCH_PATHS[i]:
-			var local=Vector3(sample.x,sample.y,sample.z)+offset
+	for i in ARM_NAMES.size():
+		var loosened=smoothstep(LOOSEN_START[i],1.0,release)
+		for sample in touch_paths[ARM_NAMES[i]]:
+			var local=Vector3(sample[0],sample[1],sample[2]).lerp(Vector3(sample[4],sample[5],sample[6]),loosened)
 			var radial:Vector3=transform*local
-			if radial.length()+sample.w<world.water.BASE_RADIUS-.18:continue
-			if screen_hit(camera,to_global(local),screen,sample.w):return true
+			if radial.length()+sample[3]<world.water.BASE_RADIUS-.12:continue
+			if screen_hit(camera,to_global(local),screen,sample[3]):return true
 	return false
 
 func screen_hit(camera:Camera3D,point:Vector3,screen:Vector2,radius:float)->bool:

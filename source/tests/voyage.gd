@@ -82,7 +82,7 @@ func scene_checks():
 	world.desired_rotation=Quaternion(a,Vector3.UP)
 	world.globe.quaternion=world.desired_rotation
 	game.frame_view(Vector3(0,10.4,0),10.5,false)
-	var arm_pixel=game.camera.unproject_position(world.trader.to_global(Vector3(-1.38,.28,2.14)))
+	var arm_pixel=game.camera.unproject_position(world.trader.to_global(Vector3(-1.38,-.42,2.14)))
 	var open_water=game.camera.unproject_position(world.trader.to_global(Vector3(-4.8,-1,4.9)))
 	check(world.trader.hit(arm_pixel) and not world.trader.hit(open_water),"a visible offshore limb accepts taps while neighboring open water stays free")
 	game.show_rocket()

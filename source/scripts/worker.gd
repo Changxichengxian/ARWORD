@@ -43,6 +43,7 @@ var rest_ground_samples=0
 var pending_work:Dictionary={}
 var harvesting_cycle=true
 var transport_suspended=false
+var visit_target=Vector2.INF
 
 func _init(owner_world):
 	world=owner_world
@@ -96,7 +97,16 @@ func settle():
 	world.set_tool(-1);carry.hide();rest_time=0;rest_variant=0
 	var spot=rest_spot();world.work_point=spot+Vector2(0,-SIZE_RATIO);world.walk_to(spot,.75)
 
+func visit(target:Vector2):
+	visit_target=target
+	if transport_suspended:return
+	pending_work.clear()
+	configure_work({"target":target,"origin":target,"kind":kind,"harvest":false})
+	rest_time=0;rest_variant=0;waking=0.0
+	world.walk_to(world.work_stance(2))
+
 func travel_speed()->float:
+	if visit_target.is_finite():return RUN_SPEED*gait_ratio()
 	return ((CARRY_SPEED if phase==1 else RUN_SPEED) if work_left>0 else WALK_SPEED)*gait_ratio()
 
 func gait_ratio()->float:
@@ -108,6 +118,7 @@ func run_amount(speed:float,loaded=false)->float:
 func stride_length(speed:float,loaded=false)->float:
 	return lerpf(1.22,1.65,run_amount(speed,loaded))*SIZE_RATIO*gait_ratio()
 func grant(mode:String,target:Vector2,entry:Dictionary,resource_kind:int):
+	visit_target=Vector2.INF
 	var was_resting=work_left<=0
 	work_left=minf(36.0,work_left+(12.0 if mode=="word" else 9.0))
 	var request={"target":target,"kind":resource_kind,"origin":entry.p if mode=="word" and not entry.is_empty() else target,"harvest":mode=="word" and not entry.is_empty()}
@@ -128,6 +139,11 @@ func configure_work(request:Dictionary):
 func suspend_for_transport(suspended:bool):
 	transport_suspended=suspended
 	if suspended:world.set_tool(-1);carry.hide()
+	elif visit_target.is_finite() and world.terrain.chart_at(visit_target)!=world.terrain.chart_at(world.terrain.coordinates(world.builder.position)):
+		visit(visit_target)
+	elif visit_target.is_finite():
+		world.work_point=visit_target
+		world.walk_to(world.work_stance(2))
 
 func next_phase():
 	if phase==2 and not pending_work.is_empty():
@@ -153,6 +169,7 @@ func update(dt:float):
 		update_skin();return
 	var working=work_left>0
 	var walking=world.move_tween and world.move_tween.is_running()
+	if visit_target.is_finite() and not walking:visit_target=Vector2.INF
 	# The reward is time spent working, so travel and getting up never consume it.
 	if working and not walking and waking<=0:
 		work_left=maxf(0,work_left-dt)
