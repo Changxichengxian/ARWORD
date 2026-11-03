@@ -24,7 +24,6 @@ var coral_scene=preload("res://assets/models/sea_coral.glb")
 var grass_scene=preload("res://assets/models/sea_grass.glb")
 var relic_scene=preload("res://assets/models/sea_relic.glb")
 var cave_scene=preload("res://assets/models/sea_cave.glb")
-var watcher_scene=preload("res://assets/models/sea_watcher.glb")
 var water_math=preload("res://scripts/water.gd")
 var spray_material:StandardMaterial3D
 const SPECIES=["gold","silver","reef","ray","turtle"]
@@ -205,7 +204,6 @@ func whale_position(animal:Dictionary,t:float)->Vector3:
 	return water_point_normal(normal,depth)
 
 func rebuild_seabed_life():
-	var event_time=float(cave.get("time",clock))
 	if scenery:scenery.queue_free()
 	scenery=Node3D.new();scenery.name="UnderwaterDiscoveries";add_child(scenery);grass.clear();cave.clear();seabed_obstacles.clear()
 	var chosen=[]
@@ -232,28 +230,17 @@ func rebuild_seabed_life():
 		var entrance=Quaternion(n,Vector3.UP).inverse()*Vector3.BACK
 		base.basis=frame_at(base.position,entrance);base.rotate_object_local(Vector3.UP,.15)
 		var shell=cave_scene.instantiate();base.add_child(shell);shell.scale=Vector3.ONE*.86
-		var watcher=watcher_scene.instantiate();base.add_child(watcher);watcher.scale=Vector3.ONE*.91
-		watcher.position=Vector3(0,.83,1.60)
-		cave={"root":base,"shell":shell,"watcher":watcher,"normal":n,"time":event_time,"state":"hidden","extension":0.0}
+		cave={"root":base,"shell":shell,"normal":n}
 		break
 func place_bed_model(scene:PackedScene,n:Vector3,size:float,yaw:float)->Node3D:
 	var anchor=Node3D.new();scenery.add_child(anchor);anchor.position=n*(world.water.floor_radius(n)+.035)
 	anchor.basis=frame_at(anchor.position,tangent_axes(n)[1]);anchor.rotate_object_local(Vector3.UP,yaw)
 	var model=scene.instantiate();anchor.add_child(model);model.scale=Vector3.ONE*size
 	return model
-func update_cave(dt:float):
+func update_seagrass():
 	for plant in grass:plant.node.rotation.z=sin(clock*.85+plant.phase)*.065
-	if cave.is_empty():return
-	cave.time+=dt;var phase=fmod(cave.time,132.0);var extension=0.0;var state="hidden"
-	if phase>=74 and phase<79:extension=smoothstep(0,1,(phase-74)/5);state="emerge"
-	elif phase>=79 and phase<85:extension=1.0;state="observe"
-	elif phase>=85 and phase<91:extension=1.0-smoothstep(0,1,(phase-85)/6);state="retreat"
-	cave.extension=extension;cave.state=state
-	cave.watcher.visible=extension>.001
-	cave.watcher.position=Vector3(0,.83+sin(cave.time*.7)*.025,lerpf(1.60,.20,extension))
-	cave.watcher.rotation.y=sin(cave.time*.33)*.07*extension
 func preview_event(event:String)->Vector3:
-	if event=="cave" and not cave.is_empty():cave.time=78.7;update_cave(0);return cave.normal
+	if event=="cave" and not cave.is_empty():return cave.normal
 	for animal in animals:
 		if animal.kind=="whale" and animal.index==0:
 			animal.action_offset=(44.4 if event=="whale_breach" else 16.5)-fmod(animal.phase,124.0)
@@ -295,7 +282,7 @@ func _process(dt):
 		animal.anchor.position=pos
 		if forward.length_squared()>.00000001:animal.anchor.basis=Basis(animal.anchor.basis.get_rotation_quaternion().slerp(frame_at(pos,forward).get_rotation_quaternion(),1-exp(-dt*7)).normalized())
 		animal.last=pos
-	update_water_effects(dt);update_cave(dt)
+	update_water_effects(dt);update_seagrass()
 
 func water_burst(global_point:Vector3,normal:Vector3,splash:bool,size=1.0):
 	var start=to_local(global_point);var tangent=tangent_axes(normal)[0];var other=normal.cross(tangent).normalized()

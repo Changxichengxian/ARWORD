@@ -4,6 +4,8 @@ param(
     [string]$AndroidSdk=$env:ANDROID_SDK_ROOT,
     [string]$JavaHome=$env:JAVA_HOME,
     [string]$SigningProperties="",
+    [string]$UpdateRepository='Changxichengxian/ARWORD',
+    [switch]$PublicRelease,
     [string]$OutputDirectory=(Join-Path $PSScriptRoot "build")
 )
 $ErrorActionPreference="Stop"
@@ -24,6 +26,10 @@ New-Item -ItemType Directory -Force -Path $stage,$engine,(Join-Path $engine "edi
 foreach($name in @("assets","scripts","project.godot","main.tscn","export_presets.cfg","android-plugin")) {
     Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $stage -Recurse
 }
+if ($PublicRelease) {
+    $personal = Join-Path $stage 'assets/characters/deepseek.vrm'
+    if (Test-Path -LiteralPath $personal) {Remove-Item -LiteralPath $personal}
+}
 $inputs=Get-ChildItem -LiteralPath $stage -Recurse -File | ForEach-Object {
     [pscustomobject]@{path=$_.FullName.Substring($stage.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
 }
@@ -34,7 +40,7 @@ if(Test-Path -LiteralPath $warmImport){
     New-Item -ItemType Directory -Force -Path (Join-Path $stage '.godot') | Out-Null
     Copy-Item -LiteralPath $warmImport -Destination (Join-Path $stage '.godot/imported') -Recurse
 }
-& (Join-Path $stage 'android-plugin/prepare.ps1') -Stage $stage -Templates $Templates -AndroidSdk $AndroidSdk
+& (Join-Path $stage 'android-plugin/prepare.ps1') -Stage $stage -Templates $Templates -AndroidSdk $AndroidSdk -UpdateRepository $UpdateRepository
 Copy-Item -LiteralPath (Join-Path $buildRoot 'android-build-dependencies.json') -Destination (Join-Path $OutputDirectory 'android-build-dependencies.json')
 # Isolate editor settings so building does not rewrite the developer's existing Godot settings.
 $binaryDir=Split-Path $Godot
@@ -62,7 +68,9 @@ $preset | Set-Content -LiteralPath (Join-Path $stage 'export_presets.cfg') -Enco
 $log=Join-Path $OutputDirectory 'build.log'
 $unsigned=Join-Path $buildRoot 'unsigned.apk'
 $aligned=Join-Path $buildRoot 'aligned.apk'
-$apk=Join-Path $OutputDirectory '词屿-0.11.0.apk'
+$versionMatch=[regex]::Match($preset,'(?m)^version/name="(\d+\.\d+\.\d+)"')
+if(-not $versionMatch.Success){throw '缺少有效的 APK 版本号。'}
+$apk=Join-Path $OutputDirectory ("ARWORD-"+$versionMatch.Groups[1].Value+".apk")
 Write-Host '导入三维资源……'
 & $engineExe --headless --editor --path $stage --import *> $log
 if($LASTEXITCODE -ne 0){throw "导入失败，请看 $log"}

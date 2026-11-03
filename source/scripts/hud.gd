@@ -58,7 +58,7 @@ func _ready():
 	for id in game.world.markers:add_world_progress(id)
 	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
 	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
-	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"工作手记"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
+	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"阅读"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
 	if not game.learning.wordbooks.books.is_empty():
 		var books=icon(top,"books",game.show_wordbooks,"词书");top.move_child(books,1)
 	toast_label=text(self,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -140,6 +140,8 @@ func update_world_progress():
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	if game.frontier.data.active=="mountain" and game.frontier.done("mountain"):icon(r,"telescope",game.open_observatory,"观测星云")
+	if game.frontier.data.active in ["goldmine","smelter"]:
+		ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
 	return r
 func show_task():
@@ -167,6 +169,8 @@ func show_word():
 func show_help():
 	clear_body();screen="help";layout_card(365);var q=game.current
 	var r=row(body);word_label=ghost(r,q.word,game.speak_word,48);word_label.add_theme_font_size_override("font_size",30)
+	if game.frontier.data.active in ["goldmine","smelter"]:
+		ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
 	text(body,q.zh,23,GREEN)
 	if not str(q.get("example","")).is_empty():reading(body,q.example,72,20);text(body,q.translation,17,Color("70857B"))

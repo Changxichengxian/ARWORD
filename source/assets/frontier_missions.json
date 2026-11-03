@@ -40,13 +40,13 @@
     "short": "The sawmill turns short logs into boards. Keep the surface clear and move one log at a time. This is efficient: it can reduce waste and preserve useful pieces.",
     "text": "The sawmill turns short logs into boards. Keep the surface clear and move one log at a time. This is efficient: it can reduce waste and preserve useful pieces. Put the finished boards beside the table, away from the moving blade. Later, the boards will form the cottage floor and the narrow path beside the water.",
     "zh": "锯木坊把原木切成木板。台面保持清空，一次送一根木头，减少浪费；成品放在台旁，远离锯片，用于地板和栈道。",
-    "question": "木板切好后放哪里？",
+    "question": "一次只送一根原木有什么好处？",
     "options": [
-      "台子旁，离锯片远些",
-      "台面上，紧挨锯片",
-      "和待切原木堆在一起"
+      "让切好的木板更长",
+      "减少浪费，留下有用木料",
+      "给木板染上不同颜色"
     ],
-    "correct": 0,
+    "correct": 1,
     "cue": "Place the finished boards beside the table, away from the moving blade.",
     "cue_options": [
       "成品放台旁，远离锯片",
@@ -100,11 +100,11 @@
     "short": "The meadow has room for a garden and a path. Allocate adequate space between them. Our choice matters: the worker must still reach the small hill beyond the garden.",
     "text": "The meadow has room for a garden and a path. Allocate adequate space between them. Our choice matters: the worker must still reach the small hill beyond the garden. Put the new beds on one side instead of across the middle. Flowers can grow along the edge, while the open path connects the old shore to the new ground.",
     "zh": "草地要给花园和道路都留出空间。种植床放在一边，不要横断中间的路，让工人能穿过花园到后面的小丘。",
-    "question": "种植床怎么摆更合适？",
+    "question": "花园旁为什么要留条路？",
     "options": [
-      "靠一边，留出通路",
-      "横着摆满道路中间",
-      "先占满，再挪出通路"
+      "让人能走到后面的小丘",
+      "让苗床有更大的阴影",
+      "让工人绕开整片草地"
     ],
     "correct": 0,
     "cue": "Place the beds on one side, and keep the middle path open.",

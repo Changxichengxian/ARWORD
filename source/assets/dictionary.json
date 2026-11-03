@@ -165,7 +165,7 @@
   },
   "basket": {
     "phonetic": "'bɑ:skit",
-    "translation": "n. 篮, 篮子\nvt. 装入篮"
+    "translation": "篮子；篮球架上的篮筐"
   },
   "bay": {
     "phonetic": "bei",
@@ -1081,7 +1081,7 @@
   },
   "left": {
     "phonetic": "left",
-    "translation": "a. 左边的, 左倾的, 左侧的, 左派的\nadv. 在左面\nn. 左, 左面, 左派\nleave的过去式和过去分词"
+    "translation": "留下了；离开了（leave 的过去式）；左边的"
   },
   "let": {
     "phonetic": "let",
@@ -1469,7 +1469,7 @@
   },
   "points": {
     "phonetic": "",
-    "translation": "n. 转轨器, 道岔\n[计] 磅"
+    "translation": "指向；尖端；分数（point 的动词或复数形式）"
   },
   "poor": {
     "phonetic": "puә. pɒ:",
@@ -1765,7 +1765,7 @@
   },
   "runs": {
     "phonetic": "",
-    "translation": "n. 顺串；泻肚子；流量（run的复数形式）"
+    "translation": "跑；运行（run 的第三人称单数）"
   },
   "safe": {
     "phonetic": "seif",
@@ -1925,7 +1925,7 @@
   },
   "sound": {
     "phonetic": "saund",
-    "translation": "n. 声音, 语音, 吵闹, 声调, 听力范围, 探条, 海峡\na. 健全的, 可靠的, 合理的, 健康的, 彻底的, 资金充实的\nadv. 彻底地, 充分地\nvi. 发出声音, 回响, 测深, 试探, 听起来\nvt. 使发声, 宣告, 听诊, 测...深, 试探\n[计] 声音"
+    "translation": "声音；听起来；完好结实的"
   },
   "source": {
     "phonetic": "sɒ:s",
@@ -2718,5 +2718,789 @@
   "whether": {
     "phonetic": "",
     "translation": "是否"
+  },
+  "above": {
+    "phonetic": "",
+    "translation": "在……上方"
+  },
+  "actually": {
+    "phonetic": "",
+    "translation": "实际上"
+  },
+  "all": {
+    "phonetic": "",
+    "translation": "全部；所有的"
+  },
+  "already": {
+    "phonetic": "",
+    "translation": "已经"
+  },
+  "appear": {
+    "phonetic": "",
+    "translation": "出现"
+  },
+  "around": {
+    "phonetic": "",
+    "translation": "绕过；围绕"
+  },
+  "asked": {
+    "phonetic": "",
+    "translation": "询问了"
+  },
+  "asks": {
+    "phonetic": "",
+    "translation": "询问"
+  },
+  "asleep": {
+    "phonetic": "",
+    "translation": "睡着的"
+  },
+  "ball": {
+    "phonetic": "",
+    "translation": "球"
+  },
+  "begin": {
+    "phonetic": "",
+    "translation": "开始"
+  },
+  "begins": {
+    "phonetic": "",
+    "translation": "开始"
+  },
+  "bird": {
+    "phonetic": "",
+    "translation": "鸟"
+  },
+  "book": {
+    "phonetic": "",
+    "translation": "书"
+  },
+  "breakfast": {
+    "phonetic": "",
+    "translation": "早餐"
+  },
+  "breath": {
+    "phonetic": "",
+    "translation": "一口气；呼吸"
+  },
+  "brother": {
+    "phonetic": "",
+    "translation": "哥哥或弟弟"
+  },
+  "brought": {
+    "phonetic": "",
+    "translation": "带来（bring 的过去式）"
+  },
+  "bus": {
+    "phonetic": "",
+    "translation": "公共汽车"
+  },
+  "business": {
+    "phonetic": "",
+    "translation": "生意；经营"
+  },
+  "cafe": {
+    "phonetic": "",
+    "translation": "咖啡馆"
+  },
+  "came": {
+    "phonetic": "",
+    "translation": "来了（come 的过去式）"
+  },
+  "camera": {
+    "phonetic": "",
+    "translation": "相机；摄像机"
+  },
+  "caught": {
+    "phonetic": "",
+    "translation": "接住了"
+  },
+  "changed": {
+    "phonetic": "",
+    "translation": "改变了"
+  },
+  "chat": {
+    "phonetic": "",
+    "translation": "聊天"
+  },
+  "cheaper": {
+    "phonetic": "",
+    "translation": "更便宜的"
+  },
+  "checked": {
+    "phonetic": "",
+    "translation": "查看了；检查了"
+  },
+  "child": {
+    "phonetic": "",
+    "translation": "小孩"
+  },
+  "closer": {
+    "phonetic": "",
+    "translation": "更近"
+  },
+  "clouds": {
+    "phonetic": "",
+    "translation": "云"
+  },
+  "collecting": {
+    "phonetic": "",
+    "translation": "收取；收集"
+  },
+  "compare": {
+    "phonetic": "",
+    "translation": "对比"
+  },
+  "count": {
+    "phonetic": "",
+    "translation": "计数；总数"
+  },
+  "counted": {
+    "phonetic": "",
+    "translation": "数过；计入"
+  },
+  "counting": {
+    "phonetic": "",
+    "translation": "正在计数"
+  },
+  "counts": {
+    "phonetic": "",
+    "translation": "计数结果；数"
+  },
+  "cup": {
+    "phonetic": "",
+    "translation": "杯子"
+  },
+  "cups": {
+    "phonetic": "",
+    "translation": "杯子（复数）"
+  },
+  "customers": {
+    "phonetic": "",
+    "translation": "顾客"
+  },
+  "dinner": {
+    "phonetic": "",
+    "translation": "晚餐"
+  },
+  "disappeared": {
+    "phonetic": "",
+    "translation": "消失了"
+  },
+  "discount": {
+    "phonetic": "",
+    "translation": "折扣"
+  },
+  "draw": {
+    "phonetic": "",
+    "translation": "画出"
+  },
+  "drink": {
+    "phonetic": "",
+    "translation": "饮料；喝"
+  },
+  "drinks": {
+    "phonetic": "",
+    "translation": "饮料（复数）；喝"
+  },
+  "driver": {
+    "phonetic": "",
+    "translation": "司机"
+  },
+  "drummer": {
+    "phonetic": "",
+    "translation": "鼓手"
+  },
+  "easy": {
+    "phonetic": "",
+    "translation": "容易的"
+  },
+  "else": {
+    "phonetic": "",
+    "translation": "别的；其他"
+  },
+  "end": {
+    "phonetic": "",
+    "translation": "末端；结束"
+  },
+  "ended": {
+    "phonetic": "",
+    "translation": "终止；到……为止"
+  },
+  "entered": {
+    "phonetic": "",
+    "translation": "进入了"
+  },
+  "even": {
+    "phonetic": "",
+    "translation": "甚至；即使"
+  },
+  "expected": {
+    "phonetic": "",
+    "translation": "预料；预期"
+  },
+  "faster": {
+    "phonetic": "",
+    "translation": "更快"
+  },
+  "feet": {
+    "phonetic": "",
+    "translation": "脚（foot 的复数）"
+  },
+  "fell": {
+    "phonetic": "",
+    "translation": "落下；fell asleep 表示睡着了"
+  },
+  "felt": {
+    "phonetic": "",
+    "translation": "感觉"
+  },
+  "fewer": {
+    "phonetic": "",
+    "translation": "更少的"
+  },
+  "filled": {
+    "phonetic": "",
+    "translation": "装满了；挤满了"
+  },
+  "film": {
+    "phonetic": "",
+    "translation": "电影"
+  },
+  "final": {
+    "phonetic": "",
+    "translation": "最后的"
+  },
+  "find": {
+    "phonetic": "",
+    "translation": "找到"
+  },
+  "finishing": {
+    "phonetic": "",
+    "translation": "结束；用完"
+  },
+  "flat": {
+    "phonetic": "",
+    "translation": "平整的"
+  },
+  "fourth": {
+    "phonetic": "",
+    "translation": "第四"
+  },
+  "free": {
+    "phonetic": "",
+    "translation": "空着的；自由的"
+  },
+  "friend": {
+    "phonetic": "",
+    "translation": "朋友"
+  },
+  "game": {
+    "phonetic": "",
+    "translation": "游戏；比赛"
+  },
+  "get": {
+    "phonetic": "",
+    "translation": "得到；get off 表示下车"
+  },
+  "gone": {
+    "phonetic": "",
+    "translation": "离开了"
+  },
+  "group": {
+    "phonetic": "",
+    "translation": "一群；一组"
+  },
+  "guide": {
+    "phonetic": "",
+    "translation": "导游"
+  },
+  "had": {
+    "phonetic": "",
+    "translation": "有；用来构成过去完成时"
+  },
+  "handed": {
+    "phonetic": "",
+    "translation": "递了过去"
+  },
+  "hands": {
+    "phonetic": "",
+    "translation": "手（复数）"
+  },
+  "hear": {
+    "phonetic": "",
+    "translation": "听见"
+  },
+  "held": {
+    "phonetic": "",
+    "translation": "拿着；举着"
+  },
+  "her": {
+    "phonetic": "",
+    "translation": "她的；她"
+  },
+  "hers": {
+    "phonetic": "",
+    "translation": "她的（东西）"
+  },
+  "him": {
+    "phonetic": "",
+    "translation": "他（宾格）"
+  },
+  "his": {
+    "phonetic": "",
+    "translation": "他的"
+  },
+  "hurry": {
+    "phonetic": "",
+    "translation": "匆忙"
+  },
+  "ice": {
+    "phonetic": "",
+    "translation": "冰"
+  },
+  "itself": {
+    "phonetic": "",
+    "translation": "它本身"
+  },
+  "just": {
+    "phonetic": "",
+    "translation": "刚好；刚刚"
+  },
+  "kept": {
+    "phonetic": "",
+    "translation": "一直；保持"
+  },
+  "lamp": {
+    "phonetic": "",
+    "translation": "灯"
+  },
+  "lands": {
+    "phonetic": "",
+    "translation": "落下；降落"
+  },
+  "leaf": {
+    "phonetic": "",
+    "translation": "叶子"
+  },
+  "letter": {
+    "phonetic": "",
+    "translation": "信"
+  },
+  "likes": {
+    "phonetic": "",
+    "translation": "喜欢"
+  },
+  "line": {
+    "phonetic": "",
+    "translation": "一行；一句歌词"
+  },
+  "listen": {
+    "phonetic": "",
+    "translation": "听"
+  },
+  "listened": {
+    "phonetic": "",
+    "translation": "听了"
+  },
+  "little": {
+    "phonetic": "",
+    "translation": "小的"
+  },
+  "lock": {
+    "phonetic": "",
+    "translation": "门锁；锁上"
+  },
+  "look": {
+    "phonetic": "",
+    "translation": "看；看起来"
+  },
+  "lunch": {
+    "phonetic": "",
+    "translation": "午餐"
+  },
+  "made": {
+    "phonetic": "",
+    "translation": "使；制作了"
+  },
+  "man": {
+    "phonetic": "",
+    "translation": "男子"
+  },
+  "manager": {
+    "phonetic": "",
+    "translation": "经理"
+  },
+  "map": {
+    "phonetic": "",
+    "translation": "地图"
+  },
+  "mark": {
+    "phonetic": "",
+    "translation": "记号；做记号"
+  },
+  "marked": {
+    "phonetic": "",
+    "translation": "做了记号"
+  },
+  "marks": {
+    "phonetic": "",
+    "translation": "印记；痕迹"
+  },
+  "mattered": {
+    "phonetic": "",
+    "translation": "很重要；起了作用"
+  },
+  "me": {
+    "phonetic": "",
+    "translation": "我（宾格）"
+  },
+  "microphone": {
+    "phonetic": "",
+    "translation": "麦克风"
+  },
+  "mine": {
+    "phonetic": "",
+    "translation": "我的（东西）"
+  },
+  "minute": {
+    "phonetic": "",
+    "translation": "一分钟"
+  },
+  "minutes": {
+    "phonetic": "",
+    "translation": "分钟（复数）"
+  },
+  "money": {
+    "phonetic": "",
+    "translation": "钱"
+  },
+  "most": {
+    "phonetic": "",
+    "translation": "大部分"
+  },
+  "moved": {
+    "phonetic": "",
+    "translation": "移动了"
+  },
+  "museum": {
+    "phonetic": "",
+    "translation": "博物馆"
+  },
+  "my": {
+    "phonetic": "",
+    "translation": "我的"
+  },
+  "neck": {
+    "phonetic": "",
+    "translation": "脖子"
+  },
+  "needed": {
+    "phonetic": "",
+    "translation": "需要（need 的过去式）"
+  },
+  "never": {
+    "phonetic": "",
+    "translation": "从不"
+  },
+  "nobody": {
+    "phonetic": "",
+    "translation": "没有人"
+  },
+  "number": {
+    "phonetic": "",
+    "translation": "数字；数量"
+  },
+  "numbers": {
+    "phonetic": "",
+    "translation": "数字（复数）"
+  },
+  "offer": {
+    "phonetic": "",
+    "translation": "提供"
+  },
+  "offered": {
+    "phonetic": "",
+    "translation": "提供了"
+  },
+  "opens": {
+    "phonetic": "",
+    "translation": "打开"
+  },
+  "over": {
+    "phonetic": "",
+    "translation": "在……上方；hand over 表示交出"
+  },
+  "owner": {
+    "phonetic": "",
+    "translation": "店主；所有者"
+  },
+  "pages": {
+    "phonetic": "",
+    "translation": "书页"
+  },
+  "paper": {
+    "phonetic": "",
+    "translation": "纸；纸制的"
+  },
+  "passed": {
+    "phonetic": "",
+    "translation": "经过；传了过去"
+  },
+  "person": {
+    "phonetic": "",
+    "translation": "人"
+  },
+  "picks": {
+    "phonetic": "",
+    "translation": "选择；拿起"
+  },
+  "picture": {
+    "phonetic": "",
+    "translation": "照片；画面；想象"
+  },
+  "player": {
+    "phonetic": "",
+    "translation": "球员；玩家"
+  },
+  "playing": {
+    "phonetic": "",
+    "translation": "演奏；玩"
+  },
+  "point": {
+    "phonetic": "",
+    "translation": "分；指"
+  },
+  "practice": {
+    "phonetic": "",
+    "translation": "练习；排练"
+  },
+  "puts": {
+    "phonetic": "",
+    "translation": "放下；放入"
+  },
+  "red": {
+    "phonetic": "",
+    "translation": "红色的"
+  },
+  "rice": {
+    "phonetic": "",
+    "translation": "米"
+  },
+  "scarf": {
+    "phonetic": "",
+    "translation": "围巾"
+  },
+  "screen": {
+    "phonetic": "",
+    "translation": "屏幕"
+  },
+  "seats": {
+    "phonetic": "",
+    "translation": "座位"
+  },
+  "second": {
+    "phonetic": "",
+    "translation": "秒；第二；又一"
+  },
+  "see": {
+    "phonetic": "",
+    "translation": "看见"
+  },
+  "seemed": {
+    "phonetic": "",
+    "translation": "显得；似乎"
+  },
+  "seen": {
+    "phonetic": "",
+    "translation": "见过的"
+  },
+  "shadow": {
+    "phonetic": "",
+    "translation": "影子"
+  },
+  "she": {
+    "phonetic": "",
+    "translation": "她"
+  },
+  "shook": {
+    "phonetic": "",
+    "translation": "摇动了（shake 的过去式）"
+  },
+  "showed": {
+    "phonetic": "",
+    "translation": "展示了；表明了"
+  },
+  "singer": {
+    "phonetic": "",
+    "translation": "歌手"
+  },
+  "sister": {
+    "phonetic": "",
+    "translation": "姐姐或妹妹"
+  },
+  "slept": {
+    "phonetic": "",
+    "translation": "睡了（sleep 的过去式）"
+  },
+  "smiles": {
+    "phonetic": "",
+    "translation": "微笑"
+  },
+  "snow": {
+    "phonetic": "",
+    "translation": "雪"
+  },
+  "someone": {
+    "phonetic": "",
+    "translation": "某个人"
+  },
+  "song": {
+    "phonetic": "",
+    "translation": "歌"
+  },
+  "spoon": {
+    "phonetic": "",
+    "translation": "勺子"
+  },
+  "stays": {
+    "phonetic": "",
+    "translation": "保持；留下"
+  },
+  "stick": {
+    "phonetic": "",
+    "translation": "木棍；固定住"
+  },
+  "stood": {
+    "phonetic": "",
+    "translation": "站着（stand 的过去式）"
+  },
+  "street": {
+    "phonetic": "",
+    "translation": "街道"
+  },
+  "studio": {
+    "phonetic": "",
+    "translation": "录音棚；工作室"
+  },
+  "suddenly": {
+    "phonetic": "",
+    "translation": "突然"
+  },
+  "take": {
+    "phonetic": "",
+    "translation": "拿走；乘坐；拍摄"
+  },
+  "tap": {
+    "phonetic": "",
+    "translation": "轻敲；一下敲击"
+  },
+  "taps": {
+    "phonetic": "",
+    "translation": "轻敲；数下敲击"
+  },
+  "tea": {
+    "phonetic": "",
+    "translation": "茶"
+  },
+  "their": {
+    "phonetic": "",
+    "translation": "他们的"
+  },
+  "though": {
+    "phonetic": "",
+    "translation": "尽管"
+  },
+  "thought": {
+    "phonetic": "",
+    "translation": "以为；想（think 的过去式）"
+  },
+  "ticket": {
+    "phonetic": "",
+    "translation": "票"
+  },
+  "times": {
+    "phonetic": "",
+    "translation": "次"
+  },
+  "together": {
+    "phonetic": "",
+    "translation": "一起"
+  },
+  "total": {
+    "phonetic": "",
+    "translation": "总数"
+  },
+  "touches": {
+    "phonetic": "",
+    "translation": "触摸"
+  },
+  "train": {
+    "phonetic": "",
+    "translation": "火车"
+  },
+  "turned": {
+    "phonetic": "",
+    "translation": "转过身；转向了"
+  },
+  "turning": {
+    "phonetic": "",
+    "translation": "转弯；转动"
+  },
+  "twenty": {
+    "phonetic": "",
+    "translation": "二十"
+  },
+  "twice": {
+    "phonetic": "",
+    "translation": "两次"
+  },
+  "visits": {
+    "phonetic": "",
+    "translation": "到访次数"
+  },
+  "watching": {
+    "phonetic": "",
+    "translation": "看着；注视着"
+  },
+  "way": {
+    "phonetic": "",
+    "translation": "路；方式"
+  },
+  "were": {
+    "phonetic": "",
+    "translation": "是；处于（be 的过去式）"
+  },
+  "which": {
+    "phonetic": "",
+    "translation": "哪个"
+  },
+  "who": {
+    "phonetic": "",
+    "translation": "谁；……的人"
+  },
+  "why": {
+    "phonetic": "",
+    "translation": "为什么"
+  },
+  "woke": {
+    "phonetic": "",
+    "translation": "醒了（wake 的过去式）"
+  },
+  "woman": {
+    "phonetic": "",
+    "translation": "女士"
+  },
+  "writes": {
+    "phonetic": "",
+    "translation": "写道"
+  },
+  "wrong": {
+    "phonetic": "",
+    "translation": "不对的"
+  },
+  "yellow": {
+    "phonetic": "",
+    "translation": "黄色的"
   }
 }

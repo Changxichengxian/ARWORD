@@ -2,6 +2,7 @@
 !/.gitignore
 !/AGENTS.md
 !/README.txt
+!/README.md
 !/source/
 /source/.godot/
 /source/.gradle/
@@ -19,3 +20,4 @@
 /source/**/*.keystore
 /source/**/signing/
 /source/tests/classes/
+/source/assets/characters/*.vrm

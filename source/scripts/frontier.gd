@@ -4,6 +4,9 @@ class_name IslandFrontier
 # A finite map. Each chapter adds land or a new use for the same source assets.
 const HEX=1.34
 const START=[Vector2i(0,0),Vector2i(1,0),Vector2i(0,1)]
+const ROCKET_CELLS=[Vector2i(0,-20),Vector2i(1,-20),Vector2i(0,-19)]
+const TRADE_PRICE=36
+const TRADE_BAG=6
 const CHAPTERS=[
 	{"id":"grove","title":"沿岸树林","need":6,"requires":[],"cells":[Vector2i(-1,0),Vector2i(-1,1),Vector2i(-2,1)],"point":Vector2i(-1,1),"site":0,"note":0},
 	{"id":"quarry","title":"露出石岸","need":6,"requires":[],"cells":[Vector2i(1,-1),Vector2i(2,-1),Vector2i(2,0)],"point":Vector2i(2,-1),"site":1,"note":0},
@@ -19,7 +22,9 @@ const CHAPTERS=[
 	{"id":"sunreach","title":"椰风群岛","need":10,"requires":["shipyard"],"cells":[Vector2i(20,0),Vector2i(21,0),Vector2i(20,1)],"point":Vector2i(20,0),"site":0,"note":6},
 	{"id":"coral","title":"潮光玻璃坊","need":12,"requires":["sunreach","crystal"],"cells":[Vector2i(19,1),Vector2i(19,2),Vector2i(20,2)],"point":Vector2i(19,1),"site":1,"note":7},
 	{"id":"basalt","title":"黑沙熔岩台","need":10,"requires":["shipyard","plateau"],"cells":[Vector2i(-20,0),Vector2i(-21,1),Vector2i(-20,1)],"point":Vector2i(-20,0),"site":1,"note":8},
-	{"id":"tideworks","title":"潮汐引水站","need":12,"requires":["basalt","sunreach","wetland"],"cells":[Vector2i(-19,0),Vector2i(-19,-1),Vector2i(-20,-1)],"point":Vector2i(-19,0),"site":2,"note":9}
+	{"id":"tideworks","title":"潮汐引水站","need":12,"requires":["basalt","sunreach","wetland"],"cells":[Vector2i(-19,0),Vector2i(-19,-1),Vector2i(-20,-1)],"point":Vector2i(-19,0),"site":2,"note":9},
+	{"id":"goldmine","title":"远岛金矿洞","need":8,"requires":["shipyard"],"cells":[Vector2i(0,20),Vector2i(1,20),Vector2i(0,21)],"point":Vector2i(0,20),"site":1},
+	{"id":"smelter","title":"主岛铸币坊","need":8,"requires":["goldmine","kiln"],"cells":[Vector2i(-3,-1),Vector2i(-4,0),Vector2i(-4,-1)],"point":Vector2i(-3,-1),"site":1}
 ]
 const PRODUCTION={
 	"grove":{"name":"木料","raw":"timber","product":"timber","tool":0},
@@ -36,12 +41,15 @@ const PRODUCTION={
 	"sunreach":{"name":"硬木","raw":"hardwood","product":"hardwood","tool":0},
 	"coral":{"name":"海玻璃","raw":"sea_glass","product":"lens","tool":1},
 	"basalt":{"name":"耐水石管","raw":"basalt_ore","product":"stone_pipe","tool":1},
-	"tideworks":{"name":"引水","raw":"water_jar","product":"water_jar","tool":0}
+	"tideworks":{"name":"引水","raw":"water_jar","product":"water_jar","tool":0},
+	"goldmine":{"name":"采金","raw":"gold_ore","product":"gold_ore","tool":1},
+	"smelter":{"name":"铸币","raw":"gold_ore","product":"gold_coin","tool":1}
 }
 const RECIPES={
 	"sawmill":["grove","quarry"],"kiln":["quarry","sawmill"],"crystal":["kiln","plateau"],
 	"wetland":["grove","meadow"],"plateau":["quarry","sawmill"],"mountain":["crystal","plateau","sawmill"],
 	"shipyard":["sawmill","wetland","plateau","kiln"],"sunreach":["shipyard","wetland","sawmill"],
+	"goldmine":["shipyard","plateau"],"smelter":["kiln","sawmill","plateau"],
 	"coral":["sunreach","crystal","kiln"],"basalt":["plateau","sawmill"],"tideworks":["basalt","sunreach","wetland"],
 	"cottage":["sawmill","kiln","grove"],"windmill":["plateau","sawmill","quarry"],"garden":["hill","meadow","tideworks"]
 }
@@ -75,8 +83,18 @@ func _init(owner_learning:IslandLearning):
 	for key in ["production","deliveries"]:
 		for id in data[key].keys():
 			var value=data[key][id];data[key][id]=clampi(int(value),0,1000000) if (value is int or value is float) and is_finite(float(value)) else 0
+	var voyage=stored.get("voyage",{})
+	if not voyage is Dictionary:voyage={}
+	data.voyage={"ore":0,"coins":0,"paid":0,"earned_book":"","dev_open":voyage.get("dev_open")==true}
+	for key in ["ore","coins","paid"]:
+		var value=voyage.get(key,0)
+		if (value is int or value is float) and is_finite(float(value)):
+			data.voyage[key]=clampi(int(value),0,TRADE_PRICE if key=="paid" else 1000000)
+	var earned=voyage.get("earned_book","")
+	if earned is String and not learning.wordbooks.find(earned).is_empty():
+		data.voyage.earned_book=earned
 	learning.data.frontier=data
-	if not available(data.active):data.active="grove"
+	if not available(data.active) or data.active=="rocket":data.active="grove"
 	learning.data.active=site(data.active)
 
 static func point(cell:Vector2i)->Vector2:return Vector2(sqrt(3.0)*HEX*(cell.x+cell.y*.5),1.5*HEX*cell.y)
@@ -85,9 +103,11 @@ func chapter(id:String)->Dictionary:
 		if c.id==id:return c
 	return {}
 func done(id:String)->bool:
+	if id=="rocket":return rocket_open()
 	var c=chapter(id)
 	return int(data.progress.get(id,0))>=int(c.need) if not c.is_empty() else learning.site_done(BUILD_IDS.find(id)) if id in BUILD_IDS else false
 func available(id:String)->bool:
+	if id=="rocket":return true
 	if id in BUILD_IDS:
 		var i=BUILD_IDS.find(id)
 		return BUILD_GATES[i].is_empty() or done(BUILD_GATES[i]) or learning.data.build[i]>0
@@ -114,8 +134,11 @@ func unlock_hint(id:String)->String:
 	var label={"wood":"木料采集","stone":"石料采集","explore":"阅读与听力"}[c.gate]
 	return str(label)+" "+str(gate_count(c.gate))+" / "+str(c.threshold)+" · "+str(c.title)
 func site(id:String)->int:return BUILD_IDS.find(id) if id in BUILD_IDS else int(chapter(id).get("site",0))
-func target(id:String)->Vector2:return point(BUILD_CELLS[BUILD_IDS.find(id)]) if id in BUILD_IDS else point(chapter(id).point)
+func target(id:String)->Vector2:
+	if id=="rocket":return point(ROCKET_CELLS[0])
+	return point(BUILD_CELLS[BUILD_IDS.find(id)]) if id in BUILD_IDS else point(chapter(id).point)
 func progress(id:String)->Vector2:
+	if id=="rocket":return Vector2(TRADE_PRICE if rocket_open() else data.voyage.paid,TRADE_PRICE)
 	var result:Vector2
 	if id in BUILD_IDS:result=learning.progress(site(id))
 	else:
@@ -123,12 +146,13 @@ func progress(id:String)->Vector2:
 	if not done(id):result.x+=float(data.effort.get(id,0))
 	return result
 func title(id:String)->String:
+	if id=="rocket":return "远航火箭" if rocket_open() else "海怪的泊位"
 	if id in BUILD_IDS:
 		var i=site(id);return IslandLearning.STEPS[i][learning.stage(i)] if not done(id) else IslandLearning.PROJECTS[i]+" · 自由照料"
 	return str(chapter(id).title)
 func mode()->String:return IslandLearning.MODES[int(data.turns.get(data.active,0))%6]
 func choose(id:String)->bool:
-	if not available(id):return false
+	if id=="rocket" or not available(id):return false
 	data.active=id;learning.select_site(site(id));return true
 func advance()->Dictionary:
 	var id=str(data.active);data.effort[id]=0.0;data.turns[id]=int(data.turns.get(id,0))+1
@@ -183,6 +207,7 @@ func study_advance()->Dictionary:
 func finish_for_development(everything=false)->int:
 	var before=finished_units();var targets=BUILD_IDS.duplicate() if everything else [str(data.active)]
 	if everything:
+		data.voyage.dev_open=true
 		for c in CHAPTERS:targets.append(c.id)
 	for id in targets:
 		if id in BUILD_IDS:
@@ -194,6 +219,7 @@ func finish_for_development(everything=false)->int:
 	return advanced
 func cells()->Array:
 	var result=START.duplicate()
+	result.append_array(ROCKET_CELLS)
 	for c in CHAPTERS:
 		var count=int(floor(float(data.progress[c.id])*3/c.need))
 		for i in range(count):
@@ -207,6 +233,11 @@ func finished_count()->int:
 
 func work_route(id:String="")->Dictionary:
 	if id.is_empty():id=str(data.active)
+	if id=="goldmine" and done(id):
+		return gold_batch("mine",id,"goldmine")
+	if id=="smelter" and done(id):
+		if data.voyage.ore==0:return gold_batch("mine",id,"goldmine")
+		return gold_batch("mint",id,"smelter")
 	var sources=[]
 	if done(id) and PRODUCTION.has(id):sources=[id]
 	else:
@@ -228,6 +259,38 @@ func record_delivery(route:Dictionary):
 		data.production[key]=int(data.production.get(key,0))+1
 	var destination=str(route.destination)+":"+str(route.product)
 	data.deliveries[destination]=int(data.deliveries.get(destination,0))+1
+	if route.get("batch")=="mine":
+		data.voyage.ore+=1
+	elif route.get("batch")=="mint" and data.voyage.ore>0:
+		data.voyage.ore-=1
+		data.voyage.coins+=2
+
+func gold_batch(kind:String,id:String,source:String)->Dictionary:
+	var mine=kind=="mine"
+	# With an empty hopper the first task supplies ore. Only the next cast spends it.
+	return {"batch":kind,"source":source,"processor":source,"processors":[source],
+		"destination":id,"raw":"gold_ore","product":"gold_ore" if mine else "gold_coin",
+		"name":"运矿入炉" if mine and id=="smelter" else "采金" if mine else "熔金铸币","tool":1}
+
+func rocket_open()->bool:
+	return data.voyage.dev_open or not str(data.voyage.earned_book).is_empty()
+
+func offer_amount()->int:
+	return mini(TRADE_BAG,mini(int(data.voyage.coins),TRADE_PRICE-int(data.voyage.paid)))
+
+func offer_gold()->int:
+	var amount=offer_amount()
+	if not done("smelter") or rocket_open() or amount<=0:return 0
+	data.voyage.coins-=amount
+	data.voyage.paid+=amount
+	return amount
+
+func try_unlock_rocket()->bool:
+	if not str(data.voyage.earned_book).is_empty() or data.voyage.paid<TRADE_PRICE:return false
+	var book=learning.current_book()
+	if book.is_empty() or book.words.is_empty() or learning.book_remaining()!=0:return false
+	data.voyage.earned_book=book.id
+	return true
 
 func facility_title(id:String)->String:
 	return {"quarry":"石岸切石场","wetland":"浅湾织帆屋","plateau":"高原锻造台","crystal":"晶湾磨镜台","mountain":"云杉观星台","hill":"山风取水泵","meadow":"果粮采收园"}.get(id,title(id))

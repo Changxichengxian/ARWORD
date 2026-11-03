@@ -4,7 +4,6 @@ const SAVE="user://island4.json"
 var font=preload("res://assets/fonts/FrontierSC.ttf")
 var learning:IslandLearning
 var frontier:IslandFrontier
-var frontier_notes:Array=[]
 var touch_points={}
 var pinch_distance=0.0
 var mouse_drag=false
@@ -16,7 +15,6 @@ var camera_focus=Vector3(0,10.0,0)
 var camera_tween:Tween
 var current:Dictionary={}
 var mission:Dictionary={}
-var notes:Array=[]
 var dictionary={}
 var mode="word"
 var order:Array=[]
@@ -51,12 +49,12 @@ var observatory_touch=-1
 var observatory_touch_points={}
 var observatory_pinch_distance=0.0
 var observatory_hud_visible=true
-var avatar_store
-var avatar_info={}
-var avatar_saved_local=false
-var avatar_busy=false
-var avatar_dialog:FileDialog
-var avatar_picker
+var curriculum=preload("res://scripts/curriculum.gd").new()
+var journal_entry:Dictionary={}
+var journal_short=true
+var fixed_character="deepseek"
+var cast_store
+const FixedCast=preload("res://scripts/fixed_cast.gd")
 
 func _ready():
 	font.fallbacks=[preload("res://assets/fonts/FrontierLatin.ttf")]
@@ -67,13 +65,12 @@ func _ready():
 		var height=mini(1100,area.size.y-100);var width=roundi(height*9.0/16)
 		DisplayServer.window_set_size(Vector2i(width,height))
 		DisplayServer.window_set_position(area.position+Vector2i((area.size.x-width)/2,(area.size.y-height)/2))
-		get_window().title="词屿"
+		get_window().title="ARWORD"
 	learning=IslandLearning.new();read_save();frontier=IslandFrontier.new(learning)
 	if art_preview:
 		for c in IslandFrontier.CHAPTERS:frontier.data.progress[c.id]=c.need
 		learning.data.build=[8,12,16];learning.data.development=[36,24,24];frontier.data.active="cottage"
-	frontier_notes=JSON.parse_string(FileAccess.get_file_as_string("res://assets/frontier_missions.json"))
-	notes=JSON.parse_string(FileAccess.get_file_as_string("res://assets/missions.json"));dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/dictionary.json"))
+	dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/dictionary.json"))
 	world=IslandGrove.new();add_child(world);world.setup(self)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=Vector3(0,24,21);camera.look_at(Vector3(0,10.0,0));camera.current=true
 	cosmos=load("res://scripts/cosmos.gd").new();cosmos.name="Cosmos";add_child(cosmos);cosmos.setup(self)
@@ -111,13 +108,11 @@ func next_task():
 	if closing:return
 	mode=frontier.mode();locked=false;help_visible=false;sentence_hint=""
 	var active=str(frontier.data.active)
-	if active in IslandFrontier.BUILD_IDS:
-		mission=notes[frontier.site(active)*4+(int(frontier.data.turns.get(active,0))/6)%4]
-	else:mission=frontier_notes[int(frontier.chapter(active).note)]
+	mission=curriculum.preview(learning) if mode=="word" else curriculum.next(learning,mode)
 	context_assisted=learning.data.context_help.get(context_key(),false)
-	short_reading=learning.data.band<2
+	short_reading=curriculum.short_first(learning,mission)
 	if mode=="word":
-		current=learning.next_word(Time.get_unix_time_from_system(),mission.focus);helped=learning.data.help_pending==current.id;order=[0,1,2,3]
+		current=learning.next_word(Time.get_unix_time_from_system());helped=learning.data.help_pending==current.id;order=[0,1,2,3]
 	else:
 		current={};order=[0,1,2]
 		if mode=="sentence":
@@ -127,6 +122,7 @@ func next_task():
 func next_word():next_task()
 func select_site(site):
 	var id=IslandFrontier.BUILD_IDS[site] if site is int else str(site)
+	if id=="rocket":show_rocket();return
 	if not frontier.available(id):hud.toast(frontier.unlock_hint(id));return
 	if locked:
 		if exploring and id==frontier.data.active:resume_collect()
@@ -157,10 +153,15 @@ func skip_learning():
 	elif mode in ["read","listen"]:learning.data.dev_context[mode]+=1
 	complete_action(frontier.advance(),false)
 func complete_action(result:Dictionary,learned=true):
+	if mode!="word":curriculum.release(learning,mode,mission.id)
 	if learned:learning.data.context_help.erase(context_key())
 	frontier.record_delivery(world.production_route)
+	var rocket_unlocked=frontier.try_unlock_rocket()
+	world.sync_voyage()
 	save_progress();world.harvest(result);play_fx("chop" if world.active_kind==0 else "stone");hud.sync_goal()
-	if result.complete:
+	if rocket_unlocked:
+		hud.toast("词书首轮完成 · 火箭舱门已开启")
+	elif result.complete:
 		var id=str(frontier.data.active)
 		hud.toast("船已备好 · 可以去远方的群岛" if id=="shipyard" else "点望远镜，看看远处的星云" if id=="mountain" else frontier.facility_title(id)+"做好了")
 	var duration=1.35 if result.complete else 1.15
@@ -333,6 +334,7 @@ func back():
 	last_back=now;speech.stop()
 	if cosmos and cosmos.observatory_active:close_observatory();return
 	if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
+	elif hud.screen=="translation" and not journal_entry.is_empty():show_journal_page(journal_entry)
 	elif hud.overlay.visible:hud.close()
 	elif not exploring:explore()
 	else:settings()
@@ -351,92 +353,60 @@ func settings():
 	hud.button(box,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();settings())
 	hud.button(box,"收藏的词",func():bookmarks(0))
 	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),show_developer)
-	hud.ghost(box,"关闭",func():hud.close())
+	var settings_footer=hud.row(box)
+	if Engine.has_singleton("PlanetUpdates"):
+		hud.ghost(settings_footer,"检查更新",func():preload("res://scripts/updater.gd").open(self))
+	hud.ghost(settings_footer,"关闭",func():hud.close())
 func initialize_avatar():
-	var directory="user://avatars"
+	var directory="user://characters"
+	var legacy="user://avatars/current.vrm"
 	if qa:
 		var scope=str(Time.get_ticks_usec())
-		for argument in OS.get_cmdline_user_args():
-			if argument.begins_with("--qa-avatar-scope="):
-				var requested=argument.trim_prefix("--qa-avatar-scope=").validate_filename()
-				if not requested.is_empty() and requested not in [".",".."]:scope=requested
-		directory="user://qa-avatars/".path_join(scope)
-	avatar_store=load("res://scripts/avatar_store.gd").new(directory)
-	if OS.has_feature("android") and Engine.has_singleton("LocalAvatarPicker"):
-		avatar_picker=Engine.get_singleton("LocalAvatarPicker")
-		avatar_picker.connect("avatar_picked",avatar_file_selected)
-		avatar_picker.connect("avatar_pick_failed",avatar_picker_failed)
-		avatar_picker.connect("avatar_pick_cancelled",avatar_picker_cancelled)
-	restore_avatar()
-	if qa:
-		for argument in OS.get_cmdline_user_args():
-			if argument.begins_with("--qa-avatar-import="):
-				var result=import_local_avatar(argument.trim_prefix("--qa-avatar-import="))
-				print("QA_AVATAR_IMPORT ",JSON.stringify(result))
-func restore_avatar()->Dictionary:
-	var config=avatar_store.recover();avatar_info={}
-	avatar_saved_local=config.get("selected","")=="local"
-	if config.get("selected","")!="local":return config
-	var result=world.call("load_local_avatar",avatar_store.current_path())
-	if result.get("ok",false):avatar_info=config
-	elif is_instance_valid(hud):hud.toast(str(result.get("error","人物暂时无法载入，已使用白色人物")))
-	return result
+		for arg in OS.get_cmdline_user_args():
+			if arg.begins_with("--qa-avatar-scope="):
+				var label=arg.trim_prefix("--qa-avatar-scope=").validate_filename()
+				if label not in ["", ".", ".."]:scope=label
+		directory="user://qa-characters/".path_join(scope)
+		legacy=""
+	cast_store=FixedCast.new(directory)
+	if qa and not "--qa-with-cast" in OS.get_cmdline_user_args():
+		fixed_character="default"
+		return
+	cast_store.prepare(FixedCast.BUILTIN,legacy)
+	fixed_character="default"
+	if cast_store.preferred()=="deepseek":apply_fixed_character("deepseek",false)
+
+func apply_fixed_character(id:String,persist:bool)->bool:
+	if cast_store==null or id not in ["deepseek","default"]:return false
+	var candidate:Node3D=null
+	if id=="deepseek":
+		if cast_store.model_path.is_empty():return false
+		var result=world.prepare_local_avatar(cast_store.model_path)
+		if not result.get("ok",false):return false
+		candidate=result.candidate
+	if persist and not cast_store.remember(id):
+		if candidate:candidate.free()
+		return false
+	if candidate:world.activate_local_avatar(candidate)
+	else:world.clear_local_avatar()
+	fixed_character=id
+	return true
+
+func select_fixed_character(id:String):
+	if fixed_character!=id and not apply_fixed_character(id,true):hud.toast("人物暂时无法切换")
+	show_avatar_settings()
+
 func show_avatar_settings():
-	if locked:return
-	# Keep glyphs for the locally tested model credit: 大肥鱼 · MZEM · 木子恶魔.
-	speech.stop();var box=hud.modal("人物");hud.screen="avatar"
-	hud.text(box,str(avatar_info.get("title","白色人物")),24)
-	var author=str(avatar_info.get("author",""))
-	if not author.is_empty():hud.text(box,"作者 · "+author,16,IslandHUD.GREEN)
-	hud.button(box,"选择 VRM 模型",pick_avatar,true,50).disabled=avatar_busy
-	hud.ghost(box,"恢复白色人物",clear_avatar,44).disabled=avatar_busy or not avatar_saved_local
-	hud.ghost(box,"返回",settings,44)
-func pick_avatar():
-	if avatar_busy or avatar_store==null:return
-	if OS.has_feature("android"):
-		if avatar_picker==null:hud.toast("人物导入暂不可用");return
-		avatar_busy=true;show_avatar_settings();avatar_picker.call("pick_avatar");return
-	if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):hud.toast("此设备暂不支持文件选择");return
-	avatar_busy=true;show_avatar_settings()
-	if not is_instance_valid(avatar_dialog):
-		avatar_dialog=FileDialog.new();avatar_dialog.access=FileDialog.ACCESS_FILESYSTEM;avatar_dialog.file_mode=FileDialog.FILE_MODE_OPEN_FILE
-		avatar_dialog.use_native_dialog=true;avatar_dialog.filters=PackedStringArray(["*.vrm;VRM 模型"])
-		avatar_dialog.title="选择人物模型";add_child(avatar_dialog)
-		avatar_dialog.file_selected.connect(avatar_file_selected);avatar_dialog.canceled.connect(avatar_picker_cancelled)
-	avatar_dialog.popup_centered_ratio(.8)
-func avatar_picker_cancelled():
-	avatar_busy=false
-	if hud.screen=="avatar" and hud.overlay.visible:show_avatar_settings()
-func avatar_picker_failed(message:String):
-	avatar_busy=false
-	if hud.screen=="avatar" and hud.overlay.visible:show_avatar_settings()
-	hud.toast(avatar_store.clean_label(message,100))
-func avatar_file_selected(path:String):
-	avatar_busy=false
-	var result=import_local_avatar(path)
-	if hud.screen=="avatar" and hud.overlay.visible:show_avatar_settings()
-	hud.toast("人物已换好" if result.get("ok",false) else str(result.get("error","人物未能导入")))
-func import_local_avatar(path:String)->Dictionary:
-	if avatar_store==null or avatar_busy:return {"ok":false,"error":"人物导入正在准备"}
-	avatar_busy=true
-	var prepared=avatar_store.prepare(path)
-	if not prepared.ok:avatar_busy=false;return prepared
-	var checked=world.call("prepare_local_avatar",prepared.path)
-	if not checked.get("ok",false):avatar_store.cancel();avatar_busy=false;return checked
-	var installed=avatar_store.install()
-	if not installed.ok:checked.candidate.free();avatar_store.cancel();avatar_busy=false;return installed
-	var committed=avatar_store.confirm(checked)
-	if not committed.ok:
-		checked.candidate.free();avatar_store.rollback()
-		avatar_busy=false;return committed
-	# The candidate is fully decoded once; activation only swaps the already prepared scene.
-	world.call("activate_local_avatar",checked.candidate)
-	avatar_info=committed.info;avatar_saved_local=true;avatar_busy=false
-	return {"ok":true,"title":avatar_info.title,"author":avatar_info.author}
-func clear_avatar():
-	if avatar_busy or avatar_store==null:return
-	if not avatar_store.clear():hud.toast("人物设置暂时无法保存");return
-	world.call("clear_local_avatar");avatar_info={};avatar_saved_local=false;show_avatar_settings()
+	if not exploring:explore()
+	speech.stop()
+	var box=hud.modal("人物")
+	hud.screen="avatar"
+	if cast_store!=null and not cast_store.model_path.is_empty():
+		hud.button(box,("✓  " if fixed_character=="deepseek" else "")+"大肥鱼",select_fixed_character.bind("deepseek"),fixed_character=="deepseek",56)
+		hud.text(box,"DeepSeek 娘 · 木子恶魔",16,IslandHUD.GREEN)
+	hud.button(box,("✓  " if fixed_character=="default" else "")+"默认人物",select_fixed_character.bind("default"),fixed_character=="default",56)
+	hud.ghost(box,"返回",settings)
+
 func space_settings():
 	if not exploring:explore()
 	speech.stop();var box=hud.modal("星空与星云",true,false);hud.screen="space_settings"
@@ -491,13 +461,81 @@ func fast_forward(everything=false):
 func show_explore_tools():
 	if not learning.data.dev_skip:return
 	var box=hud.modal("去看看");hud.screen="developer_tour"
-	for pair in [["shipyard","船坞"],["sunreach","椰风群岛"],["basalt","黑沙群岛"],["mountain","高山望远镜"]]:
-		var id=str(pair[0]);var available=frontier.done(id)
+	for pair in [["goldmine","远岛矿洞"],["smelter","主岛铸币坊"],["rocket","背面火箭"],["shipyard","船坞"],["mountain","高山望远镜"]]:
+		var id=str(pair[0]);var available=frontier.done(id) or id=="rocket"
 		hud.button(box,str(pair[1])+("" if available else " · 尚未建好"),tour_site.bind(id),false,46).disabled=not available
 	var row=hud.row(box);hud.button(row,"蓝鲸",preview_nature.bind("whale"),false,46);hud.button(row,"深海洞窟",preview_nature.bind("cave"),false,46)
 	hud.ghost(box,"返回",show_developer)
+
+func show_rocket():
+	if locked:return
+	if frontier.try_unlock_rocket():
+		save_progress()
+		world.sync_voyage()
+	explore()
+	world.desired_rotation=Quaternion(world.surface(frontier.target("rocket")).normalized(),Vector3.UP)
+	frame_view(Vector3(0,10.4,0),10.5)
+	var open=frontier.rocket_open()
+	var box=hud.modal("远航火箭" if open else "海怪的泊位",true,false)
+	hud.screen="rocket"
+	var wallet=frontier.data.voyage
+	var total_price=IslandFrontier.TRADE_PRICE
+	if open:
+		var book=learning.wordbooks.find(str(wallet.earned_book))
+		var caption="开发巡游 · 舱门已开" if book.is_empty() else str(book.title)+" · 首轮完成"
+		hud.text(box,caption,18,IslandHUD.GREEN)
+		if book.is_empty():
+			hud.ghost(box,"继续我的词书航程",resume_voyage)
+		hud.button(box,"点火试车",fire_rocket_engine,true,46)
+		hud.ghost(box,"收起",hud.close)
+		return
+	var book=learning.current_book()
+	hud.text(box,"泊位交易  "+str(wallet.paid)+" / "+str(total_price)+" 枚",22)
+	hud.text(box,str(book.title)+"首轮  "+str(learning.book_independent())+" / "+str(book.words.size())+" 词",16,IslandHUD.GREEN)
+	if wallet.paid>=total_price:
+		hud.text(box,"海怪已让路。独立认完一本词书，就能开启舱门。",17)
+	else:
+		var amount=frontier.offer_amount()
+		var pay=hud.button(box,"交付 "+str(amount)+" 枚金币" if amount>0 else "金币  "+str(wallet.coins),pay_trader,true,46)
+		pay.disabled=amount==0 or not frontier.done("smelter")
+		var row=hud.row(box)
+		if frontier.available("goldmine"):hud.button(row,"去矿洞",go_voyage_site.bind("goldmine"),false,44)
+		if frontier.available("smelter"):hud.button(row,"去铸币坊",go_voyage_site.bind("smelter"),false,44)
+		if not frontier.done("shipyard"):hud.text(box,"建成船坞后，可以前往远岛采金。",16,IslandHUD.GREEN)
+	hud.ghost(box,"收起",hud.close)
+
+func fire_rocket_engine():
+	if not frontier.rocket_open() or hud.screen!="rocket":return
+	hud.close()
+	world.test_rocket_engine()
+	play_fx("build")
+
+func resume_voyage():
+	frontier.data.voyage.dev_open=false
+	save_progress()
+	world.sync_voyage()
+	hud.sync_goal()
+	show_rocket()
+
+func go_voyage_site(id:String):
+	hud.close()
+	select_site(id)
+
+func pay_trader():
+	if hud.screen!="rocket" or not hud.overlay.visible:return
+	var amount=frontier.offer_gold()
+	if amount<=0:return
+	hud.close()
+	var unlocked=frontier.try_unlock_rocket()
+	save_progress()
+	world.receive_coins(amount)
+	hud.sync_goal()
+	play_fx("build")
+	if unlocked:hud.toast("火箭舱门已开启")
+	elif frontier.data.voyage.paid>=IslandFrontier.TRADE_PRICE:hud.toast("海怪让开了泊位")
 func tour_site(id:String):
-	if not learning.data.dev_skip or not frontier.done(id):return
+	if not learning.data.dev_skip or (not frontier.done(id) and id!="rocket"):return
+	if id=="rocket":show_rocket();return
 	hud.close();frontier.choose(id);save_progress();next_task();explore(false)
 	world.recenter();frame_view(Vector3(0,9.3,0),13.5)
 func preview_nature(kind:String):
@@ -575,13 +613,29 @@ func bookmarks(page:int):
 	hud.ghost(box,"返回",settings)
 func journal():
 	if locked:return
-	var box=hud.modal(mission.title);hud.screen="journal"
-	var r=hud.row(box);hud.icon(r,"play",func():play_speech("audio/"+mission.id+"_full.mp3"),"听这段")
-	hud.ghost(r,"译文",func():var b=hud.modal(mission.title);hud.text(b,mission.zh,21);hud.ghost(b,"返回手记",journal);hud.screen="translation")
-	hud.reading(box,mission.text,255)
+	journal_short=short_reading
+	show_journal_page(mission)
+func show_journal_page(entry:Dictionary):
+	journal_entry=entry
+	speech.stop()
+	var box=hud.modal(entry.title);hud.screen="journal"
+	var r=hud.row(box)
+	var suffix="_short.mp3" if journal_short else "_full.mp3"
+	hud.icon(r,"play",func():play_speech("audio/"+entry.id+suffix),"听这段")
+	hud.ghost(r,"展开" if journal_short else "短一点",func():journal_short=not journal_short;show_journal_page(entry))
+	hud.ghost(r,"译文",show_journal_translation)
+	var index=curriculum.pool.find(entry)
+	hud.ghost(r,"上一篇",show_journal_page.bind(curriculum.pool[posmod(index-1,curriculum.pool.size())]))
+	hud.ghost(r,"下一篇",show_journal_page.bind(curriculum.pool[(index+1)%curriculum.pool.size()]))
+	hud.reading(box,entry.short if journal_short else entry.text,255)
 	hud.ghost(box,"关闭",func():hud.close())
+func show_journal_translation():
+	if journal_entry.id==mission.id and mode in ["read","listen","sentence"]:mark_context_help()
+	var box=hud.modal(journal_entry.title);hud.screen="translation"
+	hud.text(box,journal_entry.zh,21)
+	hud.ghost(box,"返回阅读",show_journal_page.bind(journal_entry))
 func lookup(word:String,play=true):
-	if hud.screen!="lookup":lookup_return=journal if hud.screen=="journal" else (func():hud.close()) if hud.screen not in ["bookmarks"] else lookup_return
+	if hud.screen!="lookup":lookup_return=show_journal_page.bind(journal_entry) if hud.screen=="journal" else (func():hud.close()) if hud.screen not in ["bookmarks"] else lookup_return
 	var d=dictionary.get(word,{})
 	if d.is_empty() and learning.by_id.has(word):
 		var q=learning.by_id[word];d={"translation":q.get("definition",q.zh)}

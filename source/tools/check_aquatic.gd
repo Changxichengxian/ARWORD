@@ -29,11 +29,12 @@ func run():
 	check(abs(largest-11.62)<.002 and abs(smallest-11.62)<.002,"actual ocean GLB vertices have an eleven-point-six-two radius before shader displacement")
 	# Production creates water before the first land cells. Wildlife must refresh
 	# that initial all-ocean map before selecting its first safe sea lanes.
+	for cell in IslandFrontier.ROCKET_CELLS:world.land[cell]=true
 	var initial_land=world.land.duplicate();world.land.clear()
 	world.water=IslandWater.new();world.globe.add_child(world.water);world.water.setup(world,ocean)
 	world.land=initial_land
 	var life=IslandWildlife.new();world.add_child(life);life.setup(world);life.set_process(false)
-	check(world.water.land_count==world.land.size() and world.water.depth_at(Vector3.UP)<.35 and world.water.depth_at(Vector3.DOWN)>2.5,"first wildlife setup refreshes the actual shallow and deep seabed before route selection")
+	check(world.water.land_count==world.land.size() and world.water.depth_at(Vector3.UP)<.35 and world.water.depth_at(Vector3.DOWN)<.35 and world.water.depth_at(Vector3.RIGHT)>2.5,"initial main and rocket shores are both shallow, with deep ocean between them")
 	var stable_frames=true
 	for i in range(20):
 		var n=Vector3(sin(i),.9,cos(i)*.7).normalized();var basis=life.frame_at(n*11.4,n*.2+Vector3(.0000001,.000002,.0000003))
@@ -67,12 +68,7 @@ func run():
 	check(species.size()==5,"five distinct aquatic species have visible safe routes on the initial island")
 	check(adult.scale>1.5 and adult.route_valid,"the adult whale uses the enlarged body and a checked deep-water route")
 	check(not life.cave.is_empty() and life.deep_sea(life.cave.normal,3.2,2.85),"a real hollow cave is placed in water deep enough for its entire shell")
-	var hidden=false;var shown=false;var withdrawn=false
-	if not life.cave.is_empty():
-		life.cave.time=0;life.update_cave(0);hidden=not life.cave.watcher.visible
-		life.preview_event("cave");shown=life.cave.watcher.visible and life.cave.extension>.9
-		life.cave.time=92;life.update_cave(0);withdrawn=not life.cave.watcher.visible
-	check(hidden and shown and withdrawn,"the watcher reveals slowly and fully retreats on a sparse cycle")
+	check(not life.cave.has("watcher") and life.preview_event("cave").is_equal_approx(life.cave.normal),"the camera can revisit the hollow cave after its inhabitant takes up trading")
 	var prior=life.whale_direction(adult,adult.phase);var observed=life.preview_event("whale")
 	check(prior.distance_to(observed)<.00001,"observing the whale changes its action without teleporting its patrol route")
 	for chapter in IslandFrontier.CHAPTERS:

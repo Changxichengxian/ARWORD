@@ -1,13 +1,14 @@
-词屿 · 0.11
+ARWORD · 0.12.0
 
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/
 
-模型：本项目用 Blender 4.4.3 制作，73 个自制 glTF 模型及对应 .blend 建模源文件随源码交付，包含地景、生产设施、材料、默认白色 D 款人物、水生动物和实体洞窟。生成脚本保留在 tools/。游戏画面为实时三维渲染；太阳系中的远景行星、三处可观察星云由随源码提供的程序网格和着色器生成。
+本项目用 Blender 4.4.3 制作 79 套地景、建筑、材料、默认人物和生物模型。GLB、可编辑的 .blend 工程与生成脚本随源码保存。太阳系与三处星云由实时网格和着色器生成。
 
-本地人物：应用允许用户选择自己的外部 VRM，人物面板显示文件内的名称与作者署名；外部文件及其权利属于原作者，不计入上述自制模型，也不随本项目源码、Windows 程序或 APK 分发。用户选择的副本仅保存在应用私有目录，可恢复默认白色人物。
+个人首装版使用木子恶魔的《【MZEM】蓝色小肥鱼 Deepseek 鲸鱼娘》。人物原件与作者署名保留。公开仓库和公开安装包不包含该模型。
+https://www.aplaybox.com/details/model/ayXkRzVflmnd
 
-Android 文档选择器：本项目提供的 LocalAvatarPicker Java 源码，使用 Android 系统文档选择与内容读取接口；构建时注册到官方 Godot 4.5.1 Android 源模板，未附带第三方二进制插件。无需联网或全盘存储权限。
+Android 更新功能由项目内的 PlanetUpdates 插件提供。用户点击检查更新后连接 GitHub Releases，下载适用的差异文件或完整签名 APK，交给系统安装器确认。
 
 原创轻音乐：Island Drift，80 秒器乐循环，由本项目的 tools/make_music.py 程序创作并合成。音符、音色和完整生成脚本随源码交付。
 

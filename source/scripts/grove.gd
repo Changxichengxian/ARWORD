@@ -62,6 +62,15 @@ var ferry_tween:Tween
 var sea_routes
 var avatar:Node3D
 var avatar_tool_homes={}
+var trader:Node3D
+var trader_pose:Node3D
+var trader_arms:Array=[]
+var trader_head:Node3D
+var trader_pile:Node3D
+var rocket_lamp:Node3D
+var rocket_hatch:Node3D
+var trade_motion=0.0
+var trader_retreat=0.0
 const AvatarScript=preload("res://scripts/avatar.gd")
 const WALK_CLEARANCE=.24
 const NAV_STEP=.24
@@ -135,6 +144,10 @@ func site_at(screen_pos:Vector2)->String:
 			var panel=game.hud.world_progress[id].panel
 			if panel.visible and panel.get_global_rect().has_point(screen_pos):return id
 	var nearest="";var distance=58.0
+	if is_instance_valid(trader) and trader.visible:
+		var face=trader_pose.global_position+trader.global_basis.y*.9
+		if trader.global_basis.y.dot((game.camera.global_position-face).normalized())>.25 and game.camera.unproject_position(face).distance_to(screen_pos)<42:
+			return "rocket"
 	for id in markers:
 		# A finished place remains selectable for study, without an always-on upgrade sign.
 		if not game.frontier.previewable(id):continue
@@ -337,8 +350,20 @@ func decorate_cell(cell:Vector2i,animate:bool):
 			for i in range(3):decor_prop("stone_pipe",p+Vector2(-.45+i*.42,-.2),1.4,.2)
 		elif v==2:decor_prop("reeds",p+Vector2(-.5,-.5),.7)
 		add_resource(0,p+Vector2(.6,.4),.8,false,region,"water_jar","water_jar")
+	elif region=="goldmine":
+		if v==1:decor_prop("basalt_columns",p+Vector2(.0,-.35),.72,.6,true)
+		if v==2:decor_prop("pier",p+Vector2(.45,.35),.42,-.3)
+		add_resource(1,p+Vector2(-.67,.52),1.75+v*.17,false,region,"gold_ore","gold_ore")
+	elif region=="smelter":
+		if v==1:decor_prop("lantern",p+Vector2(.44,-.20),.84)
+		if v==2:decor_prop("cliff_rocks",p+Vector2(-.21,-.20),.46,.3)
+		if v!=0:add_resource(1,p+Vector2(.45,.32),1.36,false,region,"gold_ore","gold_ore")
+	elif region=="rocket":
+		if v==2:
+			decor_prop("cliff_rocks",p+Vector2(.32,.48),.50,.25)
+			decor_prop("lantern",p+Vector2(-.42,.55),.76)
 	elif region=="shore":decor_prop("driftwood",p+Vector2(-.7,.4),.45,.7)
-	var shrubs=0 if region in ["mountain","basalt","crystal"] else 1 if region in ["plateau","quarry","coral","shipyard"] else 2
+	var shrubs=0 if region in ["mountain","basalt","crystal","rocket","goldmine","smelter"] else 1 if region in ["plateau","quarry","coral","shipyard"] else 2
 	for i in range(shrubs):
 		var a=rng.randf()*TAU;decor_prop("coast_garden",p+Vector2(cos(a),sin(a))*.98,rng.randf_range(.32,.58),a)
 	if cell in [Vector2i(1,0),Vector2i(0,1),Vector2i(1,3),Vector2i(-1,3),Vector2i(0,-1)]:decor_prop("lantern",p+Vector2(.64,.47),.65)
@@ -357,6 +382,7 @@ func setup(owner_node):
 	var pier=Node3D.new();globe.add_child(pier);place(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
 	for id in IslandFrontier.BUILD_IDS:marker(id)
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
+	marker("rocket")
 	for i in range(3):
 		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),PI)
 		var b=model(["cottage","windmill","garden"][i],a);b.scale=Vector3.ONE*.8;buildings.append(a)
@@ -370,6 +396,28 @@ func setup(owner_node):
 		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(id),PI)
 		var n=model(FACILITY_MODELS[id],a);n.scale=Vector3.ONE*(.62 if id=="mountain" else .85 if id=="shipyard" else .72)
 		facilities[id]=a
+	for pair in [["goldmine","gold_mine"],["smelter","gold_mint"],["rocket","rocket"]]:
+		var id:String=pair[0]
+		var anchor=Node3D.new()
+		globe.add_child(anchor)
+		place(anchor,game.frontier.target(id),.13 if id=="smelter" else -.11)
+		var visual=model(pair[1],anchor)
+		visual.scale=Vector3.ONE*(1.05 if id=="rocket" else .80)
+		facilities[id]=anchor
+	trader=Node3D.new()
+	globe.add_child(trader)
+	place(trader,IslandFrontier.point(IslandFrontier.ROCKET_CELLS[1]),-.24)
+	trader_pose=model("sea_trader",trader)
+	trader_pose.scale=Vector3.ONE*.79
+	trader_head=trader_pose.find_child("Head",true,false)
+	trader_pile=trader_pose.find_child("CoinPile",true,false)
+	for i in range(6):
+		var arm=trader_pose.find_child("Arm"+str(i),true,false)
+		if arm:trader_arms.append(arm)
+	rocket_lamp=facilities.rocket.find_child("ReadyLamp",true,false)
+	rocket_hatch=facilities.rocket.find_child("Hatch",true,false)
+	trader_retreat=1.0 if game.frontier.rocket_open() or game.frontier.data.voyage.paid==IslandFrontier.TRADE_PRICE else 0.0
+	fixed_obstacles.append(trader)
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
 	cursor=Node3D.new();globe.add_child(cursor);ring(cursor,1.17,ring_material)
 	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
@@ -391,9 +439,9 @@ func sync_buildings(animate=true):
 		markers[id].visible=game.frontier.previewable(id) and (not game.frontier.done(id) or id==game.frontier.data.active or id in IslandFrontier.BUILD_IDS)
 		if animate and ready and not old_ready:
 			pop(markers[id]);game.hud.toast(game.frontier.chapter(id).get("title","")+"可以接出来了")
-		markers[id].get_node("Sign").visible=id not in IslandFrontier.BUILD_IDS and not game.frontier.done(id)
+		markers[id].get_node("Sign").visible=id!="rocket" and id not in IslandFrontier.BUILD_IDS and not game.frontier.done(id)
 	for id in facilities:
-		var was=facilities[id].visible;facilities[id].visible=game.frontier.done(id)
+		var was=facilities[id].visible;facilities[id].visible=id=="rocket" or game.frontier.done(id)
 		if facilities[id].visible:measure_progress_height(id,facilities[id])
 		if animate and not was and facilities[id].visible:pop(facilities[id])
 	for i in range(3):
@@ -406,6 +454,7 @@ func sync_buildings(animate=true):
 			var extra=additions[i][j];var show_extra=int(game.learning.data.development[i])>=(j+1)*12;var was=extra.visible;extra.visible=show_extra
 			if show_extra and not was and animate:pop(extra,0.0,Vector3.ONE*.64)
 		measure_progress_height(IslandFrontier.BUILD_IDS[i],buildings[i])
+	sync_voyage()
 	update_selection_ring();rebuild_navigation()
 	if animate:
 		get_tree().create_timer(.75).timeout.connect(func():
@@ -657,6 +706,7 @@ func _process(dt):
 	if distance<1:travelled+=distance
 	motion_speed=lerpf(motion_speed,distance/maxf(dt,.001) if distance<1 else 0.0,1-exp(-dt*14))
 	if worker:worker.update(dt)
+	animate_voyage(dt)
 	if is_instance_valid(rotor) and game.learning.data.build[1]>=IslandLearning.NEEDS[1]:rotor.rotate_z(dt*.7)
 	for id in facilities:
 		if not facilities[id].visible:continue
@@ -688,3 +738,41 @@ func _process(dt):
 		var flight_normal=e.a.normalized().slerp(e.b.normalized(),u).normalized()
 		e.node.position=flight_normal*(lerpf(e.a.length(),e.b.length(),u)+sin(u*PI)*.65);e.node.rotate_y(dt*4)
 		if u>=1:e.node.queue_free();effects.remove_at(i)
+
+func sync_voyage():
+	if not is_instance_valid(trader):return
+	var open=game.frontier.rocket_open()
+	if rocket_lamp:rocket_lamp.visible=open
+	if rocket_hatch:rocket_hatch.rotation.y=-1.15 if open else 0.0
+	if trader_pile:
+		trader_pile.visible=game.frontier.data.voyage.paid>0 or open
+		trader_pile.scale=Vector3.ONE*lerpf(.48,1.3,float(game.frontier.data.voyage.paid)/IslandFrontier.TRADE_PRICE)
+
+func animate_voyage(dt:float):
+	if not is_instance_valid(trader):return
+	var moved=game.frontier.data.voyage.paid>=IslandFrontier.TRADE_PRICE or game.frontier.rocket_open()
+	trader_retreat=move_toward(trader_retreat,1.0 if moved else 0.0,dt*.65)
+	trade_motion=maxf(0,trade_motion-dt)
+	trader_pose.position=Vector3(lerpf(-1.16,-.08,trader_retreat),.04*sin(time*1.18),lerpf(.47,.06,trader_retreat))
+	trader_pose.rotation.y=-.30*trader_retreat+.075*sin(time*.55)
+	if trader_head:
+		trader_head.rotation.x=sin(time*1.6)*.035+sin(trade_motion*6)*trade_motion*.13
+	for i in range(trader_arms.size()):
+		trader_arms[i].rotation.y=sin(time*1.1+i)*(.055+.10*trade_motion)
+
+func receive_coins(amount:int):
+	trade_motion=1.35
+	var here=trader.transform*trader_pose.position
+	var normal=here.normalized()
+	var side=trader.basis.x
+	send_material(here+normal*.5+side*.96,here+normal*.29,"gold_coin",mini(6,amount),.46)
+	sync_voyage()
+
+func test_rocket_engine():
+	var pad:Node3D=facilities.rocket
+	for i in range(30):
+		var direction=pad.basis.x*cos(i*2.4)+pad.basis.z*sin(i*2.4)
+		var origin=pad.position+pad.basis.y*.33+direction*.23
+		var plume=pebble(globe,origin,Vector3(.12,.14,.12),"FFD974" if i%3 else "D9EEEE")
+		var end=origin+direction*(.58+float(i%4)*.16)+pad.basis.y*.04
+		effects.append({"node":plume,"a":origin,"b":end,"t":-float(i)*.044,"duration":.42})

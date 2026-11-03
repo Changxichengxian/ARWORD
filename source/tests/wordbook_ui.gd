@@ -53,7 +53,7 @@ func run():
 	game.learning.data.dev_skip=false;var before=game.frontier.finished_units();game.fast_forward(true)
 	check(game.frontier.finished_units()==before,"disabled developer privilege blocks full completion")
 	game.learning.data.dev_skip=true;game.fast_forward(true);await create_timer(1.0).timeout
-	check(game.world.land.size()==48 and game.frontier.finished_units()==game.frontier.content_units() and game.exploring,"full completion visibly expands all land and returns to world view")
+	check(game.world.land.size()==57 and game.frontier.finished_units()==game.frontier.content_units() and game.exploring,"full completion visibly expands all land and returns to world view")
 	check(JSON.stringify(game.learning.data.words)==words and JSON.stringify(game.learning.data.practice)==practice,"native completion control preserves actual study records")
 	await snap("completed-world")
 	game.space_settings();await settle();check(modal_fits(),"sky controls and randomize button fit the screen");await snap("sky-settings")

@@ -810,6 +810,186 @@
     "path": "audio/land09_cue.mp3"
   },
   {
+    "id": "read00_short",
+    "text": "A red scarf is on the last seat of the bus. A child points at it. The driver puts it in a box beside her seat.",
+    "path": "audio/read00_short.mp3"
+  },
+  {
+    "id": "read00_full",
+    "text": "A red scarf is on the last seat of the bus. A child points at it. The driver puts it in a box beside her seat. At the next stop, an old man runs back to the bus. He touches his neck and smiles when the driver opens the box.",
+    "path": "audio/read00_full.mp3"
+  },
+  {
+    "id": "read00_cue",
+    "text": "Leave the scarf with the driver so the man can find it.",
+    "path": "audio/read00_cue.mp3"
+  },
+  {
+    "id": "read01_short",
+    "text": "My sister likes cold tea. I like mine hot. I put a small spoon by my cup and a piece of ice in hers.",
+    "path": "audio/read01_short.mp3"
+  },
+  {
+    "id": "read01_full",
+    "text": "My sister likes cold tea. I like mine hot. I put a small spoon by my cup and a piece of ice in hers. The cups look the same from the door. She picks the one with the ice and carries it to the window.",
+    "path": "audio/read01_full.mp3"
+  },
+  {
+    "id": "read01_cue",
+    "text": "Take the cup with the ice and leave the spoon here.",
+    "path": "audio/read01_cue.mp3"
+  },
+  {
+    "id": "read02_short",
+    "text": "A little bird lands on the window. I reach for my camera, but the bird is gone. Its feet have left two small marks in the snow.",
+    "path": "audio/read02_short.mp3"
+  },
+  {
+    "id": "read02_full",
+    "text": "A little bird lands on the window. I reach for my camera, but the bird is gone. Its feet have left two small marks in the snow. I take a picture of the marks instead. Later my brother asks why I took a picture of an empty window.",
+    "path": "audio/read02_full.mp3"
+  },
+  {
+    "id": "read02_cue",
+    "text": "Look at the snow before you close the window.",
+    "path": "audio/read02_cue.mp3"
+  },
+  {
+    "id": "read03_short",
+    "text": "The drummer taps four times before the song. On the fourth tap, the singer takes a breath. Both start together just after that last tap.",
+    "path": "audio/read03_short.mp3"
+  },
+  {
+    "id": "read03_full",
+    "text": "The drummer taps four times before the song. On the fourth tap, the singer takes a breath. Both start together just after that last tap. At first I thought the taps were part of the song. During practice the singer listened to them even when nobody else was playing.",
+    "path": "audio/read03_full.mp3"
+  },
+  {
+    "id": "read03_cue",
+    "text": "Listen for four taps, then begin the first line.",
+    "path": "audio/read03_cue.mp3"
+  },
+  {
+    "id": "read04_short",
+    "text": "I fell asleep on the train. When I woke up, the sea was on the wrong side. I had passed my stop and the train was turning around the bay.",
+    "path": "audio/read04_short.mp3"
+  },
+  {
+    "id": "read04_full",
+    "text": "I fell asleep on the train. When I woke up, the sea was on the wrong side. I had passed my stop and the train was turning around the bay. A woman showed me the stops on her map. There was another train back in twenty minutes, so I had time to look at the water.",
+    "path": "audio/read04_full.mp3"
+  },
+  {
+    "id": "read04_cue",
+    "text": "Get off at the next stop and take the train back.",
+    "path": "audio/read04_cue.mp3"
+  },
+  {
+    "id": "read05_short",
+    "text": "There is no picture in the letter from my friend. Instead there is a yellow leaf. She writes that the tree outside her new room is taller than the roof.",
+    "path": "audio/read05_short.mp3"
+  },
+  {
+    "id": "read05_full",
+    "text": "There is no picture in the letter from my friend. Instead there is a yellow leaf. She writes that the tree outside her new room is taller than the roof. I put the leaf between two pages of my book. Now I can picture the window even though I have never seen her street.",
+    "path": "audio/read05_full.mp3"
+  },
+  {
+    "id": "read05_cue",
+    "text": "Keep the leaf between the pages so it stays flat.",
+    "path": "audio/read05_cue.mp3"
+  },
+  {
+    "id": "read06_short",
+    "text": "Our team only needed one more point. I was close to the basket, but a tall player stood in front of me. I passed the ball to a friend behind him.",
+    "path": "audio/read06_short.mp3"
+  },
+  {
+    "id": "read06_full",
+    "text": "Our team only needed one more point. I was close to the basket, but a tall player stood in front of me. I passed the ball to a friend behind him. For a second the tall player kept watching my hands. By the time he turned, the ball was already in the air.",
+    "path": "audio/read06_full.mp3"
+  },
+  {
+    "id": "read06_cue",
+    "text": "Pass the ball behind the tall player before he turns.",
+    "path": "audio/read06_cue.mp3"
+  },
+  {
+    "id": "read07_short",
+    "text": "In the film, we hear rain before we see the dark clouds. At the studio there was no water at all. Someone shook a box of rice beside the microphone.",
+    "path": "audio/read07_short.mp3"
+  },
+  {
+    "id": "read07_full",
+    "text": "In the film, we hear rain before we see the dark clouds. At the studio there was no water at all. Someone shook a box of rice beside the microphone. When the picture disappeared, the sound suddenly seemed dry and light. With the street back on the screen, it felt like rain again.",
+    "path": "audio/read07_full.mp3"
+  },
+  {
+    "id": "read07_cue",
+    "text": "Start the rain sound before the clouds appear on screen.",
+    "path": "audio/read07_cue.mp3"
+  },
+  {
+    "id": "read08_short",
+    "text": "At breakfast I put a stick in the sand and marked the end of its shadow. At lunch the mark was still there, but the shadow ended much closer to the stick.",
+    "path": "audio/read08_short.mp3"
+  },
+  {
+    "id": "read08_full",
+    "text": "At breakfast I put a stick in the sand and marked the end of its shadow. At lunch the mark was still there, but the shadow ended much closer to the stick. I checked the stick first. It had not moved. The clear sky made the second mark easy to draw, so I stayed to make one more before dinner.",
+    "path": "audio/read08_full.mp3"
+  },
+  {
+    "id": "read08_cue",
+    "text": "Mark the end of the shadow without moving the stick.",
+    "path": "audio/read08_cue.mp3"
+  },
+  {
+    "id": "read09_short",
+    "text": "In our game, each player could carry one lamp. We needed both hands to open the final door. I put my lamp on the floor while my friend held hers above the lock.",
+    "path": "audio/read09_short.mp3"
+  },
+  {
+    "id": "read09_full",
+    "text": "In our game, each player could carry one lamp. We needed both hands to open the final door. I put my lamp on the floor while my friend held hers above the lock. The light on the floor showed the steps behind us. That mattered a minute later when we had to find our way back in a hurry.",
+    "path": "audio/read09_full.mp3"
+  },
+  {
+    "id": "read09_cue",
+    "text": "Hold your lamp over the lock while I open the door.",
+    "path": "audio/read09_cue.mp3"
+  },
+  {
+    "id": "read10_short",
+    "text": "The cafe offered a cheaper drink to customers who brought a cup. More people came, yet fewer seats were free. Most of the new customers stayed to chat after finishing their drinks.",
+    "path": "audio/read10_short.mp3"
+  },
+  {
+    "id": "read10_full",
+    "text": "The cafe offered a cheaper drink to customers who brought a cup. More people came, yet fewer seats were free. Most of the new customers stayed to chat after finishing their drinks. The owner had expected to save money on paper cups. She had not expected the room itself to become the scarce part of the business.",
+    "path": "audio/read10_full.mp3"
+  },
+  {
+    "id": "read10_cue",
+    "text": "Offer the discount for a cup, but count the empty seats as well.",
+    "path": "audio/read10_cue.mp3"
+  },
+  {
+    "id": "read11_short",
+    "text": "A museum counted its visitors by collecting a ticket from each person at the door. One evening the ticket total was lower than the number on the camera. A guide had entered twice with the same group.",
+    "path": "audio/read11_short.mp3"
+  },
+  {
+    "id": "read11_full",
+    "text": "A museum counted its visitors by collecting a ticket from each person at the door. One evening the ticket total was lower than the number on the camera. A guide had entered twice with the same group. The camera counted both visits, while the guide handed over a ticket only once. Before changing the numbers, the manager asked what each system was actually counting.",
+    "path": "audio/read11_full.mp3"
+  },
+  {
+    "id": "read11_cue",
+    "text": "Compare the two counts before deciding which number to report.",
+    "path": "audio/read11_cue.mp3"
+  },
+  {
     "id": "lookup_a",
     "text": "a",
     "path": "audio/lookup_a.mp3"
@@ -818,6 +998,11 @@
     "id": "lookup_aboard",
     "text": "aboard",
     "path": "audio/lookup_aboard.mp3"
+  },
+  {
+    "id": "lookup_above",
+    "text": "above",
+    "path": "audio/lookup_above.mp3"
   },
   {
     "id": "lookup_access",
@@ -833,6 +1018,11 @@
     "id": "lookup_across",
     "text": "across",
     "path": "audio/lookup_across.mp3"
+  },
+  {
+    "id": "lookup_actually",
+    "text": "actually",
+    "path": "audio/lookup_actually.mp3"
   },
   {
     "id": "lookup_add",
@@ -880,6 +1070,11 @@
     "path": "audio/lookup_air.mp3"
   },
   {
+    "id": "lookup_all",
+    "text": "all",
+    "path": "audio/lookup_all.mp3"
+  },
+  {
     "id": "lookup_almost",
     "text": "almost",
     "path": "audio/lookup_almost.mp3"
@@ -888,6 +1083,11 @@
     "id": "lookup_along",
     "text": "along",
     "path": "audio/lookup_along.mp3"
+  },
+  {
+    "id": "lookup_already",
+    "text": "already",
+    "path": "audio/lookup_already.mp3"
   },
   {
     "id": "lookup_amount",
@@ -915,6 +1115,11 @@
     "path": "audio/lookup_anything.mp3"
   },
   {
+    "id": "lookup_appear",
+    "text": "appear",
+    "path": "audio/lookup_appear.mp3"
+  },
+  {
     "id": "lookup_approved",
     "text": "approved",
     "path": "audio/lookup_approved.mp3"
@@ -928,6 +1133,11 @@
     "id": "lookup_area",
     "text": "area",
     "path": "audio/lookup_area.mp3"
+  },
+  {
+    "id": "lookup_around",
+    "text": "around",
+    "path": "audio/lookup_around.mp3"
   },
   {
     "id": "lookup_arrive",
@@ -950,6 +1160,21 @@
     "path": "audio/lookup_as.mp3"
   },
   {
+    "id": "lookup_asked",
+    "text": "asked",
+    "path": "audio/lookup_asked.mp3"
+  },
+  {
+    "id": "lookup_asks",
+    "text": "asks",
+    "path": "audio/lookup_asks.mp3"
+  },
+  {
+    "id": "lookup_asleep",
+    "text": "asleep",
+    "path": "audio/lookup_asleep.mp3"
+  },
+  {
     "id": "lookup_at",
     "text": "at",
     "path": "audio/lookup_at.mp3"
@@ -968,6 +1193,11 @@
     "id": "lookup_back",
     "text": "back",
     "path": "audio/lookup_back.mp3"
+  },
+  {
+    "id": "lookup_ball",
+    "text": "ball",
+    "path": "audio/lookup_ball.mp3"
   },
   {
     "id": "lookup_bare",
@@ -1025,6 +1255,16 @@
     "path": "audio/lookup_before.mp3"
   },
   {
+    "id": "lookup_begin",
+    "text": "begin",
+    "path": "audio/lookup_begin.mp3"
+  },
+  {
+    "id": "lookup_begins",
+    "text": "begins",
+    "path": "audio/lookup_begins.mp3"
+  },
+  {
     "id": "lookup_behind",
     "text": "behind",
     "path": "audio/lookup_behind.mp3"
@@ -1048,6 +1288,11 @@
     "id": "lookup_between",
     "text": "between",
     "path": "audio/lookup_between.mp3"
+  },
+  {
+    "id": "lookup_bird",
+    "text": "bird",
+    "path": "audio/lookup_bird.mp3"
   },
   {
     "id": "lookup_birds",
@@ -1105,6 +1350,11 @@
     "path": "audio/lookup_boat.mp3"
   },
   {
+    "id": "lookup_book",
+    "text": "book",
+    "path": "audio/lookup_book.mp3"
+  },
+  {
     "id": "lookup_both",
     "text": "both",
     "path": "audio/lookup_both.mp3"
@@ -1123,6 +1373,16 @@
     "id": "lookup_break",
     "text": "break",
     "path": "audio/lookup_break.mp3"
+  },
+  {
+    "id": "lookup_breakfast",
+    "text": "breakfast",
+    "path": "audio/lookup_breakfast.mp3"
+  },
+  {
+    "id": "lookup_breath",
+    "text": "breath",
+    "path": "audio/lookup_breath.mp3"
   },
   {
     "id": "lookup_bricks",
@@ -1150,6 +1410,16 @@
     "path": "audio/lookup_broken.mp3"
   },
   {
+    "id": "lookup_brother",
+    "text": "brother",
+    "path": "audio/lookup_brother.mp3"
+  },
+  {
+    "id": "lookup_brought",
+    "text": "brought",
+    "path": "audio/lookup_brought.mp3"
+  },
+  {
     "id": "lookup_build",
     "text": "build",
     "path": "audio/lookup_build.mp3"
@@ -1158,6 +1428,16 @@
     "id": "lookup_burying",
     "text": "burying",
     "path": "audio/lookup_burying.mp3"
+  },
+  {
+    "id": "lookup_bus",
+    "text": "bus",
+    "path": "audio/lookup_bus.mp3"
+  },
+  {
+    "id": "lookup_business",
+    "text": "business",
+    "path": "audio/lookup_business.mp3"
   },
   {
     "id": "lookup_busy",
@@ -1175,9 +1455,24 @@
     "path": "audio/lookup_by.mp3"
   },
   {
+    "id": "lookup_cafe",
+    "text": "cafe",
+    "path": "audio/lookup_cafe.mp3"
+  },
+  {
     "id": "lookup_calm",
     "text": "calm",
     "path": "audio/lookup_calm.mp3"
+  },
+  {
+    "id": "lookup_came",
+    "text": "came",
+    "path": "audio/lookup_came.mp3"
+  },
+  {
+    "id": "lookup_camera",
+    "text": "camera",
+    "path": "audio/lookup_camera.mp3"
   },
   {
     "id": "lookup_can",
@@ -1215,6 +1510,11 @@
     "path": "audio/lookup_carrying.mp3"
   },
   {
+    "id": "lookup_caught",
+    "text": "caught",
+    "path": "audio/lookup_caught.mp3"
+  },
+  {
     "id": "lookup_causes",
     "text": "causes",
     "path": "audio/lookup_causes.mp3"
@@ -1228,6 +1528,11 @@
     "id": "lookup_change",
     "text": "change",
     "path": "audio/lookup_change.mp3"
+  },
+  {
+    "id": "lookup_changed",
+    "text": "changed",
+    "path": "audio/lookup_changed.mp3"
   },
   {
     "id": "lookup_changes",
@@ -1245,9 +1550,29 @@
     "path": "audio/lookup_channel.mp3"
   },
   {
+    "id": "lookup_chat",
+    "text": "chat",
+    "path": "audio/lookup_chat.mp3"
+  },
+  {
+    "id": "lookup_cheaper",
+    "text": "cheaper",
+    "path": "audio/lookup_cheaper.mp3"
+  },
+  {
     "id": "lookup_check",
     "text": "check",
     "path": "audio/lookup_check.mp3"
+  },
+  {
+    "id": "lookup_checked",
+    "text": "checked",
+    "path": "audio/lookup_checked.mp3"
+  },
+  {
+    "id": "lookup_child",
+    "text": "child",
+    "path": "audio/lookup_child.mp3"
   },
   {
     "id": "lookup_chilly",
@@ -1275,9 +1600,19 @@
     "path": "audio/lookup_closed.mp3"
   },
   {
+    "id": "lookup_closer",
+    "text": "closer",
+    "path": "audio/lookup_closer.mp3"
+  },
+  {
     "id": "lookup_cloth",
     "text": "cloth",
     "path": "audio/lookup_cloth.mp3"
+  },
+  {
+    "id": "lookup_clouds",
+    "text": "clouds",
+    "path": "audio/lookup_clouds.mp3"
   },
   {
     "id": "lookup_cloudy",
@@ -1300,6 +1635,11 @@
     "path": "audio/lookup_collect.mp3"
   },
   {
+    "id": "lookup_collecting",
+    "text": "collecting",
+    "path": "audio/lookup_collecting.mp3"
+  },
+  {
     "id": "lookup_color",
     "text": "color",
     "path": "audio/lookup_color.mp3"
@@ -1318,6 +1658,11 @@
     "id": "lookup_coming",
     "text": "coming",
     "path": "audio/lookup_coming.mp3"
+  },
+  {
+    "id": "lookup_compare",
+    "text": "compare",
+    "path": "audio/lookup_compare.mp3"
   },
   {
     "id": "lookup_compost",
@@ -1365,6 +1710,26 @@
     "path": "audio/lookup_could.mp3"
   },
   {
+    "id": "lookup_count",
+    "text": "count",
+    "path": "audio/lookup_count.mp3"
+  },
+  {
+    "id": "lookup_counted",
+    "text": "counted",
+    "path": "audio/lookup_counted.mp3"
+  },
+  {
+    "id": "lookup_counting",
+    "text": "counting",
+    "path": "audio/lookup_counting.mp3"
+  },
+  {
+    "id": "lookup_counts",
+    "text": "counts",
+    "path": "audio/lookup_counts.mp3"
+  },
+  {
     "id": "lookup_cover",
     "text": "cover",
     "path": "audio/lookup_cover.mp3"
@@ -1403,6 +1768,21 @@
     "id": "lookup_crystals",
     "text": "crystals",
     "path": "audio/lookup_crystals.mp3"
+  },
+  {
+    "id": "lookup_cup",
+    "text": "cup",
+    "path": "audio/lookup_cup.mp3"
+  },
+  {
+    "id": "lookup_cups",
+    "text": "cups",
+    "path": "audio/lookup_cups.mp3"
+  },
+  {
+    "id": "lookup_customers",
+    "text": "customers",
+    "path": "audio/lookup_customers.mp3"
   },
   {
     "id": "lookup_cut",
@@ -1465,6 +1845,21 @@
     "path": "audio/lookup_dig.mp3"
   },
   {
+    "id": "lookup_dinner",
+    "text": "dinner",
+    "path": "audio/lookup_dinner.mp3"
+  },
+  {
+    "id": "lookup_disappeared",
+    "text": "disappeared",
+    "path": "audio/lookup_disappeared.mp3"
+  },
+  {
+    "id": "lookup_discount",
+    "text": "discount",
+    "path": "audio/lookup_discount.mp3"
+  },
+  {
     "id": "lookup_distant",
     "text": "distant",
     "path": "audio/lookup_distant.mp3"
@@ -1495,6 +1890,11 @@
     "path": "audio/lookup_drain.mp3"
   },
   {
+    "id": "lookup_draw",
+    "text": "draw",
+    "path": "audio/lookup_draw.mp3"
+  },
+  {
     "id": "lookup_drier",
     "text": "drier",
     "path": "audio/lookup_drier.mp3"
@@ -1505,9 +1905,29 @@
     "path": "audio/lookup_dries.mp3"
   },
   {
+    "id": "lookup_drink",
+    "text": "drink",
+    "path": "audio/lookup_drink.mp3"
+  },
+  {
+    "id": "lookup_drinks",
+    "text": "drinks",
+    "path": "audio/lookup_drinks.mp3"
+  },
+  {
+    "id": "lookup_driver",
+    "text": "driver",
+    "path": "audio/lookup_driver.mp3"
+  },
+  {
     "id": "lookup_drops",
     "text": "drops",
     "path": "audio/lookup_drops.mp3"
+  },
+  {
+    "id": "lookup_drummer",
+    "text": "drummer",
+    "path": "audio/lookup_drummer.mp3"
   },
   {
     "id": "lookup_dry",
@@ -1530,6 +1950,11 @@
     "path": "audio/lookup_easily.mp3"
   },
   {
+    "id": "lookup_easy",
+    "text": "easy",
+    "path": "audio/lookup_easy.mp3"
+  },
+  {
     "id": "lookup_edge",
     "text": "edge",
     "path": "audio/lookup_edge.mp3"
@@ -1545,14 +1970,39 @@
     "path": "audio/lookup_effects.mp3"
   },
   {
+    "id": "lookup_else",
+    "text": "else",
+    "path": "audio/lookup_else.mp3"
+  },
+  {
+    "id": "lookup_end",
+    "text": "end",
+    "path": "audio/lookup_end.mp3"
+  },
+  {
+    "id": "lookup_ended",
+    "text": "ended",
+    "path": "audio/lookup_ended.mp3"
+  },
+  {
     "id": "lookup_enough",
     "text": "enough",
     "path": "audio/lookup_enough.mp3"
   },
   {
+    "id": "lookup_entered",
+    "text": "entered",
+    "path": "audio/lookup_entered.mp3"
+  },
+  {
     "id": "lookup_escape",
     "text": "escape",
     "path": "audio/lookup_escape.mp3"
+  },
+  {
+    "id": "lookup_even",
+    "text": "even",
+    "path": "audio/lookup_even.mp3"
   },
   {
     "id": "lookup_evening",
@@ -1568,6 +2018,11 @@
     "id": "lookup_everything",
     "text": "everything",
     "path": "audio/lookup_everything.mp3"
+  },
+  {
+    "id": "lookup_expected",
+    "text": "expected",
+    "path": "audio/lookup_expected.mp3"
   },
   {
     "id": "lookup_explanation",
@@ -1590,9 +2045,29 @@
     "path": "audio/lookup_fallen.mp3"
   },
   {
+    "id": "lookup_faster",
+    "text": "faster",
+    "path": "audio/lookup_faster.mp3"
+  },
+  {
     "id": "lookup_feature",
     "text": "feature",
     "path": "audio/lookup_feature.mp3"
+  },
+  {
+    "id": "lookup_feet",
+    "text": "feet",
+    "path": "audio/lookup_feet.mp3"
+  },
+  {
+    "id": "lookup_fell",
+    "text": "fell",
+    "path": "audio/lookup_fell.mp3"
+  },
+  {
+    "id": "lookup_felt",
+    "text": "felt",
+    "path": "audio/lookup_felt.mp3"
   },
   {
     "id": "lookup_fence",
@@ -1600,14 +2075,44 @@
     "path": "audio/lookup_fence.mp3"
   },
   {
+    "id": "lookup_fewer",
+    "text": "fewer",
+    "path": "audio/lookup_fewer.mp3"
+  },
+  {
     "id": "lookup_fill",
     "text": "fill",
     "path": "audio/lookup_fill.mp3"
   },
   {
+    "id": "lookup_filled",
+    "text": "filled",
+    "path": "audio/lookup_filled.mp3"
+  },
+  {
+    "id": "lookup_film",
+    "text": "film",
+    "path": "audio/lookup_film.mp3"
+  },
+  {
+    "id": "lookup_final",
+    "text": "final",
+    "path": "audio/lookup_final.mp3"
+  },
+  {
+    "id": "lookup_find",
+    "text": "find",
+    "path": "audio/lookup_find.mp3"
+  },
+  {
     "id": "lookup_finished",
     "text": "finished",
     "path": "audio/lookup_finished.mp3"
+  },
+  {
+    "id": "lookup_finishing",
+    "text": "finishing",
+    "path": "audio/lookup_finishing.mp3"
   },
   {
     "id": "lookup_firing",
@@ -1628,6 +2133,11 @@
     "id": "lookup_flags",
     "text": "flags",
     "path": "audio/lookup_flags.mp3"
+  },
+  {
+    "id": "lookup_flat",
+    "text": "flat",
+    "path": "audio/lookup_flat.mp3"
   },
   {
     "id": "lookup_flexible",
@@ -1695,9 +2205,19 @@
     "path": "audio/lookup_four.mp3"
   },
   {
+    "id": "lookup_fourth",
+    "text": "fourth",
+    "path": "audio/lookup_fourth.mp3"
+  },
+  {
     "id": "lookup_frame",
     "text": "frame",
     "path": "audio/lookup_frame.mp3"
+  },
+  {
+    "id": "lookup_free",
+    "text": "free",
+    "path": "audio/lookup_free.mp3"
   },
   {
     "id": "lookup_freely",
@@ -1713,6 +2233,11 @@
     "id": "lookup_friction",
     "text": "friction",
     "path": "audio/lookup_friction.mp3"
+  },
+  {
+    "id": "lookup_friend",
+    "text": "friend",
+    "path": "audio/lookup_friend.mp3"
   },
   {
     "id": "lookup_friends",
@@ -1745,6 +2270,11 @@
     "path": "audio/lookup_full.mp3"
   },
   {
+    "id": "lookup_game",
+    "text": "game",
+    "path": "audio/lookup_game.mp3"
+  },
+  {
     "id": "lookup_gap",
     "text": "gap",
     "path": "audio/lookup_gap.mp3"
@@ -1770,6 +2300,11 @@
     "path": "audio/lookup_gently.mp3"
   },
   {
+    "id": "lookup_get",
+    "text": "get",
+    "path": "audio/lookup_get.mp3"
+  },
+  {
     "id": "lookup_give",
     "text": "give",
     "path": "audio/lookup_give.mp3"
@@ -1778,6 +2313,11 @@
     "id": "lookup_glass",
     "text": "glass",
     "path": "audio/lookup_glass.mp3"
+  },
+  {
+    "id": "lookup_gone",
+    "text": "gone",
+    "path": "audio/lookup_gone.mp3"
   },
   {
     "id": "lookup_green",
@@ -1795,6 +2335,11 @@
     "path": "audio/lookup_ground.mp3"
   },
   {
+    "id": "lookup_group",
+    "text": "group",
+    "path": "audio/lookup_group.mp3"
+  },
+  {
     "id": "lookup_grow",
     "text": "grow",
     "path": "audio/lookup_grow.mp3"
@@ -1805,9 +2350,29 @@
     "path": "audio/lookup_growth.mp3"
   },
   {
+    "id": "lookup_guide",
+    "text": "guide",
+    "path": "audio/lookup_guide.mp3"
+  },
+  {
+    "id": "lookup_had",
+    "text": "had",
+    "path": "audio/lookup_had.mp3"
+  },
+  {
+    "id": "lookup_handed",
+    "text": "handed",
+    "path": "audio/lookup_handed.mp3"
+  },
+  {
     "id": "lookup_handle",
     "text": "handle",
     "path": "audio/lookup_handle.mp3"
+  },
+  {
+    "id": "lookup_hands",
+    "text": "hands",
+    "path": "audio/lookup_hands.mp3"
   },
   {
     "id": "lookup_hard",
@@ -1835,6 +2400,11 @@
     "path": "audio/lookup_health.mp3"
   },
   {
+    "id": "lookup_hear",
+    "text": "hear",
+    "path": "audio/lookup_hear.mp3"
+  },
+  {
     "id": "lookup_heat",
     "text": "heat",
     "path": "audio/lookup_heat.mp3"
@@ -1843,6 +2413,11 @@
     "id": "lookup_heavy",
     "text": "heavy",
     "path": "audio/lookup_heavy.mp3"
+  },
+  {
+    "id": "lookup_held",
+    "text": "held",
+    "path": "audio/lookup_held.mp3"
   },
   {
     "id": "lookup_help",
@@ -1855,14 +2430,34 @@
     "path": "audio/lookup_helps.mp3"
   },
   {
+    "id": "lookup_her",
+    "text": "her",
+    "path": "audio/lookup_her.mp3"
+  },
+  {
     "id": "lookup_here",
     "text": "here",
     "path": "audio/lookup_here.mp3"
   },
   {
+    "id": "lookup_hers",
+    "text": "hers",
+    "path": "audio/lookup_hers.mp3"
+  },
+  {
     "id": "lookup_hill",
     "text": "hill",
     "path": "audio/lookup_hill.mp3"
+  },
+  {
+    "id": "lookup_him",
+    "text": "him",
+    "path": "audio/lookup_him.mp3"
+  },
+  {
+    "id": "lookup_his",
+    "text": "his",
+    "path": "audio/lookup_his.mp3"
   },
   {
     "id": "lookup_hold",
@@ -1905,9 +2500,19 @@
     "path": "audio/lookup_however.mp3"
   },
   {
+    "id": "lookup_hurry",
+    "text": "hurry",
+    "path": "audio/lookup_hurry.mp3"
+  },
+  {
     "id": "lookup_i",
     "text": "i",
     "path": "audio/lookup_i.mp3"
+  },
+  {
+    "id": "lookup_ice",
+    "text": "ice",
+    "path": "audio/lookup_ice.mp3"
   },
   {
     "id": "lookup_if",
@@ -1965,6 +2570,11 @@
     "path": "audio/lookup_its.mp3"
   },
   {
+    "id": "lookup_itself",
+    "text": "itself",
+    "path": "audio/lookup_itself.mp3"
+  },
+  {
     "id": "lookup_joining",
     "text": "joining",
     "path": "audio/lookup_joining.mp3"
@@ -1980,6 +2590,11 @@
     "path": "audio/lookup_joints.mp3"
   },
   {
+    "id": "lookup_just",
+    "text": "just",
+    "path": "audio/lookup_just.mp3"
+  },
+  {
     "id": "lookup_keep",
     "text": "keep",
     "path": "audio/lookup_keep.mp3"
@@ -1988,6 +2603,11 @@
     "id": "lookup_keeping",
     "text": "keeping",
     "path": "audio/lookup_keeping.mp3"
+  },
+  {
+    "id": "lookup_kept",
+    "text": "kept",
+    "path": "audio/lookup_kept.mp3"
   },
   {
     "id": "lookup_kiln",
@@ -2000,6 +2620,11 @@
     "path": "audio/lookup_lake.mp3"
   },
   {
+    "id": "lookup_lamp",
+    "text": "lamp",
+    "path": "audio/lookup_lamp.mp3"
+  },
+  {
     "id": "lookup_land",
     "text": "land",
     "path": "audio/lookup_land.mp3"
@@ -2008,6 +2633,11 @@
     "id": "lookup_landing",
     "text": "landing",
     "path": "audio/lookup_landing.mp3"
+  },
+  {
+    "id": "lookup_lands",
+    "text": "lands",
+    "path": "audio/lookup_lands.mp3"
   },
   {
     "id": "lookup_large",
@@ -2033,6 +2663,11 @@
     "id": "lookup_layer",
     "text": "layer",
     "path": "audio/lookup_layer.mp3"
+  },
+  {
+    "id": "lookup_leaf",
+    "text": "leaf",
+    "path": "audio/lookup_leaf.mp3"
   },
   {
     "id": "lookup_leak",
@@ -2085,6 +2720,11 @@
     "path": "audio/lookup_let.mp3"
   },
   {
+    "id": "lookup_letter",
+    "text": "letter",
+    "path": "audio/lookup_letter.mp3"
+  },
+  {
     "id": "lookup_letting",
     "text": "letting",
     "path": "audio/lookup_letting.mp3"
@@ -2105,9 +2745,34 @@
     "path": "audio/lookup_like.mp3"
   },
   {
+    "id": "lookup_likes",
+    "text": "likes",
+    "path": "audio/lookup_likes.mp3"
+  },
+  {
     "id": "lookup_limited",
     "text": "limited",
     "path": "audio/lookup_limited.mp3"
+  },
+  {
+    "id": "lookup_line",
+    "text": "line",
+    "path": "audio/lookup_line.mp3"
+  },
+  {
+    "id": "lookup_listen",
+    "text": "listen",
+    "path": "audio/lookup_listen.mp3"
+  },
+  {
+    "id": "lookup_listened",
+    "text": "listened",
+    "path": "audio/lookup_listened.mp3"
+  },
+  {
+    "id": "lookup_little",
+    "text": "little",
+    "path": "audio/lookup_little.mp3"
   },
   {
     "id": "lookup_load",
@@ -2120,6 +2785,11 @@
     "path": "audio/lookup_location.mp3"
   },
   {
+    "id": "lookup_lock",
+    "text": "lock",
+    "path": "audio/lookup_lock.mp3"
+  },
+  {
     "id": "lookup_log",
     "text": "log",
     "path": "audio/lookup_log.mp3"
@@ -2128,6 +2798,11 @@
     "id": "lookup_logs",
     "text": "logs",
     "path": "audio/lookup_logs.mp3"
+  },
+  {
+    "id": "lookup_look",
+    "text": "look",
+    "path": "audio/lookup_look.mp3"
   },
   {
     "id": "lookup_looks",
@@ -2150,9 +2825,19 @@
     "path": "audio/lookup_lower.mp3"
   },
   {
+    "id": "lookup_lunch",
+    "text": "lunch",
+    "path": "audio/lookup_lunch.mp3"
+  },
+  {
     "id": "lookup_machine",
     "text": "machine",
     "path": "audio/lookup_machine.mp3"
+  },
+  {
+    "id": "lookup_made",
+    "text": "made",
+    "path": "audio/lookup_made.mp3"
   },
   {
     "id": "lookup_main",
@@ -2170,9 +2855,44 @@
     "path": "audio/lookup_making.mp3"
   },
   {
+    "id": "lookup_man",
+    "text": "man",
+    "path": "audio/lookup_man.mp3"
+  },
+  {
+    "id": "lookup_manager",
+    "text": "manager",
+    "path": "audio/lookup_manager.mp3"
+  },
+  {
+    "id": "lookup_map",
+    "text": "map",
+    "path": "audio/lookup_map.mp3"
+  },
+  {
+    "id": "lookup_mark",
+    "text": "mark",
+    "path": "audio/lookup_mark.mp3"
+  },
+  {
+    "id": "lookup_marked",
+    "text": "marked",
+    "path": "audio/lookup_marked.mp3"
+  },
+  {
+    "id": "lookup_marks",
+    "text": "marks",
+    "path": "audio/lookup_marks.mp3"
+  },
+  {
     "id": "lookup_material",
     "text": "material",
     "path": "audio/lookup_material.mp3"
+  },
+  {
+    "id": "lookup_mattered",
+    "text": "mattered",
+    "path": "audio/lookup_mattered.mp3"
   },
   {
     "id": "lookup_matters",
@@ -2183,6 +2903,11 @@
     "id": "lookup_may",
     "text": "may",
     "path": "audio/lookup_may.mp3"
+  },
+  {
+    "id": "lookup_me",
+    "text": "me",
+    "path": "audio/lookup_me.mp3"
   },
   {
     "id": "lookup_meadow",
@@ -2215,6 +2940,11 @@
     "path": "audio/lookup_meet.mp3"
   },
   {
+    "id": "lookup_microphone",
+    "text": "microphone",
+    "path": "audio/lookup_microphone.mp3"
+  },
+  {
     "id": "lookup_middle",
     "text": "middle",
     "path": "audio/lookup_middle.mp3"
@@ -2223,6 +2953,21 @@
     "id": "lookup_mill",
     "text": "mill",
     "path": "audio/lookup_mill.mp3"
+  },
+  {
+    "id": "lookup_mine",
+    "text": "mine",
+    "path": "audio/lookup_mine.mp3"
+  },
+  {
+    "id": "lookup_minute",
+    "text": "minute",
+    "path": "audio/lookup_minute.mp3"
+  },
+  {
+    "id": "lookup_minutes",
+    "text": "minutes",
+    "path": "audio/lookup_minutes.mp3"
   },
   {
     "id": "lookup_model",
@@ -2235,6 +2980,11 @@
     "path": "audio/lookup_moisture.mp3"
   },
   {
+    "id": "lookup_money",
+    "text": "money",
+    "path": "audio/lookup_money.mp3"
+  },
+  {
     "id": "lookup_more",
     "text": "more",
     "path": "audio/lookup_more.mp3"
@@ -2245,9 +2995,19 @@
     "path": "audio/lookup_morning.mp3"
   },
   {
+    "id": "lookup_most",
+    "text": "most",
+    "path": "audio/lookup_most.mp3"
+  },
+  {
     "id": "lookup_move",
     "text": "move",
     "path": "audio/lookup_move.mp3"
+  },
+  {
+    "id": "lookup_moved",
+    "text": "moved",
+    "path": "audio/lookup_moved.mp3"
   },
   {
     "id": "lookup_moves",
@@ -2265,9 +3025,19 @@
     "path": "audio/lookup_much.mp3"
   },
   {
+    "id": "lookup_museum",
+    "text": "museum",
+    "path": "audio/lookup_museum.mp3"
+  },
+  {
     "id": "lookup_must",
     "text": "must",
     "path": "audio/lookup_must.mp3"
+  },
+  {
+    "id": "lookup_my",
+    "text": "my",
+    "path": "audio/lookup_my.mp3"
   },
   {
     "id": "lookup_narrow",
@@ -2285,14 +3055,29 @@
     "path": "audio/lookup_nearest.mp3"
   },
   {
+    "id": "lookup_neck",
+    "text": "neck",
+    "path": "audio/lookup_neck.mp3"
+  },
+  {
     "id": "lookup_need",
     "text": "need",
     "path": "audio/lookup_need.mp3"
   },
   {
+    "id": "lookup_needed",
+    "text": "needed",
+    "path": "audio/lookup_needed.mp3"
+  },
+  {
     "id": "lookup_needs",
     "text": "needs",
     "path": "audio/lookup_needs.mp3"
+  },
+  {
+    "id": "lookup_never",
+    "text": "never",
+    "path": "audio/lookup_never.mp3"
   },
   {
     "id": "lookup_new",
@@ -2313,6 +3098,11 @@
     "id": "lookup_no",
     "text": "no",
     "path": "audio/lookup_no.mp3"
+  },
+  {
+    "id": "lookup_nobody",
+    "text": "nobody",
+    "path": "audio/lookup_nobody.mp3"
   },
   {
     "id": "lookup_northern",
@@ -2340,6 +3130,16 @@
     "path": "audio/lookup_now.mp3"
   },
   {
+    "id": "lookup_number",
+    "text": "number",
+    "path": "audio/lookup_number.mp3"
+  },
+  {
+    "id": "lookup_numbers",
+    "text": "numbers",
+    "path": "audio/lookup_numbers.mp3"
+  },
+  {
     "id": "lookup_of",
     "text": "of",
     "path": "audio/lookup_of.mp3"
@@ -2348,6 +3148,16 @@
     "id": "lookup_off",
     "text": "off",
     "path": "audio/lookup_off.mp3"
+  },
+  {
+    "id": "lookup_offer",
+    "text": "offer",
+    "path": "audio/lookup_offer.mp3"
+  },
+  {
+    "id": "lookup_offered",
+    "text": "offered",
+    "path": "audio/lookup_offered.mp3"
   },
   {
     "id": "lookup_offers",
@@ -2405,6 +3215,11 @@
     "path": "audio/lookup_opening.mp3"
   },
   {
+    "id": "lookup_opens",
+    "text": "opens",
+    "path": "audio/lookup_opens.mp3"
+  },
+  {
     "id": "lookup_other",
     "text": "other",
     "path": "audio/lookup_other.mp3"
@@ -2425,6 +3240,11 @@
     "path": "audio/lookup_outside.mp3"
   },
   {
+    "id": "lookup_over",
+    "text": "over",
+    "path": "audio/lookup_over.mp3"
+  },
+  {
     "id": "lookup_overflow",
     "text": "overflow",
     "path": "audio/lookup_overflow.mp3"
@@ -2435,9 +3255,19 @@
     "path": "audio/lookup_own.mp3"
   },
   {
+    "id": "lookup_owner",
+    "text": "owner",
+    "path": "audio/lookup_owner.mp3"
+  },
+  {
     "id": "lookup_packing",
     "text": "packing",
     "path": "audio/lookup_packing.mp3"
+  },
+  {
+    "id": "lookup_pages",
+    "text": "pages",
+    "path": "audio/lookup_pages.mp3"
   },
   {
     "id": "lookup_paint",
@@ -2455,6 +3285,11 @@
     "path": "audio/lookup_pale.mp3"
   },
   {
+    "id": "lookup_paper",
+    "text": "paper",
+    "path": "audio/lookup_paper.mp3"
+  },
+  {
     "id": "lookup_part",
     "text": "part",
     "path": "audio/lookup_part.mp3"
@@ -2470,6 +3305,11 @@
     "path": "audio/lookup_pass.mp3"
   },
   {
+    "id": "lookup_passed",
+    "text": "passed",
+    "path": "audio/lookup_passed.mp3"
+  },
+  {
     "id": "lookup_path",
     "text": "path",
     "path": "audio/lookup_path.mp3"
@@ -2483,6 +3323,21 @@
     "id": "lookup_periods",
     "text": "periods",
     "path": "audio/lookup_periods.mp3"
+  },
+  {
+    "id": "lookup_person",
+    "text": "person",
+    "path": "audio/lookup_person.mp3"
+  },
+  {
+    "id": "lookup_picks",
+    "text": "picks",
+    "path": "audio/lookup_picks.mp3"
+  },
+  {
+    "id": "lookup_picture",
+    "text": "picture",
+    "path": "audio/lookup_picture.mp3"
   },
   {
     "id": "lookup_piece",
@@ -2540,6 +3395,21 @@
     "path": "audio/lookup_plants.mp3"
   },
   {
+    "id": "lookup_player",
+    "text": "player",
+    "path": "audio/lookup_player.mp3"
+  },
+  {
+    "id": "lookup_playing",
+    "text": "playing",
+    "path": "audio/lookup_playing.mp3"
+  },
+  {
+    "id": "lookup_point",
+    "text": "point",
+    "path": "audio/lookup_point.mp3"
+  },
+  {
     "id": "lookup_points",
     "text": "points",
     "path": "audio/lookup_points.mp3"
@@ -2575,6 +3445,11 @@
     "path": "audio/lookup_power.mp3"
   },
   {
+    "id": "lookup_practice",
+    "text": "practice",
+    "path": "audio/lookup_practice.mp3"
+  },
+  {
     "id": "lookup_problem",
     "text": "problem",
     "path": "audio/lookup_problem.mp3"
@@ -2608,6 +3483,11 @@
     "id": "lookup_put",
     "text": "put",
     "path": "audio/lookup_put.mp3"
+  },
+  {
+    "id": "lookup_puts",
+    "text": "puts",
+    "path": "audio/lookup_puts.mp3"
   },
   {
     "id": "lookup_quickly",
@@ -2663,6 +3543,11 @@
     "id": "lookup_recent",
     "text": "recent",
     "path": "audio/lookup_recent.mp3"
+  },
+  {
+    "id": "lookup_red",
+    "text": "red",
+    "path": "audio/lookup_red.mp3"
   },
   {
     "id": "lookup_refilling",
@@ -2743,6 +3628,11 @@
     "id": "lookup_return",
     "text": "return",
     "path": "audio/lookup_return.mp3"
+  },
+  {
+    "id": "lookup_rice",
+    "text": "rice",
+    "path": "audio/lookup_rice.mp3"
   },
   {
     "id": "lookup_road",
@@ -2860,6 +3750,11 @@
     "path": "audio/lookup_sawmill.mp3"
   },
   {
+    "id": "lookup_scarf",
+    "text": "scarf",
+    "path": "audio/lookup_scarf.mp3"
+  },
+  {
     "id": "lookup_scattered",
     "text": "scattered",
     "path": "audio/lookup_scattered.mp3"
@@ -2868,6 +3763,11 @@
     "id": "lookup_schedule",
     "text": "schedule",
     "path": "audio/lookup_schedule.mp3"
+  },
+  {
+    "id": "lookup_screen",
+    "text": "screen",
+    "path": "audio/lookup_screen.mp3"
   },
   {
     "id": "lookup_sea",
@@ -2885,6 +3785,16 @@
     "path": "audio/lookup_seat.mp3"
   },
   {
+    "id": "lookup_seats",
+    "text": "seats",
+    "path": "audio/lookup_seats.mp3"
+  },
+  {
+    "id": "lookup_second",
+    "text": "second",
+    "path": "audio/lookup_second.mp3"
+  },
+  {
     "id": "lookup_section",
     "text": "section",
     "path": "audio/lookup_section.mp3"
@@ -2895,6 +3805,11 @@
     "path": "audio/lookup_secure.mp3"
   },
   {
+    "id": "lookup_see",
+    "text": "see",
+    "path": "audio/lookup_see.mp3"
+  },
+  {
     "id": "lookup_seedlings",
     "text": "seedlings",
     "path": "audio/lookup_seedlings.mp3"
@@ -2903,6 +3818,16 @@
     "id": "lookup_seeds",
     "text": "seeds",
     "path": "audio/lookup_seeds.mp3"
+  },
+  {
+    "id": "lookup_seemed",
+    "text": "seemed",
+    "path": "audio/lookup_seemed.mp3"
+  },
+  {
+    "id": "lookup_seen",
+    "text": "seen",
+    "path": "audio/lookup_seen.mp3"
   },
   {
     "id": "lookup_send",
@@ -2935,9 +3860,19 @@
     "path": "audio/lookup_shade.mp3"
   },
   {
+    "id": "lookup_shadow",
+    "text": "shadow",
+    "path": "audio/lookup_shadow.mp3"
+  },
+  {
     "id": "lookup_shape",
     "text": "shape",
     "path": "audio/lookup_shape.mp3"
+  },
+  {
+    "id": "lookup_she",
+    "text": "she",
+    "path": "audio/lookup_she.mp3"
   },
   {
     "id": "lookup_sheep",
@@ -2948,6 +3883,11 @@
     "id": "lookup_shelter",
     "text": "shelter",
     "path": "audio/lookup_shelter.mp3"
+  },
+  {
+    "id": "lookup_shook",
+    "text": "shook",
+    "path": "audio/lookup_shook.mp3"
   },
   {
     "id": "lookup_shore",
@@ -2975,6 +3915,11 @@
     "path": "audio/lookup_should.mp3"
   },
   {
+    "id": "lookup_showed",
+    "text": "showed",
+    "path": "audio/lookup_showed.mp3"
+  },
+  {
     "id": "lookup_shower",
     "text": "shower",
     "path": "audio/lookup_shower.mp3"
@@ -2985,6 +3930,16 @@
     "path": "audio/lookup_side.mp3"
   },
   {
+    "id": "lookup_singer",
+    "text": "singer",
+    "path": "audio/lookup_singer.mp3"
+  },
+  {
+    "id": "lookup_sister",
+    "text": "sister",
+    "path": "audio/lookup_sister.mp3"
+  },
+  {
     "id": "lookup_sits",
     "text": "sits",
     "path": "audio/lookup_sits.mp3"
@@ -2993,6 +3948,11 @@
     "id": "lookup_sky",
     "text": "sky",
     "path": "audio/lookup_sky.mp3"
+  },
+  {
+    "id": "lookup_slept",
+    "text": "slept",
+    "path": "audio/lookup_slept.mp3"
   },
   {
     "id": "lookup_slipping",
@@ -3008,6 +3968,16 @@
     "id": "lookup_small",
     "text": "small",
     "path": "audio/lookup_small.mp3"
+  },
+  {
+    "id": "lookup_smiles",
+    "text": "smiles",
+    "path": "audio/lookup_smiles.mp3"
+  },
+  {
+    "id": "lookup_snow",
+    "text": "snow",
+    "path": "audio/lookup_snow.mp3"
   },
   {
     "id": "lookup_so",
@@ -3033,6 +4003,16 @@
     "id": "lookup_some",
     "text": "some",
     "path": "audio/lookup_some.mp3"
+  },
+  {
+    "id": "lookup_someone",
+    "text": "someone",
+    "path": "audio/lookup_someone.mp3"
+  },
+  {
+    "id": "lookup_song",
+    "text": "song",
+    "path": "audio/lookup_song.mp3"
   },
   {
     "id": "lookup_sound",
@@ -3065,6 +4045,11 @@
     "path": "audio/lookup_spilling.mp3"
   },
   {
+    "id": "lookup_spoon",
+    "text": "spoon",
+    "path": "audio/lookup_spoon.mp3"
+  },
+  {
     "id": "lookup_start",
     "text": "start",
     "path": "audio/lookup_start.mp3"
@@ -3090,6 +4075,11 @@
     "path": "audio/lookup_stayed.mp3"
   },
   {
+    "id": "lookup_stays",
+    "text": "stays",
+    "path": "audio/lookup_stays.mp3"
+  },
+  {
     "id": "lookup_stems",
     "text": "stems",
     "path": "audio/lookup_stems.mp3"
@@ -3098,6 +4088,11 @@
     "id": "lookup_steps",
     "text": "steps",
     "path": "audio/lookup_steps.mp3"
+  },
+  {
+    "id": "lookup_stick",
+    "text": "stick",
+    "path": "audio/lookup_stick.mp3"
   },
   {
     "id": "lookup_still",
@@ -3113,6 +4108,11 @@
     "id": "lookup_stones",
     "text": "stones",
     "path": "audio/lookup_stones.mp3"
+  },
+  {
+    "id": "lookup_stood",
+    "text": "stood",
+    "path": "audio/lookup_stood.mp3"
   },
   {
     "id": "lookup_stop",
@@ -3150,6 +4150,11 @@
     "path": "audio/lookup_stream.mp3"
   },
   {
+    "id": "lookup_street",
+    "text": "street",
+    "path": "audio/lookup_street.mp3"
+  },
+  {
     "id": "lookup_strengthening",
     "text": "strengthening",
     "path": "audio/lookup_strengthening.mp3"
@@ -3170,9 +4175,19 @@
     "path": "audio/lookup_structure.mp3"
   },
   {
+    "id": "lookup_studio",
+    "text": "studio",
+    "path": "audio/lookup_studio.mp3"
+  },
+  {
     "id": "lookup_sudden",
     "text": "sudden",
     "path": "audio/lookup_sudden.mp3"
+  },
+  {
+    "id": "lookup_suddenly",
+    "text": "suddenly",
+    "path": "audio/lookup_suddenly.mp3"
   },
   {
     "id": "lookup_suggests",
@@ -3230,6 +4245,11 @@
     "path": "audio/lookup_table.mp3"
   },
   {
+    "id": "lookup_take",
+    "text": "take",
+    "path": "audio/lookup_take.mp3"
+  },
+  {
     "id": "lookup_takes",
     "text": "takes",
     "path": "audio/lookup_takes.mp3"
@@ -3253,6 +4273,21 @@
     "id": "lookup_tank",
     "text": "tank",
     "path": "audio/lookup_tank.mp3"
+  },
+  {
+    "id": "lookup_tap",
+    "text": "tap",
+    "path": "audio/lookup_tap.mp3"
+  },
+  {
+    "id": "lookup_taps",
+    "text": "taps",
+    "path": "audio/lookup_taps.mp3"
+  },
+  {
+    "id": "lookup_tea",
+    "text": "tea",
+    "path": "audio/lookup_tea.mp3"
   },
   {
     "id": "lookup_team",
@@ -3283,6 +4318,11 @@
     "id": "lookup_the",
     "text": "the",
     "path": "audio/lookup_the.mp3"
+  },
+  {
+    "id": "lookup_their",
+    "text": "their",
+    "path": "audio/lookup_their.mp3"
   },
   {
     "id": "lookup_them",
@@ -3325,6 +4365,16 @@
     "path": "audio/lookup_this.mp3"
   },
   {
+    "id": "lookup_though",
+    "text": "though",
+    "path": "audio/lookup_though.mp3"
+  },
+  {
+    "id": "lookup_thought",
+    "text": "thought",
+    "path": "audio/lookup_thought.mp3"
+  },
+  {
     "id": "lookup_through",
     "text": "through",
     "path": "audio/lookup_through.mp3"
@@ -3343,6 +4393,11 @@
     "id": "lookup_throwing",
     "text": "throwing",
     "path": "audio/lookup_throwing.mp3"
+  },
+  {
+    "id": "lookup_ticket",
+    "text": "ticket",
+    "path": "audio/lookup_ticket.mp3"
   },
   {
     "id": "lookup_tide",
@@ -3370,6 +4425,11 @@
     "path": "audio/lookup_time.mp3"
   },
   {
+    "id": "lookup_times",
+    "text": "times",
+    "path": "audio/lookup_times.mp3"
+  },
+  {
     "id": "lookup_to",
     "text": "to",
     "path": "audio/lookup_to.mp3"
@@ -3378,6 +4438,11 @@
     "id": "lookup_today",
     "text": "today",
     "path": "audio/lookup_today.mp3"
+  },
+  {
+    "id": "lookup_together",
+    "text": "together",
+    "path": "audio/lookup_together.mp3"
   },
   {
     "id": "lookup_tomorrow",
@@ -3405,6 +4470,16 @@
     "path": "audio/lookup_tools.mp3"
   },
   {
+    "id": "lookup_total",
+    "text": "total",
+    "path": "audio/lookup_total.mp3"
+  },
+  {
+    "id": "lookup_touches",
+    "text": "touches",
+    "path": "audio/lookup_touches.mp3"
+  },
+  {
     "id": "lookup_toward",
     "text": "toward",
     "path": "audio/lookup_toward.mp3"
@@ -3413,6 +4488,11 @@
     "id": "lookup_town",
     "text": "town",
     "path": "audio/lookup_town.mp3"
+  },
+  {
+    "id": "lookup_train",
+    "text": "train",
+    "path": "audio/lookup_train.mp3"
   },
   {
     "id": "lookup_travel",
@@ -3445,9 +4525,29 @@
     "path": "audio/lookup_turn.mp3"
   },
   {
+    "id": "lookup_turned",
+    "text": "turned",
+    "path": "audio/lookup_turned.mp3"
+  },
+  {
+    "id": "lookup_turning",
+    "text": "turning",
+    "path": "audio/lookup_turning.mp3"
+  },
+  {
     "id": "lookup_turns",
     "text": "turns",
     "path": "audio/lookup_turns.mp3"
+  },
+  {
+    "id": "lookup_twenty",
+    "text": "twenty",
+    "path": "audio/lookup_twenty.mp3"
+  },
+  {
+    "id": "lookup_twice",
+    "text": "twice",
+    "path": "audio/lookup_twice.mp3"
   },
   {
     "id": "lookup_two",
@@ -3525,6 +4625,11 @@
     "path": "audio/lookup_visitors.mp3"
   },
   {
+    "id": "lookup_visits",
+    "text": "visits",
+    "path": "audio/lookup_visits.mp3"
+  },
+  {
     "id": "lookup_wait",
     "text": "wait",
     "path": "audio/lookup_wait.mp3"
@@ -3560,9 +4665,19 @@
     "path": "audio/lookup_waste.mp3"
   },
   {
+    "id": "lookup_watching",
+    "text": "watching",
+    "path": "audio/lookup_watching.mp3"
+  },
+  {
     "id": "lookup_water",
     "text": "water",
     "path": "audio/lookup_water.mp3"
+  },
+  {
+    "id": "lookup_way",
+    "text": "way",
+    "path": "audio/lookup_way.mp3"
   },
   {
     "id": "lookup_we",
@@ -3583,6 +4698,11 @@
     "id": "lookup_well",
     "text": "well",
     "path": "audio/lookup_well.mp3"
+  },
+  {
+    "id": "lookup_were",
+    "text": "were",
+    "path": "audio/lookup_were.mp3"
   },
   {
     "id": "lookup_western",
@@ -3620,14 +4740,29 @@
     "path": "audio/lookup_whether.mp3"
   },
   {
+    "id": "lookup_which",
+    "text": "which",
+    "path": "audio/lookup_which.mp3"
+  },
+  {
     "id": "lookup_while",
     "text": "while",
     "path": "audio/lookup_while.mp3"
   },
   {
+    "id": "lookup_who",
+    "text": "who",
+    "path": "audio/lookup_who.mp3"
+  },
+  {
     "id": "lookup_whole",
     "text": "whole",
     "path": "audio/lookup_whole.mp3"
+  },
+  {
+    "id": "lookup_why",
+    "text": "why",
+    "path": "audio/lookup_why.mp3"
   },
   {
     "id": "lookup_will",
@@ -3665,6 +4800,16 @@
     "path": "audio/lookup_without.mp3"
   },
   {
+    "id": "lookup_woke",
+    "text": "woke",
+    "path": "audio/lookup_woke.mp3"
+  },
+  {
+    "id": "lookup_woman",
+    "text": "woman",
+    "path": "audio/lookup_woman.mp3"
+  },
+  {
     "id": "lookup_wood",
     "text": "wood",
     "path": "audio/lookup_wood.mp3"
@@ -3700,9 +4845,24 @@
     "path": "audio/lookup_worn.mp3"
   },
   {
+    "id": "lookup_writes",
+    "text": "writes",
+    "path": "audio/lookup_writes.mp3"
+  },
+  {
+    "id": "lookup_wrong",
+    "text": "wrong",
+    "path": "audio/lookup_wrong.mp3"
+  },
+  {
     "id": "lookup_year",
     "text": "year",
     "path": "audio/lookup_year.mp3"
+  },
+  {
+    "id": "lookup_yellow",
+    "text": "yellow",
+    "path": "audio/lookup_yellow.mp3"
   },
   {
     "id": "lookup_yet",

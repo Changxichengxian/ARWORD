@@ -18,6 +18,7 @@ var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{}
 
 func _init():
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
+	data["lesson_schedule"]={}
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
 	rng.randomize()
 	bank=JSON.parse_string(FileAccess.get_file_as_string("res://assets/vocabulary.json"))

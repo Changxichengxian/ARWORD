@@ -1,12 +1,15 @@
-LocalAvatarPicker — Android 原生文档选择
+ARWORD 安卓应用更新
 
-运行接口
-Engine.get_singleton("LocalAvatarPicker").pick_avatar()
-信号：avatar_picked(path)、avatar_pick_failed(message)、avatar_pick_cancelled()。
-成功路径为应用私有缓存中的 selected.vrm；主应用应复制到自己的待验证文件，再进行格式、骨架和资源检查，成功后替换当前角色。取消或读取失败不会改动主应用已选角色。
+设置 → 检查更新会读取 Changxichengxian/ARWORD 的 GitHub Release。检查与下载均由玩家主动发起。安装包版本号比手机当前版本高时才提供更新。
 
-仅使用 ACTION_OPEN_DOCUMENT 和 ContentResolver.openInputStream 读取用户选中的 content URI，不推测共享存储路径、不要求全盘读取、不联网、不保留文档访问权。单文件上限 64 MiB，读取与磁盘复制在后台线程完成。最多保留一个完成的缓存文件及一个正在复制的临时文件；不删除用户原文件。
+清单名为 update.json。完整包和所有差异包放在同一 vX.Y.Z 版本的 Release 附件里。安卓根据当前已安装 APK 的 SHA-256 选择最小的可用差异包，界面显示所需下载量。如果没有匹配的底包，会显示完整包大小，再由玩家点下载。
 
-构建
-prepare.ps1 将官方 Godot 4.5.1 android_source.zip 解到本轮独立 staging 的 android/build，Java 代码直接进入官方 app 模块的 src，Manifest 通过 Godot v2 插件条目注册。引擎运行库使用模板附带的 Godot AAR；无需外来插件。源码中不保存 AAR、class、dex、Gradle 缓存或 APK。
-source/build.ps1 自动调用准备脚本并使用 Gradle 导出，最终签名与以前相同。Java 和 Manifest 只包含选择器功能，不含角色模型。
+差异包由新的 ZIP 成员数据、旧压缩成员的复制位置以及签名块等元数据组成。手机在应用私有缓存中读取自身 base.apk 并重建新的 APK，校验下载长度、SHA-256、包名、版本号、签名证书，之后交给系统安装器。新包需要用户确认。系统要求授权该来源时，会打开对应系统页面。通信使用 HTTPS 和 GitHub 发布域名限制。应用申请 INTERNET 和 REQUEST_INSTALL_PACKAGES。
+
+source/build.ps1 默认制作个人首装包。传入 -PublicRelease 后，构建脚本在单独的暂存目录排除受限人物文件。两种构建使用不同的 OutputDirectory。-UpdateRepository 接受 owner/repo，默认 Changxichengxian/ARWORD。不要把 GitHub 密钥写入客户端。
+
+每次源码更新同时提高 export_presets.cfg 的 version/code、version/name 和 project.godot 的 config/version。以 v0.13.0 为例，在空目录生成准备发布的附件：
+
+python source/tools/make_apk_update.py --apk NEW-PUBLIC.apk --base OLD-PERSONAL.apk --base OLD-PUBLIC.apk --version 0.13.0 --code 13 --output RELEASE
+
+生成工具会用 Android SDK 的 aapt2 核对公开包的包名和版本，拒绝包含 VRM 的目标包，验证每份差异包能逐字节恢复目标包。上传 RELEASE 目录生成的附件。旧底包仅用于本机制作补丁，可在校验后按项目约定删除。若要支持多个历史版本，在清理前为它们生成对应补丁。首次带有更新功能的个人包需手动覆盖安装一次。

@@ -162,13 +162,13 @@
     "short": "We can obtain water from the pump. The small tank has limited capacity. Use an efficient pipe with no leaks. One full tank is adequate for the garden today.",
     "text": "The new pump helps us obtain water from the shore. However, the storage tank has a limited capacity. An efficient system needs a sealed pipe so that water reaches the tank instead of leaking onto the path. One full tank is adequate for today. When it is full, close the valve rather than letting the water overflow.",
     "zh": "水泵能从岸边抽水，但水箱容量有限。用不漏水的管道接入水箱，一箱够今天浇花，满了就关阀，别任它溢出。",
-    "question": "水箱满了怎么办？",
+    "question": "为什么要用不漏水的管子？",
     "options": [
-      "再接满第二箱",
-      "关上阀门",
-      "先给小路冲水"
+      "让水顺利流进水箱",
+      "给路旁的土壤补水",
+      "让水箱的容量变大"
     ],
-    "correct": 1,
+    "correct": 0,
     "cue": "Fill the tank, then close the valve. Save the water for the garden.",
     "cue_options": [
       "装满水箱后关阀",
@@ -252,13 +252,13 @@
     "short": "Seeds are abundant, but sunny space is scarce. Gather the empty pots. Space is a useful resource. Leave a gap between the pots so that every plant can receive light.",
     "text": "We have abundant seeds, but space in the sunny corner is scarce. Gather the empty pots before deciding where to put them. Space is a resource too: packing every pot into one tight row will leave some plants in shade. Leave a small gap between the pots and keep the taller plants behind the shorter ones.",
     "zh": "种子多，向阳的地方少。先收集空花盆，盆间留缝，高的放后面，让每株都能见光。",
-    "question": "花盆怎样摆更合适？",
+    "question": "花盆之间为什么要留出空隙？",
     "options": [
-      "全部紧紧挤在一起",
-      "高的挡在最前面",
-      "盆间留缝，高的放后面"
+      "让每一株都有光照",
+      "给高的花盆挡太阳",
+      "给空花盆留出储物位"
     ],
-    "correct": 2,
+    "correct": 0,
     "cue": "Leave a gap between the pots. Put the tall plants at the back.",
     "cue_options": [
       "盆间留缝，高的放后面",
@@ -282,11 +282,11 @@
     "short": "Water is essential for the seedlings. Cover the soil with dry leaves to retain moisture. Add roughly one thin layer. Growth is gradual, so do not dig up the roots every morning.",
     "text": "The seedlings need water, but the soil dries quickly in the sun. A thin layer of dry leaves can help it retain moisture. Add roughly enough leaves to cover the bare surface without burying the stems. Water remains essential, and growth will be gradual. Check the soil gently instead of disturbing the roots every morning.",
     "zh": "幼苗需要水，薄薄一层干叶能帮土壤保湿。盖住裸土即可，别埋茎。生长需要时间，不要每天把根翻出来检查。",
-    "question": "干叶应该怎么铺？",
+    "question": "给土壤铺干叶有什么用？",
     "options": [
-      "厚铺土面，也围住茎",
-      "薄铺裸土，不埋茎",
-      "薄铺在根部下方"
+      "让根部更容易挖出",
+      "帮助土壤留住水分",
+      "让幼苗立即长高"
     ],
     "correct": 1,
     "cue": "Cover the bare soil with a thin layer of leaves. Keep the stems clear.",

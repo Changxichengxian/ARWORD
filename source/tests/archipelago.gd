@@ -40,18 +40,18 @@ func test_data():
 		var old_quota=clampi(ceili(float(reopened.book_remaining())*2.0/maxi(1,222-frontier.finished_units())),1,48)
 		reopened.data.study_plan={"book":book.id,"capacity":222,"quota":old_quota}
 		frontier.refresh_plan()
-		check(reopened.data.study_plan.capacity==278 and int(reopened.data.study_plan.quota)<=old_quota and frontier.data.effort==preserved_partial,"expanded capacity recalculates "+str(book.id)+" without resetting partial effort")
+		check(reopened.data.study_plan.capacity==294 and int(reopened.data.study_plan.quota)<=old_quota and frontier.data.effort==preserved_partial,"expanded capacity recalculates "+str(book.id)+" without resetting partial effort")
 	frontier.finish_for_development(true)
-	check(frontier.cells().size()==48 and frontier.finished_units()==278,"complete map has 48 unique land tiles and 278 construction steps")
+	check(frontier.cells().size()==57 and frontier.finished_units()==294,"complete map has 57 unique land tiles and 294 construction steps")
 	check(frontier.data.production.is_empty() and frontier.data.deliveries.is_empty() and reopened.data.words.gather.correct==2,"one-click completion adds no production or learning records")
-	var terrain=IslandTerrain.new();var counts=[0,0,0];var roundtrip=0.0
+	var terrain=IslandTerrain.new();var counts=[0,0,0,0,0];var roundtrip=0.0
 	for cell in frontier.cells():
 		var p=IslandFrontier.point(cell);counts[terrain.chart_at(p)]+=1
 		for offset in [Vector2.ZERO,Vector2(.48,.31),Vector2(-.61,.33),Vector2(.12,-.71)]:
 			var q=p+offset;roundtrip=maxf(roundtrip,terrain.coordinates(terrain.point(q)).distance_to(q))
-	check(counts==[36,6,6],"land occupies the original continent and two independent island charts")
+	check(counts==[39,6,6,3,3],"gold ore has its own island; the final berth is on an independent fifth chart")
 	check(terrain.point(IslandFrontier.point(Vector2i.ZERO)).normalized().dot(terrain.point(IslandFrontier.point(Vector2i(-20,0))).normalized())<-.5,"new land reaches the opposite hemisphere instead of the original pole")
-	check(roundtrip<.003,"all 48 tile centres and nearby points round-trip between chart and globe")
+	check(roundtrip<.003,"all 57 tile centres and nearby points round-trip between chart and globe")
 	print("MAX_CHART_ROUNDTRIP ",roundtrip)
 func test_geometry(world):
 	var missing=0;var max_error=0.0
@@ -66,7 +66,7 @@ func test_geometry(world):
 				for candidate in actual:nearest=minf(nearest,v.distance_to(candidate))
 				if nearest>.002:missing+=1
 				max_error=maxf(max_error,nearest)
-	check(missing==0 and world.ground_faces.size()==48,"every tile collision triangle matches the actual transformed rendered geometry")
+	check(missing==0 and world.ground_faces.size()==57,"every tile collision triangle matches the actual transformed rendered geometry")
 	print("MAX_GEOMETRY_VERTEX_ERROR ",max_error)
 func test_sources(world):
 	var mismatches=[];var empty=[]
@@ -89,12 +89,12 @@ func test_sources(world):
 	check(mismatches.is_empty(),"actual source region and raw material match every construction and production route")
 	if not mismatches.is_empty():print("SOURCE_MISMATCHES ",JSON.stringify(mismatches))
 	var facilities=true
-	for id in ["quarry","sawmill","kiln","meadow","hill","wetland","plateau","crystal","mountain","shipyard","sunreach","coral","basalt","tideworks"]:
+	for id in ["quarry","sawmill","kiln","meadow","hill","wetland","plateau","crystal","mountain","shipyard","sunreach","coral","basalt","tideworks","goldmine","smelter","rocket"]:
 		facilities=facilities and world.facilities.has(id) and world.facilities[id].visible and world.facilities[id].get_child_count()>0
-	check(facilities,"completed regions display all fourteen working facilities including the telescope")
+	check(facilities,"completed regions display facilities including the mine and mint")
 func test_sea_routes(world):
 	var routes_ok=true;var sea_clear=true
-	for pair in [["shipyard","sunreach"],["shipyard","basalt"],["sunreach","tideworks"],["basalt","coral"]]:
+	for pair in [["shipyard","sunreach"],["shipyard","basalt"],["sunreach","tideworks"],["basalt","coral"],["goldmine","smelter"],["smelter","rocket"]]:
 		var route=world.sea_routes.route(game.frontier.target(pair[0]),game.frontier.target(pair[1]))
 		print("SEA_ROUTE ",pair," points ",route.size());routes_ok=routes_ok and route.size()>=2
 		if route.is_empty():
@@ -108,7 +108,7 @@ func test_sea_routes(world):
 			for step in range(129):
 				var n=route[index].slerp(route[index+1],float(step)/128).normalized()
 				sea_clear=sea_clear and world.water.depth_at(n)>.30
-	check(routes_ok,"all four cross-island routes reach a valid coast")
+	check(routes_ok,"all six cross-island routes reach a valid coast")
 	check(sea_clear,"all sampled ferry route segments stay over water rather than cutting across land")
 func test_ferry(world):
 	var start=game.frontier.target("shipyard")+Vector2(.8,.7);var end=game.frontier.target("basalt")+Vector2(.8,.7)

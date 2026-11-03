@@ -3,17 +3,19 @@ from pathlib import Path
 import json,struct,re,hashlib
 r=Path(__file__).resolve().parents[1]
 v=json.loads((r/'assets/vocabulary.json').read_text('utf-8'))
-notes=json.loads((r/'assets/missions.json').read_text('utf-8'))+json.loads((r/'assets/frontier_missions.json').read_text('utf-8'))
+notes=[entry for name in ['missions','frontier_missions','reader_missions'] for entry in json.loads((r/'assets'/f'{name}.json').read_text('utf-8'))]
 dictionary=json.loads((r/'assets/dictionary.json').read_text('utf-8'))
 assert len(v)==96 and len({q['id'] for q in v})==96
 assert all(len(q['options'])==4 and len(set(q['options']))==4 and q['options'][q['correct']]==q['zh'] for q in v)
-assert len(notes)==22 and len({n['id'] for n in notes})==22
+assert len(notes)==34 and len({n['id'] for n in notes})==len(notes)
 ids={q['id'] for q in v}
 for n in notes:
  assert len(n['options'])==3 and len(set(n['options']))==3 and 0<=n['correct']<3
  assert len(n['cue_options'])==3 and len(set(n['cue_options']))==3 and 0<=n['cue_correct']<3
- assert len(n['focus'])==4 and set(n['focus'])<=ids
- assert 25<=len(n['short'].split())<=50 and len(n['text'].split())>len(n['short'].split())
+ if n['id'].startswith('read'):
+  assert n['band'] in range(4) and n['topic'] and n['text'].startswith(n['short'])
+ else: assert len(n['focus'])==4 and set(n['focus'])<=ids
+ assert 24<=len(n['short'].split())<=50 and len(n['text'].split())>len(n['short'].split())
  assert all(n[k] for k in ['zh','question','sentence_zh','cue'])
 content=' '.join([q['example'] for q in v]+[n[k] for n in notes for k in ['short','text','cue','sentence']])
 needed=set(re.findall(r"[a-z]+(?:'[a-z]+)?",content.lower()))|ids
@@ -38,7 +40,7 @@ for p in (r/'assets/models').glob('*.glb'):
  size=struct.unpack('<I',b[12:16])[0];g=json.loads(b[20:20+size]);models.append({'name':p.stem,'meshes':len(g['meshes']),'bytes':len(b)})
  assert (r/'art-source'/(p.stem+'.blend')).exists()
  if p.stem=='builder':assert {'ArmL','ArmR','LegL','LegR','Body'}<={n['name'] for n in g['nodes']}
-assert len(models)==73
+assert len(models)==79
 from fontTools.ttLib import TTFont
 codes=set()
 for name in ['FrontierSC.ttf','FrontierLatin.ttf']:codes.update(TTFont(r/'assets/fonts'/name).getBestCmap())

@@ -1,0 +1,302 @@
+[
+  {
+    "id": "read00",
+    "band": 0,
+    "topic": "日常",
+    "title": "留在椅子上的红围巾",
+    "short": "A red scarf is on the last seat of the bus. A child points at it. The driver puts it in a box beside her seat.",
+    "text": "A red scarf is on the last seat of the bus. A child points at it. The driver puts it in a box beside her seat. At the next stop, an old man runs back to the bus. He touches his neck and smiles when the driver opens the box.",
+    "zh": "孩子指给司机看后，红围巾被收进司机座位旁的盒子。下一站老人跑回来，摸了摸脖子，看见围巾就笑了。",
+    "question": "围巾被放到哪里？",
+    "options": [
+      "最后一排座位下",
+      "司机座位旁的盒子里",
+      "孩子的书包里"
+    ],
+    "correct": 1,
+    "cue": "Leave the scarf with the driver so the man can find it.",
+    "cue_options": [
+      "把围巾交给司机",
+      "让老人去问孩子",
+      "把围巾放回最后一排"
+    ],
+    "cue_correct": 0,
+    "sentence": "The driver opens the box.",
+    "sentence_zh": "司机打开了盒子。"
+  },
+  {
+    "id": "read01",
+    "band": 0,
+    "topic": "厨房",
+    "title": "两杯茶",
+    "short": "My sister likes cold tea. I like mine hot. I put a small spoon by my cup and a piece of ice in hers.",
+    "text": "My sister likes cold tea. I like mine hot. I put a small spoon by my cup and a piece of ice in hers. The cups look the same from the door. She picks the one with the ice and carries it to the window.",
+    "zh": "妹妹喜欢冷茶，我喜欢热茶。我把小勺放在自己的杯边，把冰放进她的杯子。杯子看起来一样，她凭冰块认出了自己的那杯。",
+    "question": "妹妹可以怎样认出自己的杯子？",
+    "options": [
+      "找放着小勺的那杯",
+      "找离窗最近的那杯",
+      "找杯里有冰的那杯"
+    ],
+    "correct": 2,
+    "cue": "Take the cup with the ice and leave the spoon here.",
+    "cue_options": [
+      "拿走带勺的杯子",
+      "拿走加冰的杯子，留下勺子",
+      "把冰和勺子都拿走"
+    ],
+    "cue_correct": 1,
+    "sentence": "She takes the cold tea.",
+    "sentence_zh": "她拿走了冷茶。"
+  },
+  {
+    "id": "read02",
+    "band": 0,
+    "topic": "自然",
+    "title": "窗外的鸟",
+    "short": "A little bird lands on the window. I reach for my camera, but the bird is gone. Its feet have left two small marks in the snow.",
+    "text": "A little bird lands on the window. I reach for my camera, but the bird is gone. Its feet have left two small marks in the snow. I take a picture of the marks instead. Later my brother asks why I took a picture of an empty window.",
+    "zh": "小鸟落在窗边。我伸手拿相机，它已经飞走，雪里留下两个小脚印。我拍下了脚印，哥哥后来还问我为什么拍空窗。",
+    "question": "鸟飞走后留下了什么？",
+    "options": [
+      "雪里的两处脚印",
+      "窗边的一片羽毛",
+      "相机里的一张照片"
+    ],
+    "correct": 0,
+    "cue": "Look at the snow before you close the window.",
+    "cue_options": [
+      "擦掉相机上的雪",
+      "把窗打开等鸟回来",
+      "关窗前看看雪地"
+    ],
+    "cue_correct": 2,
+    "sentence": "Look for the marks in the snow.",
+    "sentence_zh": "找找雪地里的痕迹。"
+  },
+  {
+    "id": "read03",
+    "band": 1,
+    "topic": "音乐",
+    "title": "鼓手的四拍",
+    "short": "The drummer taps four times before the song. On the fourth tap, the singer takes a breath. Both start together just after that last tap.",
+    "text": "The drummer taps four times before the song. On the fourth tap, the singer takes a breath. Both start together just after that last tap. At first I thought the taps were part of the song. During practice the singer listened to them even when nobody else was playing.",
+    "zh": "鼓手在歌曲开始前敲四下，歌手在第四下吸气。最后一下过后，两人一起开始。当初我以为这也是歌曲的一部分，后来才发现歌手排练时也在听这个提示。",
+    "question": "两人在哪个时候正式开始？",
+    "options": [
+      "第四下敲下之前",
+      "第四下敲完之后",
+      "歌手第一次呼吸前"
+    ],
+    "correct": 1,
+    "cue": "Listen for four taps, then begin the first line.",
+    "cue_options": [
+      "听完四拍再唱第一句",
+      "唱完第一句再数四拍",
+      "等四个人都开始再唱"
+    ],
+    "cue_correct": 0,
+    "sentence": "Wait for the last tap.",
+    "sentence_zh": "等到最后一下敲击。"
+  },
+  {
+    "id": "read04",
+    "band": 1,
+    "topic": "旅行",
+    "title": "错过的车站",
+    "short": "I fell asleep on the train. When I woke up, the sea was on the wrong side. I had passed my stop and the train was turning around the bay.",
+    "text": "I fell asleep on the train. When I woke up, the sea was on the wrong side. I had passed my stop and the train was turning around the bay. A woman showed me the stops on her map. There was another train back in twenty minutes, so I had time to look at the water.",
+    "zh": "我在火车上睡着了，醒来发现海在意料之外的那一边。原来我坐过了站，车正在绕海湾。一位女士用地图给我指车站，回程车二十分钟后才到。",
+    "question": "海为什么出现在另一边？",
+    "options": [
+      "地图拿反了",
+      "车还没到海边",
+      "火车过站后绕进了海湾"
+    ],
+    "correct": 2,
+    "cue": "Get off at the next stop and take the train back.",
+    "cue_options": [
+      "留在车上等它开回去",
+      "下一站下车，再坐回程车",
+      "下车后步行绕过海湾"
+    ],
+    "cue_correct": 1,
+    "sentence": "I slept through my stop.",
+    "sentence_zh": "我睡过了站。"
+  },
+  {
+    "id": "read05",
+    "band": 1,
+    "topic": "书信",
+    "title": "信封里的叶子",
+    "short": "There is no picture in the letter from my friend. Instead there is a yellow leaf. She writes that the tree outside her new room is taller than the roof.",
+    "text": "There is no picture in the letter from my friend. Instead there is a yellow leaf. She writes that the tree outside her new room is taller than the roof. I put the leaf between two pages of my book. Now I can picture the window even though I have never seen her street.",
+    "zh": "朋友的信里夹着一片黄叶。她说新房间外的大树比屋顶还高。我把叶子夹进书里，虽然没看过她的街道，却能想象她的窗外。",
+    "question": "朋友寄来什么，好让人想象她的新住处？",
+    "options": [
+      "一片黄叶",
+      "一幅街景画",
+      "一张房间照片"
+    ],
+    "correct": 0,
+    "cue": "Keep the leaf between the pages so it stays flat.",
+    "cue_options": [
+      "把叶子挂在窗上",
+      "把信放到树下",
+      "把叶子夹进书页"
+    ],
+    "cue_correct": 2,
+    "sentence": "Keep the leaf inside the book.",
+    "sentence_zh": "把叶子夹在书里。"
+  },
+  {
+    "id": "read06",
+    "band": 1,
+    "topic": "运动",
+    "title": "最后一次传球",
+    "short": "Our team only needed one more point. I was close to the basket, but a tall player stood in front of me. I passed the ball to a friend behind him.",
+    "text": "Our team only needed one more point. I was close to the basket, but a tall player stood in front of me. I passed the ball to a friend behind him. For a second the tall player kept watching my hands. By the time he turned, the ball was already in the air.",
+    "zh": "我们还差一分。我离篮筐很近，可高个球员挡在面前。我把球传给他身后的朋友。他转过身时，球已经投出去了。",
+    "question": "已经接近篮筐，为什么还要传球？",
+    "options": [
+      "队友站在自己身后",
+      "高个防守者挡住了自己",
+      "球已经飞出手了"
+    ],
+    "correct": 1,
+    "cue": "Pass the ball behind the tall player before he turns.",
+    "cue_options": [
+      "等高个球员转身后抢球",
+      "把球交给高个球员",
+      "在他转身前把球传到他身后"
+    ],
+    "cue_correct": 2,
+    "sentence": "My friend caught the ball.",
+    "sentence_zh": "我的朋友接住了球。"
+  },
+  {
+    "id": "read07",
+    "band": 2,
+    "topic": "影像",
+    "title": "雨声从哪来",
+    "short": "In the film, we hear rain before we see the dark clouds. At the studio there was no water at all. Someone shook a box of rice beside the microphone.",
+    "text": "In the film, we hear rain before we see the dark clouds. At the studio there was no water at all. Someone shook a box of rice beside the microphone. When the picture disappeared, the sound suddenly seemed dry and light. With the street back on the screen, it felt like rain again.",
+    "zh": "电影里先听见雨声，再看见乌云。录音棚里没有水，工作人员在麦克风旁摇一盒米。撤掉画面，声音显得又干又轻，配回街景又像下雨了。",
+    "question": "录音棚里的雨声是怎么做出来的？",
+    "options": [
+      "轻摇一盒米",
+      "把水倒进盒子",
+      "在街上录真的雨"
+    ],
+    "correct": 0,
+    "cue": "Start the rain sound before the clouds appear on screen.",
+    "cue_options": [
+      "乌云消失后再放雨声",
+      "乌云出现在画面前先放雨声",
+      "乌云出现时停止雨声"
+    ],
+    "cue_correct": 1,
+    "sentence": "The sound begins before the picture changes.",
+    "sentence_zh": "画面改变前声音就开始了。"
+  },
+  {
+    "id": "read08",
+    "band": 2,
+    "topic": "观察",
+    "title": "影子的午休",
+    "short": "At breakfast I put a stick in the sand and marked the end of its shadow. At lunch the mark was still there, but the shadow ended much closer to the stick.",
+    "text": "At breakfast I put a stick in the sand and marked the end of its shadow. At lunch the mark was still there, but the shadow ended much closer to the stick. I checked the stick first. It had not moved. The clear sky made the second mark easy to draw, so I stayed to make one more before dinner.",
+    "zh": "早餐时我把木棍插进沙地，标出影子的末端。午餐时原来的记号还在，影子却短了。木棍没有移动，我做了第二个记号，打算晚饭前再观察一次。",
+    "question": "午餐时，新影子的末端在哪里？",
+    "options": [
+      "比早上的记号更远",
+      "和早上的记号重合",
+      "比早上的记号更靠近木棍"
+    ],
+    "correct": 2,
+    "cue": "Mark the end of the shadow without moving the stick.",
+    "cue_options": [
+      "别动木棍，标出影子的末端",
+      "把木棍移到旧记号处",
+      "擦掉影子边的所有记号"
+    ],
+    "cue_correct": 0,
+    "sentence": "The stick stayed in the same place.",
+    "sentence_zh": "木棍一直在原处。"
+  },
+  {
+    "id": "read09",
+    "band": 2,
+    "topic": "游戏",
+    "title": "最后一盏灯",
+    "short": "In our game, each player could carry one lamp. We needed both hands to open the final door. I put my lamp on the floor while my friend held hers above the lock.",
+    "text": "In our game, each player could carry one lamp. We needed both hands to open the final door. I put my lamp on the floor while my friend held hers above the lock. The light on the floor showed the steps behind us. That mattered a minute later when we had to find our way back in a hurry.",
+    "zh": "在游戏里每人能拿一盏灯，开最后一道门需要腾出双手。我放下自己的灯，朋友举灯照锁。地上的灯还照亮了身后的台阶，返回时派上了用场。",
+    "question": "谁给门锁照明？",
+    "options": [
+      "开门的人拿着的灯",
+      "朋友举着的灯",
+      "身后地上的灯"
+    ],
+    "correct": 1,
+    "cue": "Hold your lamp over the lock while I open the door.",
+    "cue_options": [
+      "我开门的时候，请举灯照锁",
+      "请放下灯，和我一起抬门",
+      "你开门时，我把灯放在台阶上"
+    ],
+    "cue_correct": 0,
+    "sentence": "Leave one lamp on the floor.",
+    "sentence_zh": "留一盏灯在地板上。"
+  },
+  {
+    "id": "read10",
+    "band": 3,
+    "topic": "选择",
+    "title": "空桌的代价",
+    "short": "The cafe offered a cheaper drink to customers who brought a cup. More people came, yet fewer seats were free. Most of the new customers stayed to chat after finishing their drinks.",
+    "text": "The cafe offered a cheaper drink to customers who brought a cup. More people came, yet fewer seats were free. Most of the new customers stayed to chat after finishing their drinks. The owner had expected to save money on paper cups. She had not expected the room itself to become the scarce part of the business.",
+    "zh": "咖啡馆给自带杯子的客人打折，吸引了更多人，空座也变少了。很多新客人喝完留下来聊天。店主原以为可以省纸杯，没想到更紧缺的是座位。",
+    "question": "客人喝完后，空座为什么仍然少？",
+    "options": [
+      "店主收走了椅子",
+      "饮料做得比以前慢",
+      "不少客人留下聊天"
+    ],
+    "correct": 2,
+    "cue": "Offer the discount for a cup, but count the empty seats as well.",
+    "cue_options": [
+      "只统计纸杯数量",
+      "给自带杯子的人折扣，也数一数空座",
+      "取消折扣并移走空椅"
+    ],
+    "cue_correct": 1,
+    "sentence": "The room filled up faster than expected.",
+    "sentence_zh": "房间比预想中更快坐满了。"
+  },
+  {
+    "id": "read11",
+    "band": 3,
+    "topic": "推理",
+    "title": "少掉的一张票",
+    "short": "A museum counted its visitors by collecting a ticket from each person at the door. One evening the ticket total was lower than the number on the camera. A guide had entered twice with the same group.",
+    "text": "A museum counted its visitors by collecting a ticket from each person at the door. One evening the ticket total was lower than the number on the camera. A guide had entered twice with the same group. The camera counted both visits, while the guide handed over a ticket only once. Before changing the numbers, the manager asked what each system was actually counting.",
+    "zh": "博物馆既收票又用摄像头计数，两边数字对不上。同一位导游进了两次门，只交了一张票。经理先弄清两种系统各自在数什么，再决定怎样处理差异。",
+    "question": "两个数字不同的原因是什么？",
+    "options": [
+      "摄像头把导游的两次进门都计入了",
+      "导游为两次进门分别交了票",
+      "博物馆把所有门票数了两遍"
+    ],
+    "correct": 0,
+    "cue": "Compare the two counts before deciding which number to report.",
+    "cue_options": [
+      "先公布较大的数字",
+      "把两组计数直接相加",
+      "先对比两组计数，再决定报哪个数字"
+    ],
+    "cue_correct": 2,
+    "sentence": "A second visit changed the count.",
+    "sentence_zh": "第二次进门改变了计数。"
+  }
+]

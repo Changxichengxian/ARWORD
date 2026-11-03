@@ -31,7 +31,7 @@ name="Windows Desktop"
 platform="Windows Desktop"
 runnable=true
 export_filter="all_resources"
-include_filter="assets/*.json,assets/*LICENSE*.txt,assets/*COPYRIGHT*.txt,assets/CREDITS.txt,assets/fonts/*OFL.txt,assets/wordbooks/*.json,assets/wordbooks/*.txt,assets/wordbooks/licenses/*"
+include_filter="assets/characters/*.vrm,assets/characters/*.json,assets/*.json,assets/*LICENSE*.txt,assets/*COPYRIGHT*.txt,assets/CREDITS.txt,assets/fonts/*OFL.txt,assets/wordbooks/*.json,assets/wordbooks/*.txt,assets/wordbooks/licenses/*"
 exclude_filter="art-source/*,tools/*,tests/*,*.blend,assets/wordbooks/sources/*,assets/wordbooks/content-review.json,assets/wordbooks/audio-audit.json,assets/fonts/NotoSansSC.ttf,assets/fonts/NotoSans.ttf"
 [preset.0.options]
 custom_template/release="TEMPLATE"
@@ -46,11 +46,11 @@ application/modify_resources=false
                   for f in project.rglob('*') if f.is_file() and f.name!='export_presets.cfg' and '.godot' not in f.relative_to(project).parts}
         with (output/'desktop-build.log').open('w',encoding='utf-8') as log:
             for command in [[str(engine),'--headless','--editor','--path',str(project),'--import'],
-                            [str(engine),'--headless','--path',str(project),'--export-release','Windows Desktop',str(output/'LittleTide.exe')]]:
+                            [str(engine),'--headless','--path',str(project),'--export-release','Windows Desktop',str(output/'ARWORD.exe')]]:
                 subprocess.run(command,stdout=log,stderr=log,check=True)
         (output/'desktop-source-sha256.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding='utf-8')
-    exe=output/'LittleTide.exe';digest=hashlib.sha256(exe.read_bytes()).hexdigest()
-    (output/'desktop-SHA256SUMS.txt').write_text(digest+'  LittleTide.exe\n',encoding='utf-8')
+    exe=output/'ARWORD.exe';digest=hashlib.sha256(exe.read_bytes()).hexdigest()
+    (output/'desktop-SHA256SUMS.txt').write_text(digest+'  ARWORD.exe\n',encoding='utf-8')
     print(json.dumps({'exe':str(exe),'bytes':exe.stat().st_size,'sha256':digest},ensure_ascii=False))
 
 if __name__=='__main__':main()

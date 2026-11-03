@@ -58,10 +58,7 @@ func run():
 		var shell=life.cave.shell
 		check(not shell_hit(shell,Vector3(0,.83,-2),Vector3(0,.83,1.2)) and shell_hit(shell,Vector3(0,.83,-2),Vector3(0,.83,3.8)),"the cave has an open entrance, a real recessed chamber and a solid rear wall")
 		check(shell_hit(shell,Vector3(1.55,.83,-2),Vector3(1.55,.83,2)),"opaque mouth rocks occlude the sides of the chamber")
-		life.cave.time=0;life.update_cave(0);var hidden=not life.cave.watcher.visible
-		life.preview_event("cave");var revealed=life.cave.watcher.visible and life.cave.extension>.9
-		life.cave.time=92;life.update_cave(0)
-		check(hidden and revealed and not life.cave.watcher.visible,"the watcher emerges slowly on a sparse cycle and retreats completely")
+		check(not life.cave.has("watcher") and is_instance_valid(game.world.trader_head),"the sea creature lives at the rocket berth; the original underwater passage remains open")
 	check(life.scenery.get_child_count()<=30 and life.grass.size()<=18,"underwater scenery remains sparse and bounded")
 	if not output.is_empty() and DisplayServer.get_name()!="headless":await visual()
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null
@@ -106,6 +103,5 @@ func visual():
 		life.preview_event("cave");game.world.globe.quaternion=Quaternion.IDENTITY
 		var base=life.cave.root;var point=base.global_position;var up=base.global_basis.y;var forward=-base.global_basis.z
 		game.camera.size=8.2;game.camera.position=point+up*8+forward*10;game.camera.look_at(point+up*.9,up)
-		await picture("cave-watcher")
-		life.cave.time=93;life.update_cave(0);await picture("cave-empty")
+		await picture("underwater-passage")
 	game.world.globe.quaternion=Quaternion.IDENTITY;game.camera.size=15;game.camera.position=Vector3(0,24,21);game.camera.look_at(Vector3(0,10,0));await picture("natural-coast")

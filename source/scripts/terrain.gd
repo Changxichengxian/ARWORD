@@ -3,18 +3,20 @@ class_name IslandTerrain
 
 const RADIUS=12.0
 const H=1.34
-const CHART_CELLS=[Vector2i(0,0),Vector2i(20,0),Vector2i(-20,0)]
-const CHART_NORMALS=[Vector3.UP,Vector3(-.88,.08,.47),Vector3(.45,-.63,-.63)]
+const CHART_CELLS=[Vector2i(0,0),Vector2i(20,0),Vector2i(-20,0),Vector2i(0,20),Vector2i(0,-20)]
+const CHART_NORMALS=[Vector3.UP,Vector3(-.88,.08,.47),Vector3(.45,-.63,-.63),Vector3(-.65,-.42,-.63),Vector3(0,-1,0)]
 var cells={}
 var corners={}
 const HEIGHTS={
 	"grove":[.12,.24,.34],"quarry":[.52,.86,.65],"sawmill":[.25,.48,.62],
 	"meadow":[.10,.24,.18],"kiln":[.68,.46,.24],"crystal":[.15,.38,.25],
 	"hill":[.64,1.08,1.42],"wetland":[.06,.08,.12],"plateau":[1.05,1.85,.95],"mountain":[1.15,2.05,2.80],
-	"shipyard":[.14,.22,.08],"sunreach":[.10,.45,.22],"coral":[.12,.05,.25],"basalt":[.68,1.35,.36],"tideworks":[.15,.36,.08]}
-const COLORS={"shore":"D6CA86","grove":"6EA761","quarry":"8CABA5","sawmill":"79A86B","meadow":"96BD69","kiln":"B3AE87","crystal":"929AB3","hill":"8EAF5D","wetland":"69ADA0","plateau":"B9B684","mountain":"9EABB4","shipyard":"C2BF8A","sunreach":"96C777","coral":"E6D9B3","basalt":"6B7A83","tideworks":"A6BFAB"}
+	"shipyard":[.14,.22,.08],"sunreach":[.10,.45,.22],"coral":[.12,.05,.25],"basalt":[.68,1.35,.36],"tideworks":[.15,.36,.08],"goldmine":[.65,1.35,.18],"smelter":[.30,.45,.18],"rocket":[.25,.35,.18]}
+const COLORS={"shore":"D6CA86","grove":"6EA761","quarry":"8CABA5","sawmill":"79A86B","meadow":"96BD69","kiln":"B3AE87","crystal":"929AB3","hill":"8EAF5D","wetland":"69ADA0","plateau":"B9B684","mountain":"9EABB4","shipyard":"C2BF8A","sunreach":"96C777","coral":"E6D9B3","basalt":"6B7A83","tideworks":"A6BFAB","goldmine":"92A0A0","smelter":"BAAA82","rocket":"8CAFA6"}
 func _init():
 	for cell in IslandFrontier.START:cells[cell]={"kind":"shore","height":0.0}
+	for i in range(IslandFrontier.ROCKET_CELLS.size()):
+		cells[IslandFrontier.ROCKET_CELLS[i]]={"kind":"rocket","height":HEIGHTS.rocket[i],"variant":i}
 	cells[Vector2i.ZERO].kind="grove";cells[Vector2i(1,0)].kind="meadow"
 	for chapter in IslandFrontier.CHAPTERS:
 		for i in range(chapter.cells.size()):cells[chapter.cells[i]]={"kind":chapter.id,"height":HEIGHTS[chapter.id][i],"variant":i}

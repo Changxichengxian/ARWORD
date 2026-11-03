@@ -1,7 +1,7 @@
 extends Node3D
 class_name IslandAvatar
 
-# Runtime-only avatar files. No character asset or third-party script is bundled.
+# Fixed character rig. The model bytes are supplied with the personal installation.
 const MAX_BYTES=64*1024*1024
 const HEIGHT=1.085
 const REQUIRED=["hips","spine","head","leftUpperArm","leftLowerArm","leftHand","rightUpperArm","rightLowerArm","rightHand","leftUpperLeg","leftLowerLeg","leftFoot","rightUpperLeg","rightLowerLeg","rightFoot"]
@@ -30,6 +30,9 @@ var rest_actor_height=0.0
 var rest_cached=false
 var rest_length=1.20
 var enabled=false
+var is_fish=false
+var baked_surfaces={}
+var used_baked_surfaces=0
 
 static func preflight(path:String)->Dictionary:
 	var f=FileAccess.open(path,FileAccess.READ)
@@ -99,6 +102,7 @@ func load_file(owner_world,path:String)->Dictionary:
 	world=owner_world
 	var result=preflight(path)
 	if not result.ok:return result
+	is_fish=FileAccess.get_sha256(path)==preload("res://scripts/fixed_cast.gd").MODEL_HASH
 	var document=GLTFDocument.new();var state=GLTFState.new()
 	if document.append_from_buffer(result.bytes,"",state)!=OK:return {"ok":false,"error":"原生引擎无法读取这个模型"}
 	scene=document.generate_scene(state)
@@ -171,6 +175,12 @@ func prepare_materials():
 			mesh.mesh.surface_set_material(surface,material);mesh.set_surface_override_material(surface,material)
 
 func prepare_probes():
+	var profile={}
+	var profile_path="res://assets/characters/contact_points.json"
+	if is_fish and FileAccess.file_exists(profile_path):
+		var data=JSON.parse_string(FileAccess.get_file_as_string(profile_path))
+		if data is Dictionary and data.get("hash","")==preload("res://scripts/fixed_cast.gd").MODEL_HASH:
+			profile=data.get("surfaces",{})
 	for mesh in meshes:
 		if mesh.skin==null:continue
 		var binds=[]
@@ -178,7 +188,14 @@ func prepare_probes():
 			var bone=skeleton.find_bone(mesh.skin.get_bind_name(i)) if not mesh.skin.get_bind_name(i).is_empty() else mesh.skin.get_bind_bone(i)
 			binds.append({"bone":bone,"pose":mesh.skin.get_bind_pose(i)})
 		for surface in mesh.mesh.get_surface_count():
-			var arrays=mesh.mesh.surface_get_arrays(surface);var chosen={}
+			var arrays=mesh.mesh.surface_get_arrays(surface)
+			var key=str(mesh.name)+"/"+str(surface)
+			var saved=profile.get(key,{})
+			if saved.get("vertices",-1)==arrays[Mesh.ARRAY_VERTEX].size() and saved.get("points") is Array:
+				add_contacts(arrays,binds,saved.points)
+				used_baked_surfaces+=1
+				continue
+			var chosen={}
 			for i in arrays[Mesh.ARRAY_VERTEX].size():
 				var v:Vector3=arrays[Mesh.ARRAY_VERTEX][i];var dominant=-1;var weight=0.0
 				for j in range(4):
@@ -192,13 +209,29 @@ func prepare_probes():
 					var direction=Vector3.ZERO
 					if axis<6:direction[axis/2]=1 if axis%2==0 else -1
 					else:direction=Vector3(1 if (axis-6)&1 else -1,1 if (axis-6)&2 else -1,1 if (axis-6)&4 else -1).normalized()
-					var score=v.dot(direction);var key=str(group)+"/"+str(axis)
-					if not chosen.has(key) or score<chosen[key].score:chosen[key]={"index":i,"score":score,"group":group,"axis":axis}
+					var score=v.dot(direction);var direction_key=group*14+axis
+					if not chosen.has(direction_key) or score<chosen[direction_key].score:chosen[direction_key]={"index":i,"score":score,"group":group,"axis":axis}
+			var unique={}
 			for chosen_point in chosen.values():
-				var index=chosen_point.index;var weights=[]
-				for j in range(4):weights.append({"bind":binds[arrays[Mesh.ARRAY_BONES][index*4+j]],"weight":arrays[Mesh.ARRAY_WEIGHTS][index*4+j]})
-				var probe={"position":arrays[Mesh.ARRAY_VERTEX][index],"weights":weights};support_probes.append(probe)
-				if chosen_point.axis<6 and (str(semantics.get(chosen_point.group,"")).ends_with("Foot") or str(semantics.get(chosen_point.group,"")).ends_with("Toes")):foot_probes.append(probe)
+				var name_hint=str(semantics.get(chosen_point.group,""))
+				var is_foot=chosen_point.axis<6 and (name_hint.ends_with("Foot") or name_hint.ends_with("Toes"))
+				unique[chosen_point.index]=is_foot or unique.get(chosen_point.index,false)
+			var points=[]
+			for index in unique:points.append(int(index)*2+int(unique[index]))
+			baked_surfaces[key]={"vertices":arrays[Mesh.ARRAY_VERTEX].size(),"points":points}
+			add_contacts(arrays,binds,points)
+
+func add_contacts(arrays:Array,binds:Array,points:Array):
+	for encoded in points:
+		var index=int(encoded)/2
+		if index<0 or index>=arrays[Mesh.ARRAY_VERTEX].size():continue
+		var weights=[]
+		for j in range(4):
+			var weight=arrays[Mesh.ARRAY_WEIGHTS][index*4+j]
+			if weight>0:weights.append({"bind":binds[arrays[Mesh.ARRAY_BONES][index*4+j]],"weight":weight})
+		var probe={"position":arrays[Mesh.ARRAY_VERTEX][index],"weights":weights}
+		support_probes.append(probe)
+		if int(encoded)%2==1:foot_probes.append(probe)
 
 func prepare_blink(json:Dictionary,state:GLTFState):
 	var ext=json.extensions;var bindings=[]
@@ -239,7 +272,9 @@ func update_pose(neutral=false):
 		var parent=skeleton.get_bone_parent(i);var pose:Transform3D=local_rest[i] if parent<0 else poses[parent]*local_rest[i]
 		if rotations.has(i):pose.basis=rotations[i]*global_rest[i].basis
 		if i in tail_bones:
-			var n=str(skeleton.get_bone_name(i));var wave=sin(world.time*1.7-i*.22)*.035
+			var n=str(skeleton.get_bone_name(i))
+			var effort=clampf(world.motion_speed,0,1) if not neutral else 0.0
+			var wave=sin(world.time*1.7-i*.22)*(.012 if napping else .035+.025*effort)
 			# The long tail curls upward so it does not drag through ground or walls.
 			if n=="WeiBa":pose.basis=canonical(Basis(Vector3.RIGHT,-.92))*pose.basis
 			else:pose.basis=pose.basis*Basis(Vector3.FORWARD,wave)

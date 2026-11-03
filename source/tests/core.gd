@@ -14,17 +14,18 @@ func fits()->bool:
 func set_mode(mode:String,note=0):
 	for c in IslandFrontier.CHAPTERS:game.frontier.data.progress[c.id]=c.need
 	var id=IslandFrontier.BUILD_IDS[note/4] if note<12 else "grove"
-	if note>=12:
-		for chapter in IslandFrontier.CHAPTERS:
-			if int(chapter.note)==note-12:id=chapter.id;break
 	game.frontier.choose(id)
-	game.frontier.data.turns[id]=(note%4)*6+IslandLearning.MODES.find(mode) if note<12 else IslandLearning.MODES.find(mode)
+	game.frontier.data.turns[id]=IslandLearning.MODES.find(mode)
+	game.learning.data.lesson_schedule.pending[mode]=game.curriculum.pool[note].id
 	game.next_task()
 func run():
+	if not "--qa" in OS.get_cmdline_user_args():
+		quit(2)
+		return
 	game=load("res://main.tscn").instantiate();root.add_child(game);await settle();game.resume_collect()
 	check(game.qa,"save isolation")
 	check(ProjectSettings.get_setting("display/window/handheld/orientation")==1,"portrait app orientation")
-	check(game.learning.bank.size()==96 and game.notes.size()==12 and game.frontier_notes.size()==10,"96 curated words and 22 contextual work notes")
+	check(game.learning.bank.size()==96 and game.curriculum.pool.size()==34,"96 curated words and 34 readings accessible at every site")
 	var m=IslandLearning.new();m.select_book("cet4");m.rng.seed=1
 	m.data.words["retain"]={"seen":1,"correct":0,"strength":0,"last":1,"due":2,"helped":1}
 	check(m.next_word(1000).id=="retain","due review precedes unseen word")
@@ -63,18 +64,18 @@ func run():
 	check(restored.accept_save(JSON.parse_string(JSON.stringify(old))) and restored.data.build==[8,12,16] and restored.data.development==[0,0,0] and restored.data.words.retain.strength==m.data.words.retain.strength and restored.data.bookmarks.retain,"0.4 save preserves buildings words and bookmarks with new optional progress")
 	check(not restored.accept_save({"version":4,"build":["bad",0,0]}),"malformed save is rejected")
 	var f=IslandFrontier.new(IslandLearning.new())
-	check(f.cells().size()==3 and f.available("grove") and f.available("quarry") and not f.available("sawmill"),"small starting shore has two expansion choices and gated new capability")
-	f.advance();check(f.cells().size()==3,"one recall shows progress without adding an entire biome")
-	f.advance();check(f.cells().size()==4,"two work actions create a visible new land tile")
+	check(f.cells().size()==6 and f.available("grove") and f.available("quarry") and not f.available("sawmill"),"small starting shore and distant rocket berth have two expansion choices")
+	f.advance();check(f.cells().size()==6,"one recall shows progress without adding an entire biome")
+	f.advance();check(f.cells().size()==7,"two work actions create a visible new land tile")
 	f.learning.data.harvested=[100,100];f.learning.data.practice.read=100
 	for c in IslandFrontier.CHAPTERS:
 		check(f.available(c.id),"expansion dependencies can be reached: "+c.id)
 		f.choose(c.id)
 		for i in range(c.need):f.advance()
-	check(f.cells().size()==48 and f.finished_count()==15,"fifteen bounded chapters grow three starting tiles into forty-eight")
+	check(f.cells().size()==57 and f.finished_count()==17,"seventeen bounded chapters and the rocket berth comprise 57 tiles")
 	var fixed=f.cells().size();f.advance();check(f.cells().size()==fixed,"completed land never creates endless new requirements")
 	var retained=IslandLearning.new();retained.accept_save(JSON.parse_string(JSON.stringify(f.learning.data)));var ff=IslandFrontier.new(retained)
-	check(ff.cells().size()==48 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
+	check(ff.cells().size()==57 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
 	check(not game.hud.sites.visible and game.hud.site_buttons.is_empty(),"fixed three-building navigation is absent")
 	var before=game.learning.data.actions;game.current=game.learning.by_id.retain;game.order=[0,1,2,3];game.hud.show_task();game.answer(game.current.correct);game.answer(game.current.correct)
 	check(game.learning.data.actions==before+1,"double tap cannot collect twice")
@@ -181,7 +182,7 @@ func run():
 	check(all_fit,"all 96 word cards fit compact portrait screen")
 	check(help_fit,"all 96 explanations fit compact portrait screen")
 	var context_fit=true
-	for i in range(22):
+	for i in range(game.curriculum.pool.size()):
 		for mode in ["read","listen","sentence"]:
 			set_mode(mode,i)
 			for assisted in [false,true]:
