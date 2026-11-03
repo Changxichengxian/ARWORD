@@ -21,6 +21,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,6 +41,7 @@ public final class PlanetUpdates extends GodotPlugin {
     private String remoteVersion, tag, baseHash;
     private int targetCode;
     private boolean delta;
+    private final Map<String,URL> assetApi = new HashMap<>();
     public PlanetUpdates(Godot godot) { super(godot); }
     @Override public String getPluginName() { return "PlanetUpdates"; }
     @UsedByGodot public String update_state() { return status; }
@@ -69,10 +72,7 @@ public final class PlanetUpdates extends GodotPlugin {
     @UsedByGodot public void check_update() {
         run("checking","正在检查版本",ctx -> {
             candidate=null; full=null; selected=null;
-            URL url=new URL("https://github.com/"+UpdateChannel.REPO+"/releases/latest/download/update.json");
-            ByteArrayOutputStream body=new ByteArrayOutputStream();
-            fetch(url,body,-1,65536,false);
-            JSONObject manifest=new JSONObject(body.toString("UTF-8"));
+            JSONObject manifest=latestManifest();
             if (manifest.getInt("format")!=1 || !ctx.getPackageName().equals(manifest.getString("package"))) throw new IOException("更新清单不匹配");
             targetCode=manifest.getInt("code");
             PackageInfo self=ctx.getPackageManager().getPackageInfo(ctx.getPackageName(),0);
@@ -94,6 +94,34 @@ public final class PlanetUpdates extends GodotPlugin {
             report("offer","新版 "+remoteVersion+" · "+(delta?"差异下载 ":"完整下载 ")+amount(selected.getLong("bytes")));
         });
     }
+    private JSONObject readJson(URL url,long maxBytes) throws Exception {
+        ByteArrayOutputStream body=new ByteArrayOutputStream();
+        fetch(url,body,-1,maxBytes,false);
+        return new JSONObject(body.toString("UTF-8"));
+    }
+    private JSONObject latestManifest() throws Exception {
+        String repo="https://api.github.com/repos/"+UpdateChannel.REPO;
+        assetApi.clear();
+        try {
+            JSONObject release=readJson(new URL(repo+"/releases/latest"),512*1024);
+            JSONArray files=release.getJSONArray("assets");
+            if (files.length()>256) throw new IOException("发布附件过多");
+            for (int i=0;i<files.length();i++) {
+                JSONObject f=files.getJSONObject(i);
+                long id=f.getLong("id");
+                if (id>0) assetApi.put(f.getString("name"),new URL(repo+"/releases/assets/"+id));
+            }
+            URL manifestUrl=assetApi.get("update.json");
+            if (manifestUrl==null) throw new IOException("发布缺少更新清单");
+            JSONObject manifest=readJson(manifestUrl,65536);
+            if (!release.getString("tag_name").equals(manifest.getString("tag"))) throw new IOException("清单不属于此版本");
+            return manifest;
+        } catch (IOException unreachable) {
+            // The public web endpoint remains useful on networks where the API rate limit is shared.
+            assetApi.clear();
+            return readJson(new URL("https://github.com/"+UpdateChannel.REPO+"/releases/latest/download/update.json"),65536);
+        }
+    }
     private static JSONObject validated(JSONObject item) throws Exception {
         if (!item.getString("asset").matches("[A-Za-z0-9_-][A-Za-z0-9._-]{0,119}")
                 || !item.getString("sha256").matches("[a-f0-9]{64}")
@@ -107,11 +135,14 @@ public final class PlanetUpdates extends GodotPlugin {
         for (int redirects=0;redirects<=5;redirects++) {
             String host=url.getHost().toLowerCase(Locale.ROOT);
             if (!url.getProtocol().equals("https") || (url.getPort()!=-1 && url.getPort()!=443) || url.getUserInfo()!=null ||
-                    !(host.equals("github.com") || host.equals("release-assets.githubusercontent.com") || host.equals("objects.githubusercontent.com")))
+                    !(host.equals("github.com") || host.equals("api.github.com") || host.equals("release-assets.githubusercontent.com") || host.equals("objects.githubusercontent.com")))
                 throw new IOException("更新地址无效");
             HttpsURLConnection c=(HttpsURLConnection)url.openConnection();
             c.setInstanceFollowRedirects(false); c.setConnectTimeout(12000); c.setReadTimeout(30000);
             c.setRequestProperty("Accept-Encoding","identity"); c.setRequestProperty("User-Agent","LittleTide-Android-Updater/1");
+            if (host.equals("api.github.com")) {
+                c.setRequestProperty("Accept",url.getPath().contains("/releases/assets/")?"application/octet-stream":"application/vnd.github+json");
+            }
             c.setUseCaches(false);
             try {
                 int response=c.getResponseCode();
@@ -148,7 +179,9 @@ public final class PlanetUpdates extends GodotPlugin {
             long size=full.getLong("bytes"), transfer=selected.getLong("bytes");
             if (dir.getUsableSpace()<size+(delta?transfer:0)+32L*1024*1024) throw new IOException("可用存储空间不足");
             try {
-                URL url=new URL("https://github.com/"+UpdateChannel.REPO+"/releases/download/"+tag+"/"+selected.getString("asset"));
+                String assetName=selected.getString("asset");
+                URL url=assetApi.get(assetName);
+                if (url==null) url=new URL("https://github.com/"+UpdateChannel.REPO+"/releases/download/"+tag+"/"+assetName);
                 try (FileOutputStream out=new FileOutputStream(input)) { fetch(url,out,transfer,transfer,true); out.getFD().sync(); }
                 report("working","正在校验安装包");
                 if (!ApkDelta.hash(input).equals(selected.getString("sha256"))) throw new IOException("下载校验失败");

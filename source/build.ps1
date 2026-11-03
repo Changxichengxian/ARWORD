@@ -29,6 +29,11 @@ foreach($name in @("assets","scripts","project.godot","main.tscn","export_preset
 if ($PublicRelease) {
     $personal = Join-Path $stage 'assets/characters/deepseek.vrm'
     if (Test-Path -LiteralPath $personal) {Remove-Item -LiteralPath $personal}
+} else {
+    $personal=Join-Path $stage 'assets/characters/deepseek.vrm'
+    if(-not (Test-Path -LiteralPath $personal) -or (Get-FileHash -LiteralPath $personal -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'c14879ff5c42501043896aae03ce971b2c11eee2e76106d47ee98741aa842ff5'){
+        throw '个人首装包需要指定的本机大肥鱼源文件。公开构建请使用 -PublicRelease。'
+    }
 }
 $inputs=Get-ChildItem -LiteralPath $stage -Recurse -File | ForEach-Object {
     [pscustomobject]@{path=$_.FullName.Substring($stage.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
@@ -58,6 +63,13 @@ export/android/android_sdk_path = "$sdkSlash"
 export/android/shutdown_adb_on_exit = false
 "@ | Set-Content -LiteralPath (Join-Path $engine 'editor_data/editor_settings-4.5.tres') -Encoding utf8
 $preset=Get-Content -LiteralPath (Join-Path $stage 'export_presets.cfg') -Raw
+if(-not $PublicRelease){
+    $stableCode=[regex]::Match($preset,'(?m)^version/code=(\d+)')
+    $stableName=[regex]::Match($preset,'(?m)^version/name="(\d+\.\d+\.\d+)"')
+    if(-not $stableName.Success -or -not $stableCode.Success -or [int]$stableCode.Groups[1].Value -lt 2){throw '稳定版版本号无效。'}
+    $preset=$preset.Replace($stableCode.Value,('version/code='+([int]$stableCode.Groups[1].Value-1)))
+    $preset=$preset.Replace($stableName.Value,('version/name="'+$stableName.Groups[1].Value+'-setup"'))
+}
 foreach($kind in @('debug','release')) {
     $template=Join-Path $Templates ("android_"+$kind+".apk")
     if(-not (Test-Path -LiteralPath $template)){throw "缺少 Android 导出模板：$template"}
@@ -68,7 +80,7 @@ $preset | Set-Content -LiteralPath (Join-Path $stage 'export_presets.cfg') -Enco
 $log=Join-Path $OutputDirectory 'build.log'
 $unsigned=Join-Path $buildRoot 'unsigned.apk'
 $aligned=Join-Path $buildRoot 'aligned.apk'
-$versionMatch=[regex]::Match($preset,'(?m)^version/name="(\d+\.\d+\.\d+)"')
+$versionMatch=[regex]::Match($preset,'(?m)^version/name="(\d+\.\d+\.\d+(?:-setup)?)"')
 if(-not $versionMatch.Success){throw '缺少有效的 APK 版本号。'}
 $apk=Join-Path $OutputDirectory ("ARWORD-"+$versionMatch.Groups[1].Value+".apk")
 Write-Host '导入三维资源……'

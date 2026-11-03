@@ -30,7 +30,10 @@ with zipfile.ZipFile(args.apk) as z:
  assert not any('assets/wordbooks/sources/' in n for n in names)
 build_tools=sorted((args.sdk/'build-tools').iterdir(),key=lambda p:tuple(map(int,p.name.split('.'))) if re.fullmatch(r'\d+\.\d+\.\d+',p.name) else (0,))[-1]
 rp=subprocess.run([str(build_tools/'aapt2.exe'),'dump','badging',str(args.apk)],capture_output=True,text=True,encoding='utf-8');assert rp.returncode==0
-assert "package: name='io.github.changxichengxian.arword' versionCode='12' versionName='0.12.0'" in rp.stdout
+preset=(r/'export_presets.cfg').read_text('utf-8')
+code=int(re.search(r'^version/code=(\d+)',preset,re.M)[1])-int(args.personal)
+version=re.search(r'^version/name="([^"]+)"',preset,re.M)[1]+('-setup' if args.personal else '')
+assert f"package: name='io.github.changxichengxian.arword' versionCode='{code}' versionName='{version}'" in rp.stdout
 minimum=re.search(r"^(?:minSdkVersion|sdkVersion):'(\d+)'",rp.stdout,re.M);target=re.search(r"^targetSdkVersion:'(\d+)'",rp.stdout,re.M)
 assert minimum and int(minimum.group(1))==24,'APK minimum SDK must be 24'
 assert target and int(target.group(1))==35,'APK target SDK must be 35'
@@ -43,6 +46,6 @@ assert any('="org.godotengine.plugin.v2.PlanetUpdates"' in block and '="io.githu
 assert 'io.github.changxichengxian.arword.updates' in manifest.stdout,'Update file provider is missing'
 (args.out/'manifest-check.txt').write_text(manifest.stdout,'utf-8')
 subprocess.run([str(build_tools/'zipalign.exe'),'-c','-P','16','4',str(args.apk)],check=True)
-report={'sha256':hashlib.sha256(args.apk.read_bytes()).hexdigest(),'bytes':args.apk.stat().st_size,'source_inputs_verified':len(inputs),'zip_crc':True,'alignment_16KB':True,'ABIs':abis,'package':'io.github.changxichengxian.arword','version':'0.12.0','wordbooks':6,'offline_word_recordings':len(lexicon),'wordbook_attribution_included':True,'test_and_signing_files_excluded':True}
+report={'sha256':hashlib.sha256(args.apk.read_bytes()).hexdigest(),'bytes':args.apk.stat().st_size,'source_inputs_verified':len(inputs),'zip_crc':True,'alignment_16KB':True,'ABIs':abis,'package':'io.github.changxichengxian.arword','version':version,'version_code':code,'wordbooks':6,'offline_word_recordings':len(lexicon),'wordbook_attribution_included':True,'test_and_signing_files_excluded':True}
 report.update({'min_sdk':int(minimum.group(1)),'target_sdk':int(target.group(1)),'permissions':permissions,'native_update_plugin_registered':True,'no_broad_storage_permission':True,'bundled_personal_vrm':args.personal,'android_build_source_excluded':True})
 (args.out/'artifact-check.json').write_text(json.dumps(report,indent=2),'utf-8');print(json.dumps(report))
