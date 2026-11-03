@@ -9,6 +9,7 @@ class WorldStub extends Node3D:
 	func surface(p:Vector2)->Vector3:return terrain.point(p)
 class GameStub extends Node3D:
 	var camera:Camera3D
+	var frontier=IslandFrontier.new(IslandLearning.new())
 var passed=0
 var failed=0
 func check(condition:bool,label:String):

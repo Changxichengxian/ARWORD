@@ -1,8 +1,8 @@
-"""Authored low-poly rocket, working gold mine, mint and island trader. Blender source retained."""
+"""Authored low-poly rocket, working gold mine, mint and cargo. Blender source retained."""
 from pathlib import Path
 exec(Path(__file__).with_name('make_frontier_art.py').read_text('utf-8').split("clean();r=node('Shipyard')")[0])
 teal=mat('deep turquoise','287E8A');ivory=mat('rocket ceramic','F3E9CE');red=mat('coral trim','D77557')
-purple=mat('midnight scales','555875');pink=mat('warm underside','B7A3B9');dark=mat('deep opening','182936');coin=mat('minted gold','F0C65F');shine=mat('gold edge','FFE4A0')
+dark=mat('deep opening','182936');coin=mat('minted gold','F0C65F');shine=mat('gold edge','FFE4A0')
 
 clean();r=node('Rocket')
 cyl('launch plinth',(0,0,.12),1.15,.24,stone,r,12)
@@ -65,39 +65,6 @@ wheel=node('MintWheel',r,(-.82,.04,.65))
 o=cyl('flywheel',(0,0,0),.31,.05,wood,wheel,16);o.rotation_euler.y=math.pi/2
 for i in range(6):a=i*math.tau/6;beam('wheel spoke',(0,0,0),(0,.3*math.cos(a),.3*math.sin(a)),.04,gold,wheel)
 export('gold_mint')
-
-def tentacle(name,parent,a):
-    branch=node(name,parent);vertices=[];faces=[]
-    count=14;edges=7
-    def path(t):
-        rad=.42+1.32*t;angle=a+.55*math.sin(t*math.pi)
-        return Vector((math.cos(angle)*rad,math.sin(angle)*rad,.35-.19*math.sin(t*math.pi)+.42*t**5))
-    for j in range(count):
-        t=j/(count-1);center=path(t)
-        tangent=(path(min(1,t+.01))-path(max(0,t-.01))).normalized()
-        side=Vector((-tangent.y,tangent.x,0)).normalized();up=tangent.cross(side).normalized()
-        radius=.23*(1-t)+.035
-        for k in range(edges):
-            q=k*math.tau/edges;vertices.append(tuple(center+radius*(side*math.cos(q)+up*math.sin(q))))
-        if j:
-            for k in range(edges):u=(j-1)*edges+k;v=(j-1)*edges+(k+1)%edges;faces.append((u,v,v+edges,u+edges))
-    faces.extend([tuple(reversed(range(edges))),tuple((count-1)*edges+k for k in range(edges))]);mesh('curled limb',vertices,faces,purple,branch)
-    return branch
-clean();r=node('SeaTrader')
-for i in range(6):tentacle('Arm'+str(i),r,i*math.tau/6)
-head=node('Head',r,(0,0,.60));ico('mantle',(0,0,.59),(.82,.68,.94),purple,head,2)
-ico('soft face',(0,-.44,.40),(.62,.26,.52),pink,head,2)
-for x in [-.29,.29]:
-    ico('eye white',(x,-.68,.55),(.17,.075,.14),ivory,head,2)
-    ico('pupil',(x,-.747,.54),(.066,.026,.092),dark,head,2)
-    ico('eye shine',(x-.018,-.768,.58),(.021,.009,.025),ivory,head,1)
-    beam('brow',(x-.15,-.72,.72),(x+.13,-.72,.74),.075,purple,head)
-ico('small mouth',(0,-.72,.23),(.115,.035,.055),dark,head,1)
-for sign in [-1,1]:mesh('head fin',[(sign*.53,0,1.08),(sign*1.03,.08,1.48),(sign*.83,-.10,.70)],[(0,1,2),(2,1,0)],teal,head)
-box('trading tray',(0,-1.28,.18),(.9,.42,.13),wood,r,.04)
-coins=node('CoinPile',r,(0,-1.24,.25))
-for i in range(8):cyl('saved coin',((i%3-1)*.17,(i//3%2-.5)*.12,(i//6)*.06),.10,.055,coin,coins,12)
-export('sea_trader')
 
 clean();r=node('GoldOre');ico('ore',(0,0,.18),(.25,.20,.22),stone,r)
 for i in range(5):a=i*math.tau/5;ico('gold seam',(.18*math.cos(a),.15*math.sin(a),.22+.03*i),(.085,.065,.10),coin,r)

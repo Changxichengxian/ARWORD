@@ -32,6 +32,7 @@ var observatory_active=false
 var observation_index=0
 var observation_yaw=0.0
 var observation_pitch=0.0
+var observation_roll=0.0
 var observation_zoom=1.0
 var observation_blend=0.0
 
@@ -130,9 +131,11 @@ func leave_observatory():
 func select_observation_target(index:int)->bool:
 	if index<0 or index>=cloud_regions.size():return false
 	observation_index=index;observation_yaw=0.0;observation_pitch=0.0;observation_zoom=1.0;observation_blend=0.0
+	observation_roll=0.0
 	update_observation_quality();return true
 func rotate_observation(delta:Vector2):
 	if not observatory_active:return
+	delta=delta.rotated(-observation_roll)
 	observation_yaw=clampf(observation_yaw-delta.x*.003,-.48,.48)
 	observation_pitch=clampf(observation_pitch+delta.y*.0025,-.28,.28)
 func zoom_observation(factor:float):
@@ -155,6 +158,7 @@ func advance_observation(dt:float):
 		var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
 		space_camera.position=space_camera.position.lerp(target+offset,1-exp(-dt*5.5))
 		space_camera.look_at(target);space_camera.fov=base_fov
+		space_camera.rotate_object_local(Vector3.BACK,observation_roll)
 	for region in cloud_regions:
 		region.node.look_at(space_camera.global_position,Vector3.UP)
 	update_sky_camera()

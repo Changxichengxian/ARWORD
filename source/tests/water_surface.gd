@@ -11,7 +11,7 @@ func run():
 	var water=game.world.water;var normal=Vector3.UP
 	check(root.msaa_3d==Viewport.MSAA_DISABLED,"Mobile depth texture is not broken by Godot 4.5 MSAA")
 	check(water!=null and water.floor_mesh.mesh!=null,"the ocean contains an actual closed seabed mesh")
-	var near=water.depth_at(normal);var far=water.depth_at(Vector3.DOWN)
+	var near=water.depth_at(normal);var far=water.depth_at(Vector3.RIGHT)
 	check(near<.3 and far>3.0,"a shallow coastal shelf and a deep basin have different real depths")
 	check(abs(water.floor_radius(normal)+near-IslandWater.BASE_RADIUS)<.001,"depth queries use the same radial seabed height")
 	var maximum_error=0.0;var minimum_depth=INF;var maximum_depth=0.0
@@ -24,7 +24,8 @@ func run():
 	var image=water.bed_texture.get_image();var sample=image.get_pixel(16,16).r*IslandWater.MAX_DEPTH
 	check(abs(sample-water.map[16*(IslandWater.COLS+1)+16])<.001,"the shader depth map and seabed geometry share the same depth samples")
 	check(abs(IslandWater.surface_radius(normal,2)-IslandWater.surface_radius(normal,5))>.002,"surface height really moves with the shared water clock")
-	water.ripple(normal,1.5);check(water.strengths[0]==1.5,"water can receive a local splash or tap ripple")
+	var slot=water.next_ripple
+	water.ripple(normal,1.5);check(water.strengths[slot]==1.5,"water can receive a local splash or tap ripple")
 	print("WATER_SURFACE_RESULT ",passed," passed / ",failed," failed")
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--visual-out="):await visual(game,arg.trim_prefix("--visual-out="))

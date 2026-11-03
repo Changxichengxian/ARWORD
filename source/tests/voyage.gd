@@ -73,7 +73,18 @@ func scene_checks():
 	check(world.facilities.rocket.visible and world.trader.is_visible_in_tree() and world.land.size()==6,"rocket and resident trader are physically present on the starting globe")
 	var a=world.surface(game.frontier.target("rocket")).normalized()
 	check(a.dot(world.surface(Vector2.ZERO).normalized())<-.99,"the berth is on the back of the main island")
-	check(world.rocket_hatch and world.rocket_lamp and world.trader_head and world.trader_arms.size()==6,"native meshes have the authored hatch, beacon and articulated trader")
+	check(world.rocket_hatch and world.rocket_lamp and world.trader.arms.size()==4 and not world.trader.find_child("Head",true,false),"native meshes have the authored hatch, beacon and articulated trader")
+	for i in world.trader.arms.size():
+		check(not world.trader.channels[i].has(-1),"authored grip, ripple and release present on "+str(world.trader.arms[i].name))
+	var trench=world.trader.transform*Vector3(-4.3,-1.0,-2.4)
+	var depth=world.water.depth_at(trench)
+	check(depth>2.7 and world.water.floor_radius(trench)<IslandWater.BASE_RADIUS-2.7,"offshore arms emerge from a physical trench deeper than 2.7 world units")
+	world.desired_rotation=Quaternion(a,Vector3.UP)
+	world.globe.quaternion=world.desired_rotation
+	game.frame_view(Vector3(0,10.4,0),10.5,false)
+	var arm_pixel=game.camera.unproject_position(world.trader.to_global(Vector3(-1.38,.28,2.14)))
+	var open_water=game.camera.unproject_position(world.trader.to_global(Vector3(-4.8,-1,4.9)))
+	check(world.trader.hit(arm_pixel) and not world.trader.hit(open_water),"a visible offshore limb accepts taps while neighboring open water stays free")
 	game.show_rocket()
 	check(game.hud.screen=="rocket" and game.hud.overlay.visible and not game.frontier.rocket_open(),"normal berth interaction opens an occupied trade page")
 	game.hud.close()
@@ -96,25 +107,35 @@ func scene_checks():
 	game.show_rocket()
 	game.pay_trader()
 	game.pay_trader()
-	check(game.frontier.data.voyage.paid==2 and game.frontier.data.voyage.coins==0 and world.trade_motion>0,"normal trade button debits once and triggers a visible response")
+	check(game.frontier.data.voyage.paid==2 and game.frontier.data.voyage.coins==0 and world.trader.pulse>0,"normal trade button debits once and triggers a visible response")
 	var stock=game.frontier.data.voyage.duplicate(true)
 	for i in range(90):world.animate_voyage(.05)
 	check(stock==game.frontier.data.voyage,"several seconds of character and machine animation issue no stock")
+	check(is_equal_approx(world.trader.release,2.0/IslandFrontier.TRADE_PRICE) and world.trader.arms[0].get_blend_shape_value(world.trader.channels[0][0])<.05,"small real payment settles into partial release while the crown still grips")
 	if not photo_dir.is_empty() and DisplayServer.get_name()!="headless":
 		DirAccess.make_dir_recursive_absolute(photo_dir)
 		game.hud.hide()
-		for view_id in ["goldmine","smelter","rocket","rocket-open"]:
-			var id="rocket" if view_id=="rocket-open" else view_id
+		await create_timer(1.2).timeout
+		for view_id in ["goldmine","smelter","tideworks","rocket","rocket-close","rocket-three-quarter","rocket-orbit","rocket-open"]:
+			var id="rocket" if view_id.begins_with("rocket") else view_id
 			if view_id=="rocket-open":
 				game.frontier.finish_for_development(true)
 				world.sync_voyage()
-				for i in range(20):world.animate_voyage(.1)
+				for i in range(34):world.animate_voyage(.1)
 			world.desired_rotation=Quaternion(world.surface(game.frontier.target(id)).normalized(),Vector3.UP)
+			if view_id=="rocket-three-quarter":world.desired_rotation=Quaternion(Vector3.UP,.92)*world.desired_rotation
 			world.globe.quaternion=world.desired_rotation
-			game.frame_view(Vector3(0,11.5,0),7.2,false)
+			if view_id=="rocket-orbit":game.frame_view(Vector3(0,2.0,0),26.0,false)
+			else:game.frame_view(Vector3(0,10.4,0),10.5 if view_id.begins_with("rocket") and view_id!="rocket-close" else 7.2,false)
 			await process_frame
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(photo_dir.path_join(view_id+".png"))
+	game.frontier.finish_for_development(true)
+	world.sync_voyage()
+	world.desired_rotation=Quaternion(a,Vector3.UP)
+	world.globe.quaternion=world.desired_rotation
+	for i in range(34):world.animate_voyage(.1)
+	check(world.trader.arms[0].get_blend_shape_value(world.trader.channels[0][0])>.99 and world.rocket_lamp.visible,"opening the berth submerges the crown and switches on the launch beacon")
 	game.closing=true
 	game.ambience.shutdown()
 	game.queue_free()

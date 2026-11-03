@@ -4,7 +4,9 @@ var failed=0
 func check(value:bool,label:String):
 	if value:passed+=1;print("PASS ",label)
 	else:failed+=1;push_error("FAIL "+label)
-func _initialize():call_deferred("run")
+func _initialize():
+	if not "--qa" in OS.get_cmdline_user_args():push_error("QA_REQUIRED: spatial_actor");quit(2);return
+	call_deferred("run")
 func inspect_world(game):
 	var world=game.world
 	check(world.navigation.get_point_count()>30,"walkable ground has a connected local navigation mesh")
@@ -15,7 +17,7 @@ func inspect_world(game):
 	for point in route:
 		clear=clear and world.clear_segment(start,point);distance+=start.distance_to(point);start=point
 	check(clear,"cross-building travel routes around the solid footprint")
-	if world.land.size()>3:check(distance>2.8,"the route keeps the detour instead of cutting through the cottage")
+	if game.frontier.done("grove"):check(distance>2.8,"the route keeps the detour instead of cutting through the cottage")
 	var stances=true
 	for id in IslandFrontier.BUILD_IDS:
 		world.work_point=game.frontier.target(id)

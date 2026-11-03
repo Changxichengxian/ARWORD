@@ -7,6 +7,7 @@ uniform sampler2D scene_color : hint_screen_texture, filter_linear, repeat_disab
 uniform float water_time = 0.0;
 uniform float radius = 11.62;
 uniform float max_depth = 4.0;
+uniform vec3 berth_normal = vec3(0.0,-1.0,0.0);
 uniform vec4 ripples[4];
 uniform vec4 ripple_strength = vec4(0.0);
 varying vec3 radial;
@@ -61,22 +62,25 @@ void fragment() {
     NORMAL = normalize(mat3(VIEW_MATRIX) * mat3(MODEL_MATRIX) * liquid_normal);
 
     float radial_depth = depth_at(n);
+    float trench = smoothstep(.68,.94,dot(n,berth_normal)+.014*sin(p.x*1.1)*sin(p.z*.9));
     // Godot 4.5 Mobile cannot resolve this texture with MSAA enabled. The
     // project deliberately uses FXAA so real seabed and animals supply depth.
     float depth_sample=texture(scene_depth,SCREEN_UV).r;
     vec4 scene_position=INV_PROJECTION_MATRIX*vec4(SCREEN_UV*2.0-1.0,depth_sample,1.0);
     vec3 behind=scene_position.xyz/scene_position.w;
     float thickness=depth_sample>0.00001 ? max(0.0,length(behind-VERTEX)) : 100.0;
-    float absorption = 1.0-exp(-thickness*0.70);
+    float absorption = 1.0-exp(-thickness*mix(.70,2.65,trench));
     vec3 shallow = vec3(0.045,0.56,0.60);
     vec3 deep = vec3(0.003,0.025,0.080);
+    shallow=mix(shallow,vec3(.009,.051,.067),trench);
+    deep=mix(deep,vec3(.001,.005,.016),trench);
     float incidence=max(0.40,surface_angle);
     vec3 water_color = mix(shallow,deep,1.0-exp(-radial_depth*0.64/incidence));
     float fresnel = pow(1.0-surface_angle,4.0);
     float crests = smoothstep(0.96,1.0,sin(pc)*sin(pd)) * 0.010;
     vec3 surface_color = water_color + vec3(0.38,0.61,0.66) * (crests+wake);
-    ROUGHNESS = 0.32 + (1.0-absorption)*0.08;
-    SPECULAR = 0.36;
+    ROUGHNESS = 0.32 + (1.0-absorption)*0.08 + .19*trench;
+    SPECULAR = .36*(1.0-smoothstep(.25,.85,trench));
     METALLIC = 0.02;
     // Water becomes opaque before the far hemisphere; rays that miss the
     // solid seabed cannot blend stars or a distant animal into the ocean rim.

@@ -4,16 +4,21 @@ var failed=0
 func check(value:bool,label:String):
 	if value:passed+=1;print("PASS ",label)
 	else:failed+=1;push_error("FAIL "+label)
-func _initialize():call_deferred("run")
+func _initialize():
+	if not "--qa" in OS.get_cmdline_user_args():push_error("QA_REQUIRED: rest_terrain");quit(2);return
+	call_deferred("run")
 func run():
 	var memory=IslandLearning.new();var frontier=IslandFrontier.new(memory)
 	frontier.data.progress.meadow=6
+	var unlocked_land=frontier.cells().duplicate()
 	check(frontier.previewable("wetland") and not frontier.available("wetland"),"new terrain appears as a preview before enough work has accumulated")
 	memory.data.harvested[0]=7;check(not frontier.available("wetland"),"seven wood collections cannot unlock an eight-collection bay")
-	memory.data.harvested[0]=8;check(frontier.available("wetland") and frontier.cells().size()==6,"unlock permits expansion without granting unearned land")
+	memory.data.harvested[0]=8;check(frontier.available("wetland") and frontier.cells()==unlocked_land,"unlock permits expansion without granting unearned land")
 	frontier.data.progress.quarry=6;memory.data.harvested[1]=10
 	check(frontier.available("plateau"),"stone work opens the plateau")
-	frontier.data.progress.plateau=10;frontier.data.progress.hill=6;memory.data.practice.read=6;memory.data.practice.listen=5
+	for dependency in frontier.chapter("mountain").requires:
+		frontier.data.progress[dependency]=frontier.chapter(dependency).need
+	memory.data.practice.read=6;memory.data.practice.listen=5
 	check(not frontier.available("mountain"),"mountain requires the full reading and listening milestone")
 	memory.data.practice.listen=6;check(frontier.available("mountain"),"reading plus listening opens mountain exploration")
 	var restored=IslandLearning.new();restored.accept_save(JSON.parse_string(JSON.stringify(memory.data)));var reloaded=IslandFrontier.new(restored)
@@ -37,7 +42,9 @@ func run():
 	check(worker.work_left>10 and game.world.tools.Axe.visible,"character wakes and resumes work")
 	for i in range(8):worker.grant("word",Vector2.ZERO,game.world.selected_entry,0)
 	check(worker.work_left==36,"rapid answers extend work without creating an endless queue")
-	worker.work_left=.01;worker.update(.1)
+	# The budget is only spent while working at the site.
+	if game.world.move_tween and game.world.move_tween.is_valid():game.world.move_tween.kill()
+	worker.waking=0;worker.work_left=.01;worker.update(.1)
 	check(worker.work_left==0 and not game.world.tools.Axe.visible,"earned work ends and tools are put away")
 	check(JSON.stringify(game.learning.data)==before,"visual work budget never grants extra unearned learning or land")
 	print("REST_TERRAIN_RESULT ",passed," passed / ",failed," failed")

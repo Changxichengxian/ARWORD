@@ -17,6 +17,7 @@ var reef_scene=preload("res://assets/models/cliff_rocks.glb")
 var map:PackedFloat32Array=[]
 var bed_texture:ImageTexture
 var land_count=-1
+var berth_normal=Vector3.DOWN
 var ripple_points:Array[Vector4]=[Vector4(0,1,0,-1000),Vector4(0,1,0,-1000),Vector4(0,1,0,-1000),Vector4(0,1,0,-1000)]
 var strengths=Vector4.ZERO
 var next_ripple=0
@@ -27,6 +28,7 @@ static func surface_radius(normal:Vector3,time:float)->float:
 
 func setup(owner_world,ocean:Node3D):
 	world=owner_world
+	berth_normal=world.surface(world.game.frontier.target("rocket")).normalized()
 	material=ShaderMaterial.new();material.shader=preload("res://assets/water.gdshader");material.render_priority=1
 	# The old imported sphere kept its 11.62 scale on the mesh node. Normalize it
 	# once: both shader displacement and creature positions now use world units.
@@ -51,7 +53,10 @@ func analytic_depth(normal:Vector3,centers:Array)->float:
 	var shelf=.12+.22*smoothstep(0.0,.65,distance)+.92*smoothstep(.65,2.4,distance)
 	var basin=2.05*smoothstep(2.4,5.8,distance)
 	var relief=(sin(normal.x*12+normal.z*7)*.10+sin(normal.y*11-normal.z*8)*.08)*smoothstep(2.0,4.0,distance)
-	return clampf(shelf+basin+relief,.12,3.5)
+	# A narrow shelf drops into the trench where the four limbs disappear.
+	var local=smoothstep(.78,.95,normal.dot(berth_normal))
+	var trench=local*(1.43*smoothstep(.12,1.4,distance)+1.2*smoothstep(1.0,2.8,distance))
+	return clampf(shelf+basin+relief+trench,.12,3.92)
 
 func rebuild():
 	land_count=world.land.size();var centers=[]
@@ -62,13 +67,14 @@ func rebuild():
 			var depth=analytic_depth(direction_at(col,row),centers)
 			# Quantize once; geometry, animal queries and shader see the exact same samples.
 			depth=roundf(depth/MAX_DEPTH*255)/255.0*MAX_DEPTH;map[row*(COLS+1)+col]=depth;image.set_pixel(col,row,Color(depth/MAX_DEPTH,0,0))
-	bed_texture=ImageTexture.create_from_image(image);material.set_shader_parameter("bed_depth",bed_texture)
+	bed_texture=ImageTexture.create_from_image(image);material.set_shader_parameter("bed_depth",bed_texture);material.set_shader_parameter("berth_normal",berth_normal)
 	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for row in range(ROWS):
 		for col in range(COLS):
 			for offset in [Vector2i(0,0),Vector2i(1,1),Vector2i(1,0),Vector2i(0,0),Vector2i(0,1),Vector2i(1,1)]:
 				var x=col+offset.x;var y=row+offset.y;var n=direction_at(x,y);var depth=map[y*(COLS+1)+x]
 				var tint=Color("DAC592").lerp(Color("429F91"),smoothstep(.12,1.1,depth)).lerp(Color("315C73"),smoothstep(1.0,3.4,depth))
+				tint=tint.lerp(Color("25354B").lerp(Color("101C32"),smoothstep(.3,2.8,depth)),smoothstep(.80,.97,n.dot(berth_normal))*.92)
 				st.set_color(tint);st.set_normal(n);st.add_vertex(n*(BASE_RADIUS-depth))
 	st.index();floor_mesh.mesh=st.commit();rebuild_foam()
 

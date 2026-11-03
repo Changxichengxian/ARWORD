@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bgb3m6wj4qtik"
-path="res://.godot/imported/sea_trader.glb-a9fa2c9ca68bf573c534a7d4f618e9a7.scn"
+uid="uid://b7gpw5tiow7a1"
+path="res://.godot/imported/rocket_kraken.glb-6a3fcf7d6c5b239fde406d15737bf1d9.scn"
 
 [deps]
 
-source_file="res://assets/models/sea_trader.glb"
-dest_files=["res://.godot/imported/sea_trader.glb-a9fa2c9ca68bf573c534a7d4f618e9a7.scn"]
+source_file="res://assets/models/rocket_kraken.glb"
+dest_files=["res://.godot/imported/rocket_kraken.glb-6a3fcf7d6c5b239fde406d15737bf1d9.scn"]
 
 [params]
 

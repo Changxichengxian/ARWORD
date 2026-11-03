@@ -58,7 +58,7 @@ func run():
 		var shell=life.cave.shell
 		check(not shell_hit(shell,Vector3(0,.83,-2),Vector3(0,.83,1.2)) and shell_hit(shell,Vector3(0,.83,-2),Vector3(0,.83,3.8)),"the cave has an open entrance, a real recessed chamber and a solid rear wall")
 		check(shell_hit(shell,Vector3(1.55,.83,-2),Vector3(1.55,.83,2)),"opaque mouth rocks occlude the sides of the chamber")
-		check(not life.cave.has("watcher") and is_instance_valid(game.world.trader_head),"the sea creature lives at the rocket berth; the original underwater passage remains open")
+		check(not life.cave.has("watcher") and game.world.trader.arms.size()==4,"the sea creature lives at the rocket berth; the original underwater passage remains open")
 	check(life.scenery.get_child_count()<=30 and life.grass.size()<=18,"underwater scenery remains sparse and bounded")
 	if not output.is_empty() and DisplayServer.get_name()!="headless":await visual()
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null

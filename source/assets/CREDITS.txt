@@ -1,9 +1,10 @@
-ARWORD · 0.12
+ARWORD · 0.12.2
 
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/
 
 本项目用 Blender 4.4.3 制作 79 套地景、建筑、材料、默认人物和生物模型。GLB、可编辑的 .blend 工程与生成脚本随源码保存。太阳系与三处星云由实时网格和着色器生成。
+火箭岛的深海巨型触手为本项目原创。四段肌肤、吸盘和退海形态保存在 art-source/rocket_kraken.blend，由 tools/make_rocket_kraken.py 生成。游戏模型只制作露出水面和抓住岛屿的局部。
 
 个人首装版使用木子恶魔的《【MZEM】蓝色小肥鱼 Deepseek 鲸鱼娘》。人物原件与作者署名保留。公开仓库和公开安装包不包含该模型。
 https://www.aplaybox.com/details/model/ayXkRzVflmnd

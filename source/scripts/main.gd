@@ -5,7 +5,11 @@ var font=preload("res://assets/fonts/FrontierSC.ttf")
 var learning:IslandLearning
 var frontier:IslandFrontier
 var touch_points={}
-var pinch_distance=0.0
+const MIN_PAIR_SPAN=18.0
+var pair_span=0.0
+var pair_zoom=1.0
+var pair_frame=Basis.IDENTITY
+var pair_rotation=Quaternion.IDENTITY
 var mouse_drag=false
 var world_zoom=10.0
 var world:IslandGrove
@@ -47,7 +51,6 @@ var observatory_layer:CanvasLayer
 var observatory_drag=false
 var observatory_touch=-1
 var observatory_touch_points={}
-var observatory_pinch_distance=0.0
 var observatory_hud_visible=true
 var curriculum=preload("res://scripts/curriculum.gd").new()
 var journal_entry:Dictionary={}
@@ -82,6 +85,7 @@ func _ready():
 		var path="res://assets/audio/"+kind+".wav"
 		if ResourceLoader.exists(path):sound_bank[kind]=load(path)
 	var layer=CanvasLayer.new();add_child(layer);hud=IslandHUD.new();hud.game=self;layer.add_child(hud)
+	hud.overlay.visibility_changed.connect(func():if hud.overlay.visible:reset_world_input())
 	next_task()
 	explore(true,false)
 	if art_preview:world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
@@ -262,30 +266,87 @@ func tap_world(p:Vector2):
 	if not id.is_empty():select_site(id);return
 	if world.wildlife and world.wildlife.handle_tap(p):return
 	if cosmos:cosmos.handle_tap(p)
+func reset_world_input():
+	touch_points.clear()
+	pair_span=0.0
+	mouse_drag=false
+	drag_id=-1
+
+func finger_line(points:Dictionary)->Vector2:
+	var fingers=points.values()
+	return fingers[1]-fingers[0]
+
+func surface_grip(line:Vector2)->Basis:
+	var fingers=touch_points.values()
+	var midpoint:Vector2=(fingers[0]+fingers[1])*.5
+	var to_view=camera.global_basis.z.normalized()
+	var ray_offset=camera.project_ray_origin(midpoint)-world.globe.global_position
+	var radial=ray_offset-to_view*ray_offset.dot(to_view)
+	var radius=IslandGrove.RADIUS
+	var rr=radial.length_squared()/(radius*radius)
+	# Continue the virtual surface beyond the visible limb. This keeps a pair
+	# partly over the sky well conditioned, even when the globe is very close.
+	var depth=radius*sqrt(1.0-rr) if rr<=.5 else radius*.5/sqrt(rr)
+	var normal=(radial+to_view*depth).normalized()
+	var screen_direction=camera.global_basis.x*line.x-camera.global_basis.y*line.y
+	# Tangent whose projection points along the displayed line between fingers.
+	var tangent=(screen_direction-to_view*(screen_direction.dot(normal)/normal.dot(to_view))).normalized()
+	return Basis(tangent,normal.cross(tangent),normal)
+
+func begin_world_pair():
+	stop_view_transition()
+	drag_distance=100
+	var line=finger_line(touch_points)
+	pair_span=line.length()
+	if pair_span<MIN_PAIR_SPAN:
+		pair_span=0.0
+		return
+	pair_zoom=camera.size
+	pair_rotation=world.desired_rotation
+	pair_frame=surface_grip(line)
+
+func captured_world_touch(event)->bool:
+	if not (event is InputEventScreenTouch or event is InputEventScreenDrag):return false
+	if not touch_points.has(event.index):return false
+	if event is InputEventScreenTouch:
+		if event.pressed and not event.canceled:return false
+		var tap=not event.canceled and touch_points.size()==1 and event.index==drag_id and drag_distance<12 and world_area(event.position)
+		touch_points.erase(event.index)
+		pair_span=0.0
+		drag_id=-1 if touch_points.is_empty() else int(touch_points.keys()[0])
+		drag_distance=100
+		if tap:tap_world(event.position)
+		return true
+	var delta:Vector2=event.position-touch_points[event.index]
+	touch_points[event.index]=event.position
+	stop_view_transition()
+	if touch_points.size()==1:
+		drag_distance+=delta.length()
+		world.drag(delta)
+		return true
+	var line=finger_line(touch_points)
+	if line.length()<MIN_PAIR_SPAN:
+		pair_span=0.0
+	elif pair_span==0.0:
+		begin_world_pair()
+	else:
+		camera.size=clampf(pair_zoom*pair_span/line.length(),8,29)
+		if not exploring:world_zoom=camera.size
+		var turn=surface_grip(line)*pair_frame.transposed()
+		world.desired_rotation=(turn.get_rotation_quaternion()*pair_rotation).normalized()
+	return true
+
 func _unhandled_input(event):
 	if cosmos and cosmos.observatory_active:
 		observatory_input(event);return
 	if not is_instance_valid(hud) or hud.overlay.visible:return
+	if captured_world_touch(event):return
 	if event is InputEventScreenTouch:
-		if event.pressed and world_area(event.position):
+		if event.pressed and not event.canceled and world_area(event.position) and touch_points.size()<2:
 			touch_points[event.index]=event.position
 			if touch_points.size()==1:drag_id=event.index;drag_start=event.position;drag_distance=0
-			elif touch_points.size()==2:pinch_distance=touch_points.values()[0].distance_to(touch_points.values()[1]);drag_distance=100
-		elif not event.pressed:
-			if event.index==drag_id and drag_distance<12 and world_area(event.position):
-				tap_world(event.position)
-			touch_points.erase(event.index)
-			if touch_points.is_empty():drag_id=-1
-			else:drag_id=int(touch_points.keys()[0]);drag_distance=100
-	if event is InputEventScreenDrag and touch_points.has(event.index):
-		stop_view_transition()
-		touch_points[event.index]=event.position
-		if touch_points.size()==2:
-			var distance=touch_points.values()[0].distance_to(touch_points.values()[1])
-			if pinch_distance>1:camera.size=clampf(camera.size*pinch_distance/maxf(1,distance),8,29)
-			if not exploring:world_zoom=camera.size
-			pinch_distance=distance
-		elif event.index==drag_id:drag_distance+=event.relative.length();world.drag(event.relative)
+			else:begin_world_pair()
+	if event is InputEventMouse and event.device==InputEvent.DEVICE_ID_EMULATION:return
 	if not OS.has_feature("android"):
 		if event is InputEventMouseButton:
 			if event.button_index==MOUSE_BUTTON_LEFT:
@@ -304,19 +365,19 @@ func _input(event):
 	# A captured sky gesture must finish even when its release lands on a toolbar button.
 	if cosmos and cosmos.observatory_active and observatory_capture_input(event):
 		get_viewport().set_input_as_handled();return
-	# Releases over a card/modal still end a world gesture; UI may consume them later.
-	if event is InputEventScreenTouch and not event.pressed and is_instance_valid(hud) and (hud.overlay.visible or not world_area(event.position)):
-		touch_points.erase(event.index)
-		if touch_points.is_empty():drag_id=-1
-		else:drag_id=int(touch_points.keys()[0]);drag_distance=100
+	# Continue an established grab across a card or toolbar, including release.
+	if is_instance_valid(hud) and not hud.overlay.visible and captured_world_touch(event):
+		get_viewport().set_input_as_handled();return
 	if event is InputEventMouseButton and not event.pressed and is_instance_valid(hud) and (hud.overlay.visible or not world_area(event.position)):mouse_drag=false
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
 func _notification(what):
-	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_APPLICATION_PAUSED]:reset_observatory_input()
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_APPLICATION_PAUSED]:
+		reset_observatory_input()
+		reset_world_input()
 	if what==NOTIFICATION_WM_CLOSE_REQUEST:request_exit()
 	if what==NOTIFICATION_WM_GO_BACK_REQUEST and is_instance_valid(hud):back()
 	if what==NOTIFICATION_APPLICATION_PAUSED and learning!=null:
-		save_progress();drag_id=-1;touch_points.clear();mouse_drag=false
+		save_progress()
 		if is_instance_valid(speech):speech.stop()
 		if ambience and is_instance_valid(ambience.player):ambience.player.stream_paused=true
 	if what==NOTIFICATION_APPLICATION_RESUMED and ambience and is_instance_valid(ambience.player):ambience.player.stream_paused=false
@@ -545,7 +606,7 @@ func preview_nature(kind:String):
 	frame_view(Vector3(0,9.2,0),16.0 if kind=="whale" else 12.0)
 func open_observatory():
 	if not frontier.done("mountain") or cosmos.observatory_active:return
-	speech.stop();hud.close();explore(false);mouse_drag=false;touch_points.clear()
+	speech.stop();hud.close();explore(false);reset_world_input()
 	world.work_point=frontier.target("mountain");world.walk_to(world.work_stance(0))
 	if not cosmos.enter_observatory(0):return
 	reset_observatory_input();observatory_hud_visible=hud.visible;hud.hide()
@@ -564,9 +625,9 @@ func close_observatory():
 	cosmos.leave_observatory();reset_observatory_input()
 	if is_instance_valid(observatory_layer):observatory_layer.queue_free()
 	observatory_layer=null;hud.visible=observatory_hud_visible
-	mouse_drag=false;touch_points.clear();drag_id=-1
+	reset_world_input()
 func reset_observatory_input():
-	observatory_drag=false;observatory_touch=-1;observatory_touch_points.clear();observatory_pinch_distance=0.0
+	observatory_drag=false;observatory_touch=-1;observatory_touch_points.clear()
 func observatory_over_controls(position:Vector2)->bool:
 	if not is_instance_valid(observatory_layer):return false
 	for button in observatory_layer.find_children("*","BaseButton",true,false):
@@ -579,16 +640,17 @@ func observatory_capture_input(event)->bool:
 	if event is InputEventMouseMotion and observatory_drag:
 		cosmos.rotate_observation(event.relative);return true
 	if event is InputEventScreenTouch and (not event.pressed or event.canceled) and observatory_touch_points.has(event.index):
-		observatory_touch_points.erase(event.index);observatory_pinch_distance=0.0
+		observatory_touch_points.erase(event.index)
 		observatory_touch=-1 if observatory_touch_points.is_empty() else int(observatory_touch_points.keys()[0])
-		if observatory_touch_points.size()>=2:observatory_pinch_distance=observatory_touch_points.values()[0].distance_to(observatory_touch_points.values()[1])
 		return true
 	if event is InputEventScreenDrag and observatory_touch_points.has(event.index):
+		var previous=finger_line(observatory_touch_points) if observatory_touch_points.size()==2 else Vector2.ZERO
 		observatory_touch_points[event.index]=event.position
-		if observatory_touch_points.size()>=2:
-			var distance=observatory_touch_points.values()[0].distance_to(observatory_touch_points.values()[1])
-			if observatory_pinch_distance>1:cosmos.zoom_observation(observatory_pinch_distance/maxf(1,distance))
-			observatory_pinch_distance=distance
+		if observatory_touch_points.size()==2:
+			var line=finger_line(observatory_touch_points)
+			if minf(line.length(),previous.length())>=MIN_PAIR_SPAN:
+				cosmos.zoom_observation(previous.length()/line.length())
+				cosmos.observation_roll=wrapf(cosmos.observation_roll+previous.angle_to(line),-PI,PI)
 		else:cosmos.rotate_observation(event.relative)
 		return true
 	return false
@@ -599,9 +661,8 @@ func observatory_input(event):
 		if event.button_index==MOUSE_BUTTON_LEFT:observatory_drag=event.pressed
 		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:cosmos.zoom_observation(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1)
 	elif event is InputEventScreenTouch:
-		if event.pressed and not event.canceled and not observatory_over_controls(event.position):
+		if event.pressed and not event.canceled and not observatory_over_controls(event.position) and observatory_touch_points.size()<2:
 			observatory_touch_points[event.index]=event.position;observatory_touch=int(observatory_touch_points.keys()[0])
-			if observatory_touch_points.size()>=2:observatory_pinch_distance=observatory_touch_points.values()[0].distance_to(observatory_touch_points.values()[1])
 func bookmarks(page:int):
 	var ids=learning.data.bookmarks.keys();var box=hud.modal("收藏的词");hud.screen="bookmarks"
 	if ids.is_empty():hud.text(box,"点空心星星，把一个词留在这里。",19)

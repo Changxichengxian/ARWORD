@@ -62,15 +62,10 @@ var ferry_tween:Tween
 var sea_routes
 var avatar:Node3D
 var avatar_tool_homes={}
-var trader:Node3D
-var trader_pose:Node3D
-var trader_arms:Array=[]
-var trader_head:Node3D
-var trader_pile:Node3D
+const Berth=preload("res://scripts/kraken_berth.gd")
+var trader
 var rocket_lamp:Node3D
 var rocket_hatch:Node3D
-var trade_motion=0.0
-var trader_retreat=0.0
 const AvatarScript=preload("res://scripts/avatar.gd")
 const WALK_CLEARANCE=.24
 const NAV_STEP=.24
@@ -144,10 +139,7 @@ func site_at(screen_pos:Vector2)->String:
 			var panel=game.hud.world_progress[id].panel
 			if panel.visible and panel.get_global_rect().has_point(screen_pos):return id
 	var nearest="";var distance=58.0
-	if is_instance_valid(trader) and trader.visible:
-		var face=trader_pose.global_position+trader.global_basis.y*.9
-		if trader.global_basis.y.dot((game.camera.global_position-face).normalized())>.25 and game.camera.unproject_position(face).distance_to(screen_pos)<42:
-			return "rocket"
+	if is_instance_valid(trader) and trader.hit(screen_pos):return "rocket"
 	for id in markers:
 		# A finished place remains selectable for study, without an always-on upgrade sign.
 		if not game.frontier.previewable(id):continue
@@ -203,6 +195,7 @@ func terrain_geometry():
 			var point=surface(p+off);corners.append(point-point.normalized()*(.14 if coast else 0))
 			inside.append(surface(p+off*.88));summit.append(surface(p+off*.60))
 		var region=terrain.kind(cell);var green=Color(IslandTerrain.COLORS[region]);var variant=terrain.variant(cell)
+		if region=="rocket":green=Color("53606F")
 		green=green.lightened(.035*variant) if variant!=1 else green.darkened(.035)
 		var faces=[]
 		for i in range(6):
@@ -212,17 +205,18 @@ func terrain_geometry():
 			for v in [center,summit[j],summit[i]]:st.add_vertex(inv*(v-center))
 			st.set_color(green.darkened(.08 if region in ["quarry","mountain","plateau"] else .035))
 			for v in [summit[i],summit[j],b,summit[i],b,a]:st.add_vertex(inv*(v-center))
-			st.set_color(Color("D7C48B") if boundary[i] and region not in ["quarry","mountain","plateau","crystal"] else green.darkened(.07))
+			st.set_color(Color("666675") if region=="rocket" and boundary[i] else Color("D7C48B") if boundary[i] and region not in ["quarry","mountain","plateau","crystal"] else green.darkened(.07))
 			for v in [a,b,d,a,d,c]:st.add_vertex(inv*(v-center))
 			if boundary[i]:
 				var low_a=c.normalized()*(RADIUS-.55);var low_b=d.normalized()*(RADIUS-.55)
 				var mid_a=c.lerp(low_a,.35);var mid_b=d.lerp(low_b,.35)
-				st.set_color(Color("A3AA98") if region in ["quarry","mountain","plateau","crystal"] else Color("B69B72"))
+				st.set_color(Color("474651") if region=="rocket" else Color("A3AA98") if region in ["quarry","mountain","plateau","crystal"] else Color("B69B72"))
 				for v in [c,d,mid_b,c,mid_b,mid_a]:st.add_vertex(inv*(v-center))
-				st.set_color(Color("768B8D") if region in ["quarry","mountain","plateau","crystal"] else Color("A29174"))
+				st.set_color(Color("343D4F") if region=="rocket" else Color("768B8D") if region in ["quarry","mountain","plateau","crystal"] else Color("A29174"))
 				for v in [mid_a,mid_b,low_b,mid_a,low_b,low_a]:st.add_vertex(inv*(v-center))
 		ground_faces[cell]=faces
 		st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();var material=mat("FFFFFF").duplicate();material.vertex_color_use_as_albedo=true;material.vertex_color_is_srgb=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;n.material_override=material;anchor.add_child(n)
+		if region=="rocket":n.layers=Berth.LAYER
 	if scenery:scenery.queue_free()
 	scenery=Node3D.new();globe.add_child(scenery)
 	# Short, authored approaches to a few useful places. Most land stays wild.
@@ -360,8 +354,8 @@ func decorate_cell(cell:Vector2i,animate:bool):
 		if v!=0:add_resource(1,p+Vector2(.45,.32),1.36,false,region,"gold_ore","gold_ore")
 	elif region=="rocket":
 		if v==2:
-			decor_prop("cliff_rocks",p+Vector2(.32,.48),.50,.25)
-			decor_prop("lantern",p+Vector2(-.42,.55),.76)
+			Berth.isolate(decor_prop("cliff_rocks",p+Vector2(.32,.48),.45,.25))
+			Berth.isolate(decor_prop("lantern",p+Vector2(-.42,.55),.68))
 	elif region=="shore":decor_prop("driftwood",p+Vector2(-.7,.4),.45,.7)
 	var shrubs=0 if region in ["mountain","basalt","crystal","rocket","goldmine","smelter"] else 1 if region in ["plateau","quarry","coral","shipyard"] else 2
 	for i in range(shrubs):
@@ -374,7 +368,7 @@ func setup(owner_node):
 	game=owner_node
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
-	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.shadow_enabled=true;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
+	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
@@ -404,20 +398,13 @@ func setup(owner_node):
 		var visual=model(pair[1],anchor)
 		visual.scale=Vector3.ONE*(1.05 if id=="rocket" else .80)
 		facilities[id]=anchor
-	trader=Node3D.new()
+	trader=Berth.new()
 	globe.add_child(trader)
-	place(trader,IslandFrontier.point(IslandFrontier.ROCKET_CELLS[1]),-.24)
-	trader_pose=model("sea_trader",trader)
-	trader_pose.scale=Vector3.ONE*.79
-	trader_head=trader_pose.find_child("Head",true,false)
-	trader_pile=trader_pose.find_child("CoinPile",true,false)
-	for i in range(6):
-		var arm=trader_pose.find_child("Arm"+str(i),true,false)
-		if arm:trader_arms.append(arm)
+	place(trader,game.frontier.target("rocket"))
+	trader.setup(self)
 	rocket_lamp=facilities.rocket.find_child("ReadyLamp",true,false)
 	rocket_hatch=facilities.rocket.find_child("Hatch",true,false)
-	trader_retreat=1.0 if game.frontier.rocket_open() or game.frontier.data.voyage.paid==IslandFrontier.TRADE_PRICE else 0.0
-	fixed_obstacles.append(trader)
+	fixed_obstacles.append(trader.coin_socket)
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
 	cursor=Node3D.new();globe.add_child(cursor);ring(cursor,1.17,ring_material)
 	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
@@ -744,28 +731,13 @@ func sync_voyage():
 	var open=game.frontier.rocket_open()
 	if rocket_lamp:rocket_lamp.visible=open
 	if rocket_hatch:rocket_hatch.rotation.y=-1.15 if open else 0.0
-	if trader_pile:
-		trader_pile.visible=game.frontier.data.voyage.paid>0 or open
-		trader_pile.scale=Vector3.ONE*lerpf(.48,1.3,float(game.frontier.data.voyage.paid)/IslandFrontier.TRADE_PRICE)
+	trader.sync_state()
 
 func animate_voyage(dt:float):
-	if not is_instance_valid(trader):return
-	var moved=game.frontier.data.voyage.paid>=IslandFrontier.TRADE_PRICE or game.frontier.rocket_open()
-	trader_retreat=move_toward(trader_retreat,1.0 if moved else 0.0,dt*.65)
-	trade_motion=maxf(0,trade_motion-dt)
-	trader_pose.position=Vector3(lerpf(-1.16,-.08,trader_retreat),.04*sin(time*1.18),lerpf(.47,.06,trader_retreat))
-	trader_pose.rotation.y=-.30*trader_retreat+.075*sin(time*.55)
-	if trader_head:
-		trader_head.rotation.x=sin(time*1.6)*.035+sin(trade_motion*6)*trade_motion*.13
-	for i in range(trader_arms.size()):
-		trader_arms[i].rotation.y=sin(time*1.1+i)*(.055+.10*trade_motion)
+	if is_instance_valid(trader):trader.advance(dt)
 
 func receive_coins(amount:int):
-	trade_motion=1.35
-	var here=trader.transform*trader_pose.position
-	var normal=here.normalized()
-	var side=trader.basis.x
-	send_material(here+normal*.5+side*.96,here+normal*.29,"gold_coin",mini(6,amount),.46)
+	trader.receive(amount)
 	sync_voyage()
 
 func test_rocket_engine():

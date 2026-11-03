@@ -4,6 +4,7 @@ var failed=0
 var game
 var output=""
 func _initialize():
+	if not "--qa" in OS.get_cmdline_user_args():push_error("QA_REQUIRED: archipelago");quit(2);return
 	if DisplayServer.get_name()!="headless":DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_NO_FOCUS,true)
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--visual-out="):output=arg.trim_prefix("--visual-out=")
@@ -50,9 +51,40 @@ func test_data():
 		for offset in [Vector2.ZERO,Vector2(.48,.31),Vector2(-.61,.33),Vector2(.12,-.71)]:
 			var q=p+offset;roundtrip=maxf(roundtrip,terrain.coordinates(terrain.point(q)).distance_to(q))
 	check(counts==[39,6,6,3,3],"gold ore has its own island; the final berth is on an independent fifth chart")
-	check(terrain.point(IslandFrontier.point(Vector2i.ZERO)).normalized().dot(terrain.point(IslandFrontier.point(Vector2i(-20,0))).normalized())<-.5,"new land reaches the opposite hemisphere instead of the original pole")
+	test_mint_and_tidal_geography(terrain,frontier)
 	check(roundtrip<.003,"all 57 tile centres and nearby points round-trip between chart and globe")
 	print("MAX_CHART_ROUNDTRIP ",roundtrip)
+
+func test_mint_and_tidal_geography(terrain:IslandTerrain,frontier:IslandFrontier):
+	var worst=1.0
+	for cell in frontier.chapter("smelter").cells:
+		var p=IslandFrontier.point(cell)
+		var shortest=INF
+		var longest=0.0
+		for side in range(6):
+			var a=terrain.point(p+terrain.corner_offset(side))
+			var b=terrain.point(p+terrain.corner_offset((side+1)%6))
+			shortest=minf(shortest,a.distance_to(b))
+			longest=maxf(longest,a.distance_to(b))
+		worst=maxf(worst,longest/shortest)
+	check(worst<1.2,"even the outermost mint tile retains six similarly sized ground edges")
+	var tide=sample_edges(terrain,frontier.chapter("tideworks").cells)
+	var launch_island=sample_edges(terrain,IslandFrontier.ROCKET_CELLS)
+	var gap=INF
+	for a in tide:
+		for b in launch_island:gap=minf(gap,a.angle_to(b)*IslandTerrain.RADIUS)
+	check(gap>12.0,"the closest tidal and launch-island edges leave a wide open sea")
+	print("MINT_EDGE_RATIO ",worst," TIDE_ROCKET_EDGE_GAP ",gap)
+
+func sample_edges(terrain:IslandTerrain,cells:Array)->Array[Vector3]:
+	var result:Array[Vector3]=[]
+	for cell in cells:
+		var p=IslandFrontier.point(cell)
+		for side in range(6):
+			var a=p+terrain.corner_offset(side)
+			var b=p+terrain.corner_offset((side+1)%6)
+			for i in range(10):result.append(terrain.point(a.lerp(b,i/10.0)).normalized())
+	return result
 func test_geometry(world):
 	var missing=0;var max_error=0.0
 	for cell in world.land:

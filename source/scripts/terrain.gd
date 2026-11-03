@@ -4,7 +4,7 @@ class_name IslandTerrain
 const RADIUS=12.0
 const H=1.34
 const CHART_CELLS=[Vector2i(0,0),Vector2i(20,0),Vector2i(-20,0),Vector2i(0,20),Vector2i(0,-20)]
-const CHART_NORMALS=[Vector3.UP,Vector3(-.88,.08,.47),Vector3(.45,-.63,-.63),Vector3(-.65,-.42,-.63),Vector3(0,-1,0)]
+const CHART_NORMALS=[Vector3.UP,Vector3(-.88,.08,.47),Vector3(.95,-.06,.30),Vector3(-.65,-.42,-.63),Vector3(0,-1,0)]
 var cells={}
 var corners={}
 const HEIGHTS={
@@ -61,21 +61,31 @@ func height_at(p:Vector2)->float:
 	# Flat usable summit, sloped shoulders; shared corner heights keep neighboring hexes joined.
 	return lerpf(h,edge,clampf((radial-.60)/.40,0,1))
 func point(p:Vector2)->Vector3:
-	var chart=chart_at(p);var local=p-IslandFrontier.point(CHART_CELLS[chart])
-	var base=Vector3(local.x,sqrt(maxf(.1,RADIUS*RADIUS-local.length_squared())),local.y)
-	return chart_basis(chart)*base.normalized()*(RADIUS+height_at(p))
+	var chart=chart_at(p)
+	var local=p-IslandFrontier.point(CHART_CELLS[chart])
+	# Local distances out from the chart centre are arc lengths on the sphere.
+	# This keeps even the outer mint coast regular, without a projection horizon.
+	var distance=local.length()
+	var angle=distance/RADIUS
+	var lateral=local*(sin(angle)/distance) if distance>.000001 else Vector2.ZERO
+	var normal=Vector3(lateral.x,cos(angle),lateral.y)
+	return chart_basis(chart)*normal*(RADIUS+height_at(p))
+
+func chart_coordinates(chart:int,normal:Vector3)->Vector2:
+	var local=chart_basis(chart).inverse()*normal
+	var lateral=Vector2(local.x,local.z)
+	var arc=RADIUS*atan2(lateral.length(),local.y)
+	return IslandFrontier.point(CHART_CELLS[chart])+lateral.normalized()*arc
 func coordinates(p:Vector3)->Vector2:
 	var normal=p.normalized();var chart=0;var facing=-INF
 	for i in range(CHART_NORMALS.size()):
 		var dot=normal.dot(CHART_NORMALS[i].normalized())
 		if dot>.15:
-			var local=chart_basis(i).inverse()*normal*RADIUS
-			var candidate=Vector2(local.x,local.z)+IslandFrontier.point(CHART_CELLS[i])
+			var candidate=chart_coordinates(i,normal)
 			var r=candidate.y/(1.5*H);var q=candidate.x/(sqrt(3.0)*H)-r*.5;var s=-q-r
 			var iq=roundi(q);var ir=roundi(r);var iz=roundi(s)
 			if absf(iq-q)>absf(ir-r) and absf(iq-q)>absf(iz-s):iq=-ir-iz
 			elif absf(ir-r)>absf(iz-s):ir=-iq-iz
 			if cells.has(Vector2i(iq,ir)):return candidate
 		if dot>facing:facing=dot;chart=i
-	var base=chart_basis(chart).inverse()*normal*RADIUS
-	return Vector2(base.x,base.z)+IslandFrontier.point(CHART_CELLS[chart])
+	return chart_coordinates(chart,normal)
