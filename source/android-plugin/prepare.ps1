@@ -21,7 +21,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::ExtractToDirectory($template,$build)
 $javaPkg = Join-Path $build 'src/io/github/changxichengxian/arword'
 New-Item -ItemType Directory -Force -Path $javaPkg | Out-Null
-foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java')) {
+foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java','SafeViewport.java')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot ('src/io/github/changxichengxian/arword/' + $name)) -Destination $javaPkg
 }
 if($UpdateRepository -notmatch '^[A-Za-z0-9-]+/[A-Za-z0-9_.-]+$'){throw '更新仓库必须写成 owner/repo。'}

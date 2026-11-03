@@ -42,6 +42,9 @@ public final class PlanetUpdates extends GodotPlugin {
     private int targetCode;
     private boolean delta;
     private final Map<String,URL> assetApi = new HashMap<>();
+    private final SafeViewport viewportInsets = new SafeViewport();
+    @Override public void onMainResume() { viewportInsets.attach(getActivity()); }
+    @UsedByGodot public float[] safe_viewport_insets() { return viewportInsets.fractions(); }
     public PlanetUpdates(Godot godot) { super(godot); }
     @Override public String getPluginName() { return "PlanetUpdates"; }
     @UsedByGodot public String update_state() { return status; }
@@ -232,5 +235,5 @@ public final class PlanetUpdates extends GodotPlugin {
             runOnHostThread(this::launchInstaller);
         } else if (requestCode==INSTALLER) report("install","已下载安装包，可再次安装");
     }
-    @Override public void onMainDestroy() { dead=true; worker.shutdownNow(); }
+    @Override public void onMainDestroy() { dead=true; viewportInsets.detach(); worker.shutdownNow(); }
 }

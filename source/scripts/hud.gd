@@ -55,21 +55,23 @@ func divider(parent:Node):
 func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var theme_new=Theme.new();theme_new.default_font=game.font;theme_new.default_font_size=20;theme=theme_new
+	safe_frame=Control.new();safe_frame.name="SafeContent";safe_frame.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	add_child(safe_frame);safe_frame.clip_contents=true
+	refresh_safe_area();get_viewport().size_changed.connect(refresh_safe_area)
 	for id in game.world.markers:add_world_progress(id)
-	header=MarginContainer.new();add_child(header);header.anchor_right=1
-	layout_toolbar();get_viewport().size_changed.connect(layout_toolbar)
-	call_deferred("layout_toolbar")
+	header=MarginContainer.new();safe_frame.add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
 	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
 	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"阅读"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
 	if not game.learning.wordbooks.books.is_empty():
 		var books=icon(top,"books",game.show_wordbooks,"词书");top.move_child(books,1)
-	toast_label=text(self,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	clock_label=text(self,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.135;clock_label.anchor_bottom=.135;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	toast_label=text(safe_frame,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	clock_label=text(safe_frame,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.135;clock_label.anchor_bottom=.135;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label.add_theme_color_override("font_shadow_color",Color(.01,.025,.05,.75));clock_label.add_theme_constant_override("shadow_offset_x",1);clock_label.add_theme_constant_override("shadow_offset_y",2);clock_label.add_theme_constant_override("shadow_outline_size",3)
-	sites=HBoxContainer.new();add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
+	sites=HBoxContainer.new();safe_frame.add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
 	sites.hide()
-	card=PanelContainer.new();add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
-	card.add_theme_stylebox_override("panel",skin(CREAM,26));body=VBoxContainer.new();body.add_theme_constant_override("separation",6);card.add_child(body)
+	card=PanelContainer.new();safe_frame.add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
+	card.add_theme_stylebox_override("panel",skin(CREAM,26));var scrolling=ScrollContainer.new();scrolling.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;card.add_child(scrolling)
+	body=VBoxContainer.new();body.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",6);scrolling.add_child(body)
 	card.grow_vertical=Control.GROW_DIRECTION_BEGIN
 	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
 	sync_goal()
@@ -81,7 +83,7 @@ func layout_card(height:float):
 	position_card(card_shift)
 	sites.offset_top=-height-80;sites.offset_bottom=-height-30
 func position_card(shift:float):
-	card_shift=shift;card.offset_top=-card_height-20+shift;card.offset_bottom=-20+shift
+	card_shift=shift;card.offset_top=-minf(card_height,maxf(1,safe_rect.size.y-98))-20+shift;card.offset_bottom=-20+shift
 func set_card_open(open:bool,animate=true):
 	if card_tween and card_tween.is_valid():card_tween.kill()
 	card_open=open
@@ -92,21 +94,32 @@ func set_card_open(open:bool,animate=true):
 	card_tween.tween_method(position_card,card_shift,0.0 if open else 48.0,.32 if open else .28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT if open else Tween.EASE_IN_OUT)
 	card_tween.tween_property(card,"modulate:a",1.0 if open else 0.0,.26)
 	if not open:card_tween.chain().tween_callback(func():if not card_open:card.hide())
+signal safe_rect_changed(rect:Rect2)
+const SafeArea=preload("res://scripts/safe_area.gd")
+var safe_frame:Control
+var safe_rect=Rect2()
+var layout_timer=0.
+var active_panel:PanelContainer
+var active_center:Container
+var active_scroll:ScrollContainer
+var active_box:VBoxContainer
 var header:MarginContainer
-func layout_toolbar():
-	header.offset_left=22;header.offset_right=-22;header.offset_top=24
-	if not OS.has_feature("android"):return
-	var extent=Vector2(DisplayServer.window_get_size())
-	var screen_origin=Vector2(DisplayServer.window_get_position())
-	var safe=Rect2(DisplayServer.get_display_safe_area())
-	var scale_factor=get_viewport_rect().size/extent.max(Vector2.ONE)
-	var top_edge=maxf(0,safe.position.y-screen_origin.y)
-	for cutout in DisplayServer.get_display_cutouts():
-		var edge=cutout.end.y-screen_origin.y
-		if cutout.position.y-screen_origin.y<extent.y*.12:top_edge=maxf(top_edge,edge)
-	header.offset_top=maxf(40,top_edge*scale_factor.y+9)
-	header.offset_left=maxf(22,(safe.position.x-screen_origin.x)*scale_factor.x+8)
-	if safe.has_area():header.offset_right=-maxf(22,(screen_origin.x+extent.x-safe.end.x)*scale_factor.x+8)
+func refresh_safe_area():
+	apply_safe_rect(SafeArea.current(get_viewport()))
+
+func apply_safe_rect(rect:Rect2):
+	if not rect.has_area() or (rect.is_equal_approx(safe_rect) and safe_frame.size.is_equal_approx(rect.size)):return
+	safe_rect=rect;safe_frame.position=rect.position;safe_frame.size=rect.size
+	if is_instance_valid(card):position_card(card_shift)
+	if is_instance_valid(active_panel):fit_modal()
+	safe_rect_changed.emit(rect)
+
+func fit_modal():
+	if not is_instance_valid(active_center) or active_center.is_queued_for_deletion():return
+	var rect=safe_rect.grow_individual(-18,-12,-18,-20)
+	active_panel.custom_minimum_size.x=rect.size.x
+	active_scroll.custom_minimum_size.y=clampf(active_box.get_combined_minimum_size().y,1,maxf(1,rect.size.y-24))
+	active_center.position=rect.position;active_center.size=rect.size
 
 func sync_goal():
 	for id in world_progress:
@@ -126,7 +139,7 @@ func sync_goal():
 		item.stepbar.visible=item.small.visible;item.stepbar.value=part
 	update_world_progress()
 func add_world_progress(id:String):
-	var panel=PanelContainer.new();panel.name="WorldProgress_"+id;panel.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(panel)
+	var panel=PanelContainer.new();panel.name="WorldProgress_"+id;panel.mouse_filter=Control.MOUSE_FILTER_IGNORE;safe_frame.add_child(panel)
 	var background=skin(Color(.08,.20,.26,.88),9);background.content_margin_left=8;background.content_margin_right=8;background.content_margin_top=5;background.content_margin_bottom=5;background.shadow_size=2;panel.add_theme_stylebox_override("panel",background)
 	var box=VBoxContainer.new();box.add_theme_constant_override("separation",3);panel.add_child(box)
 	var line=row(box);line.add_theme_constant_override("separation",6)
@@ -150,10 +163,10 @@ func update_world_progress():
 		if normal.dot((game.camera.global_position-marker.global_position).normalized())<.20:panel.hide();continue
 		var point=game.world.progress_anchor(id)
 		if game.camera.is_position_behind(point):panel.hide();continue
-		panel.reset_size();panel.position=game.camera.unproject_position(point)-Vector2(panel.size.x*.5,panel.size.y+8)
-		var bottom=card.position.y-8 if card.visible else size.y-8
+		panel.reset_size();panel.position=game.camera.unproject_position(point)-safe_rect.position-Vector2(panel.size.x*.5,panel.size.y+8)
+		var bottom=card.position.y-8 if card.visible else safe_rect.size.y-8
 		# Never pin a label to the screen edge: it belongs to the object below it.
-		if panel.position.x<5 or panel.position.x+panel.size.x>size.x-5 or panel.position.y<86 or panel.position.y+panel.size.y>bottom:panel.hide()
+		if panel.position.x<5 or panel.position.x+panel.size.x>safe_rect.size.x-5 or panel.position.y<86 or panel.position.y+panel.size.y>bottom:panel.hide()
 
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -236,11 +249,15 @@ func pulse_word():
 func modal(title:String,bottom=false,dim=true)->VBoxContainer:
 	for child in overlay.get_children():child.hide();child.queue_free()
 	overlay.color.a=.66 if dim else 0.0;overlay.show()
-	var center=MarginContainer.new() if bottom else CenterContainer.new();center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.add_child(center)
-	if bottom:center.offset_left=18;center.offset_right=-18;center.offset_bottom=-20
-	var panel=PanelContainer.new();panel.custom_minimum_size.x=maxf(280,size.x-36);panel.add_theme_stylebox_override("panel",skin(CREAM,24));center.add_child(panel)
+	var center=MarginContainer.new() if bottom else CenterContainer.new()
+	overlay.add_child(center);active_center=center
+	var panel=PanelContainer.new();panel.add_theme_stylebox_override("panel",skin(CREAM,24));center.add_child(panel)
 	if bottom:panel.size_flags_vertical=Control.SIZE_SHRINK_END
-	var box=VBoxContainer.new();box.add_theme_constant_override("separation",12);panel.add_child(box)
+	active_panel=panel
+	active_scroll=ScrollContainer.new();active_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;panel.add_child(active_scroll)
+	var box=VBoxContainer.new();box.size_flags_horizontal=Control.SIZE_EXPAND_FILL;box.add_theme_constant_override("separation",12);active_scroll.add_child(box)
+	active_box=box;box.minimum_size_changed.connect(fit_modal,CONNECT_DEFERRED)
+	fit_modal()
 	if not title.is_empty():text(box,title,26)
 	return box
 func parameter(parent:Node,label:String,key:String,limits:Vector2):
@@ -269,6 +286,9 @@ func reading(parent:Node,value:String,height=235,font_size=21):
 	rich.text=result+value.substr(last);parent.add_child(rich);rich.meta_clicked.connect(func(word):game.lookup(str(word)))
 func toast(value:String):toast_label.text=value;toast_timer=2.8
 func _process(dt):
+	if OS.has_feature("android"):
+		layout_timer-=dt
+		if layout_timer<=0.:layout_timer=.35;refresh_safe_area()
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
 	clock_label.visible=game.exploring and not overlay.visible

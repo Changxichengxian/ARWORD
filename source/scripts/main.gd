@@ -262,7 +262,7 @@ func resume_collect():
 	elif mode=="word" and (learning.data.listen or learning.data.speech):speak_word()
 func recenter():world.recenter()
 func world_area(p:Vector2)->bool:
-	return p.y>86 and p.y<hud.size.y-4 and (not hud.card.visible or not hud.card.get_global_rect().has_point(p))
+	return hud.safe_rect.has_point(p) and p.y>hud.safe_rect.position.y+86 and p.y<hud.safe_rect.end.y-4 and (not hud.card.visible or not hud.card.get_global_rect().has_point(p))
 func tap_world(p:Vector2):
 	var id=world.site_at(p)
 	if not exploring:
@@ -479,7 +479,7 @@ func show_avatar_settings():
 func space_settings():
 	if not exploring:explore()
 	speech.stop();var box=hud.modal("星空与星云",true,false);hud.screen="space_settings"
-	box.add_theme_constant_override("separation",7)
+	box.add_theme_constant_override("separation",4)
 	for item in [["星云浓度","nebula"],["色彩强度","color"],["星云范围","band"],["星星密度","stars"],["漂移速度","drift"]]:hud.parameter(box,item[0],item[1],IslandLearning.SPACE_LIMITS[item[1]])
 	hud.ghost(box,"中心天体 · "+("黑洞" if learning.data.black_hole else "太阳"),toggle_central_body,40)
 	var line=hud.row(box);hud.ghost(line,"恢复默认",reset_space_settings,42);hud.ghost(line,"换片星空",cosmos.randomize_sky,42);hud.button(line,"完成",hud.close,true,42)
@@ -680,7 +680,9 @@ func open_observatory(primary=false):
 	cosmos.primary_close=primary;cosmos.update_observation_quality()
 	reset_observatory_input();observatory_hud_visible=hud.visible;hud.hide()
 	observatory_layer=CanvasLayer.new();observatory_layer.layer=5;add_child(observatory_layer)
-	var root=Control.new();root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.mouse_filter=Control.MOUSE_FILTER_IGNORE;observatory_layer.add_child(root)
+	var root=Control.new();root.mouse_filter=Control.MOUSE_FILTER_IGNORE;observatory_layer.add_child(root)
+	root.position=hud.safe_rect.position;root.size=hud.safe_rect.size
+	hud.safe_rect_changed.connect(layout_observation_ui)
 	var margin=MarginContainer.new();root.add_child(margin);margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE);margin.add_theme_constant_override("margin_left",16);margin.add_theme_constant_override("margin_right",16);margin.add_theme_constant_override("margin_top",20)
 	var bar=HBoxContainer.new();margin.add_child(bar);bar.add_theme_constant_override("separation",8)
 	var back_button=hud.icon(bar,"close",close_observatory,"返回星球");back_button.custom_minimum_size=Vector2(44,44)
@@ -690,9 +692,15 @@ func open_observatory(primary=false):
 	for i in range(options.size()):
 		var button=hud.button(bar,str(options[i].title),select_observation.bind(i),false,44)
 		button.add_theme_font_override("font",font);button.add_theme_font_size_override("font_size",14)
+func layout_observation_ui(rect:Rect2):
+	if is_instance_valid(observatory_layer) and observatory_layer.get_child_count()>0:
+		var controls=observatory_layer.get_child(0)
+		controls.position=rect.position;controls.size=rect.size
+
 func select_observation(index:int):
 	reset_observatory_input();cosmos.select_observation_target(index)
 func close_observatory():
+	if hud.safe_rect_changed.is_connected(layout_observation_ui):hud.safe_rect_changed.disconnect(layout_observation_ui)
 	cosmos.leave_observatory();reset_observatory_input()
 	if is_instance_valid(observatory_layer):observatory_layer.queue_free()
 	observatory_layer=null;hud.visible=observatory_hud_visible
