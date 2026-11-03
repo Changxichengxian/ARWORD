@@ -86,26 +86,8 @@ for side,sign in [('L',-1),('R',1)]:
     mesh('gold patch',[(sign*.09,.08,.003),(sign*.18,.18,.024),(sign*.24,.13,.019),(sign*.18,.045,.013)],[(0,1,2,3),(3,2,1,0)],gold,wing)
 export('wild_butterfly',[body,*wings])
 
-# A gentle original miniature whale. Flippers, tail stock and flukes are separate pivots.
-whale_blue=material('whale blue','528DA6');whale_light=material('whale pale belly','B7DDDF');whale_dark=material('whale eyes','24465C')
-clean();root=node('Whale');body=node('Body',root)
-ico('round trunk',(0,.12,0),(.52,1.02,.46),whale_blue,body,2)
-ico('broad head',(0,.82,.015),(.49,.52,.41),whale_blue,body,2)
-ico('pale underside',(0,.21,-.19),(.425,.93,.28),whale_light,body,2)
-ico('tail taper',(0,-.73,-.025),(.31,.49,.26),whale_blue,body,2)
-for x in [-.46,.46]:
-    ico('eye',(x,.79,.095),(.044,.051,.045),whale_dark,body,2)
-    ico('eye glint',(x*1.035,.804,.11),(.012,.015,.012),cream,body,1)
-ico('blowhole',(0,.71,.398),(.042,.075,.016),whale_dark,body,1)
-node('Blowhole',root,(0,.71,.42))
-mesh('small dorsal fin',[(0,-.35,.35),(0,-.54,.63),(0,-.72,.33),(.045,-.46,.38)],[(0,1,3),(1,2,3),(2,0,3),(0,2,1)],whale_blue,body)
-flippers=[]
-for side,sign in [('L',-1),('R',1)]:
-    fin=node('Flipper'+side,root,(sign*.37,.30,-.10));flippers.append(fin)
-    mesh('rounded flipper',[(0,.13,.01),(sign*.23,.03,-.04),(sign*.73,-.49,-.14),(sign*.65,-.64,-.16),(sign*.22,-.36,-.055),(0,-.18,0),(sign*.30,-.20,-.13)],[(0,1,6),(1,2,6),(2,3,6),(3,4,6),(4,5,6),(5,0,6),(5,4,3,2,1,0)],whale_blue,fin)
-tail=node('Tail',root,(0,-.91,-.03))
-ico('tail stock',(0,-.29,0),(.18,.45,.17),whale_blue,tail,2)
-fluke=node('Fluke',tail,(0,-.65,.01))
-mesh('broad flukes',[(0,.10,.01),(-.30,.10,.03),(-.70,-.10,.01),(-.74,-.28,-.03),(-.30,-.24,-.03),(0,-.10,.01),(.30,-.24,-.03),(.74,-.28,-.03),(.70,-.10,.01),(.30,.10,.03),(0,-.06,-.06)],[(0,1,2,10),(2,3,4,10),(4,5,10),(5,6,7,10),(7,8,9,10),(9,0,10),(0,9,8,7,6,5,4,3,2,1)],whale_blue,fluke)
-export('wild_whale',[body,tail,fluke,*flippers])
+# Keep the current blue-whale generator as the single source of truth.
+if not ONLY or 'wild_whale' in ONLY:
+    import runpy
+    runpy.run_path(str(Path(__file__).with_name('make_blue_whale.py')),run_name='__main__')
 print('WILDLIFE_ASSETS_READY: wild_bird, wild_fish, wild_butterfly, wild_whale')

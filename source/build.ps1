@@ -21,13 +21,21 @@ $buildRoot=Join-Path $OutputDirectory ("build-"+[guid]::NewGuid().ToString('N'))
 $stage=Join-Path $buildRoot "project"
 $engine=Join-Path $buildRoot "engine"
 New-Item -ItemType Directory -Force -Path $stage,$engine,(Join-Path $engine "editor_data") | Out-Null
-foreach($name in @("assets","scripts","project.godot","main.tscn","export_presets.cfg")) {
+foreach($name in @("assets","scripts","project.godot","main.tscn","export_presets.cfg","android-plugin")) {
     Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $stage -Recurse
 }
 $inputs=Get-ChildItem -LiteralPath $stage -Recurse -File | ForEach-Object {
     [pscustomobject]@{path=$_.FullName.Substring($stage.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
 }
 $inputs | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $OutputDirectory 'source-inputs-sha256.json') -Encoding utf8
+# Reuse only imported resources; Godot still validates each source/settings hash.
+$warmImport=Join-Path $projectRoot '.godot/imported'
+if(Test-Path -LiteralPath $warmImport){
+    New-Item -ItemType Directory -Force -Path (Join-Path $stage '.godot') | Out-Null
+    Copy-Item -LiteralPath $warmImport -Destination (Join-Path $stage '.godot/imported') -Recurse
+}
+& (Join-Path $stage 'android-plugin/prepare.ps1') -Stage $stage -Templates $Templates -AndroidSdk $AndroidSdk
+Copy-Item -LiteralPath (Join-Path $buildRoot 'android-build-dependencies.json') -Destination (Join-Path $OutputDirectory 'android-build-dependencies.json')
 # Isolate editor settings so building does not rewrite the developer's existing Godot settings.
 $binaryDir=Split-Path $Godot
 Get-ChildItem -LiteralPath $binaryDir -Filter 'Godot*win64*.exe' | Copy-Item -Destination $engine
@@ -54,7 +62,7 @@ $preset | Set-Content -LiteralPath (Join-Path $stage 'export_presets.cfg') -Enco
 $log=Join-Path $OutputDirectory 'build.log'
 $unsigned=Join-Path $buildRoot 'unsigned.apk'
 $aligned=Join-Path $buildRoot 'aligned.apk'
-$apk=Join-Path $OutputDirectory '词屿-0.10.0.apk'
+$apk=Join-Path $OutputDirectory '词屿-0.11.0.apk'
 Write-Host '导入三维资源……'
 & $engineExe --headless --editor --path $stage --import *> $log
 if($LASTEXITCODE -ne 0){throw "导入失败，请看 $log"}

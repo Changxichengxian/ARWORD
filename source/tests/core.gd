@@ -13,7 +13,10 @@ func fits()->bool:
 	return rect.position.y>=300 and rect.end.y<=game.hud.size.y+1 and rect.end.x<=game.hud.size.x+1 and game.hud.sites.get_global_rect().end.y<=rect.position.y
 func set_mode(mode:String,note=0):
 	for c in IslandFrontier.CHAPTERS:game.frontier.data.progress[c.id]=c.need
-	var id=IslandFrontier.BUILD_IDS[note/4] if note<12 else IslandFrontier.CHAPTERS[[0,2,4,3,5][note-12]].id
+	var id=IslandFrontier.BUILD_IDS[note/4] if note<12 else "grove"
+	if note>=12:
+		for chapter in IslandFrontier.CHAPTERS:
+			if int(chapter.note)==note-12:id=chapter.id;break
 	game.frontier.choose(id)
 	game.frontier.data.turns[id]=(note%4)*6+IslandLearning.MODES.find(mode) if note<12 else IslandLearning.MODES.find(mode)
 	game.next_task()
@@ -21,7 +24,7 @@ func run():
 	game=load("res://main.tscn").instantiate();root.add_child(game);await settle();game.resume_collect()
 	check(game.qa,"save isolation")
 	check(ProjectSettings.get_setting("display/window/handheld/orientation")==1,"portrait app orientation")
-	check(game.learning.bank.size()==96 and game.notes.size()==12 and game.frontier_notes.size()==5,"96 curated words and 17 contextual work notes")
+	check(game.learning.bank.size()==96 and game.notes.size()==12 and game.frontier_notes.size()==10,"96 curated words and 22 contextual work notes")
 	var m=IslandLearning.new();m.select_book("cet4");m.rng.seed=1
 	m.data.words["retain"]={"seen":1,"correct":0,"strength":0,"last":1,"due":2,"helped":1}
 	check(m.next_word(1000).id=="retain","due review precedes unseen word")
@@ -68,10 +71,10 @@ func run():
 		check(f.available(c.id),"expansion dependencies can be reached: "+c.id)
 		f.choose(c.id)
 		for i in range(c.need):f.advance()
-	check(f.cells().size()==33 and f.finished_count()==10,"ten bounded chapters grow three starting tiles into thirty-three")
+	check(f.cells().size()==48 and f.finished_count()==15,"fifteen bounded chapters grow three starting tiles into forty-eight")
 	var fixed=f.cells().size();f.advance();check(f.cells().size()==fixed,"completed land never creates endless new requirements")
 	var retained=IslandLearning.new();retained.accept_save(JSON.parse_string(JSON.stringify(f.learning.data)));var ff=IslandFrontier.new(retained)
-	check(ff.cells().size()==33 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
+	check(ff.cells().size()==48 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
 	check(not game.hud.sites.visible and game.hud.site_buttons.is_empty(),"fixed three-building navigation is absent")
 	var before=game.learning.data.actions;game.current=game.learning.by_id.retain;game.order=[0,1,2,3];game.hud.show_task();game.answer(game.current.correct);game.answer(game.current.correct)
 	check(game.learning.data.actions==before+1,"double tap cannot collect twice")
@@ -178,7 +181,7 @@ func run():
 	check(all_fit,"all 96 word cards fit compact portrait screen")
 	check(help_fit,"all 96 explanations fit compact portrait screen")
 	var context_fit=true
-	for i in range(17):
+	for i in range(22):
 		for mode in ["read","listen","sentence"]:
 			set_mode(mode,i)
 			for assisted in [false,true]:

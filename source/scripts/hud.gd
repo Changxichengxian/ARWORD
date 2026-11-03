@@ -94,7 +94,7 @@ func sync_goal():
 	for id in world_progress:
 		var item=world_progress[id];var p=game.frontier.progress(id);var selected=id==game.frontier.data.active
 		var ready=game.frontier.available(id);var done=game.frontier.done(id)
-		item.title.text=game.frontier.title(id).trim_suffix(" · 自由照料")
+		item.title.text=game.frontier.facility_title(id) if done else game.frontier.title(id).trim_suffix(" · 自由照料")
 		if not ready:
 			var chapter=game.frontier.chapter(id)
 			if chapter.has("gate"):p=Vector2(game.frontier.gate_count(chapter.gate),chapter.threshold)
@@ -139,6 +139,7 @@ func update_world_progress():
 
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	if game.frontier.data.active=="mountain" and game.frontier.done("mountain"):icon(r,"telescope",game.open_observatory,"观测星云")
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
 	return r
 func show_task():
@@ -150,7 +151,7 @@ func show_task():
 		"listen":show_listen()
 		"sentence":show_sentence()
 func show_word():
-	layout_card(365);var q=game.current;var r=task_heading("听音 · 采集" if game.learning.data.listen else "回忆 · 采集")
+	layout_card(365);var q=game.current;var r=task_heading(("听音 · " if game.learning.data.listen else "回忆 · ")+str(game.world.production_route.get("name","采集")))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
 	word_label=ghost(body,"点一下，再听一遍" if game.learning.data.listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if game.learning.data.listen else 34)
 	if not game.learning.data.listen:

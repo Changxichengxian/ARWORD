@@ -14,8 +14,37 @@ const CHAPTERS=[
 	{"id":"hill","title":"向风的小丘","need":6,"requires":["quarry"],"cells":[Vector2i(1,1),Vector2i(1,2),Vector2i(1,3)],"point":Vector2i(1,2),"site":1,"note":3},
 	{"id":"wetland","title":"芦苇浅湾","need":8,"requires":["meadow"],"cells":[Vector2i(-2,2),Vector2i(-3,2),Vector2i(-3,3)],"point":Vector2i(-3,2),"site":0,"note":3,"gate":"wood","threshold":8},
 	{"id":"plateau","title":"石脊高原","need":10,"requires":["quarry"],"cells":[Vector2i(3,-2),Vector2i(4,-2),Vector2i(4,-1)],"point":Vector2i(4,-2),"site":1,"note":0,"gate":"stone","threshold":10},
-	{"id":"mountain","title":"云杉山地","need":12,"requires":["plateau","hill"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0,"gate":"explore","threshold":12}
+	{"id":"mountain","title":"云杉观星台","need":12,"requires":["plateau","hill","crystal"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0,"gate":"explore","threshold":12},
+	{"id":"shipyard","title":"弯月船坞","need":12,"requires":["sawmill","kiln","wetland","plateau"],"cells":[Vector2i(-3,0),Vector2i(-3,1),Vector2i(-4,1)],"point":Vector2i(-3,1),"site":0,"note":5},
+	{"id":"sunreach","title":"椰风群岛","need":10,"requires":["shipyard"],"cells":[Vector2i(20,0),Vector2i(21,0),Vector2i(20,1)],"point":Vector2i(20,0),"site":0,"note":6},
+	{"id":"coral","title":"潮光玻璃坊","need":12,"requires":["sunreach","crystal"],"cells":[Vector2i(19,1),Vector2i(19,2),Vector2i(20,2)],"point":Vector2i(19,1),"site":1,"note":7},
+	{"id":"basalt","title":"黑沙熔岩台","need":10,"requires":["shipyard","plateau"],"cells":[Vector2i(-20,0),Vector2i(-21,1),Vector2i(-20,1)],"point":Vector2i(-20,0),"site":1,"note":8},
+	{"id":"tideworks","title":"潮汐引水站","need":12,"requires":["basalt","sunreach","wetland"],"cells":[Vector2i(-19,0),Vector2i(-19,-1),Vector2i(-20,-1)],"point":Vector2i(-19,0),"site":2,"note":9}
 ]
+const PRODUCTION={
+	"grove":{"name":"木料","raw":"timber","product":"timber","tool":0},
+	"quarry":{"name":"切石","raw":"ore","product":"brick","tool":1},
+	"sawmill":{"name":"木板","raw":"timber","product":"plank","tool":0},
+	"meadow":{"name":"果粮","raw":"fruit_crate","product":"fruit_crate","tool":0},
+	"kiln":{"name":"砖块","raw":"ore","product":"brick","tool":1},
+	"crystal":{"name":"镜片","raw":"crystal","product":"lens","tool":1},
+	"hill":{"name":"清水","raw":"water_jar","product":"water_jar","tool":0},
+	"wetland":{"name":"帆布","raw":"reed_bundle","product":"sailcloth","tool":0},
+	"plateau":{"name":"铁件","raw":"iron_ore","product":"metal_brace","tool":1},
+	"mountain":{"name":"观星","raw":"lens","product":"lens","tool":1},
+	"shipyard":{"name":"航线","raw":"plank","product":"plank","tool":0},
+	"sunreach":{"name":"硬木","raw":"hardwood","product":"hardwood","tool":0},
+	"coral":{"name":"海玻璃","raw":"sea_glass","product":"lens","tool":1},
+	"basalt":{"name":"耐水石管","raw":"basalt_ore","product":"stone_pipe","tool":1},
+	"tideworks":{"name":"引水","raw":"water_jar","product":"water_jar","tool":0}
+}
+const RECIPES={
+	"sawmill":["grove","quarry"],"kiln":["quarry","sawmill"],"crystal":["kiln","plateau"],
+	"wetland":["grove","meadow"],"plateau":["quarry","sawmill"],"mountain":["crystal","plateau","sawmill"],
+	"shipyard":["sawmill","wetland","plateau","kiln"],"sunreach":["shipyard","wetland","sawmill"],
+	"coral":["sunreach","crystal","kiln"],"basalt":["plateau","sawmill"],"tideworks":["basalt","sunreach","wetland"],
+	"cottage":["sawmill","kiln","grove"],"windmill":["plateau","sawmill","quarry"],"garden":["hill","meadow","tideworks"]
+}
 const BUILD_IDS=["cottage","windmill","garden"]
 const BUILD_CELLS=[Vector2i(1,0),Vector2i(1,3),Vector2i(-1,3)]
 const BUILD_GATES=["","hill","meadow"]
@@ -25,10 +54,10 @@ var data:Dictionary
 func _init(owner_learning:IslandLearning):
 	learning=owner_learning
 	var stored=learning.data.frontier
-	data={"active":"grove","progress":{},"turns":{},"effort":{}}
+	data={"active":"grove","progress":{},"turns":{},"effort":{},"production":{},"deliveries":{}}
 	if not stored.is_empty():
 		if stored.get("active") is String:data.active=stored.active
-		for key in ["progress","turns","effort"]:
+		for key in ["progress","turns","effort","production","deliveries"]:
 			if stored.get(key) is Dictionary:data[key]=stored[key].duplicate(true)
 	else:
 		# Old buildings remain where they were earned; expose their new supporting land.
@@ -43,6 +72,9 @@ func _init(owner_learning:IslandLearning):
 		data.turns[id]=clampi(int(data.turns[id]),0,1000000) if data.turns[id] is int or data.turns[id] is float else 0
 	for id in data.effort.keys():
 		var value=data.effort[id];data.effort[id]=clampf(float(value),0,.999999) if (value is int or value is float) and is_finite(float(value)) else 0.0
+	for key in ["production","deliveries"]:
+		for id in data[key].keys():
+			var value=data[key][id];data[key][id]=clampi(int(value),0,1000000) if (value is int or value is float) and is_finite(float(value)) else 0
 	learning.data.frontier=data
 	if not available(data.active):data.active="grove"
 	learning.data.active=site(data.active)
@@ -172,3 +204,30 @@ func finished_count()->int:
 	for c in CHAPTERS:
 		if done(c.id):count+=1
 	return count
+
+func work_route(id:String="")->Dictionary:
+	if id.is_empty():id=str(data.active)
+	var sources=[]
+	if done(id) and PRODUCTION.has(id):sources=[id]
+	else:
+		for source in RECIPES.get(id,[]):
+			if done(source):sources.append(source)
+	if sources.is_empty():sources=["quarry" if site(id)==1 and done("quarry") else "grove"]
+	var source=str(sources[int(data.turns.get(id,0))%sources.size()])
+	var spec=PRODUCTION[source]
+	var raw_source={"sawmill":"grove","kiln":"quarry","mountain":"crystal","shipyard":"grove"}.get(source,source)
+	var processors=["crystal","mountain"] if source=="mountain" else ["sawmill","shipyard"] if source=="shipyard" else [source]
+	var raw="crystal" if source=="mountain" else "timber" if source=="shipyard" else str(spec.raw)
+	return {"source":raw_source,"processor":source,"processors":processors,"destination":id,"raw":raw,"product":spec.product,"name":spec.name,"tool":spec.tool}
+
+func record_delivery(route:Dictionary):
+	# Only a completed learning/developer action creates an actual production batch.
+	# Idle workers and visual machinery never call this method.
+	for processor in route.processors:
+		var key=str(processor)+":"+str(PRODUCTION[processor].product)
+		data.production[key]=int(data.production.get(key,0))+1
+	var destination=str(route.destination)+":"+str(route.product)
+	data.deliveries[destination]=int(data.deliveries.get(destination,0))+1
+
+func facility_title(id:String)->String:
+	return {"quarry":"石岸切石场","wetland":"浅湾织帆屋","plateau":"高原锻造台","crystal":"晶湾磨镜台","mountain":"云杉观星台","hill":"山风取水泵","meadow":"果粮采收园"}.get(id,title(id))

@@ -12,6 +12,8 @@ var material:ShaderMaterial
 var foam_material:ShaderMaterial
 var floor_mesh:MeshInstance3D
 var foam:MeshInstance3D
+var reefs:Node3D
+var reef_scene=preload("res://assets/models/cliff_rocks.glb")
 var map:PackedFloat32Array=[]
 var bed_texture:ImageTexture
 var land_count=-1
@@ -79,20 +81,33 @@ func depth_at(normal:Vector3)->float:
 func floor_radius(normal:Vector3)->float:return BASE_RADIUS-depth_at(normal)
 
 func shore_normal(p:Vector2)->Vector3:
-	return Vector3(p.x,sqrt(maxf(.1,144.0-p.length_squared())),p.y).normalized()
+	return world.surface(p).normalized()
 
 func rebuild_foam():
+	if reefs:reefs.queue_free()
+	reefs=Node3D.new();reefs.name="ScatteredReefs";add_child(reefs)
 	var directions=[Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1),Vector2i(1,0)]
 	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES);var edge_index=0
 	for cell in world.land:
 		var center=IslandFrontier.point(cell)
 		for i in range(6):
 			if world.land.has(cell+directions[i]):continue
+			# Quiet broken arcs, rather than a bright stripe around every hex edge.
+			if posmod(cell.x*7+cell.y*11+i*3,5)==0:continue
 			var angle=(i*60+30)*PI/180;var start=Vector2(cos(angle),sin(angle))*IslandFrontier.HEX;var end=Vector2(cos(angle+PI/3),sin(angle+PI/3))*IslandFrontier.HEX
 			var outward=(start+end).normalized()
+			if posmod(cell.x*13+cell.y*17+i*7,11)==1:
+				var normal=shore_normal(center+(start+end)*.5+outward*.45)
+				var depth=depth_at(normal)
+				if depth>.18 and depth<.9:
+					var rock=reef_scene.instantiate();reefs.add_child(rock)
+					rock.position=normal*(floor_radius(normal)+.04);rock.basis=Basis(Quaternion(Vector3.UP,normal))
+					rock.scale=Vector3.ONE*(.23+float(posmod(cell.x+i,3))*.045);rock.rotate_object_local(Vector3.UP,float(cell.y+i)*.7)
 			for segment in range(8):
 				for corner in [Vector2(0,0),Vector2(1,1),Vector2(1,0),Vector2(0,0),Vector2(0,1),Vector2(1,1)]:
-					var along=(segment+corner.x)/8.0;var point=center+start.lerp(end,along)+outward*(.035+corner.y*.30)
+					var along=(segment+corner.x)/8.0
+					var irregular=.035+sin(along*PI*2+cell.x*.8+cell.y)*.045
+					var point=center+start.lerp(end,along)+outward*(irregular+corner.y*.24)
 					st.set_uv(Vector2(edge_index*1.34+along*1.34,corner.y));st.add_vertex(shore_normal(point)*BASE_RADIUS)
 			edge_index+=1
 	foam.mesh=st.commit()

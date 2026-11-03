@@ -7,7 +7,7 @@ notes=json.loads((r/'assets/missions.json').read_text('utf-8'))+json.loads((r/'a
 dictionary=json.loads((r/'assets/dictionary.json').read_text('utf-8'))
 assert len(v)==96 and len({q['id'] for q in v})==96
 assert all(len(q['options'])==4 and len(set(q['options']))==4 and q['options'][q['correct']]==q['zh'] for q in v)
-assert len(notes)==17 and len({n['id'] for n in notes})==17
+assert len(notes)==22 and len({n['id'] for n in notes})==22
 ids={q['id'] for q in v}
 for n in notes:
  assert len(n['options'])==3 and len(set(n['options']))==3 and 0<=n['correct']<3
@@ -38,13 +38,13 @@ for p in (r/'assets/models').glob('*.glb'):
  size=struct.unpack('<I',b[12:16])[0];g=json.loads(b[20:20+size]);models.append({'name':p.stem,'meshes':len(g['meshes']),'bytes':len(b)})
  assert (r/'art-source'/(p.stem+'.blend')).exists()
  if p.stem=='builder':assert {'ArmL','ArmR','LegL','LegR','Body'}<={n['name'] for n in g['nodes']}
-assert len(models)==39
+assert len(models)==73
 from fontTools.ttLib import TTFont
 codes=set()
 for name in ['FrontierSC.ttf','FrontierLatin.ttf']:codes.update(TTFont(r/'assets/fonts'/name).getBestCmap())
 runtime_json=[*(r/'assets').glob('*.json'),r/'assets/wordbooks/lexicon.json',r/'assets/wordbooks/catalog.json']
-chars=''.join(p.read_text('utf-8-sig') for p in [*(r/'scripts').glob('*.gd'),*runtime_json] if p.exists())
+chars=''.join(p.read_text('utf-8-sig') for p in [*(r/'scripts').glob('*.gd'),*(r/'android-plugin').rglob('*.java'),*runtime_json] if p.exists())
 missing=set(ord(c) for c in chars if not c.isspace())-codes
 assert not missing,[(hex(c),chr(c)) for c in missing]
-report={'words':96,'unique_meaning_choices':True,'work_notes':17,'short_and_expanded_readings':34,'listening_instructions':17,'sentence_tasks':17,'lookup_entries':len(dictionary),'every_content_word_has_lookup_and_audio':True,'audio_text_hashes_verified':len(manifest),'models':models,'fonts_complete':True}
+report={'words':96,'unique_meaning_choices':True,'work_notes':len(notes),'short_and_expanded_readings':len(notes)*2,'listening_instructions':len(notes),'sentence_tasks':len(notes),'lookup_entries':len(dictionary),'every_content_word_has_lookup_and_audio':True,'audio_text_hashes_verified':len(manifest),'models':models,'fonts_complete':True}
 print(json.dumps(report,ensure_ascii=False,indent=2));print('CONTENT_ASSETS_PASS')

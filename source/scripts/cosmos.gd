@@ -6,6 +6,7 @@ class_name IslandCosmos
 const CENTER=Vector3(-5.5,14,-50)
 const DEFAULT_SETTINGS={"nebula":1.45,"color":1.3,"band":1.15,"stars":1.1,"drift":1.0}
 const SETTING_LIMITS={"nebula":Vector2(0,2.5),"color":Vector2(0,2),"band":Vector2(.4,2),"stars":Vector2(.3,2),"drift":Vector2(0,2)}
+const OBSERVATIONS=[{"id":"cyan","title":"青蓝回廊","accent":"70CAD6"},{"id":"violet","title":"紫色双云","accent":"BA9BEB"},{"id":"gold","title":"金边暗柱","accent":"E9C38B"}]
 var game
 var viewport:SubViewport
 var space_camera:Camera3D
@@ -27,6 +28,12 @@ var focus_time=0.0
 var base_fov=44.0
 var shooting_star:MeshInstance3D
 var meteor_clock=0.0
+var observatory_active=false
+var observation_index=0
+var observation_yaw=0.0
+var observation_pitch=0.0
+var observation_zoom=1.0
+var observation_blend=0.0
 
 func setup(owner_game):
 	game=owner_game
@@ -40,7 +47,7 @@ func setup(owner_game):
 	apply_settings(game.learning.data.get("space_settings",{}))
 	var sky_canvas=CanvasLayer.new();sky_canvas.layer=-20;viewport.add_child(sky_canvas)
 	var sky_field=ColorRect.new();sky_field.mouse_filter=Control.MOUSE_FILTER_IGNORE;sky_field.material=star_material;sky_canvas.add_child(sky_field);sky_field.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	space_camera=Camera3D.new();space_camera.fov=base_fov;space_camera.near=.1;space_camera.far=180;space_camera.current=true;space.add_child(space_camera)
+	space_camera=Camera3D.new();space_camera.fov=base_fov;space_camera.near=.1;space_camera.far=280;space_camera.current=true;space.add_child(space_camera)
 	var light=DirectionalLight3D.new();space.add_child(light);light.rotation_degrees=Vector3(-22,-35,-12);light.light_color=Color("FFE5B5");light.light_energy=1.25
 	sun=Node3D.new();space.add_child(sun);sun.position=CENTER
 	solar_surface=sphere(sun,1.48,Color("FFD783"),28,14);var solar_material=ShaderMaterial.new();solar_material.shader=preload("res://assets/cosmos_sun.gdshader");solar_surface.material_override=solar_material
@@ -80,26 +87,77 @@ func apply_settings(values:Dictionary):
 		region.material.set_shader_parameter("color_strength",settings.color)
 		var radius=region.radii*pow(settings.band/1.15,.55)
 		region.material.set_shader_parameter("cloud_radii",radius)
-		region.node.mesh.size=Vector2(radius.x,radius.y)*2.8
+		region.node.mesh.size=Vector2.ONE*maxf(radius.x,maxf(radius.y,radius.z))*2.5
 func make_cloud_regions():
-	var noise=FastNoiseLite.new();noise.seed=18775;noise.noise_type=FastNoiseLite.TYPE_SIMPLEX_SMOOTH;noise.frequency=.075;noise.fractal_octaves=3
-	cloud_texture=NoiseTexture3D.new();cloud_texture.width=64;cloud_texture.height=64;cloud_texture.depth=64;cloud_texture.seamless=true;cloud_texture.noise=noise
+	var noise=FastNoiseLite.new();noise.seed=18775;noise.noise_type=FastNoiseLite.TYPE_SIMPLEX_SMOOTH;noise.frequency=.055;noise.fractal_octaves=3
+	cloud_texture=NoiseTexture3D.new();cloud_texture.width=96;cloud_texture.height=96;cloud_texture.depth=96;cloud_texture.seamless=true;cloud_texture.noise=noise
 	for i in range(3):
 		var node=MeshInstance3D.new();node.name="NebulaVolume"+str(i);node.mesh=QuadMesh.new();node.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;space.add_child(node)
-		var material=ShaderMaterial.new();material.shader=preload("res://assets/cosmos_volume.gdshader");material.set_shader_parameter("cloud_noise",cloud_texture);material.set_shader_parameter("ray_steps",8 if OS.has_feature("android") else 12);material.set_shader_parameter("density_scale",[1.0,.72,.50][i]);node.material_override=material
-		cloud_regions.append({"node":node,"material":material,"radii":Vector3.ONE,"center":Vector3.ZERO})
+		var material=ShaderMaterial.new();material.shader=preload("res://assets/cosmos_volume.gdshader");material.set_shader_parameter("cloud_noise",cloud_texture);material.set_shader_parameter("ray_steps",8 if OS.has_feature("android") else 12);material.set_shader_parameter("density_scale",[1.0,.95,.85][i]);material.set_shader_parameter("structure",i);node.material_override=material
+		var cluster=MultiMeshInstance3D.new();cluster.name="NebulaStarCluster"+str(i);cluster.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;space.add_child(cluster)
+		var points=MultiMesh.new();points.transform_format=MultiMesh.TRANSFORM_3D;points.use_colors=true;points.instance_count=24
+		var star_mesh=SphereMesh.new();star_mesh.radius=1;star_mesh.height=2;star_mesh.radial_segments=8;star_mesh.rings=4
+		var star_paint=StandardMaterial3D.new();star_paint.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;star_paint.vertex_color_use_as_albedo=true;star_mesh.material=star_paint;points.mesh=star_mesh;cluster.multimesh=points
+		cloud_regions.append({"node":node,"material":material,"radii":Vector3.ONE,"center":Vector3.ZERO,"cluster":cluster})
 func arrange_cloud_regions():
 	var random=RandomNumberGenerator.new();random.seed=sky_seed
 	for i in range(cloud_regions.size()):
-		var region=cloud_regions[i];var depth=[104.0,132.0,158.0][i]
-		var center=Vector3([-14.0,18.0,-3.0][i]+random.randf_range(-7,7),[24.0,34.0,51.0][i]+random.randf_range(-6,6),-depth)
-		var radius=Vector3(random.randf_range(14,20),random.randf_range(6,10),random.randf_range(9,14));var angle=random.randf_range(-.65,.65)
+		var region=cloud_regions[i];var depth=[118.0,148.0,172.0][i]
+		var center=Vector3([-15.0,22.0,-1.0][i]+random.randf_range(-5,5),[30.0,39.0,59.0][i]+random.randf_range(-4,4),-depth)
+		var radius=Vector3(random.randf_range(7.2,9.1),random.randf_range(5.2,7.2),random.randf_range(5.9,7.8));var angle=random.randf_range(-.48,.48)
 		var orientation=Basis(Vector3.FORWARD,angle)*Basis(Vector3.RIGHT,random.randf_range(-.18,.18))
 		region.center=center;region.radii=radius;region.node.position=center;region.node.rotation.z=-angle
 		region.material.set_shader_parameter("cloud_center",center);region.material.set_shader_parameter("cloud_inverse",orientation.inverse());region.material.set_shader_parameter("noise_phase",Vector3(random.randf_range(0,1),random.randf_range(0,1),random.randf_range(0,1)))
-		region.material.set_shader_parameter("cold_color",[Color("416C84"),Color("477E82"),Color("52627D")][i]);region.material.set_shader_parameter("warm_color",Color("A48456"))
+		region.material.set_shader_parameter("cold_color",[Color("369CB6"),Color("576EB9"),Color("417E9D")][i]);region.material.set_shader_parameter("middle_color",[Color("777DC9"),Color("A97ECA"),Color("6C8CBB")][i]);region.material.set_shader_parameter("warm_color",[Color("C6B687"),Color("D7B3A4"),Color("E3B474")][i])
 		region.material.set_shader_parameter("drift",nebula_clock)
+		region.cluster.position=center
+		for index in range(24):
+			var p=Vector3(random.randf_range(-.8,.8),random.randf_range(-.7,.7),random.randf_range(-.8,.8))
+			var size=random.randf_range(.018,.032) if index>3 else random.randf_range(.045,.064)
+			region.cluster.multimesh.set_instance_transform(index,Transform3D(Basis.IDENTITY.scaled(Vector3.ONE*size),orientation*(p*radius)))
+			region.cluster.multimesh.set_instance_color(index,[Color("AECFE8"),Color("DAD3EE"),Color("F0D3A1")][index%3]*(.65 if index>3 else 1.0))
 	apply_settings(settings.duplicate())
+func observation_targets()->Array:return OBSERVATIONS.duplicate(true)
+func observations()->Array:return observation_targets()
+func enter_observatory(index:int=0)->bool:
+	if not is_instance_valid(space_camera) or index<0 or index>=cloud_regions.size():return false
+	observatory_active=true;canvas.layer=4
+	return select_observation_target(index)
+func leave_observatory():
+	observatory_active=false;observation_blend=0.0;canvas.layer=-10
+	space_camera.position=Vector3.ZERO;space_camera.rotation=Vector3.ZERO;space_camera.fov=base_fov
+	update_observation_quality();update_sky_camera()
+func select_observation_target(index:int)->bool:
+	if index<0 or index>=cloud_regions.size():return false
+	observation_index=index;observation_yaw=0.0;observation_pitch=0.0;observation_zoom=1.0;observation_blend=0.0
+	update_observation_quality();return true
+func rotate_observation(delta:Vector2):
+	if not observatory_active:return
+	observation_yaw=clampf(observation_yaw-delta.x*.003,-.48,.48)
+	observation_pitch=clampf(observation_pitch+delta.y*.0025,-.28,.28)
+func zoom_observation(factor:float):
+	if observatory_active and is_finite(factor):observation_zoom=clampf(observation_zoom*factor,.72,1.35)
+func update_observation_quality():
+	for i in range(cloud_regions.size()):
+		var detailed=observatory_active and i==observation_index
+		cloud_regions[i].material.set_shader_parameter("ray_steps",(24 if OS.has_feature("android") else 36) if detailed else (8 if OS.has_feature("android") else 12))
+		cloud_regions[i].material.set_shader_parameter("detail_view",1.0 if detailed else 0.0)
+func update_sky_camera():
+	if not is_instance_valid(space_camera):return
+	star_material.set_shader_parameter("sky_basis",space_camera.global_basis)
+	star_material.set_shader_parameter("field_of_view",deg_to_rad(space_camera.fov))
+func advance_observation(dt:float):
+	if observatory_active:
+		observation_blend=minf(1,observation_blend+dt*1.35)
+		var region=cloud_regions[observation_index];var distance=region.radii.x*5.35*observation_zoom
+		var target=region.node.position
+		var toward_camera=(-region.center).normalized()
+		var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
+		space_camera.position=space_camera.position.lerp(target+offset,1-exp(-dt*5.5))
+		space_camera.look_at(target);space_camera.fov=base_fov
+	for region in cloud_regions:
+		region.node.look_at(space_camera.global_position,Vector3.UP)
+	update_sky_camera()
 func resize():
 	if not is_instance_valid(viewport):return
 	var view_size=get_viewport().get_visible_rect().size
@@ -150,6 +208,7 @@ func advance(dt:float):
 	for i in range(cloud_regions.size()):
 		var region=cloud_regions[i];var offset=Vector3(sin(nebula_clock*.011+i)-sin(float(i)),sin(nebula_clock*.008+i*.7)-sin(i*.7),0)*.45
 		region.node.position=region.center+offset;region.material.set_shader_parameter("cloud_center",region.node.position);region.material.set_shader_parameter("drift",nebula_clock)
+		region.cluster.position=region.node.position
 	for body in bodies:
 		var angle=body.phase+clock*body.speed;var dz=sin(angle)*body.radius
 		var tilt={"ring":.09,"ice":.34,"ember":-.22,"garden":.29}[body.id]
@@ -164,12 +223,14 @@ func advance(dt:float):
 		# A small acknowledgement pulse preserves the complete planet and clock composition.
 		var body=bodies[focus_index];body.axis.scale=Vector3.ONE*(1.0+sin((1.0-focus_time/1.5)*PI)*.12)
 		if focus_time<=0:body.axis.scale=Vector3.ONE;focus_index=-1
+	advance_observation(dt)
 func _process(dt):
 	if is_instance_valid(viewport):advance(dt)
 func screen_position(index:int)->Vector2:
 	var position=space_camera.unproject_position(bodies[index].orbit.position)
 	return position*get_viewport().get_visible_rect().size/Vector2(viewport.size)
 func handle_tap(screen_pos:Vector2)->bool:
+	if observatory_active:return false
 	# Only touches clearly above the close island are eligible, so distant planets cannot steal worksite taps.
 	if screen_pos.y>get_viewport().get_visible_rect().size.y*.30:return false
 	for i in range(bodies.size()):

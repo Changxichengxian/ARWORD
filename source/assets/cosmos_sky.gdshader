@@ -9,6 +9,8 @@ uniform float nebula_strength = 1.45;
 uniform float color_strength = 1.3;
 uniform float band_width = 1.15;
 uniform float star_density : hint_range(.3,2.0) = 1.1;
+uniform mat3 sky_basis;
+uniform float field_of_view = .76794487;
 float hash21(vec2 p) {
 	uvec2 q=uvec2(ivec2(floor(p)));
 	uint n=q.x*1973u+q.y*9277u+89173u;
@@ -24,8 +26,9 @@ float stars(vec2 uv,float density,float cutoff,float glint) {
 	return (point+rays*glint)*step(cutoff,hash21(cell))*(.35+hash21(cell+13.1)*.65);
 }
 void fragment() {
-	vec2 view=vec2((UV.x-.5)*aspect,.5-UV.y)*.808;
-	vec2 uv=vec2(atan(view.x)/6.2831853+.5,atan(view.y)/3.14159265+.5);
+	vec2 view=vec2((UV.x-.5)*aspect,.5-UV.y)*2.0*tan(field_of_view*.5);
+	vec3 ray=normalize(sky_basis*vec3(view,-1.0));
+	vec2 uv=vec2(atan(ray.x,-ray.z)/6.2831853+.5,asin(clamp(ray.y,-1.0,1.0))/3.14159265+.5);
 	float small=stars(uv,1250.0,1.0-.026*star_density,0.0)*.22;
 	float middle=stars(uv+1.73,430.0,1.0-.016*star_density,0.0)*.58;
 	float bright=stars(uv+2.41,145.0,1.0-.008*star_density,.12);

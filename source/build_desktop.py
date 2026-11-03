@@ -19,6 +19,11 @@ def main():
         engine=engine_dir/godot.name
         for name in ['assets','scripts']:shutil.copytree(source/name,project/name,ignore=shutil.ignore_patterns('*.blend','.godot'))
         for name in ['project.godot','main.tscn']:shutil.copy2(source/name,project/name)
+        # Seed only reproducible imported resources. Godot's import pass below
+        # still checks source/settings hashes and rebuilds changed resources.
+        # Never copy editor state, user saves or the script-class cache.
+        imported=source/'.godot/imported'
+        if imported.is_dir():shutil.copytree(imported,project/'.godot/imported')
         template=stage/'windows_release_x86_64.exe'
         with zipfile.ZipFile(templates) as z:template.write_bytes(z.read('templates/windows_release_x86_64.exe'))
         preset='''[preset.0]
@@ -38,7 +43,7 @@ application/modify_resources=false
 '''.replace('TEMPLATE',template.as_posix())
         (project/'export_presets.cfg').write_text(preset,encoding='utf-8')
         manifest={str(f.relative_to(project)).replace('\\','/'):hashlib.sha256(f.read_bytes()).hexdigest()
-                  for f in project.rglob('*') if f.is_file() and f.name!='export_presets.cfg'}
+                  for f in project.rglob('*') if f.is_file() and f.name!='export_presets.cfg' and '.godot' not in f.relative_to(project).parts}
         with (output/'desktop-build.log').open('w',encoding='utf-8') as log:
             for command in [[str(engine),'--headless','--editor','--path',str(project),'--import'],
                             [str(engine),'--headless','--path',str(project),'--export-release','Windows Desktop',str(output/'LittleTide.exe')]]:

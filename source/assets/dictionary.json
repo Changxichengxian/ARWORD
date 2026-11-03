@@ -2466,5 +2466,257 @@
   "your": {
     "phonetic": "juә",
     "translation": "pron. 你的, 你们的"
+  },
+  "aboard": {
+    "phonetic": "",
+    "translation": "在船上；到船上"
+  },
+  "anything": {
+    "phonetic": "",
+    "translation": "任何东西；任何事"
+  },
+  "become": {
+    "phonetic": "",
+    "translation": "变成；成为"
+  },
+  "birds": {
+    "phonetic": "",
+    "translation": "鸟（bird 的复数）"
+  },
+  "black": {
+    "phonetic": "",
+    "translation": "黑色的"
+  },
+  "blocks": {
+    "phonetic": "",
+    "translation": "块；石块（block 的复数）"
+  },
+  "bottom": {
+    "phonetic": "",
+    "translation": "底部；船底"
+  },
+  "box": {
+    "phonetic": "",
+    "translation": "箱子；盒子"
+  },
+  "carrying": {
+    "phonetic": "",
+    "translation": "搬运；携带（carry 的进行形式）"
+  },
+  "channel": {
+    "phonetic": "",
+    "translation": "水渠；通道"
+  },
+  "cloudy": {
+    "phonetic": "",
+    "translation": "浑浊的；多云的"
+  },
+  "decorate": {
+    "phonetic": "",
+    "translation": "装饰"
+  },
+  "distant": {
+    "phonetic": "",
+    "translation": "远处的"
+  },
+  "edges": {
+    "phonetic": "",
+    "translation": "边缘（edge 的复数）"
+  },
+  "fallen": {
+    "phonetic": "",
+    "translation": "掉落的；落下的（fall 的过去分词）"
+  },
+  "fit": {
+    "phonetic": "",
+    "translation": "安装；使合适"
+  },
+  "flags": {
+    "phonetic": "",
+    "translation": "旗子（flag 的复数）"
+  },
+  "follow": {
+    "phonetic": "",
+    "translation": "沿着；跟随"
+  },
+  "food": {
+    "phonetic": "",
+    "translation": "食物"
+  },
+  "fruit": {
+    "phonetic": "",
+    "translation": "水果；果实"
+  },
+  "gaps": {
+    "phonetic": "",
+    "translation": "缝隙；缺口（gap 的复数）"
+  },
+  "green": {
+    "phonetic": "",
+    "translation": "绿色的"
+  },
+  "hard": {
+    "phonetic": "",
+    "translation": "坚硬的；困难的"
+  },
+  "hold": {
+    "phonetic": "",
+    "translation": "拿住；容纳"
+  },
+  "iron": {
+    "phonetic": "",
+    "translation": "铁；铁制的"
+  },
+  "islands": {
+    "phonetic": "",
+    "translation": "岛屿（island 的复数）"
+  },
+  "joining": {
+    "phonetic": "",
+    "translation": "连接；接合（join 的进行形式）"
+  },
+  "joint": {
+    "phonetic": "",
+    "translation": "接合处；接头；关节"
+  },
+  "joints": {
+    "phonetic": "",
+    "translation": "接合处；接头（joint 的复数）"
+  },
+  "lens": {
+    "phonetic": "",
+    "translation": "镜片；透镜"
+  },
+  "lenses": {
+    "phonetic": "",
+    "translation": "镜片；透镜（lens 的复数）"
+  },
+  "meet": {
+    "phonetic": "",
+    "translation": "相接；会面"
+  },
+  "moves": {
+    "phonetic": "",
+    "translation": "移动；流动（move 的第三人称单数）"
+  },
+  "now": {
+    "phonetic": "",
+    "translation": "现在"
+  },
+  "off": {
+    "phonetic": "",
+    "translation": "离开；脱离，wash off 指洗掉"
+  },
+  "parts": {
+    "phonetic": "",
+    "translation": "零件；部分（part 的复数）"
+  },
+  "piece": {
+    "phonetic": "",
+    "translation": "一块；一片"
+  },
+  "pipes": {
+    "phonetic": "",
+    "translation": "管子；管道（pipe 的复数）"
+  },
+  "places": {
+    "phonetic": "",
+    "translation": "地方；位置（place 的复数）"
+  },
+  "pool": {
+    "phonetic": "",
+    "translation": "水池；小池塘"
+  },
+  "rests": {
+    "phonetic": "",
+    "translation": "休息；停歇（rest 的第三人称单数）"
+  },
+  "rocks": {
+    "phonetic": "",
+    "translation": "岩石（rock 的复数）"
+  },
+  "ropes": {
+    "phonetic": "",
+    "translation": "绳子（rope 的复数）"
+  },
+  "round": {
+    "phonetic": "",
+    "translation": "圆形的"
+  },
+  "rub": {
+    "phonetic": "",
+    "translation": "摩擦；擦"
+  },
+  "sail": {
+    "phonetic": "",
+    "translation": "航行；船帆"
+  },
+  "sand": {
+    "phonetic": "",
+    "translation": "沙子"
+  },
+  "sea": {
+    "phonetic": "",
+    "translation": "海"
+  },
+  "secure": {
+    "phonetic": "",
+    "translation": "牢固的；稳固的；安全的"
+  },
+  "separate": {
+    "phonetic": "",
+    "translation": "分开的；单独的"
+  },
+  "sky": {
+    "phonetic": "",
+    "translation": "天空"
+  },
+  "station": {
+    "phonetic": "",
+    "translation": "站；工作站"
+  },
+  "steps": {
+    "phonetic": "",
+    "translation": "台阶；步骤（step 的复数）"
+  },
+  "telescope": {
+    "phonetic": "",
+    "translation": "望远镜"
+  },
+  "tide": {
+    "phonetic": "",
+    "translation": "潮汐"
+  },
+  "tie": {
+    "phonetic": "",
+    "translation": "系；拴"
+  },
+  "toward": {
+    "phonetic": "",
+    "translation": "朝；向"
+  },
+  "tray": {
+    "phonetic": "",
+    "translation": "托盘；浅盘"
+  },
+  "until": {
+    "phonetic": "",
+    "translation": "直到"
+  },
+  "wash": {
+    "phonetic": "",
+    "translation": "清洗"
+  },
+  "wet": {
+    "phonetic": "",
+    "translation": "湿的"
+  },
+  "wheel": {
+    "phonetic": "",
+    "translation": "轮子"
+  },
+  "whether": {
+    "phonetic": "",
+    "translation": "是否"
   }
 }

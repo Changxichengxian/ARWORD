@@ -1,6 +1,17 @@
 extends RefCounted
 class_name IslandWorker
 
+# Keep one scale contract for visuals, footsteps, cargo, work reach and rest space.
+const ACTOR_SCALE=.61
+const SIZE_RATIO=ACTOR_SCALE/.9
+const SPEED_RATIO=.75
+const WALK_SPEED=1.1*SPEED_RATIO
+const RUN_SPEED=1.8*SPEED_RATIO
+const CARRY_SPEED=.95*SPEED_RATIO
+const GROUND_GAP=.015*SIZE_RATIO
+const REST_LENGTH=1.45*SIZE_RATIO
+const REST_CLEARANCE=.38*SIZE_RATIO
+
 var world
 var work_left=0.0
 var phase=0
@@ -29,9 +40,13 @@ var rest_ground_variant=-1
 var rest_ground_anchor=Vector3.INF
 var rest_ground_land=0
 var rest_ground_samples=0
+var pending_work:Dictionary={}
+var harvesting_cycle=true
+var transport_suspended=false
 
 func _init(owner_world):
 	world=owner_world
+	world.actor.scale=Vector3.ONE*ACTOR_SCALE
 	# The model faces -Z. Positive shoulder X lifts the hand forward.
 	# Put the upper body and shoulders on one waist pivot so a strike uses the torso.
 	var torso=world.limbs.Body
@@ -40,7 +55,7 @@ func _init(owner_world):
 			if part is Node3D:part.position.y-=.66
 		torso.position.y=.66
 	for side in ["L","R"]:world.limbs["Arm"+side].reparent(torso,true)
-	seated_lift=-.39-(world.limbs.LegL.position.y-.62)*.9
+	seated_lift=(-.39-(world.limbs.LegL.position.y-.62)*.9)*SIZE_RATIO
 	head_pivot=world.actor.find_child("HeadPivot",true,false)
 	feet=world.actor.find_children("Foot*","MeshInstance3D",true,false)
 	for foot in feet:
@@ -70,40 +85,82 @@ func _init(owner_world):
 	carry.hide();world.set_tool(-1)
 func rest_spot()->Vector2:
 	var best=Vector2.ZERO;var score=INF
+	var length=world.avatar.rest_length if is_instance_valid(world.avatar) else REST_LENGTH
 	var current=world.terrain.coordinates(world.builder.position)
 	var component=world.nav_components.get(world.navigation.get_closest_point(current),-1)
 	for id in world.navigation.get_point_ids():
 		var p=world.navigation.get_point_position(id);var d=p.distance_squared_to(current)
-		if d<score and world.nav_components.get(id,-2)==component and world.clear_segment(p,p+Vector2(0,1.45),.38):score=d;best=p
-	return best if is_finite(score) else world.safe_point(current,.45)
+		if d<score and world.nav_components.get(id,-2)==component and world.clear_segment(p,p+Vector2(0,length),REST_CLEARANCE):score=d;best=p
+	return best if is_finite(score) else world.safe_point(current,.45*SIZE_RATIO)
 func settle():
 	world.set_tool(-1);carry.hide();rest_time=0;rest_variant=0
-	var spot=rest_spot();world.work_point=spot+Vector2(0,-1);world.walk_to(spot,.75)
+	var spot=rest_spot();world.work_point=spot+Vector2(0,-SIZE_RATIO);world.walk_to(spot,.75)
+
+func travel_speed()->float:
+	return ((CARRY_SPEED if phase==1 else RUN_SPEED) if work_left>0 else WALK_SPEED)*gait_ratio()
+
+func gait_ratio()->float:
+	return world.avatar.gait_ratio if is_instance_valid(world.avatar) else 1.0
+
+func run_amount(speed:float,loaded=false)->float:
+	return clampf((speed/(SPEED_RATIO*gait_ratio())-1.25)/.50,0,1) if not loaded else 0.0
+
+func stride_length(speed:float,loaded=false)->float:
+	return lerpf(1.22,1.65,run_amount(speed,loaded))*SIZE_RATIO*gait_ratio()
 func grant(mode:String,target:Vector2,entry:Dictionary,resource_kind:int):
 	var was_resting=work_left<=0
 	work_left=minf(36.0,work_left+(12.0 if mode=="word" else 9.0))
-	destination=target;kind=resource_kind;origin=entry.p if mode=="word" and not entry.is_empty() else target
-	phase=0 if mode=="word" else 2;phase_time=0;hit_clock=0;stroke_time=0;last_impact=-1
-	world.work_point=origin;world.current_tool=kind if mode=="word" else 2
+	var request={"target":target,"kind":resource_kind,"origin":entry.p if mode=="word" and not entry.is_empty() else target,"harvest":mode=="word" and not entry.is_empty()}
+	if not was_resting and (transport_suspended or destination.distance_squared_to(target)<.0001):
+		# Fast answers extend the current stroke/trip. The latest source is used after delivery.
+		pending_work=request
+		return
+	pending_work.clear();configure_work(request)
 	if was_resting:
 		waking=.5
 		if world.move_tween and world.move_tween.is_valid():world.move_tween.kill()
 	else:world.walk_to(world.work_stance(0),.7)
+func configure_work(request:Dictionary):
+	destination=request.target;kind=request.kind;origin=request.origin;harvesting_cycle=request.harvest
+	phase=0 if harvesting_cycle else 2;phase_time=0;hit_clock=0;stroke_time=0;last_impact=-1
+	world.work_point=origin if harvesting_cycle else destination;world.current_tool=kind if harvesting_cycle else 2
+
+func suspend_for_transport(suspended:bool):
+	transport_suspended=suspended
+	if suspended:world.set_tool(-1);carry.hide()
+
 func next_phase():
+	if phase==2 and not pending_work.is_empty():
+		var request=pending_work.duplicate();pending_work.clear();configure_work(request)
+		world.walk_to(world.work_stance(2),.85)
+		return
+	if phase==2 and not harvesting_cycle:
+		phase_time=0;hit_clock=0;stroke_time=0;last_impact=-1
+		return
 	phase=(phase+1)%3;phase_time=0;hit_clock=0;stroke_time=0;last_impact=-1
 	if phase==1:
 		world.work_point=destination;world.walk_to(world.work_stance(1),.85)
 	elif phase==0:
 		world.work_point=origin;world.walk_to(world.work_stance(2),.85)
 func update(dt:float):
+	if transport_suspended:
+		# The boat owns travel; preserve the work budget and current production phase.
+		world.set_tool(-1);carry.hide()
+		var blend=1-exp(-dt*10.0)
+		for limb in world.limbs.values():limb.rotation=limb.rotation.lerp(Vector3.ZERO,blend)
+		world.actor.rotation=world.actor.rotation.lerp(Vector3.ZERO,blend);world.actor.position.y=lerpf(world.actor.position.y,0.0,blend);world.actor.scale=world.actor.scale.lerp(Vector3.ONE*ACTOR_SCALE,blend)
+		if is_instance_valid(head_pivot):head_pivot.rotation=head_pivot.rotation.lerp(Vector3.ZERO,blend)
+		update_skin();return
 	var working=work_left>0
-	if working:
+	var walking=world.move_tween and world.move_tween.is_running()
+	# The reward is time spent working, so travel and getting up never consume it.
+	if working and not walking and waking<=0:
 		work_left=maxf(0,work_left-dt)
 		if work_left<=0:settle();working=false
 	if waking>0:
 		waking=maxf(0,waking-dt)
 		if waking<=0:world.walk_to(world.work_stance(0),.7)
-	var walking=world.move_tween and world.move_tween.is_running()
+	walking=world.move_tween and world.move_tween.is_running()
 	if working and waking<=0:
 		if not walking:phase_time+=dt
 		if phase_time>[4.5,1.0,4.0][phase]:next_phase()
@@ -115,12 +172,12 @@ func update(dt:float):
 	world.set_tool((kind if phase==0 else 2) if working and phase!=1 and waking<=0 else -1)
 	var pose={}
 	for name in world.limbs:pose[name]=Vector3.ZERO
-	var rot=Vector3.ZERO;var lift=0.0;var wrist=0.0;var contact_height=.015;var elasticity=0.0
+	var rot=Vector3.ZERO;var lift=0.0;var wrist=0.0;var contact_height=GROUND_GAP;var elasticity=0.0
 	if walking:
 		var moving=locomotion_pose(world.travelled,world.motion_speed,carry.visible)
 		pose.merge(moving.pose,true);rot=moving.rotation;lift=moving.lift;contact_height=moving.ground
 		# A restrained soft landing follows actual footsteps, never a looping idle wobble.
-		var stride=lerpf(1.22,1.65,clampf((world.motion_speed-1.25)/.50,0,1))
+		var stride=stride_length(world.motion_speed,carry.visible)
 		elasticity=-.018*pow(abs(sin(world.travelled*TAU/stride)),12)
 	elif working and waking<=0:
 		stroke_time+=dt
@@ -133,16 +190,20 @@ func update(dt:float):
 			if beat>=.64 and impact!=last_impact:
 				last_impact=impact
 				if phase==2:
-					var p=world.builder.position+world.builder.basis.y*.55-world.builder.basis.z*.62
+					var p=world.builder.position+(world.builder.basis.y*.55-world.builder.basis.z*.62)*SIZE_RATIO
 					for i in range(2):
-						var chip=world.pebble(world.globe,p,Vector3.ONE*.07,"E9C98B")
-						world.effects.append({"node":chip,"a":p,"b":p+world.builder.basis.x*(i-.5)*.3,"t":0.0,"duration":.35})
+						var chip=world.pebble(world.globe,p,Vector3.ONE*.07*SIZE_RATIO,"E9C98B")
+						world.effects.append({"node":chip,"a":p,"b":p+world.builder.basis.x*(i-.5)*.3*SIZE_RATIO,"t":0.0,"duration":.35})
 	elif waking<=0:
 		match rest_variant:
 			0: # Sitting on the grass.
 				rot.y=PI;lift=seated_lift;pose.LegL.x=1.50;pose.LegR.x=1.48;pose.KneeL.x=-.12;pose.KneeR.x=-.10;pose.ArmL=Vector3(.12,0,.12);pose.ArmR=Vector3(.12,0,-.12);pose.ElbowL.x=.08;pose.ElbowR.x=.08;pose.Body.x=.05
 			1: # Lying back with arms resting beside the body; no tools or effects.
-				rot.x=PI/2;lift=.18;pose.ArmL.z=-.32;pose.ArmR.z=.32;pose.ElbowL.x=-.25;pose.ElbowR.x=-.25;pose.LegL.z=-.12;pose.LegR.z=.12
+				if is_instance_valid(world.avatar):
+					# A short-legged, large-haired avatar dozes seated instead of exposing its underside.
+					lift=seated_lift;pose.LegL.x=1.15;pose.LegR.x=1.10;pose.KneeL.x=-.35;pose.KneeR.x=-.30;pose.ArmL=Vector3(.18,0,.18);pose.ArmR=Vector3(.18,0,-.18);pose.Body.x=.08
+				else:
+					rot.x=PI/2;lift=.18*SIZE_RATIO;pose.ArmL.z=-.32;pose.ArmR.z=.32;pose.ElbowL.x=-.25;pose.ElbowR.x=-.25;pose.LegL.z=-.12;pose.LegR.z=.12
 			2: # A slow stretch.
 				rot.y=PI;pose.ArmL.z=-2.6;pose.ArmR.z=2.6;pose.ElbowL.x=.3;pose.ElbowR.x=.3;pose.Body.z=sin(rest_time*1.4)*.10;pose.Body.x=-.07
 			3: # Sitting and gently swinging one foot.
@@ -156,8 +217,8 @@ func update(dt:float):
 	for name in world.limbs:world.limbs[name].rotation=world.limbs[name].rotation.lerp(pose[name],blend)
 	world.actor.rotation=world.actor.rotation.lerp(rot,blend)
 	var stretch=1.0+elasticity;var width=sqrt(1.0/stretch)
-	world.actor.scale=world.actor.scale.lerp(Vector3(width,stretch,width)*.9,1-exp(-dt*22))
-	world.actor.position.y=lerpf(world.actor.position.y,lift+rest_ground_offset+sin(world.time*1.5)*.005,blend)
+	world.actor.scale=world.actor.scale.lerp(Vector3(width,stretch,width)*ACTOR_SCALE,1-exp(-dt*22))
+	world.actor.position.y=lerpf(world.actor.position.y,lift+rest_ground_offset+sin(world.time*1.5)*.005*SIZE_RATIO,blend)
 	for tool in world.tools.values():tool.rotation.x=lerpf(tool.rotation.x,wrist,blend)
 	if is_instance_valid(head_pivot):
 		# A delayed, small counter-turn lets the head settle after the torso. No idle oscillation.
@@ -198,7 +259,7 @@ func settle_rest_support():
 		var p=world.globe.to_local(skeleton.to_global(point));var ground=world.ground_point(world.terrain.coordinates(p))
 		gap=minf(gap,(p-ground).dot(world.builder.basis.y))
 	if is_finite(gap):
-		rest_ground_offset=clampf(.025-gap,-.18,.25)
+		rest_ground_offset=clampf(.022-gap,-.18*SIZE_RATIO,.25*SIZE_RATIO)
 		world.actor.position.y+=rest_ground_offset
 		update_skin()
 	rest_ground_ready=true;rest_ground_samples+=1
@@ -209,6 +270,7 @@ func update_skin():
 		var driver=binding.driver
 		var pose=Transform3D(skeleton.global_basis.inverse()*driver.global_basis*binding.correction,skeleton.to_local(driver.global_position))
 		skeleton.set_bone_global_pose_override(binding.bone,pose,1.0,true)
+	if is_instance_valid(world.avatar):world.avatar.update_pose()
 
 func impact_elasticity(beat:float)->float:
 	# Compress once on impact and give a smaller rebound; the remaining stroke is still.
@@ -222,13 +284,13 @@ func feet_height()->float:
 		var box=mesh.get_aabb()
 		for i in range(8):height=minf(height,world.builder.to_local(mesh.to_global(box.get_endpoint(i))).y)
 	return height
-func plant_feet(height=.015):
+func plant_feet(height=GROUND_GAP):
 	var lowest=feet_height()
 	if is_finite(lowest):world.actor.position.y+=height-lowest
 
 func locomotion_pose(distance:float,speed:float,loaded=false)->Dictionary:
-	var run=clampf((speed-1.25)/.50,0,1) if not loaded else 0.0
-	var angle=distance*TAU/lerpf(1.22,1.65,run);var amplitude=lerpf(.44,.68,run)
+	var run=run_amount(speed,loaded)
+	var angle=distance*TAU/stride_length(speed,loaded);var amplitude=lerpf(.44,.68,run)
 	var pose={}
 	for i in range(2):
 		var side="L" if i==0 else "R";var phase_angle=angle+i*PI
@@ -240,7 +302,7 @@ func locomotion_pose(distance:float,speed:float,loaded=false)->Dictionary:
 		pose["Elbow"+side]=Vector3(lerpf(.24,.85,run),0,0)
 	pose.Body=Vector3(lerpf(.045,.16,run),sin(angle)*.065,0)
 	var contact=abs(sin(angle));var lift=.012+contact*.018+run*pow(contact,2)*.075
-	return {"pose":pose,"rotation":Vector3(0,0,sin(angle)*.025),"lift":lift,"ground":.015+run*.075*(1-contact)}
+	return {"pose":pose,"rotation":Vector3(0,0,sin(angle)*.025),"lift":lift*SIZE_RATIO,"ground":GROUND_GAP+run*.075*SIZE_RATIO*(1-contact)}
 
 func strike_pose(cycle:float,action:int)->Dictionary:
 	# Slow preparation, a short committed downstroke, then recoil and recovery.
@@ -265,4 +327,4 @@ func strike_pose(cycle:float,action:int)->Dictionary:
 		"LegL":Vector3(.16+frame.crouch,0,-.035),"LegR":Vector3(-.11+frame.crouch,0,.035),
 		"KneeL":Vector3(-.18-frame.crouch*1.1,0,0),"KneeR":Vector3(-.12-frame.crouch,0,0)
 	}
-	return {"pose":pose,"rotation":Vector3(0,-frame.twist*.18,frame.twist*.05),"lift":-frame.crouch,"wrist":frame.wrist}
+	return {"pose":pose,"rotation":Vector3(0,-frame.twist*.18,frame.twist*.05),"lift":-frame.crouch*SIZE_RATIO,"wrist":frame.wrist}

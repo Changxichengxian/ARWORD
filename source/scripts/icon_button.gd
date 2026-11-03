@@ -42,6 +42,9 @@ func _draw():
 			for i in range(8):var v=Vector2.from_angle(i*TAU/8);draw_line(c+v*10,c+v*14,col,3,true)
 		"compass":
 			draw_arc(c,13,0,TAU,30,col,2,true);draw_colored_polygon(PackedVector2Array([c+Vector2(4,-9),c+Vector2(1,2),c+Vector2(-4,9),c+Vector2(-1,-2)]),col)
+		"telescope":
+			draw_polyline(PackedVector2Array([c+Vector2(-12,-1),c+Vector2(8,-12),c+Vector2(12,-5),c+Vector2(-8,5),c+Vector2(-12,-1)]),col,2.5,true)
+			draw_line(c+Vector2(0,2),c+Vector2(-8,13),col,2.5,true);draw_line(c+Vector2(0,2),c+Vector2(8,13),col,2.5,true)
 		"planet":
 			draw_arc(c,12,0,TAU,30,col,2,true);draw_arc(c,6,0,TAU,20,col,1.5,true);draw_line(c+Vector2(-11,0),c+Vector2(11,0),col,1.7,true)
 		"home":

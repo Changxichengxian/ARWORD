@@ -1,4 +1,4 @@
-"""Five reusable work notes for the finite expansion chapters."""
+"""Reusable work notes; the first five retain their original content and ids."""
 from pathlib import Path
 import json
 R=Path(__file__).resolve().parents[1]
@@ -37,8 +37,76 @@ rows=[
  zh='观察深色岩石里的浅色晶体。先区分松散小块和大晶簇，优先采小块；尖端易碎，用小工具从根部操作，留下最高的一簇。',
  question='应该先采哪一部分？',options=['旁边松散的小块','最高晶簇的尖端','把整簇一口气敲碎'],correct=0,
  cue='Collect the loose pieces first, and leave the tallest crystal in place.',cue_options=['先采松散小块，保留最高晶簇','先采最高晶簇，留下松散小块','先敲碎整簇，再分拣小块'],cue_correct=0,
- sentence='Leave the tallest crystal beside the bay.',sentence_zh='把最高的一簇晶体留在小湾旁。')
+ sentence='Leave the tallest crystal beside the bay.',sentence_zh='把最高的一簇晶体留在小湾旁。'),
+ dict(title='给新船装上帆',focus=['gather','reinforce','repair','reliable'],
+ short='Gather boards, strong cloth, and iron parts for the new boat. Fit the boards first, then add the cloth sail. Keep the iron parts in a dry box beside the boat.',
+ text='Gather boards, strong cloth, and iron parts for the new boat. Fit the boards first, then add the cloth sail. Keep the iron parts in a dry box beside the boat. Use them to reinforce the places where the boards meet. Check the bottom for gaps before moving the boat into the water. A careful repair now helps make the boat reliable.',
+ zh='收集木板、结实的帆布和铁件，先装木板，再装船帆。铁件放在船旁的干燥箱子里，用来加固木板接合处。下水前检查船底的缝隙，认真修补，让船更可靠。',
+ question='应该先装哪一部分？',options=['先挂上帆布船帆','先把木板装好','先把船推入水中'],correct=1,
+ cue='Fit the boards first, then add the cloth sail. Keep the iron parts dry.',cue_options=['先装船帆，让铁件保持干燥','先装木板，把铁件暂放水中','先装木板，让铁件保持干燥'],cue_correct=2,
+ sentence='Fit the boards before adding the sail.',sentence_zh='装船帆之前，先把木板装好。'),
+ dict(title='顺着旗子去群岛',focus=['gather','preserve','resource','deliver'],
+ short='We sail to the green islands for hard wood and fruit. Follow the bright flags along the shore. Leave some fruit on each tree so the birds still have food.',
+ text='We sail to the green islands for hard wood and fruit. Follow the bright flags along the shore. Leave some fruit on each tree so the birds still have food. Tie the boat beside the steps before carrying anything aboard. Gather fallen wood near the path, and keep the fruit in a basket away from wet ropes.',
+ zh='我们去绿色群岛寻找硬木和果实，沿岸跟着明亮的旗子前进。每棵树上留一些果实给鸟吃。搬东西上船前，把船系在台阶旁；收集路边掉落的木头，把果实放进远离湿绳的篮子。',
+ question='为什么要在每棵树上留一些果实？',options=['让鸟仍然有食物','留作沿岸的路线标记','等下次出航时带走'],correct=0,
+ cue='Follow the flags along the shore, and leave some fruit for the birds.',cue_options=['沿岸跟着旗子走，把果实全部摘光','沿岸跟着旗子走，留些果实给鸟','沿小路寻找木头，把果实放在船边'],cue_correct=1,
+ sentence='Leave some fruit on each tree for birds.',sentence_zh='在每棵树上留一些果实给鸟。'),
+ dict(title='把海玻璃磨清亮',focus=['surface','smooth','distinguish','instead'],
+ short='Collect the pale sea glass beside the rocks. Wash off the sand, then rub each piece until the surface is smooth. Only clear pieces can become lenses for the telescope.',
+ text='Collect the pale sea glass beside the rocks. Wash off the sand, then rub each piece until the surface is smooth. Only clear pieces can become lenses for the telescope. Put cloudy pieces in a separate tray. They can decorate the workshop instead. Hold a finished lens toward the sky and check whether a distant tree looks clear.',
+ zh='收集岩石旁的浅色海玻璃，先洗掉沙子，再把表面磨光滑。清透的玻璃用于制作望远镜镜片；浑浊的碎片另放一盘，可以装饰工坊。把磨好的镜片举向天空，看看远处的树是否清楚。',
+ question='哪种海玻璃适合做镜片？',options=['表面仍沾着沙子的碎片','磨过却仍浑浊的碎片','磨后表面清透的碎片'],correct=2,
+ cue='Keep the clear glass for lenses, and put the cloudy pieces in the tray.',cue_options=['清透玻璃做镜片，浑浊碎片放托盘','浑浊玻璃做镜片，清透碎片放托盘','把两种玻璃都留在沙子里'],cue_correct=0,
+ sentence='Wash the glass before making it smooth.',sentence_zh='把玻璃磨光滑之前，先洗干净。'),
+ dict(title='黑沙岸边的石管',focus=['withstand','smooth','deliver','repair'],
+ short='The black shore has strong stone that can withstand water. Carry small blocks to the work table. Shape them into short pipes, and smooth the edges before joining the pieces.',
+ text='The black shore has strong stone that can withstand water. Carry small blocks to the work table. Shape them into short pipes, and smooth the edges before joining the pieces. Leave a round opening through each pipe so water can pass. Check the joints for gaps. Keep finished pipes beside the path, ready for the new water station.',
+ zh='黑沙岸边有耐水的坚硬石料。把小石块搬到工作台，做成短石管，接合前先磨平边缘。每根管子中间留圆孔让水流过，检查接口有没有缝隙，成品放在路边，准备送去引水站。',
+ question='接合石管之前要做什么？',options=['先把短管运到花园','先磨平管口边缘','先把所有短管接成一段'],correct=1,
+ cue='Smooth the edges of each pipe before joining the pieces.',cue_options=['先接合石管，再磨平边缘','先磨平边缘，再搬到花园','先磨平边缘，再接合石管'],cue_correct=2,
+ sentence='Smooth the edges before joining the pipes.',sentence_zh='接合石管之前，先磨平边缘。'),
+ dict(title='让水流到花园',focus=['repair','retain','efficient','notice'],
+ short='The tide wheel turns as the water moves. Connect the stone pipes before opening the gate. Then follow the water along the channel to check that it reaches the garden.',
+ text='The tide wheel turns as the water moves. Connect the stone pipes before opening the gate. Then follow the water along the channel to check that it reaches the garden. If a joint leaks, close the gate and repair it. Keep leaves away from the wheel. The small pool beside the garden can hold water while the wheel rests.',
+ zh='水流推动潮轮。先接好石管，再打开闸门，沿水渠看看水是否到达花园。发现接口漏水就先关闸修补。让树叶远离潮轮；花园旁的小池子能在潮轮停下时存水。',
+ question='打开闸门之前先做什么？',options=['先接好石管','先清空花园旁的小池子','先把成品石管搬回工作台'],correct=0,
+ cue='Close the gate before repairing the pipe, then open it again when the joint is secure.',cue_options=['先开闸放水，再检查管道接口','先关闸修管，接口牢固后再开闸','先关闸修管，修好后保持关闭'],cue_correct=1,
+ sentence='Connect the pipes before opening the gate.',sentence_zh='打开闸门之前，先接好管道。')
 ]
-for i,row in enumerate(rows):row.update(id=f'land{i:02}',site=[0,0,1,2,1][i])
+for i,row in enumerate(rows):row.update(id=f'land{i:02}',site=[0,0,1,2,1,0,0,1,1,2][i])
 (R/'assets/frontier_missions.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2),'utf-8')
 print('FRONTIER_NOTES',len(rows))
+
+# Add only the new chapter word forms. Existing lookup meanings and recordings stay intact.
+lookup_additions={
+ 'aboard':'在船上；到船上','anything':'任何东西；任何事','become':'变成；成为',
+ 'birds':'鸟（bird 的复数）','black':'黑色的','blocks':'块；石块（block 的复数）',
+ 'bottom':'底部；船底','box':'箱子；盒子','carrying':'搬运；携带（carry 的进行形式）',
+ 'channel':'水渠；通道','cloudy':'浑浊的；多云的','decorate':'装饰','distant':'远处的',
+ 'edges':'边缘（edge 的复数）','fallen':'掉落的；落下的（fall 的过去分词）',
+ 'fit':'安装；使合适','flags':'旗子（flag 的复数）','follow':'沿着；跟随',
+ 'food':'食物','fruit':'水果；果实','gaps':'缝隙；缺口（gap 的复数）',
+ 'green':'绿色的','hard':'坚硬的；困难的','hold':'拿住；容纳',
+ 'iron':'铁；铁制的','islands':'岛屿（island 的复数）','joining':'连接；接合（join 的进行形式）',
+ 'joint':'接合处；接头；关节','joints':'接合处；接头（joint 的复数）',
+ 'lens':'镜片；透镜','lenses':'镜片；透镜（lens 的复数）','meet':'相接；会面',
+ 'moves':'移动；流动（move 的第三人称单数）','now':'现在','off':'离开；脱离，wash off 指洗掉',
+ 'parts':'零件；部分（part 的复数）','piece':'一块；一片',
+ 'pipes':'管子；管道（pipe 的复数）','places':'地方；位置（place 的复数）',
+ 'pool':'水池；小池塘','rests':'休息；停歇（rest 的第三人称单数）',
+ 'rocks':'岩石（rock 的复数）','ropes':'绳子（rope 的复数）','round':'圆形的',
+ 'rub':'摩擦；擦','sail':'航行；船帆','sand':'沙子','sea':'海',
+ 'secure':'牢固的；稳固的；安全的','separate':'分开的；单独的','sky':'天空',
+ 'station':'站；工作站','steps':'台阶；步骤（step 的复数）','telescope':'望远镜',
+ 'tide':'潮汐','tie':'系；拴','toward':'朝；向','tray':'托盘；浅盘','until':'直到',
+ 'wash':'清洗','wet':'湿的','wheel':'轮子','whether':'是否'
+}
+dictionary_path=R/'assets/dictionary.json'
+dictionary=json.loads(dictionary_path.read_text('utf-8'))
+added=0
+for word,meaning in lookup_additions.items():
+ if word not in dictionary:
+  dictionary[word]={'phonetic':'','translation':meaning};added+=1
+dictionary_path.write_text(json.dumps(dictionary,ensure_ascii=False,indent=2),'utf-8')
+print('LOOKUP_ADDED',added,'TOTAL',len(dictionary))

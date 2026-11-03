@@ -148,5 +148,155 @@
     "sentence_zh": "把最高的一簇晶体留在小湾旁。",
     "id": "land04",
     "site": 1
+  },
+  {
+    "title": "给新船装上帆",
+    "focus": [
+      "gather",
+      "reinforce",
+      "repair",
+      "reliable"
+    ],
+    "short": "Gather boards, strong cloth, and iron parts for the new boat. Fit the boards first, then add the cloth sail. Keep the iron parts in a dry box beside the boat.",
+    "text": "Gather boards, strong cloth, and iron parts for the new boat. Fit the boards first, then add the cloth sail. Keep the iron parts in a dry box beside the boat. Use them to reinforce the places where the boards meet. Check the bottom for gaps before moving the boat into the water. A careful repair now helps make the boat reliable.",
+    "zh": "收集木板、结实的帆布和铁件，先装木板，再装船帆。铁件放在船旁的干燥箱子里，用来加固木板接合处。下水前检查船底的缝隙，认真修补，让船更可靠。",
+    "question": "应该先装哪一部分？",
+    "options": [
+      "先挂上帆布船帆",
+      "先把木板装好",
+      "先把船推入水中"
+    ],
+    "correct": 1,
+    "cue": "Fit the boards first, then add the cloth sail. Keep the iron parts dry.",
+    "cue_options": [
+      "先装船帆，让铁件保持干燥",
+      "先装木板，把铁件暂放水中",
+      "先装木板，让铁件保持干燥"
+    ],
+    "cue_correct": 2,
+    "sentence": "Fit the boards before adding the sail.",
+    "sentence_zh": "装船帆之前，先把木板装好。",
+    "id": "land05",
+    "site": 0
+  },
+  {
+    "title": "顺着旗子去群岛",
+    "focus": [
+      "gather",
+      "preserve",
+      "resource",
+      "deliver"
+    ],
+    "short": "We sail to the green islands for hard wood and fruit. Follow the bright flags along the shore. Leave some fruit on each tree so the birds still have food.",
+    "text": "We sail to the green islands for hard wood and fruit. Follow the bright flags along the shore. Leave some fruit on each tree so the birds still have food. Tie the boat beside the steps before carrying anything aboard. Gather fallen wood near the path, and keep the fruit in a basket away from wet ropes.",
+    "zh": "我们去绿色群岛寻找硬木和果实，沿岸跟着明亮的旗子前进。每棵树上留一些果实给鸟吃。搬东西上船前，把船系在台阶旁；收集路边掉落的木头，把果实放进远离湿绳的篮子。",
+    "question": "为什么要在每棵树上留一些果实？",
+    "options": [
+      "让鸟仍然有食物",
+      "留作沿岸的路线标记",
+      "等下次出航时带走"
+    ],
+    "correct": 0,
+    "cue": "Follow the flags along the shore, and leave some fruit for the birds.",
+    "cue_options": [
+      "沿岸跟着旗子走，把果实全部摘光",
+      "沿岸跟着旗子走，留些果实给鸟",
+      "沿小路寻找木头，把果实放在船边"
+    ],
+    "cue_correct": 1,
+    "sentence": "Leave some fruit on each tree for birds.",
+    "sentence_zh": "在每棵树上留一些果实给鸟。",
+    "id": "land06",
+    "site": 0
+  },
+  {
+    "title": "把海玻璃磨清亮",
+    "focus": [
+      "surface",
+      "smooth",
+      "distinguish",
+      "instead"
+    ],
+    "short": "Collect the pale sea glass beside the rocks. Wash off the sand, then rub each piece until the surface is smooth. Only clear pieces can become lenses for the telescope.",
+    "text": "Collect the pale sea glass beside the rocks. Wash off the sand, then rub each piece until the surface is smooth. Only clear pieces can become lenses for the telescope. Put cloudy pieces in a separate tray. They can decorate the workshop instead. Hold a finished lens toward the sky and check whether a distant tree looks clear.",
+    "zh": "收集岩石旁的浅色海玻璃，先洗掉沙子，再把表面磨光滑。清透的玻璃用于制作望远镜镜片；浑浊的碎片另放一盘，可以装饰工坊。把磨好的镜片举向天空，看看远处的树是否清楚。",
+    "question": "哪种海玻璃适合做镜片？",
+    "options": [
+      "表面仍沾着沙子的碎片",
+      "磨过却仍浑浊的碎片",
+      "磨后表面清透的碎片"
+    ],
+    "correct": 2,
+    "cue": "Keep the clear glass for lenses, and put the cloudy pieces in the tray.",
+    "cue_options": [
+      "清透玻璃做镜片，浑浊碎片放托盘",
+      "浑浊玻璃做镜片，清透碎片放托盘",
+      "把两种玻璃都留在沙子里"
+    ],
+    "cue_correct": 0,
+    "sentence": "Wash the glass before making it smooth.",
+    "sentence_zh": "把玻璃磨光滑之前，先洗干净。",
+    "id": "land07",
+    "site": 1
+  },
+  {
+    "title": "黑沙岸边的石管",
+    "focus": [
+      "withstand",
+      "smooth",
+      "deliver",
+      "repair"
+    ],
+    "short": "The black shore has strong stone that can withstand water. Carry small blocks to the work table. Shape them into short pipes, and smooth the edges before joining the pieces.",
+    "text": "The black shore has strong stone that can withstand water. Carry small blocks to the work table. Shape them into short pipes, and smooth the edges before joining the pieces. Leave a round opening through each pipe so water can pass. Check the joints for gaps. Keep finished pipes beside the path, ready for the new water station.",
+    "zh": "黑沙岸边有耐水的坚硬石料。把小石块搬到工作台，做成短石管，接合前先磨平边缘。每根管子中间留圆孔让水流过，检查接口有没有缝隙，成品放在路边，准备送去引水站。",
+    "question": "接合石管之前要做什么？",
+    "options": [
+      "先把短管运到花园",
+      "先磨平管口边缘",
+      "先把所有短管接成一段"
+    ],
+    "correct": 1,
+    "cue": "Smooth the edges of each pipe before joining the pieces.",
+    "cue_options": [
+      "先接合石管，再磨平边缘",
+      "先磨平边缘，再搬到花园",
+      "先磨平边缘，再接合石管"
+    ],
+    "cue_correct": 2,
+    "sentence": "Smooth the edges before joining the pipes.",
+    "sentence_zh": "接合石管之前，先磨平边缘。",
+    "id": "land08",
+    "site": 1
+  },
+  {
+    "title": "让水流到花园",
+    "focus": [
+      "repair",
+      "retain",
+      "efficient",
+      "notice"
+    ],
+    "short": "The tide wheel turns as the water moves. Connect the stone pipes before opening the gate. Then follow the water along the channel to check that it reaches the garden.",
+    "text": "The tide wheel turns as the water moves. Connect the stone pipes before opening the gate. Then follow the water along the channel to check that it reaches the garden. If a joint leaks, close the gate and repair it. Keep leaves away from the wheel. The small pool beside the garden can hold water while the wheel rests.",
+    "zh": "水流推动潮轮。先接好石管，再打开闸门，沿水渠看看水是否到达花园。发现接口漏水就先关闸修补。让树叶远离潮轮；花园旁的小池子能在潮轮停下时存水。",
+    "question": "打开闸门之前先做什么？",
+    "options": [
+      "先接好石管",
+      "先清空花园旁的小池子",
+      "先把成品石管搬回工作台"
+    ],
+    "correct": 0,
+    "cue": "Close the gate before repairing the pipe, then open it again when the joint is secure.",
+    "cue_options": [
+      "先开闸放水，再检查管道接口",
+      "先关闸修管，接口牢固后再开闸",
+      "先关闸修管，修好后保持关闭"
+    ],
+    "cue_correct": 1,
+    "sentence": "Connect the pipes before opening the gate.",
+    "sentence_zh": "打开闸门之前，先接好管道。",
+    "id": "land09",
+    "site": 2
   }
 ]

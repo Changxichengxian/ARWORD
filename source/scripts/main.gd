@@ -45,6 +45,18 @@ var drag_distance=0.0
 var last_back=-1000
 var lookup_return:Callable
 var closing=false
+var observatory_layer:CanvasLayer
+var observatory_drag=false
+var observatory_touch=-1
+var observatory_touch_points={}
+var observatory_pinch_distance=0.0
+var observatory_hud_visible=true
+var avatar_store
+var avatar_info={}
+var avatar_saved_local=false
+var avatar_busy=false
+var avatar_dialog:FileDialog
+var avatar_picker
 
 func _ready():
 	font.fallbacks=[preload("res://assets/fonts/FrontierLatin.ttf")]
@@ -76,6 +88,7 @@ func _ready():
 	next_task()
 	explore(true,false)
 	if art_preview:world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
+	call_deferred("initialize_avatar")
 
 func read_save():
 	if qa:return
@@ -145,8 +158,11 @@ func skip_learning():
 	complete_action(frontier.advance(),false)
 func complete_action(result:Dictionary,learned=true):
 	if learned:learning.data.context_help.erase(context_key())
+	frontier.record_delivery(world.production_route)
 	save_progress();world.harvest(result);play_fx("chop" if world.active_kind==0 else "stone");hud.sync_goal()
-	if result.complete:hud.toast("这一段做好了 · 点下一处工地")
+	if result.complete:
+		var id=str(frontier.data.active)
+		hud.toast("船已备好 · 可以去远方的群岛" if id=="shipyard" else "点望远镜，看看远处的星云" if id=="mountain" else frontier.facility_title(id)+"做好了")
 	var duration=1.35 if result.complete else 1.15
 	get_tree().create_timer(duration).timeout.connect(func():
 		if is_inside_tree():next_task()
@@ -246,6 +262,8 @@ func tap_world(p:Vector2):
 	if world.wildlife and world.wildlife.handle_tap(p):return
 	if cosmos:cosmos.handle_tap(p)
 func _unhandled_input(event):
+	if cosmos and cosmos.observatory_active:
+		observatory_input(event);return
 	if not is_instance_valid(hud) or hud.overlay.visible:return
 	if event is InputEventScreenTouch:
 		if event.pressed and world_area(event.position):
@@ -282,6 +300,9 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion and mouse_drag:stop_view_transition();drag_distance+=event.relative.length();world.drag(event.relative)
 
 func _input(event):
+	# A captured sky gesture must finish even when its release lands on a toolbar button.
+	if cosmos and cosmos.observatory_active and observatory_capture_input(event):
+		get_viewport().set_input_as_handled();return
 	# Releases over a card/modal still end a world gesture; UI may consume them later.
 	if event is InputEventScreenTouch and not event.pressed and is_instance_valid(hud) and (hud.overlay.visible or not world_area(event.position)):
 		touch_points.erase(event.index)
@@ -290,6 +311,7 @@ func _input(event):
 	if event is InputEventMouseButton and not event.pressed and is_instance_valid(hud) and (hud.overlay.visible or not world_area(event.position)):mouse_drag=false
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
 func _notification(what):
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_APPLICATION_PAUSED]:reset_observatory_input()
 	if what==NOTIFICATION_WM_CLOSE_REQUEST:request_exit()
 	if what==NOTIFICATION_WM_GO_BACK_REQUEST and is_instance_valid(hud):back()
 	if what==NOTIFICATION_APPLICATION_PAUSED and learning!=null:
@@ -309,6 +331,7 @@ func back():
 	var now=Time.get_ticks_msec()
 	if now-last_back<150:return
 	last_back=now;speech.stop()
+	if cosmos and cosmos.observatory_active:close_observatory();return
 	if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
 	elif hud.overlay.visible:hud.close()
 	elif not exploring:explore()
@@ -324,10 +347,96 @@ func settings():
 	hud.button(box,"音效 · "+("开" if learning.data.sound else "关"),func():learning.data.sound=not learning.data.sound;save_progress();settings())
 	hud.button(box,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
 	hud.button(box,"星空与星云",space_settings)
+	hud.button(box,"人物",show_avatar_settings)
 	hud.button(box,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();settings())
 	hud.button(box,"收藏的词",func():bookmarks(0))
 	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),show_developer)
 	hud.ghost(box,"关闭",func():hud.close())
+func initialize_avatar():
+	var directory="user://avatars"
+	if qa:
+		var scope=str(Time.get_ticks_usec())
+		for argument in OS.get_cmdline_user_args():
+			if argument.begins_with("--qa-avatar-scope="):
+				var requested=argument.trim_prefix("--qa-avatar-scope=").validate_filename()
+				if not requested.is_empty() and requested not in [".",".."]:scope=requested
+		directory="user://qa-avatars/".path_join(scope)
+	avatar_store=load("res://scripts/avatar_store.gd").new(directory)
+	if OS.has_feature("android") and Engine.has_singleton("LocalAvatarPicker"):
+		avatar_picker=Engine.get_singleton("LocalAvatarPicker")
+		avatar_picker.connect("avatar_picked",avatar_file_selected)
+		avatar_picker.connect("avatar_pick_failed",avatar_picker_failed)
+		avatar_picker.connect("avatar_pick_cancelled",avatar_picker_cancelled)
+	restore_avatar()
+	if qa:
+		for argument in OS.get_cmdline_user_args():
+			if argument.begins_with("--qa-avatar-import="):
+				var result=import_local_avatar(argument.trim_prefix("--qa-avatar-import="))
+				print("QA_AVATAR_IMPORT ",JSON.stringify(result))
+func restore_avatar()->Dictionary:
+	var config=avatar_store.recover();avatar_info={}
+	avatar_saved_local=config.get("selected","")=="local"
+	if config.get("selected","")!="local":return config
+	var result=world.call("load_local_avatar",avatar_store.current_path())
+	if result.get("ok",false):avatar_info=config
+	elif is_instance_valid(hud):hud.toast(str(result.get("error","人物暂时无法载入，已使用白色人物")))
+	return result
+func show_avatar_settings():
+	if locked:return
+	# Keep glyphs for the locally tested model credit: 大肥鱼 · MZEM · 木子恶魔.
+	speech.stop();var box=hud.modal("人物");hud.screen="avatar"
+	hud.text(box,str(avatar_info.get("title","白色人物")),24)
+	var author=str(avatar_info.get("author",""))
+	if not author.is_empty():hud.text(box,"作者 · "+author,16,IslandHUD.GREEN)
+	hud.button(box,"选择 VRM 模型",pick_avatar,true,50).disabled=avatar_busy
+	hud.ghost(box,"恢复白色人物",clear_avatar,44).disabled=avatar_busy or not avatar_saved_local
+	hud.ghost(box,"返回",settings,44)
+func pick_avatar():
+	if avatar_busy or avatar_store==null:return
+	if OS.has_feature("android"):
+		if avatar_picker==null:hud.toast("人物导入暂不可用");return
+		avatar_busy=true;show_avatar_settings();avatar_picker.call("pick_avatar");return
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):hud.toast("此设备暂不支持文件选择");return
+	avatar_busy=true;show_avatar_settings()
+	if not is_instance_valid(avatar_dialog):
+		avatar_dialog=FileDialog.new();avatar_dialog.access=FileDialog.ACCESS_FILESYSTEM;avatar_dialog.file_mode=FileDialog.FILE_MODE_OPEN_FILE
+		avatar_dialog.use_native_dialog=true;avatar_dialog.filters=PackedStringArray(["*.vrm;VRM 模型"])
+		avatar_dialog.title="选择人物模型";add_child(avatar_dialog)
+		avatar_dialog.file_selected.connect(avatar_file_selected);avatar_dialog.canceled.connect(avatar_picker_cancelled)
+	avatar_dialog.popup_centered_ratio(.8)
+func avatar_picker_cancelled():
+	avatar_busy=false
+	if hud.screen=="avatar" and hud.overlay.visible:show_avatar_settings()
+func avatar_picker_failed(message:String):
+	avatar_busy=false
+	if hud.screen=="avatar" and hud.overlay.visible:show_avatar_settings()
+	hud.toast(avatar_store.clean_label(message,100))
+func avatar_file_selected(path:String):
+	avatar_busy=false
+	var result=import_local_avatar(path)
+	if hud.screen=="avatar" and hud.overlay.visible:show_avatar_settings()
+	hud.toast("人物已换好" if result.get("ok",false) else str(result.get("error","人物未能导入")))
+func import_local_avatar(path:String)->Dictionary:
+	if avatar_store==null or avatar_busy:return {"ok":false,"error":"人物导入正在准备"}
+	avatar_busy=true
+	var prepared=avatar_store.prepare(path)
+	if not prepared.ok:avatar_busy=false;return prepared
+	var checked=world.call("prepare_local_avatar",prepared.path)
+	if not checked.get("ok",false):avatar_store.cancel();avatar_busy=false;return checked
+	var installed=avatar_store.install()
+	if not installed.ok:checked.candidate.free();avatar_store.cancel();avatar_busy=false;return installed
+	var committed=avatar_store.confirm(checked)
+	if not committed.ok:
+		checked.candidate.free();avatar_store.rollback()
+		avatar_busy=false;return committed
+	# The candidate is fully decoded once; activation only swaps the already prepared scene.
+	world.call("activate_local_avatar",checked.candidate)
+	avatar_info=committed.info;avatar_saved_local=true;avatar_busy=false
+	return {"ok":true,"title":avatar_info.title,"author":avatar_info.author}
+func clear_avatar():
+	if avatar_busy or avatar_store==null:return
+	if not avatar_store.clear():hud.toast("人物设置暂时无法保存");return
+	world.call("clear_local_avatar");avatar_info={};avatar_saved_local=false;show_avatar_settings()
 func space_settings():
 	if not exploring:explore()
 	speech.stop();var box=hud.modal("星空与星云",true,false);hud.screen="space_settings"
@@ -370,6 +479,7 @@ func show_developer():
 		show_developer())
 	hud.button(box,"完成当前工地",fast_forward.bind(false),true,54).disabled=not learning.data.dev_skip
 	hud.button(box,"全部建设完成",fast_forward.bind(true),true,54).disabled=not learning.data.dev_skip
+	hud.button(box,"巡游与海底",show_explore_tools,false,48).disabled=not learning.data.dev_skip
 	hud.text(box,"只推进建设，保留真实学习记录。",16,IslandHUD.GREEN)
 	hud.ghost(box,"关闭",hud.close)
 func fast_forward(everything=false):
@@ -377,6 +487,83 @@ func fast_forward(everything=false):
 	frontier.finish_for_development(everything);save_progress();hud.close()
 	world.sync_buildings(true);next_task();explore(everything)
 	hud.toast("建设已完成" if everything else "这处工地已完成")
+
+func show_explore_tools():
+	if not learning.data.dev_skip:return
+	var box=hud.modal("去看看");hud.screen="developer_tour"
+	for pair in [["shipyard","船坞"],["sunreach","椰风群岛"],["basalt","黑沙群岛"],["mountain","高山望远镜"]]:
+		var id=str(pair[0]);var available=frontier.done(id)
+		hud.button(box,str(pair[1])+("" if available else " · 尚未建好"),tour_site.bind(id),false,46).disabled=not available
+	var row=hud.row(box);hud.button(row,"蓝鲸",preview_nature.bind("whale"),false,46);hud.button(row,"深海洞窟",preview_nature.bind("cave"),false,46)
+	hud.ghost(box,"返回",show_developer)
+func tour_site(id:String):
+	if not learning.data.dev_skip or not frontier.done(id):return
+	hud.close();frontier.choose(id);save_progress();next_task();explore(false)
+	world.recenter();frame_view(Vector3(0,9.3,0),13.5)
+func preview_nature(kind:String):
+	if not learning.data.dev_skip:return
+	hud.close();explore(false);var normal=world.wildlife.preview_event(kind)
+	world.desired_rotation=Quaternion(normal,Vector3.UP)
+	frame_view(Vector3(0,9.2,0),16.0 if kind=="whale" else 12.0)
+func open_observatory():
+	if not frontier.done("mountain") or cosmos.observatory_active:return
+	speech.stop();hud.close();explore(false);mouse_drag=false;touch_points.clear()
+	world.work_point=frontier.target("mountain");world.walk_to(world.work_stance(0))
+	if not cosmos.enter_observatory(0):return
+	reset_observatory_input();observatory_hud_visible=hud.visible;hud.hide()
+	observatory_layer=CanvasLayer.new();observatory_layer.layer=5;add_child(observatory_layer)
+	var root=Control.new();root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.mouse_filter=Control.MOUSE_FILTER_IGNORE;observatory_layer.add_child(root)
+	var margin=MarginContainer.new();root.add_child(margin);margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE);margin.add_theme_constant_override("margin_left",16);margin.add_theme_constant_override("margin_right",16);margin.add_theme_constant_override("margin_top",20)
+	var bar=HBoxContainer.new();margin.add_child(bar);bar.add_theme_constant_override("separation",8)
+	var back_button=hud.icon(bar,"close",close_observatory,"返回星球");back_button.custom_minimum_size=Vector2(44,44)
+	var options=cosmos.observation_targets()
+	for i in range(options.size()):
+		var button=hud.button(bar,str(options[i].title),select_observation.bind(i),false,44)
+		button.add_theme_font_override("font",font);button.add_theme_font_size_override("font_size",14)
+func select_observation(index:int):
+	reset_observatory_input();cosmos.select_observation_target(index)
+func close_observatory():
+	cosmos.leave_observatory();reset_observatory_input()
+	if is_instance_valid(observatory_layer):observatory_layer.queue_free()
+	observatory_layer=null;hud.visible=observatory_hud_visible
+	mouse_drag=false;touch_points.clear();drag_id=-1
+func reset_observatory_input():
+	observatory_drag=false;observatory_touch=-1;observatory_touch_points.clear();observatory_pinch_distance=0.0
+func observatory_over_controls(position:Vector2)->bool:
+	if not is_instance_valid(observatory_layer):return false
+	for button in observatory_layer.find_children("*","BaseButton",true,false):
+		if button.is_visible_in_tree() and button.get_global_rect().has_point(position):return true
+	return false
+func observatory_capture_input(event)->bool:
+	if event is InputEventMouse and event.device==InputEvent.DEVICE_ID_EMULATION:return false
+	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed and observatory_drag:
+		observatory_drag=false;return true
+	if event is InputEventMouseMotion and observatory_drag:
+		cosmos.rotate_observation(event.relative);return true
+	if event is InputEventScreenTouch and (not event.pressed or event.canceled) and observatory_touch_points.has(event.index):
+		observatory_touch_points.erase(event.index);observatory_pinch_distance=0.0
+		observatory_touch=-1 if observatory_touch_points.is_empty() else int(observatory_touch_points.keys()[0])
+		if observatory_touch_points.size()>=2:observatory_pinch_distance=observatory_touch_points.values()[0].distance_to(observatory_touch_points.values()[1])
+		return true
+	if event is InputEventScreenDrag and observatory_touch_points.has(event.index):
+		observatory_touch_points[event.index]=event.position
+		if observatory_touch_points.size()>=2:
+			var distance=observatory_touch_points.values()[0].distance_to(observatory_touch_points.values()[1])
+			if observatory_pinch_distance>1:cosmos.zoom_observation(observatory_pinch_distance/maxf(1,distance))
+			observatory_pinch_distance=distance
+		else:cosmos.rotate_observation(event.relative)
+		return true
+	return false
+func observatory_input(event):
+	if observatory_capture_input(event):return
+	if event is InputEventMouse and (event.device==InputEvent.DEVICE_ID_EMULATION or not observatory_touch_points.is_empty()):return
+	if event is InputEventMouseButton:
+		if event.button_index==MOUSE_BUTTON_LEFT:observatory_drag=event.pressed
+		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:cosmos.zoom_observation(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1)
+	elif event is InputEventScreenTouch:
+		if event.pressed and not event.canceled and not observatory_over_controls(event.position):
+			observatory_touch_points[event.index]=event.position;observatory_touch=int(observatory_touch_points.keys()[0])
+			if observatory_touch_points.size()>=2:observatory_pinch_distance=observatory_touch_points.values()[0].distance_to(observatory_touch_points.values()[1])
 func bookmarks(page:int):
 	var ids=learning.data.bookmarks.keys();var box=hud.modal("收藏的词");hud.screen="bookmarks"
 	if ids.is_empty():hud.text(box,"点空心星星，把一个词留在这里。",19)

@@ -2682,5 +2682,517 @@
   "lookup_worker": {
     "textHash": "87eba76e7f3164534045ba922e7770fb58bbd14ad732bbf5ba6f11cc56989e6e",
     "seconds": 0.9386666666666666
+  },
+  "land05_short": {
+    "textHash": "487f2df6c712ab538476ac6dda1d8cb55c09acf666cbb35db5c9b9451b713c5e",
+    "seconds": 10.354666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land05_full": {
+    "textHash": "d18327eb01521ac09462269aa7062b51d3dc8aab5b5222573474088d7660bf20",
+    "seconds": 20.900666666666666,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land05_cue": {
+    "textHash": "1c2d27f30a34ea802342cc0f418ec2469b48823fdb26367ada53c09be1f94d71",
+    "seconds": 4.466666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land06_short": {
+    "textHash": "5bfc41e68f2ccc5f0027a580ca965a5db6ef55364f659f563ae15ffbf8b0a628",
+    "seconds": 9.290666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land06_full": {
+    "textHash": "509c3f9995efc5d67bb6c6b39e0ce90e15bbc043d5d6984e978938f41f210792",
+    "seconds": 18.462666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land06_cue": {
+    "textHash": "2736d6af6b23c29183aef47f6ac2d3adbb67ba47588c4dcf983698850a2bada7",
+    "seconds": 3.9032916666666666,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land07_short": {
+    "textHash": "4895b38ec5de71f3dd6740636b2558f5d3d16db43ba4df6f48776a5b8a5e2273",
+    "seconds": 10.984666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land07_full": {
+    "textHash": "f55d48519398e502872ad3c98aded00f14c7f4fb94abebd1567e47701b1492f9",
+    "seconds": 20.681333333333335,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land07_cue": {
+    "textHash": "8d3a33a18673b18cb37a086932a8b13aa509d1d822b4fbddbfff1e54386632ce",
+    "seconds": 4.1066666666666665,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land08_short": {
+    "textHash": "54fe23ac1bd7b13c86a96a30daa3599d913519ef8bd5e6d62374cb5963876dbd",
+    "seconds": 10.741333333333333,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land08_full": {
+    "textHash": "cf17efb1d3f7e61dacaf4737b6a55f311136afc0fb32d7818b0891c24d1109ac",
+    "seconds": 20.38,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land08_cue": {
+    "textHash": "8948a9a6df57067be917a0357d65a02ba2fa840f5cb5c3b66210a3a63f80d737",
+    "seconds": 3.604625,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land09_short": {
+    "textHash": "cb4fed9e35d36d40e839eb409bce66b9ea34d0cb1b70befdcef9996f66ddb24e",
+    "seconds": 10.398666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land09_full": {
+    "textHash": "31d2ab9945acc20833830a7ae2b0b80d0fa77656b3234f5fa347648f722243df",
+    "seconds": 19.721333333333334,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "land09_cue": {
+    "textHash": "83a41c23f42fddd0ffcd62b99bcb0ca27f1215eb7ed671fe825a59af26b11a15",
+    "seconds": 5.024,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_aboard": {
+    "textHash": "4fb10800cbeeca991a6bcb6dfd54fe4cddbfae60db0c0f1633693113432f56ef",
+    "seconds": 0.96,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/4fb10800cbeeca991a6b.mp3"
+  },
+  "lookup_anything": {
+    "textHash": "ee0874170b7f6f32b8c2ac9573c428d35b575270a66b757c2c0185d2bd09718d",
+    "seconds": 0.96,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/ee0874170b7f6f32b8c2.mp3"
+  },
+  "lookup_become": {
+    "textHash": "9ebb1e6f5b2adf424b662ab2b7b0189dfe8d4b69fd9e96c50b5a5936c1c0bcb2",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/9ebb1e6f5b2adf424b66.mp3"
+  },
+  "lookup_birds": {
+    "textHash": "7f14eadc80600546fd90badfdd93d13f356f9a8a50abf8ce4195f67f062de824",
+    "seconds": 0.8746666666666667,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_black": {
+    "textHash": "c006c7e3ab14d686f63524136f1ec7c5e553d839bc01c851e4dc9de2bdbfc589",
+    "seconds": 0.7467,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/c006c7e3ab14d686f635.mp3"
+  },
+  "lookup_blocks": {
+    "textHash": "2a12da17d27cd05ab0f3148816c1b4a702334202e82c5ad0dff734cb45db8017",
+    "seconds": 0.9173333333333333,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_bottom": {
+    "textHash": "be9b7607e070383c083b082c9c32d5509931bf9b297caf90bfdb7a692424c158",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/be9b7607e070383c083b.mp3"
+  },
+  "lookup_box": {
+    "textHash": "26f8567f2569182294c3fa5b9f9cb2270b554eef628b4c149cf82a42888ff4ae",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/26f8567f2569182294c3.mp3"
+  },
+  "lookup_carrying": {
+    "textHash": "9736ae5e9896f6ea5fcf1ca575edab2c02095ce0056ec472a1093e5b45810ba7",
+    "seconds": 0.9386666666666666,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_channel": {
+    "textHash": "69e36568cd8b4659389b9fcfbe1167547f6421e78168bfb439dada2ffddb0146",
+    "seconds": 0.9173,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/69e36568cd8b4659389b.mp3"
+  },
+  "lookup_cloudy": {
+    "textHash": "5e9562c786d9ca040985788bfdd906e5cdaa64560afe6ec2d5660449944972f9",
+    "seconds": 0.9173,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/5e9562c786d9ca040985.mp3"
+  },
+  "lookup_decorate": {
+    "textHash": "567fa2572b1787bf0a753cb95ea5bb73eded7cc10d3fc1a38c15ff7dbf112758",
+    "seconds": 1.024,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/567fa2572b1787bf0a75.mp3"
+  },
+  "lookup_distant": {
+    "textHash": "5c5777c1c66d4e25a0377a4efc11fe003652a8f82ccaed19934d4a2b18e7b816",
+    "seconds": 0.96,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/5c5777c1c66d4e25a037.mp3"
+  },
+  "lookup_edges": {
+    "textHash": "f394aa7979e5cc5d490493628d72a3847b31a79c38a81db1da7df4ef1cf8be23",
+    "seconds": 1.0026666666666666,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_fallen": {
+    "textHash": "8828e8d5e4b7f8a1340742d8c51551e38dd7597a416b135a92fea0d49eae47cc",
+    "seconds": 0.9386666666666666,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_fit": {
+    "textHash": "da4270e3735a3418c9d462af2e17d045132dede43df058e85b1f0399fcf96f1b",
+    "seconds": 0.7253,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/da4270e3735a3418c9d4.mp3"
+  },
+  "lookup_flags": {
+    "textHash": "2934fb49d6b38adef036c28fac69f188feae09259f3184e6d9cfbd0f35454fec",
+    "seconds": 0.9173333333333333,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_follow": {
+    "textHash": "a3ce0b6106cdb3982d7b2bd5c7be5e1e74d973c4a3018b03beb01fc5dc3ec6f5",
+    "seconds": 0.9813,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/a3ce0b6106cdb3982d7b.mp3"
+  },
+  "lookup_food": {
+    "textHash": "c1f026582fe6e8cb620d0c85a72fe421ddded756662a8ec00ed4c297ad10676b",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/c1f026582fe6e8cb620d.mp3"
+  },
+  "lookup_fruit": {
+    "textHash": "9209526aaa61b0709dbb838e14686a26c4a03b53e8eedf34c7e5f6f606110d8c",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/9209526aaa61b0709dbb.mp3"
+  },
+  "lookup_gaps": {
+    "textHash": "11fb0b5a56e5d18c2f001a8c858fb424f68d0b1658acc820078467db9f39ecf5",
+    "seconds": 0.832,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_green": {
+    "textHash": "ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088",
+    "seconds": 0.9173,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/ba4788b226aa8dc2e6dc.mp3"
+  },
+  "lookup_hard": {
+    "textHash": "ed5465b9220df9ce176d0bf30d6a317729bd9d37e4ae1cc015cb24c99af1df49",
+    "seconds": 0.8747,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/ed5465b9220df9ce176d.mp3"
+  },
+  "lookup_hold": {
+    "textHash": "e8b22d83b417e85ba4f24101a49a49cc3246a5e5e4ce6574623063e4e32801e0",
+    "seconds": 0.8107,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/e8b22d83b417e85ba4f2.mp3"
+  },
+  "lookup_iron": {
+    "textHash": "04e9c0db87e7eebbf8123dae64d169c85540d588a38b4f9f3fbc255c7c6c65a9",
+    "seconds": 0.9387,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/04e9c0db87e7eebbf812.mp3"
+  },
+  "lookup_islands": {
+    "textHash": "cdce8218c199fd2ae37066b9d40ddd743b7977b5766a1a088abba8a3c757c465",
+    "seconds": 1.0453333333333332,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_joining": {
+    "textHash": "a336147cc444a49ff8c11b7691b85fe3596216df154bacfe2a6da03433f6e610",
+    "seconds": 0.9173333333333333,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_joint": {
+    "textHash": "f0a613ed6eebe40f33ab4c3f17ec84ac3bb76c2f9e1c734a2942c7d6e6d165f4",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/f0a613ed6eebe40f33ab.mp3"
+  },
+  "lookup_joints": {
+    "textHash": "bbb2c150b728fe7b9694261f48fbcc2014a411363935a044a561e4e06d8586a6",
+    "seconds": 0.9173333333333333,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_lens": {
+    "textHash": "812b9215cd2f0e7ea41f32a8416803de2bcfaed16c43ae540afc65a218a3da0e",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/812b9215cd2f0e7ea41f.mp3"
+  },
+  "lookup_lenses": {
+    "textHash": "9de04455d5bb5f5ff2f4beb06c122970d7801ff00d79877a08394acec4b9f136",
+    "seconds": 1.0453333333333332,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_meet": {
+    "textHash": "8ccb033c0e48b27ff91e1ab948367e3bbc6921487c97624ed7ad064025e3dc99",
+    "seconds": 0.832,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/8ccb033c0e48b27ff91e.mp3"
+  },
+  "lookup_moves": {
+    "textHash": "8aca04ab6ee7c4025257c706435cacc252372ecb40511ae1fc49605823fd17ba",
+    "seconds": 0.9386666666666666,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_now": {
+    "textHash": "ed5eb9a37e2d8231af3388319b941995f6dc8755c56043d0cc52b5fe405a87de",
+    "seconds": 0.768,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/ed5eb9a37e2d8231af33.mp3"
+  },
+  "lookup_off": {
+    "textHash": "b4dc66dde806261bdda8607d8707aa727d308cd80272381a5583f63899918467",
+    "seconds": 0.7467,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/b4dc66dde806261bdda8.mp3"
+  },
+  "lookup_parts": {
+    "textHash": "d887db09649dab0d83951d8d5d69b2e7d8bb70e79daa2a3a279b4fd6b8346cea",
+    "seconds": 0.9173333333333333,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_piece": {
+    "textHash": "34235a2c502e3919d3f00af5dabb87cb58aef4566b10631f2a5db94950ebffbd",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/34235a2c502e3919d3f0.mp3"
+  },
+  "lookup_pipes": {
+    "textHash": "e1d2f6b3a44f7b712d44f9b339e4ac3ab33fa539fec07447c2d0a5601e89cc07",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_places": {
+    "textHash": "a48fcb713243b3d460ca7f05e4e4e5ef1cd4d8ce4981ce20cdd3e98a39d4fd38",
+    "seconds": 1.088,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_pool": {
+    "textHash": "27cac5503836765cd10751d27ab4a6e17d7a80d4c948430a5a81513973f9b51e",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/27cac5503836765cd107.mp3"
+  },
+  "lookup_rests": {
+    "textHash": "e6dd4cae8ed7d872754068a34cd0a43f055217e256216285e2940852adccddb8",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_rocks": {
+    "textHash": "f6056ef7890a99494c34951817c2ed4fd3608a8488ef0ae6f2afac93ed76854e",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_ropes": {
+    "textHash": "08544322f2867cc0c73b6eea6df6ce9f226e60fe9cf2dbeb8a85eb4a3709f25d",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_round": {
+    "textHash": "a97b0931730e83fbf9284ff00a4c5f7a4eef2189dddb89319a6dfa5871e28923",
+    "seconds": 0.96,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/a97b0931730e83fbf928.mp3"
+  },
+  "lookup_rub": {
+    "textHash": "abaa209d9c23bcac23419e95fe4b2211676823147a1025ddedc155a7c5b428da",
+    "seconds": 0.7253,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/abaa209d9c23bcac2341.mp3"
+  },
+  "lookup_sail": {
+    "textHash": "d0350a6064de840458ae346088ad3082824939283153ff87ded35684f120d1d8",
+    "seconds": 0.704,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/d0350a6064de840458ae.mp3"
+  },
+  "lookup_sand": {
+    "textHash": "f79d7d24558304d8bce3b1a7622fd4084d9708daa9477124a70e89472b68a465",
+    "seconds": 0.8533,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/f79d7d24558304d8bce3.mp3"
+  },
+  "lookup_sea": {
+    "textHash": "4a69f19c8c264850d0f0fca1d7cd8ac0d07771cb9aaf5923c2c621a3e0f74475",
+    "seconds": 0.7893,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/4a69f19c8c264850d0f0.mp3"
+  },
+  "lookup_secure": {
+    "textHash": "6a934b45144e3758911efa29ed68fb2d420fa7bd568739cdcda9251fa9609b1e",
+    "seconds": 0.9387,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/6a934b45144e3758911e.mp3"
+  },
+  "lookup_separate": {
+    "textHash": "80ed840f94f7d1bdf549226fd21c8d3927f38009f17539a1aa3a239c04afbd2f",
+    "seconds": 0.9387,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/80ed840f94f7d1bdf549.mp3"
+  },
+  "lookup_sky": {
+    "textHash": "05f514fae7ca5710f9e9289a20a5c9b372af781bfc94dd23d9cb8a044122460f",
+    "seconds": 0.896,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/05f514fae7ca5710f9e9.mp3"
+  },
+  "lookup_station": {
+    "textHash": "9b4ef3e5b7b4d1759cb8f880e34dbd5ea8c3fcd79ce33b89d7357bf64fcbfc91",
+    "seconds": 1.024,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/9b4ef3e5b7b4d1759cb8.mp3"
+  },
+  "lookup_steps": {
+    "textHash": "b7595e2a863957fc6c225ed540d335dd1e859dd3032451c2e11bceb0329defa6",
+    "seconds": 0.8533333333333334,
+    "voice": "af_heart",
+    "speed": 0.94
+  },
+  "lookup_telescope": {
+    "textHash": "918d6b6a9b95943bf5e211e5a050e939376debc88121a682c17a7050cb6c7fa9",
+    "seconds": 1.0453,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/918d6b6a9b95943bf5e2.mp3"
+  },
+  "lookup_tide": {
+    "textHash": "8a28929ac7f9a17e97a421ac2cd63ac73568ebe87bc0cee641a193d91c761577",
+    "seconds": 0.8747,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/8a28929ac7f9a17e97a4.mp3"
+  },
+  "lookup_tie": {
+    "textHash": "6f595eba3f46ceaa9fd0b0a93cb363cad6c66fedd2699850115c8d85d9e5b852",
+    "seconds": 0.7893,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/6f595eba3f46ceaa9fd0.mp3"
+  },
+  "lookup_toward": {
+    "textHash": "cc58a5f8986c71d49b82a90dbe15278e761bd0fb6a19854ce32e8fba83efa08c",
+    "seconds": 0.9173,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/cc58a5f8986c71d49b82.mp3"
+  },
+  "lookup_tray": {
+    "textHash": "ad9a0cab12eef90639233b67f4e8fec1a6b87333519f84eb42d912d3fe13e2fb",
+    "seconds": 0.832,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/ad9a0cab12eef9063923.mp3"
+  },
+  "lookup_until": {
+    "textHash": "2e3200de84b9cada83900111ef25b8bfa9cbf45e145c9ceb3b87330b32eff188",
+    "seconds": 1.0027,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/2e3200de84b9cada8390.mp3"
+  },
+  "lookup_wash": {
+    "textHash": "476994559e873a621c524b49c195ad4d14876ac168022ae43c0b3fe2868d82ef",
+    "seconds": 0.7467,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/476994559e873a621c52.mp3"
+  },
+  "lookup_wet": {
+    "textHash": "534c51e17770c9b7a5aa186bec09fd9470653e25f39651277bcc2fb1f620acd0",
+    "seconds": 0.7467,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/534c51e17770c9b7a5aa.mp3"
+  },
+  "lookup_wheel": {
+    "textHash": "ba59926159d2aa256eb8739b8da7e2b574b960e1202c6d624cbe981cef996c91",
+    "seconds": 0.7253,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/ba59926159d2aa256eb8.mp3"
+  },
+  "lookup_whether": {
+    "textHash": "3509fd899235fb8b76046da8694049fd16b0e5539a64dce3ae64691cdcf33f4c",
+    "seconds": 0.832,
+    "voice": "af_heart",
+    "speed": 0.94,
+    "reused_from": "wordbooks/audio/3509fd899235fb8b7604.mp3"
   }
 }

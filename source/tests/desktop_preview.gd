@@ -5,7 +5,7 @@ func run():
 	var game=load("res://main.tscn").instantiate();root.add_child(game)
 	for i in range(4):await process_frame
 	assert(game.art_preview and game.qa,"Art preview must isolate saves without requiring --qa")
-	assert(game.world.land.size()==33,"Preview contains the expanded island")
+	assert(game.world.land.size()==48,"Preview contains all three expanded island regions")
 	game.learning.data.actions+=10;game.save_progress()
 	var after=FileAccess.get_file_as_bytes("user://island4.json") if FileAccess.file_exists("user://island4.json") else PackedByteArray()
 	assert(before==after,"Preview cannot modify regular progress")

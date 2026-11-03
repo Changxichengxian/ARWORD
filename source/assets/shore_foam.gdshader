@@ -8,10 +8,10 @@ void vertex() {
     VERTEX=n*(radius+wave+.012);
 }
 void fragment() {
-    float phase=fract(water_time*.23+UV.x*.035);
-    float line=exp(-pow((UV.y-phase)*10.0,2.0));
-    float broken=smoothstep(-.65,.5,sin(UV.x*7.0+water_time*.6)+sin(UV.x*13.0-water_time*.25)*.35);
+    float phase=fract(water_time*.19+UV.x*.035);
+    float line=exp(-pow((UV.y-phase)*13.0,2.0));
+    float broken=smoothstep(-.10,.65,sin(UV.x*7.0+water_time*.37)+sin(UV.x*13.0-water_time*.20)*.38);
     float edges=smoothstep(0.0,.12,UV.y)*(1.0-smoothstep(.75,1.0,UV.y));
     ALBEDO=vec3(.71,.91,.87);
-    ALPHA=line*broken*edges*.40;
+    ALPHA=line*broken*edges*.33;
 }

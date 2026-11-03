@@ -58,7 +58,7 @@ func run():
 	frontier.choose("cottage");frontier.finish_for_development(false)
 	check(frontier.done("cottage") and not frontier.done("grove"),"finish current worksite completes only the chosen building and its additions")
 	frontier.finish_for_development(true)
-	check(frontier.finished_units()==frontier.content_units() and frontier.cells().size()==33 and learning.all_done(),"one developer action finishes all terrain buildings and additions")
+	check(frontier.finished_units()==frontier.content_units() and frontier.cells().size()==48 and learning.all_done(),"one developer action finishes all terrain buildings and additions")
 	check(JSON.stringify(learning.data.words)==words and JSON.stringify(learning.data.practice)==practice and JSON.stringify(learning.data.contexts)==contexts,"fast completion never fabricates words reading listening or sentence records")
 	check(frontier.finish_for_development(true)==0,"repeated completion cannot accumulate more world progress")
 	print("WORDBOOKS_RESULT ",passed," passed / ",failed," failed")

@@ -10,9 +10,12 @@ class WorldStub extends Node3D:
 	var land={Vector2i(0,0):true,Vector2i(1,0):true,Vector2i(0,1):true}
 	var terrain=IslandTerrain.new()
 	var water=WaterStub.new()
+	var time=0.0
 	func surface(p:Vector2)->Vector3:return terrain.point(p)
 class WaterStub extends RefCounted:
-	func depth_at(_normal:Vector3)->float:return 2.0
+	func depth_at(_normal:Vector3)->float:return 3.4
+	func floor_radius(_normal:Vector3)->float:return 8.22
+	func ripple(_normal:Vector3,_strength=1.0):pass
 
 var passed=0
 var failed=0
@@ -28,20 +31,19 @@ func run():
 	var life=IslandWildlife.new();world.add_child(life);life.setup(world)
 	var ambient=IslandAmbience.new();game.add_child(ambient);ambient.setup(game)
 	await create_timer(.15).timeout
-	check(life.animals.size()==15,"small initial island has twelve schooling fish and one whale")
+	check(life.animals.size()==21,"small initial island has eighteen sea creatures of five kinds and one whale")
 	check(ambient.player.stream.get_length()>79.9 and ambient.player.stream.loop,"original soundtrack is an eighty-second loop")
 	var fish_safe=true
 	for i in range(600):
 		life._process(.016)
 		for animal in life.animals:
 			if animal.kind=="fish" and animal.anchor.visible:
-				var p=animal.anchor.position.normalized()*12
-				if not life.water_at(Vector2(p.x,p.z)):fish_safe=false
+				if not life.outside_land(animal.anchor.position.normalized(),0):fish_safe=false
 	check(fish_safe,"fish remain outside existing land through a full swimming cycle")
 	for chapter in IslandFrontier.CHAPTERS:
 		for cell in chapter.cells:world.land[cell]=true
 	life.refresh_habitats();life._process(.016)
-	check(life.animals.size()==44,"expanded island grows to thirty-two fish, two whales and ten flying creatures")
+	check(life.animals.size()==34,"expanded island keeps a limited mixed population and two whales")
 	var reacted=false
 	for animal in life.animals:
 		var p=animal.anchor.global_position;var normal=p.normalized()

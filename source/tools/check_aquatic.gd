@@ -40,7 +40,7 @@ func run():
 		if absf(basis.x.dot(basis.y))>.00001 or absf(basis.y.dot(basis.z))>.00001 or absf(basis.determinant()-1)>.00001:stable_frames=false
 	check(stable_frames,"near-radial motion still produces stable orthogonal swimming frames")
 	var fish_submerged=true;var fish_above_floor=true;var whale_above_floor=true;var surfaced=false;var breached=false;var sprayed=false;var swimming_whale=false
-	for step in range(450):
+	for step in range(650):
 		world.time+=.1;life._process(.1)
 		for animal in life.animals:
 			if not animal.anchor.visible:continue
@@ -59,6 +59,22 @@ func run():
 	check(swimming_whale and whale_above_floor,"a whale patrols a genuinely deep lane above the seabed")
 	check(surfaced and breached and sprayed,"the whale surfaces, sprays, breaches and splashes during its natural cycle")
 	check(world.water.strengths.length()>0,"landing creates a ripple in the actual water shader")
+	var species={};var adult={}
+	for animal in life.animals:
+		if animal.kind=="fish" and animal.anchor.visible:species[animal.species]=true
+		if animal.kind=="whale" and animal.index==0:adult=animal
+	print("VISIBLE_AQUATIC_SPECIES ",species.keys())
+	check(species.size()==5,"five distinct aquatic species have visible safe routes on the initial island")
+	check(adult.scale>1.5 and adult.route_valid,"the adult whale uses the enlarged body and a checked deep-water route")
+	check(not life.cave.is_empty() and life.deep_sea(life.cave.normal,3.2,2.85),"a real hollow cave is placed in water deep enough for its entire shell")
+	var hidden=false;var shown=false;var withdrawn=false
+	if not life.cave.is_empty():
+		life.cave.time=0;life.update_cave(0);hidden=not life.cave.watcher.visible
+		life.preview_event("cave");shown=life.cave.watcher.visible and life.cave.extension>.9
+		life.cave.time=92;life.update_cave(0);withdrawn=not life.cave.watcher.visible
+	check(hidden and shown and withdrawn,"the watcher reveals slowly and fully retreats on a sparse cycle")
+	var prior=life.whale_direction(adult,adult.phase);var observed=life.preview_event("whale")
+	check(prior.distance_to(observed)<.00001,"observing the whale changes its action without teleporting its patrol route")
 	for chapter in IslandFrontier.CHAPTERS:
 		for cell in chapter.cells:world.land[cell]=true
 	world.water.rebuild();life.refresh_habitats();life._process(.1)
@@ -68,6 +84,23 @@ func run():
 			whale_count+=1
 			if animal.route_valid:valid_routes+=1
 	check(whale_count==2 and valid_routes==2,"both adult and calf retain safe sea lanes after full island expansion")
+	var full_hulls_safe=true;var swimming_hulls_submerged=true;var maximum_whale_length=0.0
+	for step in range(64):
+		world.time+=1.0;life._process(1.0)
+		for animal in life.animals:
+			if animal.kind!="whale" or not animal.anchor.visible:continue
+			for mesh in animal.model.find_children("*","MeshInstance3D",true,false):
+				var bounds=mesh.get_aabb()
+				for i in range(8):
+					var point=world.globe.to_local(mesh.to_global(bounds.get_endpoint(i)));var normal=point.normalized()
+					if point.length()<world.water.floor_radius(normal)-.04 or not life.outside_land(normal,0):full_hulls_safe=false
+					if animal.state=="swim" and point.length()>IslandWater.surface_radius(normal,world.time)+.02:swimming_hulls_submerged=false
+			if animal.index==0:
+				var head=animal.model.to_global(Vector3(0,0,-2.05));var fluke=animal.model.find_child("Fluke",true,false).to_global(Vector3(0,0,.35))
+				maximum_whale_length=maxf(maximum_whale_length,head.distance_to(fluke))
+	check(full_hulls_safe,"complete enlarged whale hulls stay above the seabed and outside all expanded island charts")
+	check(swimming_hulls_submerged,"the complete blue whale including articulated tail stays underwater during ordinary swimming")
+	check(maximum_whale_length>6.8,"the blue whale retains a giant long body rather than a scaled-down replacement")
 	game.queue_free();await process_frame;await process_frame
 	print("AQUATIC_RESULT ",passed," passed / ",failed," failed")
 	quit(0 if failed==0 else 1)

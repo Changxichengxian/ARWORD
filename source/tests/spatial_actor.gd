@@ -22,7 +22,7 @@ func inspect_world(game):
 		for phase in range(4):stances=stances and world.clear_ground(world.work_stance(phase))
 	check(stances,"all work stances stand outside visible structures")
 	var rest=world.worker.rest_spot()
-	check(world.clear_segment(rest,rest+Vector2(0,1.45),.38),"the resting pose has clear ground along its whole body")
+	check(world.clear_segment(rest,rest+Vector2(0,IslandWorker.REST_LENGTH),IslandWorker.REST_CLEARANCE),"the smaller resting pose has clear ground along its whole body")
 	var minimum=INF;var maximum=-INF
 	for id in IslandFrontier.BUILD_IDS:
 		game.frontier.data.active=id;world.update_selection_ring()

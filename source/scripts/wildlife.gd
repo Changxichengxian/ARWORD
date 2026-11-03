@@ -1,21 +1,38 @@
 extends Node3D
 class_name IslandWildlife
 
-# Decorative populations share real water and sea-floor heights, without changing learning.
+# Marine paths use spherical directions and the same physical sea-floor map as water.
 var world
 var animals:Array=[]
 var clock=0.0
 var land_count=-1
 var coast:Array=[]
 var offshore:Array=[]
+var outer_sea:Array=[]
 var meadows:Array=[]
 var water_effects:Array=[]
+var scenery:Node3D
+var grass:Array=[]
+var cave:Dictionary={}
+var broad_homes:Array=[]
+var seabed_obstacles:Array=[]
 var bird_scene=preload("res://assets/models/wild_bird.glb")
-var fish_scene=preload("res://assets/models/wild_fish.glb")
 var butterfly_scene=preload("res://assets/models/wild_butterfly.glb")
 var whale_scene=preload("res://assets/models/wild_whale.glb")
+var fish_scenes={"gold":preload("res://assets/models/wild_fish.glb"),"silver":preload("res://assets/models/wild_silver_fish.glb"),"reef":preload("res://assets/models/wild_reef_fish.glb"),"ray":preload("res://assets/models/wild_ray.glb"),"turtle":preload("res://assets/models/wild_turtle.glb")}
+var coral_scene=preload("res://assets/models/sea_coral.glb")
+var grass_scene=preload("res://assets/models/sea_grass.glb")
+var relic_scene=preload("res://assets/models/sea_relic.glb")
+var cave_scene=preload("res://assets/models/sea_cave.glb")
+var watcher_scene=preload("res://assets/models/sea_watcher.glb")
 var water_math=preload("res://scripts/water.gd")
 var spray_material:StandardMaterial3D
+const SPECIES=["gold","silver","reef","ray","turtle"]
+const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66}
+const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22}
+const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65}
+const WHALE_RATE=.085
+const WHALE_HALF_LENGTH=2.31
 
 func setup(owner_world):
 	world=owner_world
@@ -24,34 +41,46 @@ func setup(owner_world):
 	spray_material=StandardMaterial3D.new();spray_material.albedo_color=Color("D1F3F0");spray_material.roughness=.18
 	refresh_habitats()
 
-func sea_direction(p:Vector2)->Vector3:
-	return Vector3(p.x,sqrt(maxf(.1,144-p.length_squared())),p.y).normalized()
-func available_depth(p:Vector2)->float:
+func sea_direction(p:Vector2)->Vector3:return world.surface(p).normalized()
+func available_depth(p:Vector2)->float:return depth_at(sea_direction(p))
+func depth_at(normal:Vector3)->float:
 	var water=world.get("water")
-	return float(water.depth_at(sea_direction(p))) if water and water.has_method("depth_at") else 0.0
-func body_depth(p:Vector2,radius:float)->float:
-	var depth=available_depth(p)
-	for i in range(8):depth=minf(depth,available_depth(p+Vector2(cos(i*TAU/8),sin(i*TAU/8))*radius))
+	return float(water.depth_at(normal)) if water and water.has_method("depth_at") else 0.0
+func tangent_axes(n:Vector3)->Array:
+	var side=n.cross(Vector3.UP).normalized()
+	if side.length_squared()<.1:side=Vector3.RIGHT.slide(n).normalized()
+	return [side,side.cross(n).normalized()]
+func offset_direction(n:Vector3,offset:Vector2)->Vector3:
+	var axes=tangent_axes(n);var length=offset.length()
+	if length<.00001:return n
+	var tangent=(axes[0]*offset.x+axes[1]*offset.y)/length
+	return (n*cos(length/water_math.BASE_RADIUS)+tangent*sin(length/water_math.BASE_RADIUS)).normalized()
+func body_depth_normal(n:Vector3,radius:float)->float:
+	var depth=depth_at(n)
+	for i in range(8):depth=minf(depth,depth_at(offset_direction(n,Vector2(cos(i*TAU/8),sin(i*TAU/8))*radius)))
 	return depth
-func water_at(p:Vector2,margin=0.0)->bool:
-	if p.length()>11.65:return false
+func body_depth(p:Vector2,radius:float)->float:return body_depth_normal(sea_direction(p),radius)
+func water_at(p:Vector2,margin=0.0)->bool:return outside_land(sea_direction(p),margin)
+func outside_land(n:Vector3,margin:float)->bool:
 	for cell in world.land:
-		var q=(p-IslandFrontier.point(cell)).abs();var h=IslandFrontier.HEX*1.13+margin
-		if q.x<sqrt(3.0)*h*.5 and q.y<h and q.x/sqrt(3.0)+q.y<h:return false
+		if n.distance_to(sea_direction(IslandFrontier.point(cell)))*water_math.BASE_RADIUS<IslandFrontier.HEX*1.10+margin:return false
 	return true
-func safe_sea(p:Vector2,margin:float,minimum_depth:float)->bool:
-	if not water_at(p,margin) or available_depth(p)<minimum_depth:return false
-	for i in range(8):
-		var edge=p+Vector2(cos(i*TAU/8),sin(i*TAU/8))*margin
-		if not water_at(edge) or available_depth(edge)<minimum_depth:return false
+func deep_sea(normal:Vector3,margin:float,minimum_depth:float)->bool:
+	return outside_land(normal,margin) and body_depth_normal(normal,margin)>=minimum_depth
+func safe_sea(p:Vector2,margin:float,minimum_depth:float)->bool:return deep_sea(sea_direction(p),margin,minimum_depth)
+func clear_of_cave(n:Vector3,margin:float)->bool:
+	return cave.is_empty() or n.distance_to(cave.normal)*water_math.BASE_RADIUS>3.2+margin
+func fish_depth(species_name:String)->float:
+	return 1.08 if species_name=="ray" else .48 if species_name=="turtle" else .68 if species_name=="silver" else .46
+func clear_of_seabed_props(n:Vector3,extent:float,bottom_depth:float)->bool:
+	for obstacle in seabed_obstacles:
+		if n.distance_to(obstacle.normal)*water_math.BASE_RADIUS<extent+obstacle.radius and bottom_depth>obstacle.depth:return false
 	return true
 
 func refresh_habitats():
-	# World setup creates the ocean before land. Refresh its real sea floor now,
-	# before choosing the very first fish/whale route or a route after expansion.
 	var water=world.get("water")
 	if water and water.has_method("rebuild") and water.get("land_count")!=world.land.size():water.rebuild()
-	land_count=world.land.size();coast.clear();offshore.clear();meadows.clear()
+	land_count=world.land.size();coast.clear();offshore.clear();outer_sea.clear();meadows.clear()
 	var steps=[Vector2i(1,0),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1)]
 	for cell in world.land:
 		var center=IslandFrontier.point(cell);var region=world.terrain.kind(cell)
@@ -59,175 +88,226 @@ func refresh_habitats():
 		for step in steps:
 			if world.land.has(cell+step):continue
 			var direction=(IslandFrontier.point(cell+step)-center).normalized()
-			var p=center+direction*IslandFrontier.HEX*1.92
-			if water_at(p) and available_depth(p)>.45:coast.append(p)
-			p=center+direction*IslandFrontier.HEX*2.85
-			if water_at(p) and available_depth(p)>.75:offshore.append(p)
-	if meadows.is_empty():meadows.append(Vector2.ZERO)
+			var normal=sea_direction(center+direction*IslandFrontier.HEX*2.15)
+			if deep_sea(normal,.35,.68):coast.append(normal)
+			normal=sea_direction(center+direction*IslandFrontier.HEX*3.25)
+			if deep_sea(normal,.7,1.05):offshore.append(normal)
+			normal=sea_direction(center+direction*IslandFrontier.HEX*4.6)
+			if deep_sea(normal,1.2,1.55):outer_sea.append(normal)
+	if meadows.is_empty():meadows.append(IslandFrontier.point(world.land.keys()[0]) if not world.land.is_empty() else Vector2.ZERO)
 	if coast.is_empty():coast.assign(offshore)
-	var desired={"bird":mini(4,1+land_count/8),"fish":mini(32,12+(land_count/6)*4),"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1}
+	rebuild_seabed_life()
+	var desired={"bird":mini(4,1+land_count/8),"fish":22 if land_count>=18 else 18,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1}
 	for kind in desired:
 		var count=0
 		for animal in animals:
 			if animal.kind==kind:count+=1
 		while count<int(desired[kind]):spawn(kind,count);count+=1
+	broad_homes.clear()
 	for animal in animals:
-		if animal.kind=="fish":
-			if not water_at(animal.home) or available_depth(animal.home)<.45:animal.home=habitat("fish",animal.index)
-			animal.radius=swim_radius(animal.home)
+		if animal.kind=="fish":configure_fish(animal)
 		elif animal.kind=="whale":configure_whale(animal)
 
-func swim_radius(home:Vector2)->float:
-	for radius in [.95,.72,.48,.28,.12]:
-		var safe=true
-		for i in range(32):
-			var a=i*TAU/32
-			if not safe_sea(home+Vector2(sin(a)*radius,cos(a)*radius*.66),.14,.40):safe=false;break
-		if safe:return radius
-	return 0.0
-
-func habitat(kind:String,index:int)->Vector2:
-	if kind=="fish":
-		var group=index/4;var pool=offshore if group%2==1 and not offshore.is_empty() else coast
-		if not pool.is_empty():return pool[(group*3+1)%pool.size()]
-	return meadows[(index*5)%meadows.size()]
-
+func species(index:int)->String:
+	if index<4:return "gold"
+	if index<10:return "silver"
+	if index<14:return "reef"
+	if index<16:return "ray"
+	if index<18:return "turtle"
+	return "silver" if index<20 else "reef"
 func spawn(kind:String,index:int):
 	var anchor=Node3D.new();add_child(anchor)
-	var scene=bird_scene if kind=="bird" else fish_scene if kind=="fish" else whale_scene if kind=="whale" else butterfly_scene
+	var type=species(index) if kind=="fish" else kind
+	var scene=fish_scenes[type] if kind=="fish" else bird_scene if kind=="bird" else whale_scene if kind=="whale" else butterfly_scene
 	var model=scene.instantiate();anchor.add_child(model)
-	var scale_factor=.68 if kind=="bird" else (.48+float(index%3)*.035) if kind=="fish" else (.65 if index==0 else .49) if kind=="whale" else .66
+	var scale_factor=float(SCALES[type]) if kind=="fish" else .68 if kind=="bird" else (1.62 if index==0 else .82) if kind=="whale" else .66
 	model.scale=Vector3.ONE*scale_factor
 	for mesh in model.find_children("*","MeshInstance3D",true,false):mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	animals.append({"kind":kind,"index":index,"anchor":anchor,"model":model,"home":habitat(kind,index),"radius":.7,"phase":float(index/4)*1.87 if kind=="fish" else index*5.5,"startle":0.0,"left":model.find_child("FlipperL" if kind=="whale" else "WingL",true,false),"right":model.find_child("FlipperR" if kind=="whale" else "WingR",true,false),"tail":model.find_child("Tail",true,false),"fluke":model.find_child("Fluke",true,false),"blowhole":model.find_child("Blowhole",true,false),"last":Vector3.ZERO,"state":"swim","breath_cycle":-1,"route_valid":true,"depth":.3})
+	animals.append({"kind":kind,"species":type,"index":index,"anchor":anchor,"model":model,"scale":scale_factor,"home":meadows[(index*5)%meadows.size()],"normal":Vector3.UP,"radius":.7,"phase":float(index)*.63,"action_offset":0.0,"startle":0.0,"left":model.find_child("FlipperL" if kind=="whale" or type in ["ray","turtle"] else "WingL",true,false),"right":model.find_child("FlipperR" if kind=="whale" or type in ["ray","turtle"] else "WingR",true,false),"tail":model.find_child("Tail",true,false),"fluke":model.find_child("Fluke",true,false),"blowhole":model.find_child("Blowhole",true,false),"last":Vector3.ZERO,"state":"swim","breath_cycle":-1,"route_valid":true,"depth":.3})
 
-func water_point(p:Vector2,depth=.28)->Vector3:
-	return water_point_normal(sea_direction(p),depth)
-func water_point_normal(normal:Vector3,depth:float)->Vector3:
-	var time=float(world.get("time")) if world.get("time")!=null else clock
-	return normal*(water_math.surface_radius(normal,time)-depth)
-
-func deep_sea(normal:Vector3,margin:float,minimum_depth:float)->bool:
-	var water=world.get("water")
-	if not water or water.depth_at(normal)<minimum_depth:return false
-	for cell in world.land:
-		var center=world.surface(IslandFrontier.point(cell)).normalized()
-		if normal.distance_to(center)*12<IslandFrontier.HEX+margin:return false
-	var side=normal.cross(Vector3.UP).normalized()
-	if side.length_squared()<.1:side=Vector3.RIGHT
-	var forward=side.cross(normal).normalized()
-	for i in range(8):
-		var around=(normal+(side*cos(i*TAU/8)+forward*sin(i*TAU/8))*margin/12.0).normalized()
-		if water.depth_at(around)<minimum_depth:return false
-	return true
-func whale_direction(animal:Dictionary,t:float)->Vector3:
-	return (animal.route_center+(animal.route_side*sin(t*.16)+animal.route_forward*cos(t*.16)*.6)*animal.radius/12.0).normalized()
-func configure_whale(animal:Dictionary):
-	# Wide sea lanes leave room for the complete hull and tail, including while surfacing.
-	# Spherical routes also use the broad ocean beyond the northern land-cap.
-	var candidates=[Vector3(0,.30,1),Vector3(-.75,.20,.65),Vector3(.78,.16,.65),Vector3(0,-.16,1),Vector3(-.5,-.35,.8),Vector3(.5,-.35,.8),Vector3(0,-.7,.7),Vector3.DOWN]
-	if animal.index==1:candidates=candidates.slice(2)+candidates.slice(0,2)
+func configure_fish(animal:Dictionary):
+	var broad=animal.species in ["ray","turtle"];var pool=outer_sea if animal.species=="ray" and not outer_sea.is_empty() else offshore if broad or animal.species=="silver" else coast
+	if pool.is_empty():pool=coast if not coast.is_empty() else offshore
 	animal.route_valid=false
-	for home in candidates:
-		animal.route_center=home.normalized();animal.route_side=animal.route_center.cross(Vector3.UP).normalized()
-		if animal.route_side.length_squared()<.1:animal.route_side=Vector3.RIGHT
-		animal.route_forward=animal.route_side.cross(animal.route_center).normalized()
-		for radius in [1.70,1.25,.85]:
-			animal.radius=radius
+	if pool.is_empty():return
+	var extent=float(BODY_RADIUS[animal.species]);var min_depth=maxf(1.45 if animal.species=="ray" else .95 if broad else .62,float(BODY_HEIGHT[animal.species])*2+.35)
+	for attempt in range(pool.size()):
+		var normal:Vector3=pool[(int(animal.index/3)*5+attempt)%pool.size()]
+		var crowded=false
+		if broad:
+			for other in broad_homes:
+				if normal.distance_to(other)*water_math.BASE_RADIUS<3.0:crowded=true;break
+		if crowded:continue
+		for radius in [1.35,.85,.45,.18]:
 			var safe=true
-			for i in range(32):
-				var normal=whale_direction(animal,i*TAU/32/.16)
-				if not deep_sea(normal,1.70 if animal.index==0 else 1.30,1.25):safe=false;break
+			for i in range(24):
+				var n=offset_direction(normal,Vector2(sin(i*TAU/24),cos(i*TAU/24)*.65)*radius)
+				if not deep_sea(n,extent,min_depth) or not clear_of_cave(n,extent) or not clear_of_seabed_props(n,extent,fish_depth(animal.species)+float(BODY_HEIGHT[animal.species])+.08):safe=false;break
 			if safe:
-				animal.route_valid=true;return
+				animal.normal=normal;animal.radius=radius;animal.route_valid=true
+				if broad:broad_homes.append(normal)
+				return
+
+func water_point(p:Vector2,depth=.28)->Vector3:return water_point_normal(sea_direction(p),depth)
+func water_point_normal(normal:Vector3,depth:float)->Vector3:
+	return normal*(water_math.surface_radius(normal,world.time)-depth)
+func whale_direction(animal:Dictionary,t:float)->Vector3:
+	return offset_direction(animal.route_center,Vector2(sin(t*WHALE_RATE),cos(t*WHALE_RATE)*.68)*animal.radius)
+func sea_candidates()->Array:
+	var candidates=[Vector3(0,.30,1).normalized(),Vector3(-.75,.20,.65).normalized(),Vector3(.78,.16,.65).normalized()]
+	for i in range(96):
+		var y=1.0-(i+.5)/48.0;var a=i*2.39996323;var r=sqrt(maxf(0,1-y*y));candidates.append(Vector3(cos(a)*r,y,sin(a)*r))
+	return candidates
+func configure_whale(animal:Dictionary):
+	animal.route_valid=false
+	var candidates=sea_candidates()
+	if animal.index==1:candidates=candidates.slice(2)+candidates.slice(0,2)
+	# The complete long blue-whale hull, flippers and animated flukes need a
+	# larger footprint than the old short-bodied stylised whale.
+	var margin=WHALE_HALF_LENGTH*float(animal.scale)+.32;var minimum=2.85 if animal.index==0 else 1.8
+	for home in candidates:
+		animal.route_center=home
+		for radius in [3.6,2.4,1.4,.7]:
+			animal.radius=radius;var safe=true
+			for i in range(32):
+				var normal=whale_direction(animal,i*TAU/32/WHALE_RATE)
+				if not deep_sea(normal,margin,minimum) or not clear_of_cave(normal,margin):safe=false;break
+			if safe:animal.route_valid=true;return
 
 func frame_at(point:Vector3,forward:Vector3)->Basis:
 	var up=point.normalized();var tangent=forward-up*forward.dot(up)
-	if tangent.length_squared()<.00000001:
-		tangent=(Vector3.FORWARD if absf(up.z)<.85 else Vector3.RIGHT).slide(up)
+	if tangent.length_squared()<.00000001:tangent=(Vector3.FORWARD if absf(up.z)<.85 else Vector3.RIGHT).slide(up)
 	var right=tangent.cross(up).normalized()
-	# Reconstruct the third axis: normalizing a tiny projected delta alone can retain
-	# enough radial rounding error to make Basis.slerp reject a nearly stopped fish.
 	return Basis(right,up,right.cross(up).normalized()).orthonormalized()
-
 func whale_position(animal:Dictionary,t:float)->Vector3:
-	var normal=whale_direction(animal,t)
-	animal.anchor.visible=animal.route_valid and deep_sea(normal,1.60 if animal.index==0 else 1.20,1.15)
-	var cycle=int(t/44.0);var phase=fmod(t,44.0);var depth=.65+sin(t*.5)*.045;var pitch=sin(t*1.1)*.035;var state="swim"
-	if phase>=8 and phase<11:depth=lerpf(.65,.18,smoothstep(0,1,(phase-8)/3));state="rise"
-	elif phase>=11 and phase<15:
-		depth=.18;state="breathe"
+	var normal=whale_direction(animal,t);var adult=animal.index==0
+	animal.anchor.visible=animal.route_valid
+	var swim_depth=1.60 if adult else .89;var breath_depth=.56 if adult else .27
+	var action_time=t+animal.action_offset
+	var cycle=int(action_time/62.0);var phase=fmod(action_time,62.0);var depth=swim_depth+sin(t*.36)*.09;var pitch=sin(t*.8)*.025;var state="swim"
+	if phase>=12 and phase<17:depth=lerpf(swim_depth,breath_depth,smoothstep(0,1,(phase-12)/5));state="rise"
+	elif phase>=17 and phase<23:
+		depth=breath_depth;state="breathe"
 		if animal.breath_cycle!=cycle:
 			animal.breath_cycle=cycle
-			if animal.last!=Vector3.ZERO:water_burst(animal.blowhole.global_position,animal.anchor.position.normalized(),false)
-	elif phase>=15 and phase<18:depth=lerpf(.18,.65,smoothstep(0,1,(phase-15)/3));pitch=.16*sin((phase-15)*PI/3);state="dive"
-	elif cycle%2==0 and phase>=26 and phase<29:
-		var u=(phase-26)/3;depth=.65-sin(u*PI)*1.35;pitch=-.75*sin(u*TAU);state="breach"
+			if animal.last!=Vector3.ZERO:water_burst(animal.blowhole.global_position,animal.anchor.position.normalized(),false,1.5 if adult else 1.0)
+	elif phase>=23 and phase<29:depth=lerpf(breath_depth,swim_depth,smoothstep(0,1,(phase-23)/6));pitch=-.12*sin((phase-23)*PI/6);state="dive"
+	elif cycle%2==0 and phase>=43 and phase<47:
+		var u=(phase-43)/4;depth=swim_depth-sin(u*PI)*(2.55 if adult else 1.40);pitch=.52*sin(u*TAU);state="breach"
 	if animal.state=="breach" and state!="breach":
-		water_burst(to_global(water_point_normal(normal,0)),normal,true)
-		var water=world.get("water")
-		if water and water.has_method("ripple"):water.ripple(normal,1.2)
+		water_burst(to_global(water_point_normal(normal,0)),normal,true,1.7 if adult else 1.0)
+		world.water.ripple(normal,2.3 if adult else 1.2)
 	animal.state=state;animal.depth=depth
-	animal.model.rotation.x=pitch;animal.model.rotation.z=sin(t*.65)*.035
-	animal.tail.rotation.x=sin(t*2.0)*.20;animal.fluke.rotation.x=sin(t*2.0-.55)*.18
-	animal.left.rotation.z=-.13+sin(t*1.3)*.10;animal.right.rotation.z=.13-sin(t*1.3)*.10
+	animal.model.rotation.x=pitch;animal.model.rotation.z=sin(t*.45)*.025
+	# Cetacean propulsion is a slow vertical wave, not a fish's lateral flick.
+	animal.tail.rotation.x=sin(t*.92)*.15;animal.fluke.rotation.x=sin(t*.92-.65)*.13
+	animal.left.rotation.z=-.065+sin(t*.45)*.065;animal.right.rotation.z=.065-sin(t*.45)*.065
 	return water_point_normal(normal,depth)
+
+func rebuild_seabed_life():
+	var event_time=float(cave.get("time",clock))
+	if scenery:scenery.queue_free()
+	scenery=Node3D.new();scenery.name="UnderwaterDiscoveries";add_child(scenery);grass.clear();cave.clear();seabed_obstacles.clear()
+	var chosen=[]
+	for i in range(offshore.size()):
+		var n:Vector3=offshore[(i*7)%offshore.size()]
+		if not deep_sea(n,.65,1.45):continue
+		var crowded=false
+		for previous in chosen:
+			if n.distance_to(previous)*water_math.BASE_RADIUS<2.5:crowded=true;break
+		if crowded:continue
+		chosen.append(n)
+		var plant=coral_scene if chosen.size()%3 else relic_scene
+		place_bed_model(plant,n,.74 if plant==coral_scene else .86,i*.7)
+		seabed_obstacles.append({"normal":n,"radius":.82,"depth":depth_at(n)-.72})
+		for j in range(2):
+			var direction=offset_direction(n,Vector2(.65 if j==0 else -.65,.28))
+			if deep_sea(direction,.3,.95):grass.append({"node":place_bed_model(grass_scene,direction,.75,i*.7+j),"phase":i+j*2.0})
+		if chosen.size()>=mini(9,3+land_count/7):break
+	for n in sea_candidates():
+		if not deep_sea(n,3.2,2.85):continue
+		var base=Node3D.new();scenery.add_child(base);base.position=n*(world.water.floor_radius(n)+.08)
+		# The ordinary globe recentering rotation also brings the entrance toward
+		# the camera; a development visit must not show only the cave's back wall.
+		var entrance=Quaternion(n,Vector3.UP).inverse()*Vector3.BACK
+		base.basis=frame_at(base.position,entrance);base.rotate_object_local(Vector3.UP,.15)
+		var shell=cave_scene.instantiate();base.add_child(shell);shell.scale=Vector3.ONE*.86
+		var watcher=watcher_scene.instantiate();base.add_child(watcher);watcher.scale=Vector3.ONE*.91
+		watcher.position=Vector3(0,.83,1.60)
+		cave={"root":base,"shell":shell,"watcher":watcher,"normal":n,"time":event_time,"state":"hidden","extension":0.0}
+		break
+func place_bed_model(scene:PackedScene,n:Vector3,size:float,yaw:float)->Node3D:
+	var anchor=Node3D.new();scenery.add_child(anchor);anchor.position=n*(world.water.floor_radius(n)+.035)
+	anchor.basis=frame_at(anchor.position,tangent_axes(n)[1]);anchor.rotate_object_local(Vector3.UP,yaw)
+	var model=scene.instantiate();anchor.add_child(model);model.scale=Vector3.ONE*size
+	return model
+func update_cave(dt:float):
+	for plant in grass:plant.node.rotation.z=sin(clock*.85+plant.phase)*.065
+	if cave.is_empty():return
+	cave.time+=dt;var phase=fmod(cave.time,132.0);var extension=0.0;var state="hidden"
+	if phase>=74 and phase<79:extension=smoothstep(0,1,(phase-74)/5);state="emerge"
+	elif phase>=79 and phase<85:extension=1.0;state="observe"
+	elif phase>=85 and phase<91:extension=1.0-smoothstep(0,1,(phase-85)/6);state="retreat"
+	cave.extension=extension;cave.state=state
+	cave.watcher.visible=extension>.001
+	cave.watcher.position=Vector3(0,.83+sin(cave.time*.7)*.025,lerpf(1.60,.20,extension))
+	cave.watcher.rotation.y=sin(cave.time*.33)*.07*extension
+func preview_event(event:String)->Vector3:
+	if event=="cave" and not cave.is_empty():cave.time=78.7;update_cave(0);return cave.normal
+	for animal in animals:
+		if animal.kind=="whale" and animal.index==0:
+			animal.action_offset=(44.4 if event=="whale_breach" else 16.5)-fmod(animal.phase,124.0)
+			animal.breath_cycle=-1
+			return whale_direction(animal,animal.phase)
+	return Vector3.UP
 
 func _process(dt):
 	if not is_instance_valid(world):return
 	clock+=dt
 	if land_count!=world.land.size():refresh_habitats()
 	for animal in animals:
-		animal.startle=maxf(0,animal.startle-dt)
-		animal.phase+=dt*(1.8 if animal.startle>0 and animal.kind!="whale" else 1.0)
-		var t=animal.phase;var p:Vector2=animal.home;var pos:Vector3
+		animal.startle=maxf(0,animal.startle-dt);animal.phase+=dt*(1.8 if animal.startle>0 and animal.kind!="whale" else 1.0)
+		var t=animal.phase;var pos:Vector3
 		if animal.kind=="fish":
-			var slot=animal.index%4;var a=t*.65-slot*.72
-			p+=Vector2(sin(a)*animal.radius,cos(a)*animal.radius*.66)*(1.0-float(slot%2)*.14)
-			var depth=(.34 if (animal.index/4)%2==0 else .58)+float(slot)*.026+sin(t*1.3)*.045
-			var bed=body_depth(p,.30)
-			depth=minf(depth,maxf(.20,bed-.19));animal.depth=depth
-			animal.anchor.visible=not coast.is_empty() and water_at(p) and bed>.39
-			pos=water_point(p,depth)
-			if animal.tail:animal.tail.rotation.y=sin(t*8)*.36
-			animal.model.rotation.y=sin(t*8-.4)*.045;animal.model.rotation.z=sin(t*.65)*.08
+			var broad=animal.species in ["ray","turtle"];var rate=.25 if broad else .48
+			var n=offset_direction(animal.normal,Vector2(sin(t*rate),cos(t*rate)*.65)*animal.radius)
+			var bed=body_depth_normal(n,float(BODY_RADIUS[animal.species]));var height=float(BODY_HEIGHT[animal.species])
+			var depth=fish_depth(animal.species)+sin(t*.75)*.045
+			depth=clampf(depth,height+.13,maxf(height+.13,bed-height-.13));animal.depth=depth
+			animal.anchor.visible=animal.route_valid and bed>height*2+.27;pos=water_point_normal(n,depth)
+			if animal.tail:animal.tail.rotation.y=sin(t*(1.8 if broad else 7.5))*(.13 if broad else .34)
+			if broad:
+				var flap=sin(t*(1.65 if animal.species=="ray" else 2.0))*.22
+				animal.left.rotation.z=-flap;animal.right.rotation.z=flap
+				if animal.species=="turtle":animal.left.rotation.y=sin(t*2.0)*.30;animal.right.rotation.y=-sin(t*2.0)*.30
+			animal.model.rotation.z=sin(t*.65)*.045
 		elif animal.kind=="whale":pos=whale_position(animal,t)
-		elif animal.kind=="bird":
-			p+=Vector2(cos(t*.30)*1.6,sin(t*.30)*1.0)
-			pos=world.surface(p);pos+=pos.normalized()*(2.9+sin(t*.55)*.25+animal.startle*.35)
-			var flap=sin(t*7.5)*.58*(.22 if fmod(t,8.0)>4.2 else 1.0)
-			animal.left.rotation.z=-flap;animal.right.rotation.z=flap
 		else:
-			p+=Vector2(sin(t*.8)*.29,sin(t*1.3)*.23)
-			pos=world.surface(p);pos+=pos.normalized()*(.40+.09*sin(t*2)+animal.startle*.22)
-			var flap=.35+abs(sin(t*15))*.95
-			animal.left.rotation.z=-flap;animal.right.rotation.z=flap
+			var p:Vector2=animal.home
+			if animal.kind=="bird":
+				p+=Vector2(cos(t*.30)*1.6,sin(t*.30)*1.0);pos=world.surface(p);pos+=pos.normalized()*(2.9+sin(t*.55)*.25+animal.startle*.35)
+				var flap=sin(t*7.5)*.58*(.22 if fmod(t,8.0)>4.2 else 1.0);animal.left.rotation.z=-flap;animal.right.rotation.z=flap
+			else:
+				p+=Vector2(sin(t*.8)*.29,sin(t*1.3)*.23);pos=world.surface(p);pos+=pos.normalized()*(.40+.09*sin(t*2)+animal.startle*.22)
+				var flap=.35+abs(sin(t*15))*.95;animal.left.rotation.z=-flap;animal.right.rotation.z=flap
 		var forward=pos-animal.last
-		if animal.last==Vector3.ZERO:forward=Vector3(1,0,0)
+		if animal.last==Vector3.ZERO:forward=tangent_axes(pos.normalized())[0]
 		animal.anchor.position=pos
-		if forward.length_squared()>.00000001:
-			var from_rotation=animal.anchor.basis.get_rotation_quaternion()
-			var to_rotation=frame_at(pos,forward).get_rotation_quaternion()
-			animal.anchor.basis=Basis(from_rotation.slerp(to_rotation,1-exp(-dt*7)).normalized())
+		if forward.length_squared()>.00000001:animal.anchor.basis=Basis(animal.anchor.basis.get_rotation_quaternion().slerp(frame_at(pos,forward).get_rotation_quaternion(),1-exp(-dt*7)).normalized())
 		animal.last=pos
-	update_water_effects(dt)
+	update_water_effects(dt);update_cave(dt)
 
-func water_burst(global_point:Vector3,normal:Vector3,splash:bool):
-	var start=to_local(global_point);var tangent=normal.cross(Vector3.RIGHT).normalized()
-	if tangent.length_squared()<.1:tangent=normal.cross(Vector3.FORWARD).normalized()
-	var other=normal.cross(tangent).normalized()
-	for i in range(16 if splash else 10):
-		var drop=MeshInstance3D.new();var mesh=SphereMesh.new();mesh.radius=.035 if splash else .026;mesh.height=mesh.radius*2;mesh.radial_segments=5;mesh.rings=2;drop.mesh=mesh;drop.material_override=spray_material;drop.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(drop);drop.position=start
+func water_burst(global_point:Vector3,normal:Vector3,splash:bool,size=1.0):
+	var start=to_local(global_point);var tangent=tangent_axes(normal)[0];var other=normal.cross(tangent).normalized()
+	for i in range(22 if splash else 12):
+		var drop=MeshInstance3D.new();var mesh=SphereMesh.new();mesh.radius=(.035 if splash else .026)*size;mesh.height=mesh.radius*2;mesh.radial_segments=5;mesh.rings=2;drop.mesh=mesh;drop.material_override=spray_material;drop.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(drop);drop.position=start
 		var angle=i*2.399;var side=tangent*cos(angle)+other*sin(angle)
-		water_effects.append({"node":drop,"start":start,"normal":normal,"velocity":normal*(.8+float(i%4)*.25 if splash else 1.7+float(i%3)*.22)+side*(1.0 if splash else .24),"age":0.0,"life":.85 if splash else 1.25})
-
+		water_effects.append({"node":drop,"start":start,"normal":normal,"velocity":(normal*(.8+float(i%4)*.25 if splash else 1.7+float(i%3)*.22)+side*(1.0 if splash else .24))*size,"age":0.0,"life":1.1 if splash else 1.4})
 func update_water_effects(dt:float):
 	for i in range(water_effects.size()-1,-1,-1):
 		var effect=water_effects[i];effect.age+=dt;var age=effect.age
-		effect.node.position=effect.start+effect.velocity*age-effect.normal*1.8*age*age
-		effect.node.scale=Vector3.ONE*(1-age/effect.life)
+		effect.node.position=effect.start+effect.velocity*age-effect.normal*1.8*age*age;effect.node.scale=Vector3.ONE*(1-age/effect.life)
 		if age>=effect.life:effect.node.queue_free();water_effects.remove_at(i)
-
 func handle_tap(screen_pos:Vector2)->bool:
 	if not is_instance_valid(world.game.camera):return false
 	var camera=world.game.camera;var nearest={};var distance=30.0
@@ -238,12 +318,9 @@ func handle_tap(screen_pos:Vector2)->bool:
 		var d=camera.unproject_position(p).distance_to(screen_pos)
 		if d<distance:nearest=animal;distance=d
 	if nearest.is_empty():return false
-	if nearest.kind=="whale":
-		# A visible whale can be watched surfacing without waiting a whole ambient cycle.
-		nearest.phase=floor(nearest.phase/88.0)*88.0+25.8
+	if nearest.kind=="whale":nearest.action_offset=12.0-fmod(nearest.phase,124.0);nearest.breath_cycle=-1
 	elif nearest.kind=="fish":
-		var group=nearest.index/4
 		for animal in animals:
-			if animal.kind=="fish" and animal.index/4==group:animal.startle=2.4
+			if animal.kind=="fish" and animal.species==nearest.species:animal.startle=2.4
 	else:nearest.startle=2.4
 	return true

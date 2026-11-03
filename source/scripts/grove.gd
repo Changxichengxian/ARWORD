@@ -3,6 +3,7 @@ class_name IslandGrove
 
 const RADIUS=12.0
 const ADDITIONS=[["deck","bench","camp"],["cistern","channel","workbench"],["orchard","fence","hive"]]
+const FACILITY_MODELS={"quarry":"stonecutter","sawmill":"sawmill","kiln":"kiln","meadow":"orchard_press","hill":"windpump","wetland":"weavery","plateau":"forge","crystal":"lensworks","mountain":"telescope","shipyard":"shipyard","sunreach":"orchard_press","coral":"glassworks","basalt":"basaltworks","tideworks":"tidalworks"}
 var game
 var globe:Node3D
 var builder:Node3D
@@ -54,7 +55,15 @@ var navigation_signature=""
 var ground_faces={}
 var walk_goal=Vector2.ZERO
 var ring_clock=0.0
-const WALK_CLEARANCE=.33
+var production_route={}
+var transporting=false
+var ferry:Node3D
+var ferry_tween:Tween
+var sea_routes
+var avatar:Node3D
+var avatar_tool_homes={}
+const AvatarScript=preload("res://scripts/avatar.gd")
+const WALK_CLEARANCE=.24
 const NAV_STEP=.24
 
 func mat(hex:String)->StandardMaterial3D:
@@ -62,6 +71,37 @@ func mat(hex:String)->StandardMaterial3D:
 	var m=StandardMaterial3D.new();m.albedo_color=Color(hex);m.roughness=.85;mats[hex]=m;return m
 func model(name:String,parent:Node3D)->Node3D:
 	var n=load("res://assets/models/"+name+".glb").instantiate();parent.add_child(n);return n
+func validate_local_avatar(path:String)->Dictionary:
+	var result=prepare_local_avatar(path)
+	if result.ok:result.candidate.free();result.erase("candidate")
+	return result
+func prepare_local_avatar(path:String)->Dictionary:
+	var candidate=AvatarScript.new();actor.add_child(candidate);candidate.hide()
+	var result=candidate.load_file(self,path)
+	if not result.ok:candidate.free();return result
+	result.candidate=candidate;return result
+func load_local_avatar(path:String)->Dictionary:
+	var result=prepare_local_avatar(path)
+	if not result.ok:return result
+	return activate_local_avatar(result.candidate)
+func activate_local_avatar(candidate:Node3D)->Dictionary:
+	if not is_instance_valid(candidate) or not candidate is IslandAvatar or candidate.world!=self or not candidate.info.get("ok",false):return {"ok":false,"error":"人物模型尚未准备好"}
+	if is_instance_valid(avatar):avatar.free()
+	avatar=candidate;avatar.enabled=true;avatar.show()
+	actor.find_child("ContinuousBody",true,false).hide()
+	worker.rest_ground_ready=false;navigation_signature="";rebuild_navigation()
+	if move_tween and move_tween.is_valid():move_tween.kill()
+	if not transporting:
+		var p=terrain.coordinates(builder.position);place(builder,safe_point(p),travel_heading)
+		if worker.work_left>0:walk_to(work_stance(worker.phase))
+	worker.update_skin()
+	return avatar.info.duplicate()
+func clear_local_avatar():
+	if is_instance_valid(avatar):avatar.free()
+	avatar=null
+	for name in tools:tools[name].position=avatar_tool_homes.get(name,Vector3.ZERO)
+	worker.carry.position=Vector3.ZERO;actor.find_child("ContinuousBody",true,false).show()
+	worker.rest_ground_ready=false;navigation_signature="";rebuild_navigation();worker.update_skin()
 func surface(p:Vector2)->Vector3:return terrain.point(p)
 func ground_point(p:Vector2)->Vector3:
 	var normal=surface(p).normalized();var found=Vector3.ZERO
@@ -72,7 +112,7 @@ func ground_point(p:Vector2)->Vector3:
 			if hit is Vector3 and hit.length_squared()>found.length_squared():found=hit
 	return found if found.length_squared()>1.0 else surface(p)
 func place(node:Node3D,p:Vector2,angle=0.0):
-	var v=surface(p);node.position=v;node.basis=Basis(Quaternion(Vector3.UP,v.normalized()));node.rotate_object_local(Vector3.UP,angle)
+	node.position=surface(p);node.basis=terrain.surface_basis(p);node.rotate_object_local(Vector3.UP,angle)
 func pebble(parent:Node3D,p:Vector3,s:Vector3,color:String)->MeshInstance3D:
 	var n=MeshInstance3D.new();var mesh=SphereMesh.new();mesh.radius=.5;mesh.height=1;mesh.radial_segments=6;mesh.rings=3;n.mesh=mesh;n.material_override=mat(color);parent.add_child(n);n.position=p;n.scale=s;return n
 func pop(node:Node3D,delay=0.0,base=Vector3.ONE):
@@ -149,7 +189,8 @@ func terrain_geometry():
 			var coast=boundary[i] or boundary[(i+5)%6]
 			var point=surface(p+off);corners.append(point-point.normalized()*(.14 if coast else 0))
 			inside.append(surface(p+off*.88));summit.append(surface(p+off*.60))
-		var region=terrain.kind(cell);var green=Color(IslandTerrain.COLORS[region])
+		var region=terrain.kind(cell);var green=Color(IslandTerrain.COLORS[region]);var variant=terrain.variant(cell)
+		green=green.lightened(.035*variant) if variant!=1 else green.darkened(.035)
 		var faces=[]
 		for i in range(6):
 			var j=(i+1)%6;var a=inside[i];var b=inside[j];var c=corners[i];var d=corners[j]
@@ -182,16 +223,9 @@ func terrain_geometry():
 		var p=game.frontier.target("garden");trail([p+Vector2(0,-.78),p+Vector2(-.30,-1.2),p+Vector2(-.64,-1.55)])
 	if game.frontier.available("windmill"):
 		var p=game.frontier.target("windmill");trail([p+Vector2(-.12,-.86),p+Vector2(-.4,-1.27),p+Vector2(-.22,-1.66)])
-	for cell in land:
-		var p=IslandFrontier.point(cell)
-		for i in range(6):
-			if land.has(cell+directions[i]):continue
-			var a=(i*60+30)*PI/180;var b=a+PI/3
-			var off0=Vector2(cos(a),sin(a))*IslandFrontier.HEX;var off1=Vector2(cos(b),sin(b))*IslandFrontier.HEX
-			var edge=(off0+off1)*.5
-			# Quiet coves have pale submerged shelves, separate from the grassy edge.
-			var shelf=pebble(scenery,surface(p+edge*1.12).normalized()*11.56,Vector3(.62,.035,.28),"60C5C7")
-			shelf.basis=Basis(Quaternion(Vector3.UP,shelf.position.normalized()));shelf.rotate_object_local(Vector3.UP,-atan2(edge.y,edge.x)+PI/2);shelf.scale=Vector3(.72,.035,.28)
+	for id in ["shipyard","sunreach","coral","basalt","tideworks","mountain"]:
+		if game.frontier.done(id):
+			var p=game.frontier.target(id);trail([p+Vector2(.05,.9),p+Vector2(.4,1.05),p+Vector2(.6,.8)])
 	coast_count=land.size()
 func trail(points:Array):
 	for i in range(points.size()-1):path_segment(points[i],points[i+1])
@@ -209,42 +243,108 @@ func marker(id:String):
 	if game.frontier.chapter(id).has("gate"):
 		for i in range(3):
 			var peak=MeshInstance3D.new();var cone=CylinderMesh.new();cone.top_radius=0;cone.bottom_radius=.27;cone.height=.5+i*.1;cone.radial_segments=6;peak.mesh=cone;peak.material_override=mat("A7CBC9");icon.add_child(peak);peak.position=Vector3((i-1)*.25,.15,0)
-func add_resource(kind:int,p:Vector2,scale_factor:float,crystal=false):
+func add_resource(kind:int,p:Vector2,scale_factor:float,crystal=false,region="",visual_name="",material=""):
 	var a=Node3D.new();globe.add_child(a);place(a,p,p.x*.4)
-	var prop=model("crystal" if crystal else "oak" if kind==0 else "ore",a);prop.scale=Vector3.ONE*scale_factor
-	resources[kind].append({"anchor":a,"visual":prop,"p":p,"base":prop.scale,"cooldown":0.0,"crystal":crystal})
+	if visual_name.is_empty():visual_name="crystal" if crystal else "oak" if kind==0 else "ore"
+	var prop=model(visual_name,a);prop.scale=Vector3.ONE*scale_factor
+	if region.is_empty():region=terrain.kind(terrain.cell_at(p))
+	if material.is_empty():material="crystal" if crystal else "timber" if kind==0 else "ore"
+	resources[kind].append({"anchor":a,"visual":prop,"p":p,"base":prop.scale,"cooldown":0.0,"crystal":crystal,"region":region,"material":material})
+func decor_prop(name:String,p:Vector2,scale_factor=1.0,angle=0.0,solid=false)->Node3D:
+	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,p,angle)
+	var visual=model(name,anchor);visual.scale=Vector3.ONE*scale_factor
+	if solid:fixed_obstacles.append(anchor)
+	return anchor
 func decorate_cell(cell:Vector2i,animate:bool):
-	var p=IslandFrontier.point(cell);var region=terrain.kind(cell);var is_grove=region=="grove";var is_quarry=region in ["quarry","plateau","mountain"];var is_crystal=region=="crystal"
-	if cell==Vector2i(0,0) or is_grove:
-		var offsets=[Vector2(-.58,-.32),Vector2(.40,-.52),Vector2(.68,.28)] if is_grove else [Vector2(-.53,-.48),Vector2(.38,-.42)]
-		for k in range(offsets.size()):
-			add_resource(0,p+offsets[k],[.79,.65,.51][k] if is_grove else [.77,.63][k])
-			if animate:pop(resources[0][-1].visual,.3,resources[0][-1].base)
-	elif is_quarry or is_crystal:
-		add_resource(1,p+Vector2(-.35,-.35),.86,is_crystal);add_resource(1,p+Vector2(.45,.2),.65,is_crystal)
-		if animate:
-			for entry in [resources[1][-1],resources[1][-2]]:pop(entry.visual,.3,entry.base)
+	var p=IslandFrontier.point(cell);var region=terrain.kind(cell);var v=terrain.variant(cell)
 	var rng=RandomNumberGenerator.new();rng.seed=915+cell.x*101+cell.y*29
-	for i in range(3):
-		var a=Node3D.new();globe.add_child(a);var angle=i*TAU/3+rng.randf_range(-.3,.3)
-		place(a,p+Vector2(cos(angle),sin(angle))*.94,angle)
-		var shrub=model("coast_garden",a);var sc=rng.randf_range(.45,.8);shrub.scale=Vector3.ONE*sc
-		if animate:pop(shrub,.25,Vector3.ONE*sc)
-	if cell in [Vector2i(-2,1),Vector2i(1,2),Vector2i(0,-2),Vector2i(-1,2)]:
-		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(-.62,-.55),.3);model("cypress",a).scale=Vector3.ONE*.87
-	if cell in [Vector2i(1,0),Vector2i(0,1),Vector2i(1,3),Vector2i(-1,3),Vector2i(0,-1)]:
-		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(.64,.47));model("lantern",a).scale=Vector3.ONE*.75
-	if region in ["quarry","plateau","mountain"]:
-		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(-.5,-.5),.3);var rocks=model("cliff_rocks",a);rocks.scale=Vector3.ONE*(1.0 if region=="mountain" else .48)
-		if animate:pop(rocks,.3,rocks.scale)
-	if region=="mountain":
-		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(.65,-.5));model("cypress",a).scale=Vector3.ONE*.6
-	if region=="wetland":
-		for i in range(3):
-			var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(-.65+i*.55,-.48));model("reeds",a).scale=Vector3.ONE*.8
-		var water=pebble(globe,surface(p+Vector2(-.6,.15)),Vector3(.65,.025,.50),"52B6BD");water.basis=Basis(Quaternion(Vector3.UP,water.position.normalized()));water.scale=Vector3(.65,.025,.50)
-	if region=="shore":
-		var a=Node3D.new();globe.add_child(a);place(a,p+Vector2(-.7,.4),.7);model("driftwood",a).scale=Vector3.ONE*.45
+	var resource_begin=[resources[0].size(),resources[1].size()]
+	# Each three-tile chapter is authored as a useful centerpiece, a natural landmark,
+	# and a quieter connecting shore. The same decoration is never stamped three times.
+	if cell==Vector2i.ZERO or region=="grove":
+		var offsets=[Vector2(-.65,-.30),Vector2(.30,-.60),Vector2(.65,.25)] if v==0 else [Vector2(-.6,.15),Vector2(.5,-.35)] if v==1 else [Vector2(.0,-.55)]
+		for i in range(offsets.size()):add_resource(0,p+offsets[i],.78-i*.10,false,"grove")
+		if v==2:decor_prop("driftwood",p+Vector2(.3,.35),.65,.4)
+	elif region=="quarry":
+		if v==0:
+			add_resource(1,p+Vector2(-.6,-.45),.7,false,region)
+			decor_prop("cliff_rocks",p+Vector2(.55,.30),.47,.7)
+		elif v==1:
+			# A clear working apron for the stone cutter, with a single large seam behind.
+			add_resource(1,p+Vector2(-.65,-.7),.78,false,region)
+		else:
+			for i in range(3):add_resource(1,p+Vector2(-.6+i*.5,-.28+sin(i)*.5),.35+i*.12,false,region)
+	elif region=="plateau":
+		if v==0:
+			decor_prop("rock_arch",p+Vector2(-.25,-.25),.65,.5,true)
+			add_resource(1,p+Vector2(.65,.40),1.75,false,region,"iron_ore","iron_ore")
+		elif v==1:
+			add_resource(1,p+Vector2(-.62,-.70),1.45,false,region,"iron_ore","iron_ore")
+		else:
+			decor_prop("basalt_columns",p+Vector2(.05,-.30),.55,.8,true)
+			add_resource(1,p+Vector2(-.55,.42),1.9,false,region,"iron_ore","iron_ore")
+	elif region=="mountain":
+		if v==0:
+			for pair in [[Vector2(-.55,-.3),.70],[Vector2(.46,.22),.48]]:decor_prop("cypress",p+pair[0],pair[1],rng.randf()*TAU)
+		elif v==1:
+			decor_prop("lantern",p+Vector2(.65,.65),.65)
+		else:
+			decor_prop("cliff_rocks",p+Vector2(-.15,-.10),1.05,.95,true)
+			decor_prop("cypress",p+Vector2(.65,.50),.32)
+	elif region=="crystal":
+		if v==0:
+			add_resource(1,p+Vector2(-.70,-.55),.63,true,region)
+		elif v==1:
+			decor_prop("rock_arch",p+Vector2(.0,-.25),.57,-.7,true)
+			add_resource(1,p+Vector2(-.60,.33),1.05,true,region)
+		else:
+			for i in range(4):
+				var angle=.3+i*.7;add_resource(1,p+Vector2(cos(angle),sin(angle))*.64,.28+i*.10,true,region)
+	elif region=="wetland":
+		var count=[3,1,5][v]
+		for i in range(count):
+			var angle=.5+i*TAU/maxi(1,count);var offset=Vector2(cos(angle),sin(angle))*(.76 if v==1 else .58)
+			add_resource(0,p+offset,.55+rng.randf()*.25,false,region,"reeds","reed_bundle")
+		if v==2:decor_prop("driftwood",p+Vector2(.1,.15),.58,.9)
+	elif region=="meadow":
+		if v==0:decor_prop("orchard",p+Vector2(-.10,-.15),.55,.2)
+		elif v==2:decor_prop("coast_garden",p+Vector2(.55,-.5),1.0)
+		add_resource(0,p+Vector2(-.6,-.6),1.0,false,region,"fruit_crate","fruit_crate")
+	elif region=="hill":
+		if v==0:decor_prop("cypress",p+Vector2(-.5,-.3),.75)
+		elif v==1:decor_prop("coast_garden",p+Vector2(-.6,-.7),.7)
+		add_resource(0,p+Vector2(-.6,.5),.7,false,region,"water_jar","water_jar")
+	elif region=="shipyard":
+		if v==0:
+			for i in range(3):decor_prop("hardwood",p+Vector2(-.1+i*.25,-.25),1.2,.3)
+		elif v==2:
+			decor_prop("pier",p+Vector2(-.4,.3),.70,.5,true)
+			decor_prop("sailcloth",p+Vector2(.50,-.3),1.8)
+	elif region=="sunreach":
+		var offsets=[Vector2(-.65,-.65)] if v==0 else [Vector2(-.42,-.2),Vector2(.60,.35)] if v==1 else [Vector2(.20,-.30)]
+		for i in range(offsets.size()):add_resource(0,p+offsets[i],.70+i*.14,false,region,"palm","hardwood")
+		if v==2:decor_prop("driftwood",p+Vector2(-.45,.45),.68,.7)
+	elif region=="coral":
+		if v==1:decor_prop("rock_arch",p+Vector2(.25,-.15),.58,.2,true)
+		for i in range([1,2,4][v]):
+			var a=.8+i*1.4;add_resource(1,p+Vector2(cos(a),sin(a))*.70,1.2+i*.18,false,region,"sea_glass","sea_glass")
+	elif region=="basalt":
+		if v==1:decor_prop("basalt_columns",p+Vector2(.08,.15),.9,.35,true)
+		elif v==2:decor_prop("rock_arch",p+Vector2(-.15,-.4),.5,1.1,true)
+		add_resource(1,p+Vector2(-.55,-.62),1.55+v*.16,false,region,"basalt_ore","basalt_ore")
+	elif region=="tideworks":
+		if v==1:
+			for i in range(3):decor_prop("stone_pipe",p+Vector2(-.45+i*.42,-.2),1.4,.2)
+		elif v==2:decor_prop("reeds",p+Vector2(-.5,-.5),.7)
+		add_resource(0,p+Vector2(.6,.4),.8,false,region,"water_jar","water_jar")
+	elif region=="shore":decor_prop("driftwood",p+Vector2(-.7,.4),.45,.7)
+	var shrubs=0 if region in ["mountain","basalt","crystal"] else 1 if region in ["plateau","quarry","coral","shipyard"] else 2
+	for i in range(shrubs):
+		var a=rng.randf()*TAU;decor_prop("coast_garden",p+Vector2(cos(a),sin(a))*.98,rng.randf_range(.32,.58),a)
+	if cell in [Vector2i(1,0),Vector2i(0,1),Vector2i(1,3),Vector2i(-1,3),Vector2i(0,-1)]:decor_prop("lantern",p+Vector2(.64,.47),.65)
+	if animate:
+		for kind in range(2):
+			for i in range(resource_begin[kind],resources[kind].size()):pop(resources[kind][i].visual,.3,resources[kind][i].base)
 func setup(owner_node):
 	game=owner_node
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
@@ -266,16 +366,20 @@ func setup(owner_node):
 			var point=Node3D.new();globe.add_child(point);var offset=[Vector2(-1.1,.25),Vector2(.9,.65),Vector2(0,-1.15)][j];place(point,game.frontier.target(IslandFrontier.BUILD_IDS[i])+offset,PI+.4*j)
 			var added=model(ADDITIONS[i][j],point);added.scale=Vector3.ONE*.64;added.visible=false;extra.append(added)
 		additions.append(extra)
-	for id in ["sawmill","kiln"]:
-		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(id),PI);var n=model(id,a);n.scale=Vector3.ONE*.8;facilities[id]=a
+	for id in FACILITY_MODELS:
+		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(id),PI)
+		var n=model(FACILITY_MODELS[id],a);n.scale=Vector3.ONE*(.62 if id=="mountain" else .85 if id=="shipyard" else .72)
+		facilities[id]=a
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
 	cursor=Node3D.new();globe.add_child(cursor);ring(cursor,1.17,ring_material)
-	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*.9
+	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
 	for part in ["ArmL","ArmR","LegL","LegR","Body","KneeL","KneeR","ElbowL","ElbowR"]:limbs[part]=actor.find_child(part,true,false)
-	for name in ["Axe","Pickaxe","Mallet"]:tools[name]=actor.find_child(name,true,false)
+	for name in ["Axe","Pickaxe","Mallet"]:tools[name]=actor.find_child(name,true,false);avatar_tool_homes[name]=tools[name].position
 	for i in range(5):
 		var c=model("cloud",globe);c.scale=Vector3.ONE*(1.1+i*.1);clouds.append(c)
 	boat=model("boat",globe);boat.scale=Vector3.ONE*.7
+	ferry=model("boat",globe);ferry.name="WorkingFerry";ferry.scale=Vector3.ONE*.8;ferry.hide()
+	sea_routes=preload("res://scripts/sea_routes.gd").new(self)
 	sync_buildings(false);worker=IslandWorker.new(self);worker.settle();prepare_resource(false);recenter();motion_previous=builder.position
 func sync_buildings(animate=true):
 	for cell in game.frontier.cells():
@@ -341,7 +445,7 @@ func add_obstacle(visual:Node3D,label:String,reserve_finished=false):
 		for point in points:bounds=bounds.expand(point)
 		obstacles.append({"id":label,"polygon":Geometry2D.convex_hull(points),"bounds":bounds})
 func on_land(p:Vector2)->bool:
-	# Axial hex rounding is constant-time even after all 33 tiles are present.
+	# Axial hex rounding stays constant-time across the three island charts.
 	var r=p.y/(1.5*IslandFrontier.HEX);var q=p.x/(sqrt(3.0)*IslandFrontier.HEX)-r*.5;var s=-q-r
 	var iq=roundi(q);var ir=roundi(r);var ids=roundi(s)
 	var dq=absf(iq-q);var dr=absf(ir-r);var ds=absf(ids-s)
@@ -349,6 +453,7 @@ func on_land(p:Vector2)->bool:
 	elif dr>ds:ir=-iq-ids
 	return land.has(Vector2i(iq,ir))
 func clear_ground(p:Vector2,clearance=WALK_CLEARANCE)->bool:
+	if is_instance_valid(avatar):clearance=maxf(clearance,avatar.clearance)
 	if not on_land(p):return false
 	for i in range(8):
 		if not on_land(p+Vector2.from_angle(i*TAU/8)*minf(clearance,.20)):return false
@@ -371,21 +476,22 @@ func rebuild_navigation():
 		add_obstacle(buildings[i],IslandFrontier.BUILD_IDS[i],true)
 		for j in range(additions[i].size()):add_obstacle(additions[i][j],ADDITIONS[i][j])
 	for id in facilities:add_obstacle(facilities[id],id)
-	var signature=str(land.size())
+	var signature=str(land.size())+str(avatar.clearance if is_instance_valid(avatar) else WALK_CLEARANCE)
 	for obstacle in obstacles:
 		signature+=obstacle.id
 		for point in obstacle.polygon:signature+=str(Vector2i(roundi(point.x*1000),roundi(point.y*1000)))
 	if signature==navigation_signature:return
 	navigation_signature=signature
 	navigation.clear();nav_grid.clear();nav_components.clear()
-	var lower=Vector2(INF,INF);var upper=Vector2(-INF,-INF)
+	var candidates={}
 	for cell in land:
-		var center=IslandFrontier.point(cell);lower=lower.min(center-Vector2.ONE*IslandFrontier.HEX);upper=upper.max(center+Vector2.ONE*IslandFrontier.HEX)
-	for x in range(floori(lower.x/NAV_STEP),ceili(upper.x/NAV_STEP)+1):
-		for y in range(floori(lower.y/NAV_STEP),ceili(upper.y/NAV_STEP)+1):
-			var key=Vector2i(x,y);var point=Vector2(key)*NAV_STEP
-			if clear_ground(point):
-				var id=nav_grid.size();nav_grid[key]=id;navigation.add_point(id,point)
+		var center=IslandFrontier.point(cell);var lower=center-Vector2.ONE*IslandFrontier.HEX;var upper=center+Vector2.ONE*IslandFrontier.HEX
+		for x in range(floori(lower.x/NAV_STEP),ceili(upper.x/NAV_STEP)+1):
+			for y in range(floori(lower.y/NAV_STEP),ceili(upper.y/NAV_STEP)+1):candidates[Vector2i(x,y)]=true
+	for key in candidates:
+		var point=Vector2(key)*NAV_STEP
+		if clear_ground(point):
+			var id=nav_grid.size();nav_grid[key]=id;navigation.add_point(id,point)
 	for key in nav_grid:
 		for step in [Vector2i(1,0),Vector2i(0,1),Vector2i(1,1),Vector2i(1,-1)]:
 			if nav_grid.has(key+step) and clear_segment(Vector2(key)*NAV_STEP,Vector2(key+step)*NAV_STEP):navigation.connect_points(nav_grid[key],nav_grid[key+step])
@@ -424,12 +530,15 @@ func walking_route(origin:Vector2,target:Vector2)->Array:
 		route.append(path[far]);from=path[far];index=far+1
 	return route
 func walk_to(target:Vector2,duration_scale=1.0):
-	target=safe_point(nearest_land(target))
+	if transporting:return
+	var origin=terrain.coordinates(builder.position)
+	target=nearest_land(target)
+	if terrain.chart_at(origin)!=terrain.chart_at(target) and game.frontier.done("shipyard"):
+		ferry_to(safe_point(target,WALK_CLEARANCE,target));return
+	target=safe_point(target,WALK_CLEARANCE,origin)
 	walk_goal=target
 	if move_tween and move_tween.is_valid():move_tween.kill()
-	var origin=terrain.coordinates(builder.position)
-	var speed=1.1
-	if worker and worker.work_left>0:speed=.95 if worker.phase==1 else 1.8
+	var speed=worker.travel_speed() if worker else IslandWorker.WALK_SPEED
 	move_tween=create_tween()
 	var route=walking_route(origin,target)
 	if route.is_empty():move_tween.kill();return
@@ -442,17 +551,47 @@ func walk_to(target:Vector2,duration_scale=1.0):
 		origin=waypoint
 	var reached:Vector2=route[-1];var facing=work_point-reached;var final_heading=atan2(-facing.x,-facing.y)
 	move_tween.tween_method(func(_t):travel_heading=lerp_angle(travel_heading,final_heading,.2);place(builder,reached,travel_heading),0.0,1.0,.2)
+func ferry_to(target:Vector2):
+	if transporting:return
+	var path=sea_routes.route(terrain.coordinates(builder.position),target)
+	if path.is_empty():return
+	if move_tween and move_tween.is_valid():move_tween.kill()
+	transporting=true;walk_goal=target;worker.suspend_for_transport(true);actor.hide()
+	ferry_tween=create_tween();ferry_tween.tween_interval(.18)
+	ferry_tween.tween_callback(func():ferry.show();actor.show())
+	for i in range(path.size()-1):
+		var a:Vector3=path[i];var b:Vector3=path[i+1]
+		ferry_tween.tween_method(func(t):
+			var normal=a.slerp(b,t).normalized();var ahead=a.slerp(b,minf(1,t+.02)).normalized()-normal
+			if ahead.length_squared()<.00001:ahead=b-a
+			ahead=(ahead-normal*ahead.dot(normal)).normalized()
+			var basis=Basis(ahead.cross(normal).normalized(),normal,-ahead)
+			ferry.position=normal*(water.surface_radius(normal,time)+.12);ferry.basis=basis.scaled(Vector3.ONE*.8)
+			builder.position=ferry.position+normal*.33;builder.basis=basis
+		,0.0,1.0,maxf(.18,a.angle_to(b)*2.8))
+	ferry_tween.tween_callback(func():
+		ferry.hide();place(builder,target,travel_heading);motion_previous=builder.position;motion_speed=0
+		transporting=false;worker.suspend_for_transport(false)
+	)
 func prepare_resource(animate=true):
-	active_kind=1 if game.frontier.site(game.frontier.data.active)==1 and not resources[1].is_empty() else 0
+	production_route=game.frontier.work_route()
+	active_kind=int(production_route.tool)
 	var pool=resources[active_kind];var target=game.frontier.target(game.frontier.data.active)
 	var candidates=[]
 	for entry in pool:
-		if entry.cooldown<=0:candidates.append(entry)
+		if entry.region==production_route.source and entry.cooldown<=0:candidates.append(entry)
+	if candidates.is_empty():
+		for entry in pool:
+			if entry.region==production_route.source:candidates.append(entry)
+	if candidates.is_empty():
+		for entry in pool:
+			if terrain.chart_at(entry.p)==terrain.chart_at(target):candidates.append(entry)
 	if candidates.is_empty():candidates=pool
 	candidates.sort_custom(func(a,b):return a.p.distance_to(target)<b.p.distance_to(target))
 	if not candidates.is_empty():
 		selected_entry=candidates[int(game.learning.data.harvested[active_kind])%mini(3,candidates.size())]
 		active_resource=pool.find(selected_entry)
+	else:selected_entry={}
 	update_selection_ring()
 	if last_target!=game.frontier.data.active and animate:recenter()
 	last_target=game.frontier.data.active
@@ -462,43 +601,54 @@ func work_stance(phase:int)->Vector2:
 	var front=Vector2(0,1)
 	if is_instance_valid(game.camera):
 		var local_camera=globe.to_local(game.camera.global_position);var delta=local_camera-surface(work_point)
-		front=Vector2(delta.x,delta.z).normalized()
+		var chart_delta=terrain.chart_basis(terrain.chart_at(work_point)).inverse()*delta
+		front=Vector2(chart_delta.x,chart_delta.z).normalized()
 	var side=Vector2(front.y,-front.x)
-	var wanted=work_point+front*1.15+side*([-.24,.3,0.0,.4][phase%4])
-	return safe_point(wanted)
+	var distance=.76 if worker and worker.phase==0 else 1.15
+	var wanted=work_point+front*distance+side*([-.18,.22,0.0,.27][phase%4])
+	return safe_point(wanted,WALK_CLEARANCE,nearest_land(work_point))
 func send_material(start:Vector3,target:Vector3,kind:String,count=4,duration=.7,delay=0.0):
 	for i in range(count):
-		var chip=model(kind,globe);chip.scale=Vector3.ONE*(.85 if kind in ["timber","plank","brick"] else .18)
+		var chip=model(kind,globe);chip.scale=Vector3.ONE*(.55 if kind not in ["ore","crystal"] else .15)
 		effects.append({"node":chip,"a":start,"b":target,"t":-delay-i*.055,"duration":duration})
 func harvest(result:Dictionary):
 	swing=.7
-	worker.grant(game.mode,game.frontier.target(game.frontier.data.active),selected_entry,active_kind)
-	var target=surface(game.frontier.target(game.frontier.data.active))+Vector3.UP*.3
-	var start=builder.position+builder.basis.y*.8
-	var material="timber" if active_kind==0 else "ore"
-	if game.mode=="word" and not selected_entry.is_empty():
-		var prop=selected_entry.visual
-		if prop.has_meta("pop") and prop.get_meta("pop").is_valid():prop.get_meta("pop").kill()
-		start=selected_entry.anchor.position+selected_entry.anchor.basis.y*.65;selected_entry.cooldown=9.0
-		var t=create_tween();t.set_parallel(true);t.tween_property(prop,"rotation:z",-.65 if active_kind==0 else .25,.2).set_delay(1.4);t.tween_property(prop,"scale",Vector3.ONE*.03,.30).set_delay(1.54)
-		if selected_entry.crystal:material="crystal"
-	elif game.frontier.done("sawmill") and active_kind==0:material="plank"
-	elif game.frontier.done("kiln") and active_kind==1:material="brick"
-	var machine="sawmill" if active_kind==0 else "kiln"
-	var processing=game.mode=="word" and material!="crystal" and game.frontier.done(machine) and game.frontier.data.active!=machine
-	if processing:
-		var midpoint=facilities[machine].position+facilities[machine].basis.y*.8
-		send_material(start,midpoint,material,4,.45,1.5)
-		get_tree().create_timer(2.0).timeout.connect(func():
-			if is_inside_tree():send_material(midpoint,target,"plank" if machine=="sawmill" else "brick",4,.45)
-		)
-	else:send_material(start,target,material,6,.8,1.5 if game.mode=="word" else .2)
-	for i in range(6):
-		var chip=pebble(globe,start,Vector3.ONE*.1,"EBCB88" if active_kind==0 else "B9DFDB")
-		effects.append({"node":chip,"a":start,"b":start+Vector3(sin(i*1.7)*.6,-.25,cos(i*1.7)*.6),"t":0.0,"duration":.4})
-	get_tree().create_timer((2.6 if processing else 2.3) if game.mode=="word" else .8).timeout.connect(func():
+	var route=production_route.duplicate(true)
+	var destination=game.frontier.target(str(route.destination))
+	worker.grant(game.mode,destination,selected_entry,active_kind)
+	var target=surface(destination);target+=target.normalized()*.30
+	var start=builder.position+builder.basis.y*.55
+	var raw=str(route.raw);var product=str(route.product)
+	if not selected_entry.is_empty():
+		start=selected_entry.anchor.position+selected_entry.anchor.basis.y*.45
+		if game.mode=="word":
+			var prop=selected_entry.visual
+			if prop.has_meta("pop") and prop.get_meta("pop").is_valid():prop.get_meta("pop").kill()
+			selected_entry.cooldown=9.0
+			var t=create_tween();t.set_parallel(true)
+			t.tween_property(prop,"rotation:z",-.35 if active_kind==0 else .18,.2).set_delay(1.4)
+			t.tween_property(prop,"scale",Vector3.ONE*.03,.30).set_delay(1.54)
+	var departure=start;var cargo_kind=raw;var delay=1.5
+	for processor in route.processors:
+		if not facilities.has(processor) or not game.frontier.done(processor):continue
+		var midpoint=facilities[processor].position+facilities[processor].basis.y*.65
+		send_material(departure,midpoint,cargo_kind,3,.65,delay)
+		departure=midpoint;cargo_kind=str(IslandFrontier.PRODUCTION[processor].product);delay+=.75
+		pulse_facility(str(processor),delay)
+	send_material(departure,target,cargo_kind,3,.75,delay)
+	for i in range(4):
+		var chip=pebble(globe,start,Vector3.ONE*.065,"EBCB88" if active_kind==0 else "B9DFDB")
+		var side=builder.basis.x*sin(i*1.7)*.4+builder.basis.z*cos(i*1.7)*.4
+		effects.append({"node":chip,"a":start,"b":start+side-builder.basis.y*.16,"t":-1.45,"duration":.4})
+	get_tree().create_timer(delay+.8).timeout.connect(func():
 		if not is_inside_tree():return
 		sync_buildings();game.play_fx("build" if result.complete else "land")
+	)
+func pulse_facility(id:String,delay:float):
+	get_tree().create_timer(delay).timeout.connect(func():
+		if not is_inside_tree() or not facilities.has(id):return
+		var base=facilities[id];var ring=pebble(globe,base.position+base.basis.y*.65,Vector3.ONE*.09,"F3D78C")
+		effects.append({"node":ring,"a":ring.position,"b":ring.position+base.basis.y*.5,"t":0.0,"duration":.55})
 	)
 func _process(dt):
 	if not is_instance_valid(globe):return
@@ -509,7 +659,13 @@ func _process(dt):
 	if worker:worker.update(dt)
 	if is_instance_valid(rotor) and game.learning.data.build[1]>=IslandLearning.NEEDS[1]:rotor.rotate_z(dt*.7)
 	for id in facilities:
-		if facilities[id].visible and id=="sawmill":facilities[id].find_child("SawWheel",true,false).rotate_z(dt*2.4)
+		if not facilities[id].visible:continue
+		var part_name={"sawmill":"SawWheel","quarry":"CutterWheel","hill":"PumpRotor","tideworks":"TideWheel"}.get(id,"")
+		if not part_name.is_empty():
+			var moving_part=facilities[id].find_child(part_name,true,false)
+			if moving_part:
+				if id=="tideworks":moving_part.rotate_x(dt*.45)
+				else:moving_part.rotate_z(dt*(2.4 if id=="sawmill" else .8))
 	for i in range(clouds.size()):
 		var a=time*.007+i*TAU/clouds.size();var p=Vector3(cos(a),.12+sin(a*2+i)*.16,sin(a)).normalized()*13.3
 		clouds[i].position=p;clouds[i].basis=Basis(Quaternion(Vector3.UP,p.normalized()));clouds[i].scale=Vector3.ONE*(1.0+i*.08)
@@ -528,5 +684,7 @@ func _process(dt):
 	for i in range(effects.size()-1,-1,-1):
 		var e=effects[i];e.t+=dt
 		if e.t<0:e.node.visible=false;continue
-		e.node.visible=true;var u=minf(1,e.t/e.duration);e.node.position=e.a.lerp(e.b,u)+Vector3.UP*sin(u*PI)*1.05;e.node.rotate_y(dt*4)
+		e.node.visible=true;var u=minf(1,e.t/e.duration)
+		var flight_normal=e.a.normalized().slerp(e.b.normalized(),u).normalized()
+		e.node.position=flight_normal*(lerpf(e.a.length(),e.b.length(),u)+sin(u*PI)*.65);e.node.rotate_y(dt*4)
 		if u>=1:e.node.queue_free();effects.remove_at(i)

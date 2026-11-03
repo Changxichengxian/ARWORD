@@ -34,7 +34,7 @@ func run():
 	var reloaded=IslandLearning.new();check(reloaded.accept_save(JSON.parse_string(JSON.stringify(game.learning.data))),"developer changes retain a valid normal save")
 	var frontier=IslandFrontier.new(reloaded)
 	check(frontier.data.progress.grove==3 and reloaded.data.dev_steps==3,"developer construction survives normal save serialization")
-	reloaded.data.dev_context={"read":6,"listen":6};frontier.data.progress.plateau=10;frontier.data.progress.hill=6
+	reloaded.data.dev_context={"read":6,"listen":6};frontier.data.progress.plateau=10;frontier.data.progress.hill=6;frontier.data.progress.crystal=8
 	check(frontier.available("mountain") and reloaded.data.practice.read==0,"developer progress opens terrain without faking learning statistics")
 	game.learning.data.dev_skip=false;before=game.learning.data.actions;game.skip_learning()
 	check(game.learning.data.actions==before,"disabled privilege cannot bypass an exercise")
@@ -49,7 +49,7 @@ func run():
 	game.hud.close();game.learning.data.speech=false
 	for c in IslandFrontier.CHAPTERS:game.frontier.data.progress[c.id]=c.need
 	game.world.sync_buildings(false)
-	check(game.world.road_segments<=10 and game.world.road_segments<game.world.land.size()/2,"roads serve a few facilities and do not connect every tile")
+	check(game.world.road_segments<=22 and game.world.road_segments<game.world.land.size()/2,"short facility approaches remain sparse across all three islands")
 	var forbidden=false
 	for label in game.hud.find_children("*","Label",true,false):
 		if label.text.contains("青芽星") or label.text.contains("美术预览"):forbidden=true
