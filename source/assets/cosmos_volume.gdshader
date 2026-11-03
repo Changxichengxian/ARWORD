@@ -97,6 +97,24 @@ void fragment() {
 			float warm_edge=filaments*pow(thin_light,2.2)*smoothstep(.15,.5,shape_rim);
 			warm_edge*=.16+float(structure==2)*2.8;
 			tint+=warm_color.rgb*warm_edge*2.1;
+			// In the eyepiece, resolve a backlit shell, two interacting lobes,
+			// or eroded pillars. Preserve clear windows through the dust.
+			float skin=exp(-abs(folded-.50-(large-.5)*.18)*15.0);
+			float frost=.45+.55*smoothstep(.32,.68,fine);
+			float cavity=length(p.xy-vec2(-.15,.13));
+			float rim=exp(-abs(cavity-.50+(large-.5)*.32)*10.5);
+			float seam=exp(-abs(p.x+.65*p.y+(large-.5)*.63)*7.5);
+			float grazing=structure==0 ? rim : (structure==1 ? seam : shape_rim);
+			float veil=skin*shape*edge_fade;
+			float illumination=(.25+1.35*thin_light+2.1*grazing)*frost;
+			vec3 blue=mix(vec3(.035,.44,.77),vec3(.25,.14,.66),color_patch);
+			if(structure==1)blue=mix(vec3(.15,.19,.74),vec3(.65,.13,.47),color_patch);
+			if(structure==2)blue=mix(vec3(.045,.43,.43),vec3(.17,.26,.53),color_patch);
+			float amber=smoothstep(.24,.79,large+p.x*.33-p.y*.24)*skin;
+			vec3 ion=mix(blue,vec3(1.15,.49,.14),amber);
+			tint+=ion*illumination*(.30+skin*2.8)*(1.-clamp(dust*.6,0.,.8));
+			tint+=vec3(.83,.91,1.0)*pow(grazing*skin*frost,2.)*1.9;
+			density+=veil*.50;
 		}
 		float alpha=1.0-exp(-(density+dust*.7)*step_size*.14*(1.0+detail_view*.5)*density_scale*(nebula_strength/1.45));
 		float luma=dot(tint,vec3(.2126,.7152,.0722));

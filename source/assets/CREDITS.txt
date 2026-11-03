@@ -1,4 +1,7 @@
-ARWORD · 0.12.3
+ARWORD · 0.13.0
+
+新配乐 Harbor Six、Orchard Keys、Glass Orbit 为本项目原创合成的器乐小品，谱面与音色生成程序见 tools/make_island_suite.py。黑洞吸积盘、行星尘埃环与观星镜内的亮弧由实时着色器绘制。
+黑洞使用 tools/make_lens_transfer.py 预计算的非旋转黑洞薄盘光路，手机根据盘面交点生成流动纹理。电影成像参考 Oliver James 等《Gravitational Lensing by Spinning Black Holes in Astrophysics, and in the Movie Interstellar》第 4 节，https://doi.org/10.1088/0264-9381/32/6/065001。游戏未使用电影或论文的画面素材。
 
 三维引擎：Godot 4.5.1（MIT）。完整版权及所用第三方组件声明见 Godot-COPYRIGHT.txt 与 Godot-LICENSE.txt。
 https://godotengine.org/license/

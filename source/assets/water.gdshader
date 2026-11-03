@@ -77,7 +77,7 @@ void fragment() {
     ROUGHNESS = 0.32 + (1.0-absorption)*0.08 + .19*trench;
     SPECULAR = .36*(1.0-smoothstep(.25,.85,trench));
     METALLIC = 0.02;
-    float opacity=mix(.22+.52*absorption,.46+.53*absorption,trench);
+	float opacity=mix(.22+.52*absorption,.24+.29*absorption,trench);
     ALBEDO=surface_color;
     EMISSION=vec3(.09,.22,.31)*fresnel*.045;
     ALPHA=mix(opacity,1.0,1.0-smoothstep(.12,.52,surface_angle));

@@ -163,7 +163,8 @@ func update(dt:float):
 		# The boat owns travel; preserve the work budget and current production phase.
 		world.set_tool(-1);carry.hide()
 		var blend=1-exp(-dt*10.0)
-		for limb in world.limbs.values():limb.rotation=limb.rotation.lerp(Vector3.ZERO,blend)
+		var walking_pose=locomotion_pose(world.travelled,world.motion_speed).pose if world.ferry_walking else {}
+		for key in world.limbs:world.limbs[key].rotation=world.limbs[key].rotation.lerp(walking_pose.get(key,Vector3.ZERO),blend)
 		world.actor.rotation=world.actor.rotation.lerp(Vector3.ZERO,blend);world.actor.position.y=lerpf(world.actor.position.y,0.0,blend);world.actor.scale=world.actor.scale.lerp(Vector3.ONE*ACTOR_SCALE,blend)
 		if is_instance_valid(head_pivot):head_pivot.rotation=head_pivot.rotation.lerp(Vector3.ZERO,blend)
 		update_skin();return

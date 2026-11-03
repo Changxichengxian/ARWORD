@@ -56,7 +56,9 @@ func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var theme_new=Theme.new();theme_new.default_font=game.font;theme_new.default_font_size=20;theme=theme_new
 	for id in game.world.markers:add_world_progress(id)
-	var header=MarginContainer.new();add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
+	header=MarginContainer.new();add_child(header);header.anchor_right=1
+	layout_toolbar();get_viewport().size_changed.connect(layout_toolbar)
+	call_deferred("layout_toolbar")
 	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
 	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"阅读"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
 	if not game.learning.wordbooks.books.is_empty():
@@ -90,6 +92,22 @@ func set_card_open(open:bool,animate=true):
 	card_tween.tween_method(position_card,card_shift,0.0 if open else 48.0,.32 if open else .28).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT if open else Tween.EASE_IN_OUT)
 	card_tween.tween_property(card,"modulate:a",1.0 if open else 0.0,.26)
 	if not open:card_tween.chain().tween_callback(func():if not card_open:card.hide())
+var header:MarginContainer
+func layout_toolbar():
+	header.offset_left=22;header.offset_right=-22;header.offset_top=24
+	if not OS.has_feature("android"):return
+	var extent=Vector2(DisplayServer.window_get_size())
+	var screen_origin=Vector2(DisplayServer.window_get_position())
+	var safe=Rect2(DisplayServer.get_display_safe_area())
+	var scale_factor=get_viewport_rect().size/extent.max(Vector2.ONE)
+	var top_edge=maxf(0,safe.position.y-screen_origin.y)
+	for cutout in DisplayServer.get_display_cutouts():
+		var edge=cutout.end.y-screen_origin.y
+		if cutout.position.y-screen_origin.y<extent.y*.12:top_edge=maxf(top_edge,edge)
+	header.offset_top=maxf(40,top_edge*scale_factor.y+9)
+	header.offset_left=maxf(22,(safe.position.x-screen_origin.x)*scale_factor.x+8)
+	if safe.has_area():header.offset_right=-maxf(22,(screen_origin.x+extent.x-safe.end.x)*scale_factor.x+8)
+
 func sync_goal():
 	for id in world_progress:
 		var item=world_progress[id];var p=game.frontier.progress(id);var selected=id==game.frontier.data.active
@@ -254,6 +272,10 @@ func _process(dt):
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
 	clock_label.visible=game.exploring and not overlay.visible
+	var clock_top=.19 if game.learning.data.black_hole else .135
+	clock_label.anchor_left=.74 if game.learning.data.black_hole else .5
+	clock_label.anchor_right=clock_label.anchor_left
+	clock_label.anchor_top=clock_top;clock_label.anchor_bottom=clock_top
 	clock_label.modulate.a=1.0-card.modulate.a if card.visible else 1.0
 	var second=int(Time.get_unix_time_from_system())
 	if clock_label.visible and second!=clock_second:

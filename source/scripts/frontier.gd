@@ -224,12 +224,36 @@ func cells()->Array:
 		var count=int(floor(float(data.progress[c.id])*3/c.need))
 		for i in range(count):
 			if not result.has(c.cells[i]):result.append(c.cells[i])
+	# A retained windmill or garden still needs its foundation if its
+	# supporting terrain project is selected for a developer rebuild.
+	for i in BUILD_CELLS.size():
+		if learning.data.build[i]>0 and not result.has(BUILD_CELLS[i]):result.append(BUILD_CELLS[i])
 	return result
 func finished_count()->int:
 	var count=0
 	for c in CHAPTERS:
 		if done(c.id):count+=1
 	return count
+
+func rewind_building(all_sites:bool):
+	var active=str(data.active)
+	if all_sites:
+		learning.data.build=[0,0,0];learning.data.development=[0,0,0]
+		learning.data.work_turns=[0,0,0];learning.data.harvested=[0,0]
+		learning.data.dev_context={"read":0,"listen":0}
+		learning.data.dev_steps=0;learning.data.actions=0
+		for c in CHAPTERS:data.progress[c.id]=0
+		for key in ["effort","turns","production","deliveries"]:data[key].clear()
+		data.voyage={"ore":0,"coins":0,"paid":0,"dev_open":false,"earned_book":""}
+		choose("grove")
+	else:
+		if active in BUILD_IDS:
+			var i=site(active)
+			learning.data.build[i]=0;learning.data.development[i]=0;learning.data.work_turns[i]=0
+		else:data.progress[active]=0
+		data.effort[active]=0.0;data.turns[active]=0
+		if not available(active):choose("grove")
+	learning.data.study_plan.clear();refresh_plan()
 
 func work_route(id:String="")->Dictionary:
 	if id.is_empty():id=str(data.active)

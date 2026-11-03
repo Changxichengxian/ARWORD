@@ -57,6 +57,7 @@ var journal_entry:Dictionary={}
 var journal_short=true
 var fixed_character="deepseek"
 var cast_store
+var trench_camera:Camera3D
 const FixedCast=preload("res://scripts/fixed_cast.gd")
 
 func _ready():
@@ -334,7 +335,7 @@ func captured_world_touch(event)->bool:
 	elif pair_span==0.0:
 		begin_world_pair()
 	else:
-		camera.size=clampf(pair_zoom*pair_span/line.length(),8,29)
+		camera.size=clampf(pair_zoom*pair_span/line.length(),3.2,29)
 		if not exploring:world_zoom=camera.size
 		var turn=surface_grip(line)*pair_frame.transposed()
 		world.desired_rotation=(turn.get_rotation_quaternion()*pair_rotation).normalized()
@@ -361,7 +362,7 @@ func _unhandled_input(event):
 					mouse_drag=false
 			elif event.pressed and world_area(event.position) and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 				stop_view_transition()
-				camera.size=clampf(camera.size*(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1),8,29)
+				camera.size=clampf(camera.size*(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1),3.2,29)
 				if not exploring:world_zoom=camera.size
 		if event is InputEventMouseMotion and mouse_drag:stop_view_transition();drag_distance+=event.relative.length();world.drag(event.relative)
 
@@ -397,6 +398,7 @@ func back():
 	var now=Time.get_ticks_msec()
 	if now-last_back<150:return
 	last_back=now;speech.stop()
+	if is_instance_valid(trench_camera):leave_trench();return
 	if cosmos and cosmos.observatory_active:close_observatory();return
 	if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
 	elif hud.screen=="translation" and not journal_entry.is_empty():show_journal_page(journal_entry)
@@ -412,7 +414,9 @@ func settings():
 	if not learning.wordbooks.books.is_empty():hud.button(box,"词书 · "+str(learning.current_book().get("title","选择")),show_wordbooks)
 	hud.button(box,"词汇起点 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();settings())
 	hud.button(box,"音效 · "+("开" if learning.data.sound else "关"),func():learning.data.sound=not learning.data.sound;save_progress();settings())
-	hud.button(box,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
+	var music_row=hud.row(box)
+	hud.button(music_row,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
+	hud.ghost(music_row,"下一首",ambience.next_track).disabled=not learning.data.music
 	hud.button(box,"星空与星云",space_settings)
 	hud.button(box,"人物",show_avatar_settings)
 	hud.button(box,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();settings())
@@ -477,6 +481,7 @@ func space_settings():
 	speech.stop();var box=hud.modal("星空与星云",true,false);hud.screen="space_settings"
 	box.add_theme_constant_override("separation",7)
 	for item in [["星云浓度","nebula"],["色彩强度","color"],["星云范围","band"],["星星密度","stars"],["漂移速度","drift"]]:hud.parameter(box,item[0],item[1],IslandLearning.SPACE_LIMITS[item[1]])
+	hud.ghost(box,"中心天体 · "+("黑洞" if learning.data.black_hole else "太阳"),toggle_central_body,40)
 	var line=hud.row(box);hud.ghost(line,"恢复默认",reset_space_settings,42);hud.ghost(line,"换片星空",cosmos.randomize_sky,42);hud.button(line,"完成",hud.close,true,42)
 func show_wordbooks():
 	if locked:return
@@ -497,7 +502,12 @@ func set_space_parameter(key:String,value:float):
 	if not IslandLearning.SPACE_LIMITS.has(key):return
 	var limits=IslandLearning.SPACE_LIMITS[key];learning.data.space_settings[key]=clampf(value,limits.x,limits.y)
 	cosmos.apply_settings(learning.data.space_settings)
+func toggle_central_body():
+	learning.data.black_hole=not learning.data.black_hole
+	cosmos.set_black_hole(learning.data.black_hole);save_progress();space_settings()
+
 func reset_space_settings():
+	learning.data.black_hole=false;cosmos.set_black_hole(false)
 	learning.data.space_settings=IslandLearning.SPACE_DEFAULTS.duplicate();cosmos.apply_settings(learning.data.space_settings);save_progress();space_settings()
 func toggle_developer():
 	learning.data.dev_skip=not learning.data.dev_skip;save_progress()
@@ -514,9 +524,32 @@ func show_developer():
 		show_developer())
 	hud.button(box,"完成当前工地",fast_forward.bind(false),true,54).disabled=not learning.data.dev_skip
 	hud.button(box,"全部建设完成",fast_forward.bind(true),true,54).disabled=not learning.data.dev_skip
+	var rewind=hud.row(box)
+	hud.ghost(rewind,"重做当前工地",confirm_rewind.bind(false),44).disabled=not learning.data.dev_skip
+	hud.ghost(rewind,"星球回到开局",confirm_rewind.bind(true),44).disabled=not learning.data.dev_skip
 	hud.button(box,"巡游与海底",show_explore_tools,false,48).disabled=not learning.data.dev_skip
 	hud.text(box,"只推进建设，保留真实学习记录。",16,IslandHUD.GREEN)
 	hud.ghost(box,"关闭",hud.close)
+func confirm_rewind(all_sites:bool):
+	if locked or not learning.data.dev_skip:return
+	var box=hud.modal("星球回到开局" if all_sites else "重做当前工地")
+	hud.text(box,"重置土地、建筑、材料和航程。学习记录和收藏保留。" if all_sites else "重置这处工地的建设进度。其他工地和学习记录保留。",18)
+	var line=hud.row(box);hud.ghost(line,"取消",show_developer);hud.button(line,"确认退回",rewind_building.bind(all_sites),true)
+
+func rewind_building(all_sites:bool):
+	if locked or not learning.data.dev_skip:return
+	frontier.rewind_building(all_sites);save_progress()
+	stop_view_transition();reset_world_input();speech.stop();hud.close()
+	var old=world
+	world=IslandGrove.new();remove_child(old);old.queue_free()
+	add_child(world);world.setup(self)
+	for node in world.get_children():
+		if node is WorldEnvironment:
+			node.environment.background_mode=Environment.BG_CANVAS;node.environment.background_canvas_max_layer=-10
+	world.wildlife=load("res://scripts/wildlife.gd").new();world.add_child(world.wildlife);world.wildlife.setup(world)
+	if fixed_character=="deepseek":apply_fixed_character("deepseek",false)
+	world_zoom=10;next_task();explore(true,false);hud.sync_goal()
+
 func fast_forward(everything=false):
 	if locked or not learning.data.dev_skip:return
 	frontier.finish_for_development(everything);save_progress();hud.close()
@@ -543,6 +576,7 @@ func show_rocket():
 	var open=frontier.rocket_open()
 	var box=hud.modal("远航火箭" if open else "海怪的泊位",true,false)
 	hud.screen="rocket"
+	hud.ghost(box,"观察海沟",enter_trench,40)
 	var wallet=frontier.data.voyage
 	var total_price=IslandFrontier.TRADE_PRICE
 	if open:
@@ -568,6 +602,31 @@ func show_rocket():
 		if frontier.available("smelter"):hud.button(row,"去铸币坊",go_voyage_site.bind("smelter"),false,44)
 		if not frontier.done("shipyard"):hud.text(box,"建成船坞后，可以前往远岛采金。",16,IslandHUD.GREEN)
 	hud.ghost(box,"收起",hud.close)
+
+func enter_trench():
+	if is_instance_valid(trench_camera):return
+	hud.header.hide()
+	var box=hud.modal("",true,false);hud.screen="trench"
+	hud.ghost(box,"浮上海面",leave_trench,46)
+	trench_camera=Camera3D.new();world.trader.add_child(trench_camera)
+	trench_camera.near=.06;trench_camera.far=40;trench_camera.keep_aspect=Camera3D.KEEP_WIDTH;trench_camera.fov=80
+	var env=Environment.new()
+	env.background_mode=Environment.BG_COLOR;env.background_color=Color("113346")
+	env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;env.ambient_light_color=Color("A2D3D6");env.ambient_light_energy=.76
+	env.fog_enabled=true;env.fog_density=.105;env.fog_light_color=Color("22495B");env.fog_light_energy=.62
+	trench_camera.environment=env;trench_camera.current=true
+	var lamp=OmniLight3D.new();lamp.light_color=Color("97D4DB");lamp.light_energy=2.3;lamp.omni_range=8.;trench_camera.add_child(lamp)
+	var observer=trench_camera
+	var descend=func(t):
+		observer.position=Vector3(-5.25,-2.38,-2.0).lerp(Vector3(-5.30,-2.81,-1.65),t)
+		observer.look_at(world.trader.to_global(Vector3(-2.,-2.48-t*.42,3.4)),world.trader.global_basis.y)
+	descend.call(0.);trench_camera.create_tween().tween_method(descend,0.,1.,3.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+func leave_trench():
+	if not is_instance_valid(trench_camera):return
+	camera.current=true;trench_camera.queue_free();trench_camera=null
+	hud.header.show()
+	show_rocket()
 
 func fire_rocket_engine():
 	if not frontier.rocket_open() or hud.screen!="rocket":return
@@ -610,17 +669,23 @@ func preview_nature(kind:String):
 	hud.close();explore(false);var normal=world.wildlife.preview_event(kind)
 	world.desired_rotation=Quaternion(normal,Vector3.UP)
 	frame_view(Vector3(0,9.2,0),16.0 if kind=="whale" else 12.0)
-func open_observatory():
-	if not frontier.done("mountain") or cosmos.observatory_active:return
+func open_observatory(primary=false):
+	if cosmos.observatory_active:return
+	if primary and not learning.data.black_hole:return
+	if not primary and not frontier.done("mountain"):return
 	speech.stop();hud.close();explore(false);reset_world_input()
-	world.work_point=frontier.target("mountain");world.walk_to(world.work_stance(0))
+	if not primary:
+		world.work_point=frontier.target("mountain");world.walk_to(world.work_stance(0))
 	if not cosmos.enter_observatory(0):return
+	cosmos.primary_close=primary;cosmos.update_observation_quality()
 	reset_observatory_input();observatory_hud_visible=hud.visible;hud.hide()
 	observatory_layer=CanvasLayer.new();observatory_layer.layer=5;add_child(observatory_layer)
 	var root=Control.new();root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);root.mouse_filter=Control.MOUSE_FILTER_IGNORE;observatory_layer.add_child(root)
 	var margin=MarginContainer.new();root.add_child(margin);margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE);margin.add_theme_constant_override("margin_left",16);margin.add_theme_constant_override("margin_right",16);margin.add_theme_constant_override("margin_top",20)
 	var bar=HBoxContainer.new();margin.add_child(bar);bar.add_theme_constant_override("separation",8)
 	var back_button=hud.icon(bar,"close",close_observatory,"返回星球");back_button.custom_minimum_size=Vector2(44,44)
+	margin.add_theme_constant_override("margin_top",roundi(hud.header.offset_top))
+	if primary:return
 	var options=cosmos.observation_targets()
 	for i in range(options.size()):
 		var button=hud.button(bar,str(options[i].title),select_observation.bind(i),false,44)

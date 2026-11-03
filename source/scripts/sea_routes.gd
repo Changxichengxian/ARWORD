@@ -4,6 +4,7 @@ var world
 var graph=AStar3D.new()
 var grid={}
 var land_count=-1
+var ports={}
 const COLS=40
 const ROWS=18
 
@@ -17,7 +18,9 @@ func clear_arc(a:Vector3,b:Vector3)->bool:
 	return true
 func rebuild():
 	if land_count==world.land.size():return
-	land_count=world.land.size();world.water.rebuild();graph.clear();grid.clear()
+	land_count=world.land.size()
+	if world.water.land_count!=land_count:world.water.rebuild()
+	graph.clear();grid.clear();ports.clear()
 	for row in range(1,ROWS):
 		for col in range(COLS):
 			var latitude=PI*row/ROWS;var longitude=TAU*col/COLS
@@ -52,8 +55,15 @@ func nearest_visible(normal:Vector3)->int:
 	return best
 func route(origin:Vector2,target:Vector2)->Array:
 	rebuild()
-	var a=coast(world.terrain.chart_at(origin),world.surface(target).normalized())
-	var b=coast(world.terrain.chart_at(target),world.surface(origin).normalized())
+	return sea_path(port(world.terrain.chart_at(origin)),port(world.terrain.chart_at(target)))
+
+func port(chart:int)->Vector3:
+	if not ports.has(chart):
+		var shore=world.game.frontier.target(["shipyard","sunreach","basalt","goldmine","rocket"][chart])
+		ports[chart]=coast(chart,world.surface(shore).normalized())
+	return ports[chart]
+
+func sea_path(a:Vector3,b:Vector3)->Array:
 	if a.length_squared()<.5 or b.length_squared()<.5:return []
 	if clear_arc(a,b):return [a,b]
 	var first=nearest_visible(a);var last=nearest_visible(b)

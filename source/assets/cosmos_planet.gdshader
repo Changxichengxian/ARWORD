@@ -26,6 +26,10 @@ void fragment() {
 	float broad=cloud3(p*2.2+vec3(3.7));
 	float bands=.5+.5*sin(p.y*26.0+cloud*1.8);
 	float mix_value=smoothstep(.14,.82,bands)*.72;
+	if(kind==0){
+		float layers=p.y*13.5+(cloud-.5)*1.15+.23*sin(p.x*7.+p.z*2.);
+		mix_value=.37+.23*sin(layers)+.13*sin(layers*2.37)+.10*broad;
+	}
 	if(kind==1) { mix_value=smoothstep(.22,.67,abs(p.y)+cloud*.25)*.80+smoothstep(.55,.72,broad)*.16; }
 	if(kind==2) {
 		mix_value=smoothstep(.61,.70,cloud)*.80;

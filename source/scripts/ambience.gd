@@ -6,15 +6,29 @@ var player:AudioStreamPlayer
 var ducking=false
 var was_enabled=true
 var shutting_down=false
+const TRACKS=["island_drift","harbor_six","orchard_keys","glass_orbit"]
+var track_index=0
 
 func setup(owner_game):
 	game=owner_game
 	player=AudioStreamPlayer.new();add_child(player)
-	var stream=load("res://assets/audio/island_drift.ogg").duplicate()
-	stream.loop=true
-	player.stream=stream;player.volume_db=-11
+	player.volume_db=-11
+	track_index=randi()%TRACKS.size()
+	load_track()
+	player.finished.connect(next_track)
 	was_enabled=bool(game.learning.data.get("music",true))
 	if was_enabled:player.play()
+
+func load_track():
+	var stream=load("res://assets/audio/"+TRACKS[track_index]+".ogg").duplicate()
+	stream.loop=false
+	player.stream=stream
+
+func next_track():
+	if shutting_down or not game.learning.data.music:return
+	track_index=(track_index+1)%TRACKS.size()
+	load_track()
+	player.play()
 
 func _process(dt):
 	if shutting_down or not is_instance_valid(game) or not is_instance_valid(player):return

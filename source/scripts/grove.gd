@@ -63,6 +63,8 @@ var production_route={}
 var transporting=false
 var ferry:Node3D
 var ferry_tween:Tween
+var ferry_walking=false
+var piers={}
 var sea_routes
 var avatar:Node3D
 var avatar_tool_homes={}
@@ -413,7 +415,7 @@ func setup(owner_node):
 	game=owner_node
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
-	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_ORTHOGONAL;sun.directional_shadow_max_distance=60;sun.shadow_bias=.025;add_child(sun)
+	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_split_1=.53;sun.directional_shadow_max_distance=49;sun.shadow_blur=1.35;sun.shadow_bias=.022;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
@@ -492,6 +494,12 @@ func sync_buildings(animate=true):
 			if show_extra and not was and animate:pop(extra,0.0,Vector3.ONE*.64)
 		measure_progress_height(IslandFrontier.BUILD_IDS[i],buildings[i])
 	sync_voyage()
+	if is_instance_valid(ferry) and not ferry.visible and sea_routes and game.frontier.done("shipyard"):
+		sea_routes.rebuild()
+		var home:Vector3=sea_routes.port(0)
+		if home.length_squared()>.5:
+			set_ferry_pose(home,surface(game.frontier.target("shipyard")).normalized(),false)
+			ferry.show()
 	update_selection_ring();rebuild_navigation()
 	if animate:
 		get_tree().create_timer(.75).timeout.connect(func():
@@ -645,23 +653,101 @@ func ferry_to(target:Vector2):
 	var path=sea_routes.route(terrain.coordinates(builder.position),target)
 	if path.is_empty():return
 	if move_tween and move_tween.is_valid():move_tween.kill()
-	transporting=true;walk_goal=target;worker.suspend_for_transport(true);actor.hide()
-	ferry_tween=create_tween();ferry_tween.tween_interval(.18)
-	ferry_tween.tween_callback(func():ferry.show();actor.show())
+	var origin=terrain.coordinates(builder.position)
+	var ac=terrain.chart_at(origin);var bc=terrain.chart_at(target)
+	var shore_a=port_landing(ac,path[0],origin)
+	var shore_b=port_landing(bc,path[-1],target)
+	var shore_walk=walking_route(origin,shore_a)
+	var last_walk=walking_route(shore_b,target)
+	if shore_walk.is_empty() or last_walk.is_empty():return
+	var fetch=[]
+	if ferry.visible and ferry.position.normalized().distance_squared_to(path[0])>.00001:
+		fetch=sea_routes.sea_path(ferry.position.normalized(),path[0])
+		if fetch.is_empty():return
+	transporting=true;walk_goal=target;worker.suspend_for_transport(true)
+	ferry_tween=create_tween()
+	if not ferry.visible:
+		set_ferry_pose(path[0],path[1],false);ferry.show()
+	build_gangway(ac,shore_a,path[0])
+	build_gangway(bc,shore_b,path[-1])
+	append_harbor_walk(origin,shore_walk)
+	if not fetch.is_empty():append_sailing(fetch,false)
+	var deck_a=deck_at(path[0]);var deck_b=deck_at(path[-1])
+	append_boarding(surface(shore_a),deck_a)
+	append_sailing(path,true)
+	append_boarding(deck_b,surface(shore_b))
+	append_harbor_walk(shore_b,last_walk)
+	ferry_tween.tween_callback(func():
+		transporting=false;ferry_walking=false;worker.suspend_for_transport(false)
+	)
+
+func port_landing(chart:int,normal:Vector3,from:Vector2)->Vector2:
+	var shoreline=nearest_land(terrain.chart_coordinates(chart,normal))
+	return safe_point(shoreline,WALK_CLEARANCE,from)
+
+func deck_at(normal:Vector3)->Vector3:
+	return normal*(IslandWater.BASE_RADIUS+.45)
+
+func build_gangway(chart:int,shore:Vector2,normal:Vector3):
+	var a=surface(shore);var b=deck_at(normal)
+	# Stop just short of the hull. The last step takes the passenger onto deck.
+	var route=b-a;var length=route.length()
+	if length<.15:return
+	if piers.has(chart):
+		if piers[chart].get_meta("shore")==a and piers[chart].get_meta("deck")==b:return
+		piers[chart].queue_free()
+	var pier=Node3D.new();globe.add_child(pier);piers[chart]=pier
+	pier.set_meta("shore",a);pier.set_meta("deck",b)
+	var end=a.lerp(b,maxf(0.,1.-.41/length));var up=(a+b).normalized()
+	var frame=Basis.looking_at(end-a,up)
+	var planks=maxi(2,ceili(a.distance_to(end)/.19))
+	for i in planks:
+		var plank=MeshInstance3D.new();var box=BoxMesh.new()
+		box.size=Vector3(.43,.065,a.distance_to(end)/planks*.95)
+		plank.mesh=box;plank.material_override=mat("A37F58" if i%3 else "BE9668")
+		pier.add_child(plank);plank.basis=frame;plank.position=a.lerp(end,(i+.5)/planks)-up*.04
+	for side in [-1,1]:
+		var pile=MeshInstance3D.new();var post=CylinderMesh.new()
+		post.radial_segments=6;post.top_radius=.05;post.bottom_radius=.06;post.height=.95
+		pile.mesh=post;pile.material_override=mat("8B7357");pier.add_child(pile)
+		pile.basis=Basis(Quaternion(Vector3.UP,up));pile.position=end+frame.x*side*.24-up*.28
+
+func append_harbor_walk(origin:Vector2,route:Array):
+	ferry_tween.tween_callback(func():ferry_walking=true)
+	for waypoint in route:
+		if origin.distance_to(waypoint)<.015:continue
+		var heading=atan2(-(waypoint-origin).x,-(waypoint-origin).y)
+		ferry_tween.tween_method(func(p):
+			travel_heading=lerp_angle(travel_heading,heading,.25);place(builder,p,travel_heading),
+			origin,waypoint,maxf(.10,origin.distance_to(waypoint)/IslandWorker.RUN_SPEED))
+		origin=waypoint
+	ferry_tween.tween_callback(func():ferry_walking=false)
+
+func append_boarding(a:Vector3,b:Vector3):
+	ferry_tween.tween_callback(func():ferry_walking=true)
+	var axis=(a+b).normalized();var face=(b-a).slide(axis)
+	var facing=Basis.looking_at(face.normalized(),axis) if face.length_squared()>.001 else builder.basis.orthonormalized()
+	ferry_tween.tween_method(func(t):
+		builder.position=a.lerp(b,t)+axis*.035*sin(PI*t)
+		builder.basis=builder.basis.orthonormalized().slerp(facing,.28),
+		0.,1.,maxf(.4,a.distance_to(b)/1.22))
+	ferry_tween.tween_callback(func():ferry_walking=false)
+
+func set_ferry_pose(normal:Vector3,ahead:Vector3,passenger:bool):
+	var forward=(ahead-normal*normal.dot(ahead)).normalized()
+	var heading=ferry.basis.orthonormalized() if forward.length_squared()<.1 else Basis.looking_at(forward,normal)
+	ferry.position=normal*(IslandWater.surface_radius(normal,time)+.12)
+	ferry.basis=heading.scaled(Vector3.ONE*.8)
+	if passenger:builder.position=ferry.position+normal*.33;builder.basis=heading
+
+func append_sailing(path:Array,passenger:bool):
 	for i in range(path.size()-1):
 		var a:Vector3=path[i];var b:Vector3=path[i+1]
+		if a.distance_squared_to(b)<.000002:continue
 		ferry_tween.tween_method(func(t):
-			var normal=a.slerp(b,t).normalized();var ahead=a.slerp(b,minf(1,t+.02)).normalized()-normal
-			if ahead.length_squared()<.00001:ahead=b-a
-			ahead=(ahead-normal*ahead.dot(normal)).normalized()
-			var basis=Basis(ahead.cross(normal).normalized(),normal,-ahead)
-			ferry.position=normal*(water.surface_radius(normal,time)+.12);ferry.basis=basis.scaled(Vector3.ONE*.8)
-			builder.position=ferry.position+normal*.33;builder.basis=basis
-		,0.0,1.0,maxf(.18,a.angle_to(b)*2.8))
-	ferry_tween.tween_callback(func():
-		ferry.hide();place(builder,target,travel_heading);motion_previous=builder.position;motion_speed=0
-		transporting=false;worker.suspend_for_transport(false)
-	)
+			var n=a.slerp(b,t).normalized()
+			set_ferry_pose(n,b-a,passenger),
+			0.,1.,maxf(.16,a.angle_to(b)*2.8))
 func prepare_resource(animate=true):
 	production_route=game.frontier.work_route()
 	active_kind=int(production_route.tool)

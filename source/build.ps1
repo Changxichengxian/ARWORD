@@ -89,6 +89,10 @@ if($LASTEXITCODE -ne 0){throw "导入失败，请看 $log"}
 Write-Host '构建 Android 应用……'
 & $engineExe --headless --path $stage --export-release Android $unsigned *>> $log
 if($LASTEXITCODE -ne 0){throw "构建失败，请看 $log"}
+$archive=[System.IO.Compression.ZipFile]::OpenRead($unsigned)
+try {
+    if($null -eq $archive.GetEntry('assets/project.binary') -or $archive.GetEntry('assets/project.binary').Length -lt 64){throw '导出缺少游戏启动资源'}
+} finally {$archive.Dispose()}
 $buildTools=Get-ChildItem -LiteralPath (Join-Path $AndroidSdk 'build-tools') -Directory | Where-Object { $_.Name -match '^\d+\.\d+\.\d+$' } | Sort-Object { [version]$_.Name } -Descending | Select-Object -First 1
 if(-not $buildTools){throw '找不到 Android build-tools'}
 & (Join-Path $buildTools.FullName 'zipalign.exe') -f -P 16 4 $unsigned $aligned *>> $log
