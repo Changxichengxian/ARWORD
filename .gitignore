@@ -21,3 +21,4 @@
 /source/**/signing/
 /source/tests/classes/
 /source/assets/characters/*.vrm
+/source/assets/characters/*.arvoice

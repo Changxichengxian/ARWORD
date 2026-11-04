@@ -21,6 +21,11 @@ func learning_flow():
 	game.resume_collect();await create_timer(.45).timeout
 	var first=game.current.id;var m=game.learning
 	check(game.introducing() and game.hud.answers.is_empty(),"new word begins with its meaning")
+	var buttons=game.hud.body.find_children("*","Button",true,false)
+	var known_button:Button
+	for button in buttons:
+		if button.text=="学会":known_button=button
+	check(known_button!=null and not game.hud.card_scroll.get_v_scroll_bar().visible and game.hud.card.get_global_rect().encloses(known_button.get_global_rect()),"intro offers the known path and shows the full button without scrolling")
 	await snap("introduction")
 	game.introduce_word(first);var second=game.current.id
 	game.introduce_word(first)
@@ -44,6 +49,24 @@ func learning_flow():
 			if q.id==first:gaps.append(restored.data.word_turn)
 		if gaps.size()==3:break
 	check(gaps.size()==3 and gaps[1]-gaps[0]>=3 and gaps[2]-gaps[1]>=6 and restored.data.words[first].due>=87400,"three recalls widen in spacing and lead into tomorrow's queue")
+	var known=IslandLearning.new()
+	known.active_bank=[known.by_id[first]]
+	known.introduce(first,true)
+	check(known.next_word(1000.).is_empty() and known.book_independent()==0,"self-report alone earns no mastery; a lone word waits too")
+	known.data.word_turn=known.data.words[first].review_at
+	check(known.next_word(1000.).id==first,"first surprise check actually scheduled")
+	known.record(first,false,1000.,false)
+	var reloaded=IslandLearning.new()
+	reloaded.accept_save(JSON.parse_string(JSON.stringify(known.data)))
+	reloaded.active_bank=known.active_bank
+	check(reloaded.data.words[first].spot_hits==1 and reloaded.next_word(2000.).is_empty(),"one successful spot check survives reload and cannot immediately repeat")
+	reloaded.mark_help(first);reloaded.record(first,false,2000.,false)
+	check(reloaded.data.words[first].spot_hits==0 and reloaded.data.words[first].correct==1,"a hinted check resets the pair")
+	for i in 2:
+		reloaded.data.word_turn=int(reloaded.data.words[first].review_at)
+		check(reloaded.next_word(3000.).id==first,"pending spot check returns")
+		reloaded.record(first,false,3000.,false)
+	check(reloaded.data.words[first].mastered and reloaded.next_word(1e12).is_empty(),"two independent checks retire the word even after tomorrow or when the book is complete")
 	await create_timer(1.5).timeout
 func harbor_check():
 	game.frontier.finish_for_development(true);var w=game.world;w.sync_buildings(false)

@@ -18,6 +18,7 @@ var active_bank:Array=[]
 var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"music":true,"dev_skip":true,"dev_steps":0,"dev_context":{"read":0,"listen":0},"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{},"frontier":{}}
 
 func _init():
+	data["feiyu_voice"]=true
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
 	data["lesson_schedule"]={}
 	data["word_turn"]=0
@@ -100,8 +101,10 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 	var queued={};var first_turn=INF
 	for q in active_bank:
 		var s=data.words.get(q.id,{})
+		if s.get("mastered",false):continue
 		if s.has("review_at"):
 			var at=int(s.review_at)
+			if s.has("spot_hits") and at>data.word_turn:continue
 			if at<first_turn:queued=q;first_turn=at
 		elif not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):due.append(q)
 		elif s.is_empty() and absi(int(q.band)-data.band)==0:fresh.append(q)
@@ -122,9 +125,14 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 	elif result.is_empty() and not other.is_empty():
 		other.sort_custom(func(a,b):return absi(a.band-data.band)<absi(b.band-data.band));result=other[0]
 	elif result.is_empty():
-		var pool=active_bank.filter(func(q):return not recent.has(q.id))
+		var pool=active_bank.filter(func(q):
+			var s=data.words.get(q.id,{})
+			return not s.get("mastered",false) and not s.has("spot_hits"))
+		if pool.is_empty():return {}
+		var varied=pool.filter(func(q):return not recent.has(q.id))
+		if not varied.is_empty():pool=varied
 		pool.sort_custom(func(a,b):return float(data.words.get(a.id,{}).get("due",0))<float(data.words.get(b.id,{}).get("due",0)))
-		result=pool[0] if not pool.is_empty() else active_bank[0]
+		result=pool[0]
 	recent.append(result.id)
 	if recent.size()>8:recent.pop_front()
 	return result
@@ -132,11 +140,16 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 func needs_intro(id:String)->bool:
 	return not data.words.has(id) and not data.pending_help.has(id)
 
-func introduce(id:String):
+func introduce(id:String,already_known=false):
 	if not by_id.has(id) or not needs_intro(id):return
 	data.word_turn+=1
 	data.words[id]={"seen":0,"correct":0,"strength":0,"last":0,"due":0,"helped":0,
 		"review_round":0,"review_at":data.word_turn+1}
+	if already_known:
+		var s=data.words[id]
+		s.erase("review_round")
+		s.spot_hits=0
+		s.review_at=data.word_turn+rng.randi_range(4,8)
 
 func mark_help(id:String):data.help_pending=id;data.pending_help[id]=true
 
@@ -155,7 +168,15 @@ func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)-
 		s.due=maxf(float(s.due),now+gaps[int(s.strength)]);data.miss_run=0;data.success_run+=1
 		if data.success_run>=4:data.band=mini(3,data.band+1);data.success_run=0
 	data.word_turn+=1
-	if s.has("review_round") or helped:
+	if s.has("spot_hits"):
+		s.spot_hits=0 if helped else int(s.spot_hits)+1
+		if s.spot_hits==2:
+			s.mastered=true
+			s.erase("spot_hits")
+			s.erase("review_at")
+		else:s.review_at=data.word_turn+(rng.randi_range(2,4) if helped else rng.randi_range(10,18))
+	elif s.has("review_round") or helped:
+		s.erase("mastered")
 		var round_done=0 if helped else mini(3,int(s.get("review_round",0))+1)
 		s.review_round=round_done
 		if round_done<3:s.review_at=data.word_turn+[1,2,5][round_done]

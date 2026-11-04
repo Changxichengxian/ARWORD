@@ -11,6 +11,7 @@ var card_height=365.0
 var card_shift=0.0
 var card_tween:Tween
 var body:VBoxContainer
+var card_scroll:ScrollContainer
 var overlay:ColorRect
 var sites:HBoxContainer
 var site_buttons:Array=[]
@@ -70,12 +71,16 @@ func _ready():
 	sites=HBoxContainer.new();safe_frame.add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
 	sites.hide()
 	card=PanelContainer.new();safe_frame.add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
-	card.add_theme_stylebox_override("panel",skin(CREAM,26));var scrolling=ScrollContainer.new();scrolling.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;card.add_child(scrolling)
-	body=VBoxContainer.new();body.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",6);scrolling.add_child(body)
+	card.add_theme_stylebox_override("panel",skin(CREAM,26));card_scroll=ScrollContainer.new();card_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;card.add_child(card_scroll)
+	body=VBoxContainer.new();body.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",6);card_scroll.add_child(body)
 	card.grow_vertical=Control.GROW_DIRECTION_BEGIN
+	card.minimum_size_changed.connect(func():position_card(card_shift),CONNECT_DEFERRED)
+	body.minimum_size_changed.connect(func():position_card(card_shift),CONNECT_DEFERRED)
 	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
 	sync_goal()
 func clear_body():
+	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
+	card_scroll.scroll_vertical=0
 	for child in body.get_children():child.hide();child.queue_free()
 	answers.clear();word_label=null
 func layout_card(height:float):
@@ -83,7 +88,12 @@ func layout_card(height:float):
 	position_card(card_shift)
 	sites.offset_top=-height-80;sites.offset_bottom=-height-30
 func position_card(shift:float):
-	card_shift=shift;card.offset_top=-minf(card_height,maxf(1,safe_rect.size.y-98))-20+shift;card.offset_bottom=-20+shift
+	card_shift=shift
+	var height=minf(card_height,maxf(1,safe_rect.size.y-98))
+	if card_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_DISABLED:
+		height=maxf(height,body.get_combined_minimum_size().y+card.get_theme_stylebox("panel").get_minimum_size().y)
+	card.offset_bottom=-20+shift
+	card.offset_top=-20+shift-height
 func set_card_open(open:bool,animate=true):
 	if card_tween and card_tween.is_valid():card_tween.kill()
 	card_open=open
@@ -186,10 +196,12 @@ func show_task():
 func show_word():
 	var q=game.current
 	var intro=game.introducing()
-	layout_card(247 if intro else 365)
+	if intro:card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	layout_card(225 if intro else 365)
 	var listen=game.learning.data.listen and not intro
 	var state=game.learning.data.words.get(q.id,{})
 	var title="新词" if intro else ("复习 "+str(int(state.get("review_round",0))+1)+"/3" if state.has("review_at") else "到期复习")
+	if state.has("spot_hits"):title="回忆"
 	var r=task_heading(title+(" · 听音" if listen else ""))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
 	word_label=ghost(body,"点一下，再听一遍" if listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
@@ -199,7 +211,9 @@ func show_word():
 	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	if intro:
 		text(body,q.options[int(q.correct)],23).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-		spacer(body,12);button(body,"记好了",game.introduce_word.bind(q.id),true)
+		var actions=row(body)
+		button(actions,"记好了",game.introduce_word.bind(q.id),true)
+		button(actions,"学会",game.introduce_word.bind(q.id,true))
 		if not game.exploring and (game.learning.data.speech or game.learning.data.listen):game.call_deferred("speak_word")
 		return
 	var grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",10);grid.add_theme_constant_override("v_separation",9);body.add_child(grid)

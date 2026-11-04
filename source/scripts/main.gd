@@ -29,6 +29,7 @@ var locked=false
 var helped=false
 var help_visible=false
 var context_assisted=false
+var context_between_words=false
 var short_reading=true
 var exploring=true
 var cosmos
@@ -59,6 +60,7 @@ var curriculum=preload("res://scripts/curriculum.gd").new()
 var journal_entry:Dictionary={}
 var journal_short=true
 var fixed_character="deepseek"
+var study_voice=preload("res://scripts/study_voice.gd").new()
 var cast_store
 var trench_camera:Camera3D
 const FixedCast=preload("res://scripts/fixed_cast.gd")
@@ -115,12 +117,16 @@ func context_key()->String:return str(mission.id)+"_"+mode
 func next_task():
 	if closing:return
 	mode=frontier.mode();locked=false;help_visible=false;sentence_hint=""
-	var active=str(frontier.data.active)
+	context_between_words=false
+	if mode=="word":
+		current=learning.next_word(Time.get_unix_time_from_system())
+		context_between_words=current.is_empty()
+		if context_between_words:mode=["read","listen","sentence"][int(learning.data.word_turn)%3]
 	mission=curriculum.preview(learning) if mode=="word" else curriculum.next(learning,mode)
 	context_assisted=learning.data.context_help.get(context_key(),false)
 	short_reading=curriculum.short_first(learning,mission)
 	if mode=="word":
-		current=learning.next_word(Time.get_unix_time_from_system());helped=learning.data.help_pending==current.id;order=[0,1,2,3]
+		helped=learning.data.help_pending==current.id;order=[0,1,2,3]
 	else:
 		current={};order=[0,1,2]
 		if mode=="sentence":
@@ -149,9 +155,9 @@ func select_site(site):
 func introducing()->bool:
 	return mode=="word" and not current.is_empty() and learning.needs_intro(current.id)
 
-func introduce_word(id:String):
+func introduce_word(id:String,already_known=false):
 	if not introducing() or current.id!=id or locked or exploring or hud.overlay.visible:return
-	learning.introduce(id);speech.stop();save_progress();next_task()
+	learning.introduce(id,already_known);speech.stop();save_progress();next_task()
 
 func answer(index:int):
 	if locked or help_visible or hud.overlay.visible or exploring or introducing():return
@@ -165,6 +171,8 @@ func answer(index:int):
 	else:learning.finish_context(mode,mission.id,context_assisted,false)
 	var result=frontier.study_advance()
 	complete_action(result)
+	if mode=="word" and learning.data.words[current.id].get("mastered",false):
+		hud.toast(current.word+" · 已学会")
 func skip_learning():
 	if locked or exploring or hud.overlay.visible or not learning.data.dev_skip:return
 	locked=true;speech.stop();learning.data.dev_steps+=1
@@ -172,6 +180,7 @@ func skip_learning():
 	elif mode in ["read","listen"]:learning.data.dev_context[mode]+=1
 	complete_action(frontier.advance(),false)
 func complete_action(result:Dictionary,learned=true):
+	if context_between_words and learned:learning.data.word_turn+=1
 	if mode!="word":curriculum.release(learning,mode,mission.id)
 	if learned:learning.data.context_help.erase(context_key())
 	frontier.record_delivery(world.production_route)
@@ -223,13 +232,16 @@ func speak_task(slow=false):
 	var suffix="cue" if mode in ["listen","sentence"] else ("short" if short_reading else "full")
 	play_speech("audio/"+mission.id+"_"+suffix+".mp3",slow)
 func play_speech(path:String,slow=false):
-	if not ResourceLoader.exists("res://assets/"+path):return
+	var recording=study_voice.recording(path) if learning.data.feiyu_voice else null
+	if recording==null:
+		if not ResourceLoader.exists("res://assets/"+path):return
+		recording=load("res://assets/"+path)
 	speech.stop();var speed=.85 if slow else 1.0;speech.pitch_scale=speed
 	var bus=AudioServer.get_bus_index("Speech")
 	if bus<0:
 		AudioServer.add_bus();bus=AudioServer.bus_count-1;AudioServer.set_bus_name(bus,"Speech");AudioServer.add_bus_effect(bus,AudioEffectPitchShift.new())
 	AudioServer.get_bus_effect(bus,0).pitch_scale=1.0/speed
-	speech.bus="Speech";speech.stream=load("res://assets/"+path);speech.play()
+	speech.bus="Speech";speech.stream=recording;speech.play()
 func play_fx(kind:String):
 	if not learning.data.sound or not sound_bank.has(kind):return
 	var p=effects[sound_index%effects.size()];sound_index+=1;p.stream=sound_bank[kind];p.volume_db=-5;p.pitch_scale=1.0;p.play()
@@ -446,6 +458,8 @@ func settings():
 	if not learning.wordbooks.books.is_empty():hud.button(box,"词书 · "+str(learning.current_book().get("title","选择")),show_wordbooks)
 	hud.button(box,"词汇起点 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();settings())
 	hud.button(box,"音效 · "+("开" if learning.data.sound else "关"),func():learning.data.sound=not learning.data.sound;save_progress();settings())
+	if study_voice.archive!=null:
+		hud.button(box,"英语朗读 · "+("大肥鱼（可爱）" if learning.data.feiyu_voice else "原声"),toggle_study_voice)
 	var music_row=hud.row(box)
 	hud.button(music_row,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
 	hud.ghost(music_row,"下一首",ambience.next_track).disabled=not learning.data.music
@@ -458,6 +472,12 @@ func settings():
 	if Engine.has_singleton("PlanetUpdates"):
 		hud.ghost(settings_footer,"检查更新",func():preload("res://scripts/updater.gd").open(self))
 	hud.ghost(settings_footer,"关闭",func():hud.close())
+func toggle_study_voice():
+	learning.data.feiyu_voice=not learning.data.feiyu_voice
+	save_progress()
+	settings()
+	play_speech("audio/work00_cue.mp3")
+
 func initialize_avatar():
 	var directory="user://characters"
 	var legacy="user://avatars/current.vrm"
@@ -473,6 +493,7 @@ func initialize_avatar():
 	if qa and not "--qa-with-cast" in OS.get_cmdline_user_args():
 		fixed_character="default"
 		return
+	study_voice.prepare(directory)
 	cast_store.prepare(FixedCast.BUILTIN,legacy)
 	fixed_character="default"
 	if cast_store.preferred()=="deepseek":apply_fixed_character("deepseek",false)
@@ -524,6 +545,10 @@ func show_wordbooks():
 		var label=("✓  " if selected else "")+str(book.title)+"  ·  "+str(count)+" 词"
 		var excluded=int(book.get("excluded_count",0));var lower=learning.wordbooks.find(str(book.get("excluded_book","")))
 		label+="\n已辨认 "+str(known)+" 词" if excluded==0 else "\n略去"+str(lower.get("title","基础"))+" "+str(excluded)+" 词 · 已辨认 "+str(known)
+		var mastered=0
+		for id in book.words:
+			if learning.data.words.get(id,{}).get("mastered",false):mastered+=1
+		if mastered>0:label+=" · 已学会 "+str(mastered)
 		var button=hud.button(box,label,choose_wordbook.bind(str(book.id)),selected,66);button.add_theme_font_size_override("font_size",17)
 	var rate=frontier.study_quota();hud.text(box,"当前每小步约 "+str(rate)+" 次练习",16,IslandHUD.GREEN)
 	hud.ghost(box,"关闭",hud.close)
@@ -817,6 +842,7 @@ func lookup(word:String,play=true):
 	var box=hud.modal("");hud.screen="lookup";var r=hud.row(box)
 	var title=hud.ghost(r,word,func():play_speech(word_audio(word)));title.add_theme_font_size_override("font_size",30)
 	var star=hud.icon(r,"star",bookmark.bind(word),"收藏");star.lit=learning.data.bookmarks.has(word)
+	if learning.data.words.get(word,{}).get("mastered",false):hud.text(box,"已学会",16,IslandHUD.GREEN)
 	var rich=RichTextLabel.new();rich.text=str(d.get("translation","可在短文译文中查看这个词。"));rich.custom_minimum_size.y=clampf(ceil(rich.text.length()/22.0)*29,60,180);rich.add_theme_color_override("default_color",IslandHUD.INK);box.add_child(rich)
 	hud.ghost(box,"返回",func():if lookup_return.is_valid():lookup_return.call())
 	if play:play_speech(word_audio(word))
