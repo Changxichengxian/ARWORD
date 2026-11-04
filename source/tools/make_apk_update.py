@@ -116,8 +116,8 @@ def main():
     if package not in info:
         p.error('Manifest must match the target APK package, versionCode and versionName')
     with zipfile.ZipFile(a.apk) as archive:
-        if any(n.lower().endswith('.vrm') for n in archive.namelist()):
-            p.error('Personal model in target APK. Generate a public build with -PublicRelease.')
+        if any(n.lower().endswith(('.vrm', '.arvoice')) for n in archive.namelist()):
+            p.error('Personal character or voice in target APK. Generate a public build with -PublicRelease.')
     for base in a.base:
         if verify_signers(base,a.java,apksigner)!=target_certs:
             p.error('Base and target APK must have the same signing certificate')
