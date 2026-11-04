@@ -1,6 +1,6 @@
 ARWORD
 
-当前源码版本为 v0.14.3。本版构建目标为 Windows 试玩程序 outputs/0.14.3/Windows/ARWORD.exe、安卓个人首装包 outputs/0.14.3/Android/ARWORD-0.14.3-setup.apk（版本代码 25），以及公开稳定包 outputs/0.14.3/Public/ARWORD-0.14.3.apk（版本代码 26）。已发布的公开版可在 GitHub Releases 下载。
+当前源码版本为 v0.14.4。本版构建目标为 Windows 试玩程序 outputs/0.14.4/Windows/ARWORD.exe、安卓个人首装包 outputs/0.14.4/Android/ARWORD-0.14.4-setup.apk（版本代码 27），以及公开稳定包 outputs/0.14.4/Public/ARWORD-0.14.4.apk（版本代码 28）。已发布的公开版可在 GitHub Releases 下载。
 https://github.com/Changxichengxian/ARWORD/releases/latest
 
 收起词卡后，近处的镜头逐渐降到地表上方 35°。五处泊位随各自的岸边地块出现，渡船起航加速，弯道连续转向，靠岸前减速。新词先看词义，再隔开其他词独立回忆三次。进入黑洞近观后，暖白吸积盘斜穿视野，细光环与前景的气体薄雾分开呈现。拖动可绕行，缩放可在盘面特写和完整轮廓之间切换。
@@ -10,7 +10,7 @@ https://github.com/Changxichengxian/ARWORD/releases/latest
 先打开个人首装版一次，让它保存大肥鱼，再从“设置 → 检查更新”选择升级，即可通过差异文件进入公开稳定版并继续使用已保存的人物。手机优先从 GitHub Releases 官方 API 读取版本信息和下载附件，网页路径作为备用。确认下载量后由安卓系统提示安装。普通学习在本地运行。
 
 新词卡同屏显示释义、「记好了」和「学会」。点「学会」后会穿插两次抽查，均独立答对便标为已学会，并移出日常词题。答错或看提示会重新累计。
-个人版可在设置中切换「英语朗读」。可爱版取自星落落_oi 授权训练的社区声库，由 Esmerubphire 发布。使用其合成参考音频 cute_N01，通过 OpenVoice V2 为原英语录音转换音色。每句听力保留完整录音的节奏。语音包随个人安装保存至应用私有目录，支持之后覆盖更新。
+个人版可在设置中切换「英语朗读」。可爱版取自星落落_oi 授权训练的社区声库，由 Esmerubphire 发布。使用其合成参考音频 cute_N01，通过 OpenVoice V2 为原英语录音转换音色。每句听力保留完整录音的节奏。各安装包默认原声。大肥鱼声包按需从个人私有 GitHub 仓库下载并校验导入，覆盖更新会保留。
 
 历史版本
 v0.1.0 — 最初的原生学习应用，257 个原交付源文件，独立快照。

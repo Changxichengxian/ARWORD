@@ -29,10 +29,23 @@ func run():
 	if not output.is_empty():DirAccess.make_dir_recursive_absolute(output)
 	game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.5).timeout
-	game.settings();await settle();check(modal_fits(),"settings remain inside portrait screen with wordbook and development entries");await snap("settings")
-	game.show_wordbooks();await settle();check(modal_fits(),"all six books and their counts fit without scrolling");await snap("wordbooks")
+	var top=game.hud.header.find_children("*","Button",true,false)
+	check(top.size()==2 and top[0].kind=="books" and top[1].kind=="gear","the app toolbar has only books and settings")
+	game.settings();await settle();check(modal_fits(),"compact settings fit on screen");await snap("settings")
+	game.voice_settings();await settle();check(modal_fits(),"optional voice picker fits");await snap("voices")
+	game.show_wordbooks();await settle();check(modal_fits(),"library, counts and study preferences fit");await snap("wordbooks")
+	game.journal();game.back();check(game.hud.screen=="wordbooks","native back returns from reading to books")
+	game.bookmarks(0)
+	while Time.get_ticks_msec()-game.last_back<160:await process_frame
+	game.back();check(game.hud.screen=="wordbooks","native back returns from saved words to books")
+	game.select_book_panel();await settle();check(modal_fits(),"all six books fit in the book picker")
 	game.choose_wordbook("cet6");check(game.learning.data.book_id=="cet6" and not game.hud.overlay.visible,"choosing a book updates and closes the native panel")
 	game.select_site(game.frontier.data.active);await create_timer(.4).timeout
+	var viewport_rect=game.hud.card_scroll.get_global_rect();var shadows_ok=not game.hud.card_scroll.get_v_scroll_bar().visible
+	for b in game.hud.body.find_children("*","Button",true,false):
+		if b.text in ["学会","记好了"] or b.tooltip_text=="收藏":
+			shadows_ok=shadows_ok and viewport_rect.encloses(b.get_global_rect().grow_individual(4,1,4,7))
+	check(shadows_ok,"intro actions and star leave space inside the clip for their entire shadows");await snap("intro")
 	var entries=game.learning.wordbooks.entries.values();var candidates=[]
 	entries.sort_custom(func(a,b):return game.font.get_string_size(a.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x>game.font.get_string_size(b.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x)
 	for q in entries.slice(0,8):candidates.append(q)

@@ -1,20 +1,23 @@
 extends RefCounted
 
-# Only personal builds contain the approved, pre-rendered English recordings.
-# The cached pack also works after updating to a public build.
 const PACK_NAME="feiyu-cute-v1.arvoice"
-const BUNDLED="res://assets/characters/"+PACK_NAME
+const PACK_SIZE=56907124
+const PACK_HASH="b8df8b5e2222f2aa5a287003f0fe6673c7a9cf0445d16fd8ba733f2495fb77f9"
+const RELEASE_PATH="/Changxichengxian/ARWORD-voice/releases/download/feiyu-cute-v1/"+PACK_NAME
 var archive:ZIPReader
 
-func prepare(folder:String,bundled:String=BUNDLED):
+func prepare(folder:String):
+	archive=open_cache(folder.path_join(PACK_NAME))
+
+func install_file(folder:String,source_path:String)->bool:
 	var cache=folder.path_join(PACK_NAME)
-	archive=open_cache(cache)
-	if archive!=null or not FileAccess.file_exists(bundled):return
-	if DirAccess.make_dir_recursive_absolute(folder)!=OK:return
+	if DirAccess.make_dir_recursive_absolute(folder)!=OK:return false
 	var temporary=cache+".part"
-	if copy_recordings(bundled,temporary) and DirAccess.rename_absolute(temporary,cache)==OK:
-		archive=open_cache(cache)
+	var copied=copy_recordings(source_path,temporary)
+	var committed=copied and DirAccess.rename_absolute(temporary,cache)==OK
+	if committed:prepare(folder)
 	if FileAccess.file_exists(temporary):DirAccess.remove_absolute(temporary)
+	return committed and archive!=null
 
 func open_cache(path:String)->ZIPReader:
 	if not FileAccess.file_exists(path):return null
@@ -24,10 +27,9 @@ func open_cache(path:String)->ZIPReader:
 	pack.close()
 	return null
 
-func copy_recordings(bundled:String,path:String)->bool:
-	# Android assets are streams inside the APK. Only open the ZIP on real storage.
-	var source=FileAccess.open(bundled,FileAccess.READ)
-	if source==null or source.get_length()==0:return false
+func copy_recordings(source_path:String,path:String)->bool:
+	var source=FileAccess.open(source_path,FileAccess.READ)
+	if source==null or source.get_length()!=PACK_SIZE:return false
 	var output=FileAccess.open(path,FileAccess.WRITE)
 	if output==null:return false
 	var digest=HashingContext.new()
@@ -41,7 +43,7 @@ func copy_recordings(bundled:String,path:String)->bool:
 		digest.update(bytes)
 		remaining-=bytes.size()
 	output.close()
-	return FileAccess.get_sha256(path)==digest.finish().hex_encode()
+	return digest.finish().hex_encode()==PACK_HASH and FileAccess.get_sha256(path)==PACK_HASH
 
 func recording(path:String)->AudioStream:
 	if archive==null or not archive.file_exists(path):return null

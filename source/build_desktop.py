@@ -17,7 +17,7 @@ def main():
         engine_dir=stage/'engine';engine_dir.mkdir();(engine_dir/'editor_data').mkdir();(engine_dir/'_sc_').touch()
         for binary in godot.parent.glob('Godot*win64*.exe'):shutil.copy2(binary,engine_dir/binary.name)
         engine=engine_dir/godot.name
-        for name in ['assets','scripts']:shutil.copytree(source/name,project/name,ignore=shutil.ignore_patterns('*.blend','.godot'))
+        for name in ['assets','scripts']:shutil.copytree(source/name,project/name,ignore=shutil.ignore_patterns('*.blend','*.arvoice','.godot'))
         for name in ['project.godot','main.tscn']:shutil.copy2(source/name,project/name)
         # Seed only reproducible imported resources. Godot's import pass below
         # still checks source/settings hashes and rebuilds changed resources.
@@ -31,7 +31,7 @@ name="Windows Desktop"
 platform="Windows Desktop"
 runnable=true
 export_filter="all_resources"
-include_filter="assets/characters/*.vrm,assets/characters/*.arvoice,assets/characters/*.json,assets/*.json,assets/*LICENSE*.txt,assets/*COPYRIGHT*.txt,assets/CREDITS.txt,assets/fonts/*OFL.txt,assets/wordbooks/*.json,assets/wordbooks/*.txt,assets/wordbooks/licenses/*"
+include_filter="assets/characters/*.vrm,assets/characters/*.json,assets/*.json,assets/*LICENSE*.txt,assets/*COPYRIGHT*.txt,assets/CREDITS.txt,assets/fonts/*OFL.txt,assets/wordbooks/*.json,assets/wordbooks/*.txt,assets/wordbooks/licenses/*"
 exclude_filter="art-source/*,tools/*,tests/*,*.blend,assets/wordbooks/sources/*,assets/wordbooks/content-review.json,assets/wordbooks/audio-audit.json,assets/fonts/NotoSansSC.ttf,assets/fonts/NotoSans.ttf"
 [preset.0.options]
 custom_template/release="TEMPLATE"

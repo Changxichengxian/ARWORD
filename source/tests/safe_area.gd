@@ -27,7 +27,7 @@ func run():
 		g.settings();await settle()
 		check(bounds.encloses(h.active_panel.get_global_rect()),"settings stay within all four edges")
 		check(h.overlay.get_global_rect().size.is_equal_approx(h.size),"modal backdrop still covers the entire viewport")
-		if bounds.size.y<600:check(h.active_scroll.get_v_scroll_bar().visible,"compact settings keep every action reachable by scrolling")
+		if bounds.size.y<600:check(h.active_scroll.get_v_scroll_bar().visible or h.active_panel.get_global_rect().encloses(h.active_box.get_global_rect()),"compact settings keep every action reachable")
 		g.lookup("harbor");await settle();check(bounds.encloses(h.active_panel.get_global_rect()),"dictionary fits")
 		g.show_rocket();await settle();check(bounds.encloses(h.active_panel.get_global_rect()),"bottom-aligned berth panel fits")
 		g.enter_trench();await settle();check(bounds.encloses(h.active_panel.get_global_rect()),"dive return control fits")

@@ -26,9 +26,9 @@ New-Item -ItemType Directory -Force -Path $stage,$engine,(Join-Path $engine "edi
 foreach($name in @("assets","scripts","project.godot","main.tscn","export_presets.cfg","android-plugin")) {
     Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $stage -Recurse
 }
+$voicePack = Join-Path $stage 'assets/characters/feiyu-cute-v1.arvoice'
+if (Test-Path -LiteralPath $voicePack) {Remove-Item -LiteralPath $voicePack}
 if ($PublicRelease) {
-    $voicePack = Join-Path $stage 'assets/characters/feiyu-cute-v1.arvoice'
-    if (Test-Path -LiteralPath $voicePack) {Remove-Item -LiteralPath $voicePack}
     $personal = Join-Path $stage 'assets/characters/deepseek.vrm'
     if (Test-Path -LiteralPath $personal) {Remove-Item -LiteralPath $personal}
 } else {

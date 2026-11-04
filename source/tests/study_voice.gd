@@ -9,9 +9,18 @@ func run():
 	root.add_child(game)
 	await create_timer(.8).timeout
 	var failures=0
-	var personal="--qa-with-cast" in OS.get_cmdline_user_args()
 	var store=game.study_voice
-	if personal:
+	if game.learning.data.feiyu_voice or store.archive!=null:failures+=1
+	var legacy=game.learning.data.duplicate(true);legacy.erase("voice_choice_version");legacy.feiyu_voice=true
+	var loaded=IslandLearning.new();loaded.accept_save(legacy)
+	if loaded.data.feiyu_voice:failures+=1
+	var sample=""
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--voice-file="):sample=arg.trim_prefix("--voice-file=")
+	if not sample.is_empty():
+		if store.install_file(game.cast_store.folder,"res://project.godot"):failures+=1
+		if not store.install_file(game.cast_store.folder,sample):failures+=1
+		game.voice_imported("ready")
 		var archive=store.archive as ZIPReader
 		if archive==null:
 			print("FAIL personal voice pack did not open");quit(1);return
@@ -22,7 +31,7 @@ func run():
 			game.play_speech(path)
 			if not game.speech.playing or game.speech.stream.data!=archive.read_file(path):failures+=1
 		var reopened=load("res://scripts/study_voice.gd").new()
-		reopened.prepare(game.cast_store.folder,"res://absent.arvoice")
+		reopened.prepare(game.cast_store.folder)
 		if reopened.recording("audio/work00_cue.mp3")==null:failures+=1
 	game.learning.data.feiyu_voice=false
 	game.play_speech("audio/work00_cue.mp3",true)

@@ -53,6 +53,19 @@ func spacer(parent:Node,height:int):var c=Control.new();c.custom_minimum_size.y=
 func divider(parent:Node):
 	var line=HSeparator.new();var s=StyleBoxLine.new();s.color=Color("D6DFC9");s.thickness=1;line.add_theme_stylebox_override("separator",s);parent.add_child(line)
 
+func scroll_body(scroll:ScrollContainer,separation:int)->VBoxContainer:
+	# A scroll viewport clips drawing outside its bounds, including button shadows.
+	var inset=MarginContainer.new()
+	inset.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	for side in ["left","right"]:inset.add_theme_constant_override("margin_"+side,5)
+	inset.add_theme_constant_override("margin_top",2)
+	inset.add_theme_constant_override("margin_bottom",8)
+	scroll.add_child(inset)
+	var box=VBoxContainer.new()
+	box.add_theme_constant_override("separation",separation)
+	inset.add_child(box)
+	return box
+
 func _ready():
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);mouse_filter=Control.MOUSE_FILTER_IGNORE
 	var theme_new=Theme.new();theme_new.default_font=game.font;theme_new.default_font_size=20;theme=theme_new
@@ -62,9 +75,8 @@ func _ready():
 	for id in game.world.markers:add_world_progress(id)
 	header=MarginContainer.new();safe_frame.add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
 	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
-	for pair in [["headphones",game.toggle_listen,"听词"],["book",game.journal,"阅读"],["compass",game.recenter,"回到工地"],["gear",game.settings,"设置"]]:icon(top,pair[0],pair[1],pair[2])
-	if not game.learning.wordbooks.books.is_empty():
-		var books=icon(top,"books",game.show_wordbooks,"词书");top.move_child(books,1)
+	icon(top,"books",game.show_wordbooks,"词书")
+	icon(top,"gear",game.settings,"设置")
 	toast_label=text(safe_frame,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label=text(safe_frame,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.135;clock_label.anchor_bottom=.135;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label.add_theme_color_override("font_shadow_color",Color(.01,.025,.05,.75));clock_label.add_theme_constant_override("shadow_offset_x",1);clock_label.add_theme_constant_override("shadow_offset_y",2);clock_label.add_theme_constant_override("shadow_outline_size",3)
@@ -72,7 +84,7 @@ func _ready():
 	sites.hide()
 	card=PanelContainer.new();safe_frame.add_child(card);card.anchor_top=1;card.anchor_bottom=1;card.anchor_right=1;card.offset_left=16;card.offset_right=-16;card.offset_bottom=-20
 	card.add_theme_stylebox_override("panel",skin(CREAM,26));card_scroll=ScrollContainer.new();card_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;card.add_child(card_scroll)
-	body=VBoxContainer.new();body.size_flags_horizontal=Control.SIZE_EXPAND_FILL;body.add_theme_constant_override("separation",6);card_scroll.add_child(body)
+	body=scroll_body(card_scroll,6)
 	card.grow_vertical=Control.GROW_DIRECTION_BEGIN
 	card.minimum_size_changed.connect(func():position_card(card_shift),CONNECT_DEFERRED)
 	body.minimum_size_changed.connect(func():position_card(card_shift),CONNECT_DEFERRED)
@@ -91,7 +103,7 @@ func position_card(shift:float):
 	card_shift=shift
 	var height=minf(card_height,maxf(1,safe_rect.size.y-98))
 	if card_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_DISABLED:
-		height=maxf(height,body.get_combined_minimum_size().y+card.get_theme_stylebox("panel").get_minimum_size().y)
+		height=maxf(height,body.get_parent().get_combined_minimum_size().y+card.get_theme_stylebox("panel").get_minimum_size().y)
 	card.offset_bottom=-20+shift
 	card.offset_top=-20+shift-height
 func set_card_open(open:bool,animate=true):
@@ -128,7 +140,7 @@ func fit_modal():
 	if not is_instance_valid(active_center) or active_center.is_queued_for_deletion():return
 	var rect=safe_rect.grow_individual(-18,-12,-18,-20)
 	active_panel.custom_minimum_size.x=rect.size.x
-	active_scroll.custom_minimum_size.y=clampf(active_box.get_combined_minimum_size().y,1,maxf(1,rect.size.y-24))
+	active_scroll.custom_minimum_size.y=clampf(active_box.get_parent().get_combined_minimum_size().y,1,maxf(1,rect.size.y-24))
 	active_center.position=rect.position;active_center.size=rect.size
 
 func sync_goal():
@@ -196,7 +208,8 @@ func show_task():
 func show_word():
 	var q=game.current
 	var intro=game.introducing()
-	if intro:card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	if intro:
+		card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
 	layout_card(225 if intro else 365)
 	var listen=game.learning.data.listen and not intro
 	var state=game.learning.data.words.get(q.id,{})
@@ -280,7 +293,7 @@ func modal(title:String,bottom=false,dim=true)->VBoxContainer:
 	if bottom:panel.size_flags_vertical=Control.SIZE_SHRINK_END
 	active_panel=panel
 	active_scroll=ScrollContainer.new();active_scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;panel.add_child(active_scroll)
-	var box=VBoxContainer.new();box.size_flags_horizontal=Control.SIZE_EXPAND_FILL;box.add_theme_constant_override("separation",12);active_scroll.add_child(box)
+	var box=scroll_body(active_scroll,12)
 	active_box=box;box.minimum_size_changed.connect(fit_modal,CONNECT_DEFERRED)
 	fit_modal()
 	if not title.is_empty():text(box,title,26)

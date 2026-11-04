@@ -13,6 +13,7 @@ import androidx.core.content.FileProvider;
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.UsedByGodot;
+import org.godotengine.godot.plugin.SignalInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,6 +33,10 @@ import javax.net.ssl.HttpsURLConnection;
 /** User initiated checks only. The OS installer handles consent and the final signature check. */
 public final class PlanetUpdates extends GodotPlugin {
     private static final int SOURCE_SETTINGS = 0x5451, INSTALLER = 0x5452;
+    private static final int VOICE_DOCUMENT = 0x5453;
+    private boolean pickingVoice;
+    private String expectedVoiceHash;
+    private int expectedVoiceBytes;
     private final AtomicBoolean busy = new AtomicBoolean();
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private volatile String status = "{\"phase\":\"idle\",\"message\":\"\"}";
@@ -47,6 +52,49 @@ public final class PlanetUpdates extends GodotPlugin {
     @UsedByGodot public float[] safe_viewport_insets() { return viewportInsets.fractions(); }
     public PlanetUpdates(Godot godot) { super(godot); }
     @Override public String getPluginName() { return "PlanetUpdates"; }
+    @Override public java.util.Set<SignalInfo> getPluginSignals() {
+        return java.util.Collections.singleton(new SignalInfo("voice_imported",String.class));
+    }
+    @UsedByGodot public void pick_study_voice(String digest,int bytes) {
+        runOnHostThread(() -> {
+            Activity host=getActivity();
+            if (dead || pickingVoice || host==null) return;
+            pickingVoice=true; expectedVoiceHash=digest; expectedVoiceBytes=bytes;
+            Intent picker=new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType("*/*").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            try { host.startActivityForResult(picker,VOICE_DOCUMENT); }
+            catch (RuntimeException e) { finishVoice("error"); }
+        });
+    }
+    private void finishVoice(String result) {
+        runOnHostThread(() -> {
+            pickingVoice=false;
+            if (!dead) emitSignal("voice_imported",result);
+        });
+    }
+    private void importVoice(Context ctx,Uri uri) {
+        File folder=new File(ctx.getFilesDir(),"characters");
+        File part=new File(folder,"feiyu-cute-v1.import");
+        try {
+            if (!folder.isDirectory() && !folder.mkdirs()) throw new IOException();
+            if (uri==null || !"content".equals(uri.getScheme())) throw new IOException();
+            try (InputStream in=ctx.getContentResolver().openInputStream(uri);
+                 FileOutputStream out=new FileOutputStream(part)) {
+                if (in==null) throw new IOException();
+                int total=0;byte[] buffer=new byte[131072];
+                for (int n;(n=in.read(buffer))!=-1;) {
+                    if (dead || n>expectedVoiceBytes-total) throw new IOException();
+                    total+=n;out.write(buffer,0,n);
+                }
+                if (total!=expectedVoiceBytes) throw new IOException();
+                out.getFD().sync();
+            }
+            if (!ApkDelta.hash(part).equals(expectedVoiceHash)) throw new IOException();
+            android.system.Os.rename(part.getPath(),new File(folder,"feiyu-cute-v1.arvoice").getPath());
+            finishVoice("ready");
+        } catch (Exception e) {finishVoice("error");}
+        finally {part.delete();}
+    }
     @UsedByGodot public String update_state() { return status; }
 
     private void report(String phase, String msg) {
@@ -231,7 +279,11 @@ public final class PlanetUpdates extends GodotPlugin {
     }
     @Override public void onMainActivityResult(int requestCode,int resultCode,Intent data) {
         Activity a=getActivity();
-        if (requestCode==SOURCE_SETTINGS && Build.VERSION.SDK_INT>=26 && a!=null && a.getPackageManager().canRequestPackageInstalls()) {
+        if (requestCode==VOICE_DOCUMENT && pickingVoice && !dead) {
+            if (resultCode!=Activity.RESULT_OK || data==null || a==null) {finishVoice("cancel");return;}
+            Context ctx=a.getApplicationContext(); Uri uri=data.getData();
+            worker.execute(() -> importVoice(ctx,uri));
+        } else if (requestCode==SOURCE_SETTINGS && Build.VERSION.SDK_INT>=26 && a!=null && a.getPackageManager().canRequestPackageInstalls()) {
             runOnHostThread(this::launchInstaller);
         } else if (requestCode==INSTALLER) report("install","已下载安装包，可再次安装");
     }

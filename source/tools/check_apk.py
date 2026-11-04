@@ -11,7 +11,7 @@ with zipfile.ZipFile(args.apk) as z:
  assert all('tests/' not in n and 'signing.properties' not in n and not n.endswith(('.keystore','.jks','.html','.blend')) for n in names)
  avatars=[n for n in names if n.lower().endswith('.vrm')]
  packs=[n for n in names if n.lower().endswith('.arvoice')]
- assert all(n=='assets/assets/characters/feiyu-cute-v1.arvoice' and args.personal for n in packs),'Personal voice found in unexpected build'
+ assert not packs,'Optional voice must not be present in an installer'
  assert avatars==(['assets/assets/characters/deepseek.vrm'] if args.personal else []),'Unexpected model in this build flavor'
  if avatars:assert hashlib.sha256(z.read(avatars[0])).hexdigest()=='c14879ff5c42501043896aae03ce971b2c11eee2e76106d47ee98741aa842ff5'
  assert not any(n.startswith('assets/') and ('android-plugin/' in n or n.lower().endswith(('.java','.gradle','.gradle.kts','.class','.aar')) or n.rsplit('/',1)[-1] in ('gradlew','gradlew.bat','gradle.properties','local.properties')) for n in names),'Android build source leaked into assets'

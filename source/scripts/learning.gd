@@ -18,7 +18,8 @@ var active_bank:Array=[]
 var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{},"flags":{},"sound":true,"music":true,"dev_skip":true,"dev_steps":0,"dev_context":{"read":0,"listen":0},"speech":false,"listen":false,"bookmarks":{},"help_pending":"","success_run":0,"miss_run":0,"development":[0,0,0],"work_turns":[0,0,0],"harvested":[0,0],"practice":{"read":0,"listen":0,"sentence":0},"contexts":{},"context_help":{},"frontier":{}}
 
 func _init():
-	data["feiyu_voice"]=true
+	data["feiyu_voice"]=false
+	data["voice_choice_version"]=1
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
 	data["lesson_schedule"]={}
 	data["word_turn"]=0
@@ -65,6 +66,7 @@ func accept_save(candidate)->bool:
 	for k in data:
 		if candidate.has(k) and typeof(candidate[k])==typeof(data[k]):data[k]=candidate[k]
 	# Earlier saves wrote the old default even when the sky setting had never been opened.
+	if not candidate.has("voice_choice_version"):data.feiyu_voice=false
 	if not candidate.has("sky_default_version"):data.black_hole=DEFAULT_BLACK_HOLE
 	for k in ["active","actions","band","success_run","miss_run","dev_steps","word_turn"]:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))

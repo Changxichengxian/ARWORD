@@ -208,11 +208,6 @@ func retry():
 func toggle_short():
 	if locked:return
 	short_reading=not short_reading;speech.stop();hud.show_task()
-func toggle_listen():
-	if locked:return
-	if mode=="word":
-		learning.data.listen=not learning.data.listen;save_progress();hud.show_help() if help_visible else hud.show_task()
-	else:speak_task()
 func bookmark(word=""):
 	if locked:return
 	var id=word if not word.is_empty() else str(current.get("id",""))
@@ -446,37 +441,79 @@ func back():
 	if cosmos and cosmos.observatory_active:close_observatory();return
 	if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
 	elif hud.screen=="translation" and not journal_entry.is_empty():show_journal_page(journal_entry)
+	elif hud.screen in ["book_select","journal","bookmarks"]:show_wordbooks()
+	elif hud.screen=="voices":settings()
 	elif hud.overlay.visible:hud.close()
 	elif not exploring:explore()
 	else:settings()
 
 func settings():
 	if locked:return
-	speech.stop();var box=hud.modal("歇一会儿");hud.screen="settings"
-	hud.text(box,"独立辨认过 "+str(learning.independent_count())+" 个词",20)
-	hud.text(box,"短文 "+str(learning.data.practice.read)+"  ·  听力 "+str(learning.data.practice.listen)+"  ·  组句 "+str(learning.data.practice.sentence),16)
-	if not learning.wordbooks.books.is_empty():hud.button(box,"词书 · "+str(learning.current_book().get("title","选择")),show_wordbooks)
-	hud.button(box,"词汇起点 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();settings())
+	speech.stop();var box=hud.modal("设置");hud.screen="settings"
 	hud.button(box,"音效 · "+("开" if learning.data.sound else "关"),func():learning.data.sound=not learning.data.sound;save_progress();settings())
-	if study_voice.archive!=null:
-		hud.button(box,"英语朗读 · "+("大肥鱼（可爱）" if learning.data.feiyu_voice else "原声"),toggle_study_voice)
+	hud.button(box,"英语朗读 · "+("大肥鱼" if learning.data.feiyu_voice and study_voice.archive!=null else "原声"),voice_settings)
 	var music_row=hud.row(box)
 	hud.button(music_row,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
 	hud.ghost(music_row,"下一首",ambience.next_track).disabled=not learning.data.music
 	hud.button(box,"星空与星云",space_settings)
 	hud.button(box,"人物",show_avatar_settings)
-	hud.button(box,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();settings())
-	hud.button(box,"收藏的词",func():bookmarks(0))
 	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),show_developer)
 	var settings_footer=hud.row(box)
 	if Engine.has_singleton("PlanetUpdates"):
 		hud.ghost(settings_footer,"检查更新",func():preload("res://scripts/updater.gd").open(self))
 	hud.ghost(settings_footer,"关闭",func():hud.close())
-func toggle_study_voice():
-	learning.data.feiyu_voice=not learning.data.feiyu_voice
+func voice_settings():
+	var box=hud.modal("英语朗读");hud.screen="voices"
+	var installed=study_voice.archive!=null
+	var cute=installed and learning.data.feiyu_voice
+	hud.button(box,("✓  " if not cute else "")+"原声",select_voice.bind(false),not cute)
+	if installed:
+		hud.button(box,("✓  " if cute else "")+"大肥鱼 · 可爱",select_voice.bind(true),cute)
+	else:
+		hud.button(box,"下载大肥鱼 · 54 MB",download_voice)
+		hud.ghost(box,"选取已下载的声包",pick_voice)
+	hud.ghost(box,"返回",settings)
+
+func select_voice(cute:bool):
+	if cute and study_voice.archive==null:return
+	learning.data.feiyu_voice=cute
 	save_progress()
-	settings()
+	voice_settings()
 	play_speech("audio/work00_cue.mp3")
+
+func download_voice():
+	var url="https://github.com/login?return_to="+study_voice.RELEASE_PATH.uri_encode()
+	if OS.shell_open(url)!=OK:hud.toast("未能打开 GitHub")
+
+func pick_voice():
+	if OS.get_name()=="Android" and Engine.has_singleton("PlanetUpdates"):
+		var native=Engine.get_singleton("PlanetUpdates")
+		if not native.is_connected("voice_imported",voice_imported):native.connect("voice_imported",voice_imported)
+		native.call("pick_study_voice",study_voice.PACK_HASH,study_voice.PACK_SIZE)
+		return
+	var dialog=FileDialog.new()
+	dialog.use_native_dialog=true
+	dialog.file_mode=FileDialog.FILE_MODE_OPEN_FILE
+	dialog.access=FileDialog.ACCESS_FILESYSTEM
+	dialog.filters=PackedStringArray(["*.arvoice;ARWORD"])
+	dialog.current_dir=OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS)
+	add_child(dialog)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.file_selected.connect(func(path):
+		var ok=study_voice.install_file(cast_store.folder,path)
+		dialog.queue_free()
+		voice_imported("ready" if ok else "error"))
+	dialog.popup_centered_ratio(.8)
+
+func voice_imported(result:String):
+	if result=="cancel":return
+	study_voice.prepare(cast_store.folder)
+	if result!="ready" or study_voice.archive==null:
+		hud.toast("声包校验失败，请重新选取")
+		return
+	if hud.screen=="voices":select_voice(true)
+	else:
+		learning.data.feiyu_voice=true;save_progress()
 
 func initialize_avatar():
 	var directory="user://characters"
@@ -538,20 +575,37 @@ func space_settings():
 	var line=hud.row(box);hud.ghost(line,"恢复默认",reset_space_settings,42);hud.ghost(line,"换片星空",cosmos.randomize_sky,42);hud.button(line,"完成",hud.close,true,42)
 func show_wordbooks():
 	if locked:return
-	speech.stop();var box=hud.modal("选一本词书");hud.screen="wordbooks"
-	box.add_theme_constant_override("separation",8)
-	for book in learning.wordbooks.books:
-		var selected=book.id==learning.data.book_id;var count=book.words.size();var known=learning.book_independent(book.id)
-		var label=("✓  " if selected else "")+str(book.title)+"  ·  "+str(count)+" 词"
-		var excluded=int(book.get("excluded_count",0));var lower=learning.wordbooks.find(str(book.get("excluded_book","")))
-		label+="\n已辨认 "+str(known)+" 词" if excluded==0 else "\n略去"+str(lower.get("title","基础"))+" "+str(excluded)+" 词 · 已辨认 "+str(known)
-		var mastered=0
-		for id in book.words:
-			if learning.data.words.get(id,{}).get("mastered",false):mastered+=1
-		if mastered>0:label+=" · 已学会 "+str(mastered)
-		var button=hud.button(box,label,choose_wordbook.bind(str(book.id)),selected,66);button.add_theme_font_size_override("font_size",17)
-	var rate=frontier.study_quota();hud.text(box,"当前每小步约 "+str(rate)+" 次练习",16,IslandHUD.GREEN)
+	speech.stop();var box=hud.modal("词书");hud.screen="wordbooks"
+	if not learning.wordbooks.books.is_empty():
+		hud.button(box,str(learning.current_book().title)+"   ›",select_book_panel)
+	var stats=hud.row(box)
+	var learned=0
+	for state in learning.data.words.values():
+		if state.get("mastered",false) or int(state.get("review_round",0))>=3:learned+=1
+	var read_count=0
+	for key in learning.data.contexts:
+		if str(key).ends_with("_read") and int(learning.data.contexts[key].get("completed",0))>0:read_count+=1
+	for stat in [["背会",learned],["短文",read_count],["听力",learning.data.practice.listen],["组句",learning.data.practice.sentence]]:
+		var column=VBoxContainer.new();column.size_flags_horizontal=Control.SIZE_EXPAND_FILL;stats.add_child(column)
+		hud.text(column,str(stat[1]),24,IslandHUD.GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		hud.text(column,stat[0],15).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	var library=hud.row(box)
+	hud.button(library,"收藏",bookmarks.bind(0))
+	hud.button(library,"阅读",journal)
+	hud.divider(box)
+	var prefs=hud.row(box)
+	hud.button(prefs,"难度 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();show_wordbooks())
+	hud.button(prefs,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();show_wordbooks())
+	hud.ghost(box,"回忆方式 · "+("听词" if learning.data.listen else "看词"),func():learning.data.listen=not learning.data.listen;save_progress();hud.show_help() if help_visible else hud.show_task();show_wordbooks())
 	hud.ghost(box,"关闭",hud.close)
+
+func select_book_panel():
+	var box=hud.modal("换词书");hud.screen="book_select"
+	for book in learning.wordbooks.books:
+		var selected=book.id==learning.data.book_id
+		var label=("✓  " if selected else "")+str(book.title)+"  ·  "+str(book.words.size())+" 词"
+		hud.button(box,label,choose_wordbook.bind(str(book.id)),selected)
+	hud.ghost(box,"返回",show_wordbooks)
 func choose_wordbook(id:String):
 	if locked or not learning.select_book(id):return
 	frontier.refresh_plan();save_progress();speech.stop();hud.close();next_task();hud.sync_goal()
@@ -803,13 +857,13 @@ func observatory_input(event):
 			observatory_touch_points[event.index]=event.position;observatory_touch=int(observatory_touch_points.keys()[0])
 func bookmarks(page:int):
 	var ids=learning.data.bookmarks.keys();var box=hud.modal("收藏的词");hud.screen="bookmarks"
-	if ids.is_empty():hud.text(box,"点空心星星，把一个词留在这里。",19)
+	if ids.is_empty():hud.text(box,"暂无收藏",19)
 	for i in range(page*4,mini(ids.size(),page*4+4)):
 		var id=ids[i];hud.button(box,id,func():lookup_return=bookmarks.bind(page);lookup(id))
 	var r=hud.row(box)
 	if page>0:hud.ghost(r,"上一页",bookmarks.bind(page-1))
 	if ids.size()>(page+1)*4:hud.ghost(r,"下一页",bookmarks.bind(page+1))
-	hud.ghost(box,"返回",settings)
+	hud.ghost(box,"返回",show_wordbooks)
 func journal():
 	if locked:return
 	journal_short=short_reading
@@ -827,7 +881,7 @@ func show_journal_page(entry:Dictionary):
 	hud.ghost(r,"上一篇",show_journal_page.bind(curriculum.pool[posmod(index-1,curriculum.pool.size())]))
 	hud.ghost(r,"下一篇",show_journal_page.bind(curriculum.pool[(index+1)%curriculum.pool.size()]))
 	hud.reading(box,entry.short if journal_short else entry.text,255)
-	hud.ghost(box,"关闭",func():hud.close())
+	hud.ghost(box,"返回",show_wordbooks)
 func show_journal_translation():
 	if journal_entry.id==mission.id and mode in ["read","listen","sentence"]:mark_context_help()
 	var box=hud.modal(journal_entry.title);hud.screen="translation"
