@@ -97,6 +97,9 @@ func run():
 	game.open_observatory(true);await create_timer(1.1).timeout
 	var sky=game.cosmos
 	var mat=sky.black_hole.material_override
+	check(mat.get_shader_parameter("close_view") and sky.space_environment.glow_enabled and mat.get_shader_parameter("orbital_gas") is Texture2D,"close view renders the layered gas and its glow")
+	var distance=sky.space_camera.position.distance_to(sky.CENTER)
+	check(absf(distance-18.8)<.9,"inspection opens close enough for the foreground stream to extend beyond the frame")
 	var old=mat.get_shader_parameter("flow_time")
 	await create_timer(.25).timeout
 	check(sky.black_hole.mesh is SphereMesh and mat.get_shader_parameter("flow_time")>old+.12,"a stationary camera sees time advancing inside a 3D volume")
@@ -104,10 +107,12 @@ func run():
 	await create_timer(.8).timeout
 	check(position.distance_to(sky.space_camera.position)>3.,"dragging orbits the black hole")
 	if not output.is_empty():
-		sky.observation_pitch=.08;sky.observation_yaw=.08;await create_timer(.8).timeout
+		sky.observation_pitch=.0;sky.observation_yaw=.0;await create_timer(.8).timeout
 		sky.set_process(false)
-		for i in range(20):
-			mat.set_shader_parameter("flow_time",i*.13)
+		for i in range(45):
+			mat.set_shader_parameter("flow_time",i*.12)
 			await process_frame;await snap("disk-%02d"%i)
+	game.close_observatory()
+	check(not mat.get_shader_parameter("close_view") and not sky.space_environment.glow_enabled,"leaving inspection restores the lighter daily sky")
 	print("ORBIT_REVIEW_RESULT ",count," checks / ",failures," failed")
 	game.closing=true;game.queue_free();await process_frame;quit(int(failures>0))

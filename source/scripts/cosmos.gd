@@ -14,6 +14,7 @@ var space:Node3D
 var canvas:CanvasLayer
 var display:TextureRect
 var star_material:ShaderMaterial
+var space_environment:Environment
 var cloud_texture:NoiseTexture3D
 var cloud_regions:Array=[]
 var bodies:Array=[]
@@ -43,6 +44,9 @@ func setup(owner_game):
 	viewport=SubViewport.new();viewport.name="SolarSystemView";viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_DISABLED if OS.has_feature("android") else Viewport.MSAA_4X;add_child(viewport)
 	space=Node3D.new();viewport.add_child(space)
 	var env=WorldEnvironment.new();var atmosphere=Environment.new();env.environment=atmosphere;space.add_child(env)
+	space_environment=atmosphere
+	atmosphere.glow_intensity=.31;atmosphere.glow_bloom=.015;atmosphere.glow_hdr_threshold=1.04
+	atmosphere.glow_blend_mode=Environment.GLOW_BLEND_MODE_ADDITIVE
 	atmosphere.background_mode=Environment.BG_CANVAS;atmosphere.background_canvas_max_layer=-20;atmosphere.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;atmosphere.ambient_light_color=Color("718FA9");atmosphere.ambient_light_energy=.28
 	star_material=ShaderMaterial.new();star_material.shader=preload("res://assets/cosmos_sky.gdshader")
 	make_cloud_regions()
@@ -62,9 +66,10 @@ func setup(owner_game):
 	black_hole.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var accretion=ShaderMaterial.new();accretion.shader=preload("res://assets/accretion_disk.gdshader");black_hole.material_override=accretion
 	accretion.set_shader_parameter("null_orbits",preload("res://assets/cosmos/null_orbits.png"))
+	accretion.set_shader_parameter("orbital_gas",preload("res://assets/cosmos/orbital_gas.png"))
 	var sight=(-CENTER).normalized()
 	var up=Vector3.UP.slide(sight).normalized()
-	var disk_axis=(up*cos(.14)+sight*sin(.14)).rotated(sight,-.10)
+	var disk_axis=(up*cos(.06)+sight*sin(.06)).rotated(sight,.205)
 	black_hole.basis=Basis(Quaternion(Vector3.UP,disk_axis))
 	set_black_hole(game.learning.data.get("black_hole",IslandLearning.DEFAULT_BLACK_HOLE))
 	add_body("ring",14.0,.4,.0060,1.05,Color("71655F"),Color("D9BE96"),0)
@@ -167,8 +172,11 @@ func rotate_observation(delta:Vector2):
 	observation_yaw=clampf(observation_yaw-delta.x*.003,-.48,.48)
 	observation_pitch=clampf(observation_pitch+delta.y*.0025,-.28,.28)
 func zoom_observation(factor:float):
-	if observatory_active and is_finite(factor):observation_zoom=clampf(observation_zoom*factor,.53,1.72)
+	if observatory_active and is_finite(factor):observation_zoom=clampf(observation_zoom*factor,.68 if primary_close else .53,2.5 if primary_close else 1.72)
 func update_observation_quality():
+	var close_disk=observatory_active and primary_close
+	space_environment.glow_enabled=close_disk
+	black_hole.material_override.set_shader_parameter("close_view",close_disk)
 	for body in bodies:body.orbit.visible=not primary_close
 	for i in range(cloud_regions.size()):
 		var detailed=observatory_active and not primary_close and i==observation_index
@@ -184,11 +192,15 @@ func advance_observation(dt:float):
 		observation_blend=minf(1,observation_blend+dt*1.35)
 		var region=cloud_regions[observation_index];var distance=region.radii.x*3.35*observation_zoom
 		var target=region.node.position
-		if primary_close:target=CENTER;distance=41.*observation_zoom
+		if primary_close:target=CENTER;distance=maxf(12.6,18.8*observation_zoom)
 		var toward_camera=(-target).normalized()
 		var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
 		space_camera.position=space_camera.position.lerp(target+offset,1-exp(-dt*5.5))
-		space_camera.look_at(target);space_camera.fov=base_fov
+		var framing=Vector3.ZERO
+		if primary_close:
+			var across=Vector3.UP.cross(offset.normalized()).normalized()
+			framing=-across*.56*observation_zoom
+		space_camera.look_at(target+framing);space_camera.fov=base_fov
 		space_camera.rotate_object_local(Vector3.BACK,observation_roll)
 	for region in cloud_regions:
 		region.node.look_at(space_camera.global_position,Vector3.UP)
