@@ -122,7 +122,7 @@ func ground_point(p:Vector2)->Vector3:
 			if hit is Vector3 and hit.length_squared()>found.length_squared():found=hit
 	return found if found.length_squared()>1.0 else surface(p)
 func place(node:Node3D,p:Vector2,angle=0.0):
-	node.position=surface(p);node.basis=terrain.surface_basis(p);node.rotate_object_local(Vector3.UP,angle)
+	node.position=ground_point(p) if node==builder else surface(p);node.basis=terrain.surface_basis(p);node.rotate_object_local(Vector3.UP,angle)
 func pebble(parent:Node3D,p:Vector3,s:Vector3,color:String)->MeshInstance3D:
 	var n=MeshInstance3D.new();var mesh=SphereMesh.new();mesh.radius=.5;mesh.height=1;mesh.radial_segments=6;mesh.rings=3;n.mesh=mesh;n.material_override=mat(color);parent.add_child(n);n.position=p;n.scale=s;return n
 func pop(node:Node3D,delay=0.0,base=Vector3.ONE):
@@ -445,7 +445,9 @@ func setup(owner_node):
 		var id:String=pair[0]
 		var anchor=Node3D.new()
 		globe.add_child(anchor)
-		place(anchor,game.frontier.target(id),.13 if id=="smelter" else -.11)
+		var location=game.frontier.target(id)
+		if id=="goldmine":location+=Vector2(.68,.12) # Leave the west shore clear for the permanent dock.
+		place(anchor,location,.13 if id=="smelter" else -.11)
 		var visual=model(pair[1],anchor)
 		visual.scale=Vector3.ONE*(1.05 if id=="rocket" else .80)
 		facilities[id]=anchor
@@ -494,13 +496,14 @@ func sync_buildings(animate=true):
 			if show_extra and not was and animate:pop(extra,0.0,Vector3.ONE*.64)
 		measure_progress_height(IslandFrontier.BUILD_IDS[i],buildings[i])
 	sync_voyage()
+	update_selection_ring();rebuild_navigation()
+	if sea_routes:sync_piers()
 	if is_instance_valid(ferry) and not ferry.visible and sea_routes and game.frontier.done("shipyard"):
 		sea_routes.rebuild()
 		var home:Vector3=sea_routes.port(0)
 		if home.length_squared()>.5:
 			set_ferry_pose(home,surface(game.frontier.target("shipyard")).normalized(),false)
 			ferry.show()
-	update_selection_ring();rebuild_navigation()
 	if animate:
 		get_tree().create_timer(.75).timeout.connect(func():
 			if not is_inside_tree():return
@@ -655,8 +658,8 @@ func ferry_to(target:Vector2):
 	if move_tween and move_tween.is_valid():move_tween.kill()
 	var origin=terrain.coordinates(builder.position)
 	var ac=terrain.chart_at(origin);var bc=terrain.chart_at(target)
-	var shore_a=port_landing(ac,path[0],origin)
-	var shore_b=port_landing(bc,path[-1],target)
+	var shore_a:Vector2=piers[ac].get_meta("landing")
+	var shore_b:Vector2=piers[bc].get_meta("landing")
 	var shore_walk=walking_route(origin,shore_a)
 	var last_walk=walking_route(shore_b,target)
 	if shore_walk.is_empty() or last_walk.is_empty():return
@@ -668,49 +671,66 @@ func ferry_to(target:Vector2):
 	ferry_tween=create_tween()
 	if not ferry.visible:
 		set_ferry_pose(path[0],path[1],false);ferry.show()
-	build_gangway(ac,shore_a,path[0])
-	build_gangway(bc,shore_b,path[-1])
 	append_harbor_walk(origin,shore_walk)
 	if not fetch.is_empty():append_sailing(fetch,false)
-	var deck_a=deck_at(path[0]);var deck_b=deck_at(path[-1])
-	append_boarding(surface(shore_a),deck_a)
+	append_boarding(piers[ac],true)
 	append_sailing(path,true)
-	append_boarding(deck_b,surface(shore_b))
+	append_boarding(piers[bc],false)
 	append_harbor_walk(shore_b,last_walk)
 	ferry_tween.tween_callback(func():
 		transporting=false;ferry_walking=false;worker.suspend_for_transport(false)
 	)
 
-func port_landing(chart:int,normal:Vector3,from:Vector2)->Vector2:
-	var shoreline=nearest_land(terrain.chart_coordinates(chart,normal))
-	return safe_point(shoreline,WALK_CLEARANCE,from)
+# A berth belongs to its island. Reserve a coast facing away from future
+# land so that a newly unlocked tile cannot swallow the landing stage.
+const PORT_CELLS=[Vector2i(-3,3),Vector2i(20,0),Vector2i(-20,0),Vector2i(0,20),Vector2i(0,-19)]
+const PORT_BEARINGS=[60.,240.,180.,180.,120.]
+func sync_piers():
+	for chart in PORT_CELLS.size():
+		if piers.has(chart) or not land.has(PORT_CELLS[chart]):continue
+		var center=IslandFrontier.point(PORT_CELLS[chart])
+		var outward=Vector2.from_angle(deg_to_rad(PORT_BEARINGS[chart]))
+		var landing=center+outward*.80
+		var berth=surface(center+outward*3.45).normalized()
+		sea_routes.ports[chart]=berth
+		build_gangway(chart,landing,berth)
 
 func deck_at(normal:Vector3)->Vector3:
 	return normal*(IslandWater.BASE_RADIUS+.45)
 
-func build_gangway(chart:int,shore:Vector2,normal:Vector3):
-	var a=surface(shore);var b=deck_at(normal)
-	# Stop just short of the hull. The last step takes the passenger onto deck.
-	var route=b-a;var length=route.length()
-	if length<.15:return
-	if piers.has(chart):
-		if piers[chart].get_meta("shore")==a and piers[chart].get_meta("deck")==b:return
-		piers[chart].queue_free()
+func build_gangway(chart:int,landing:Vector2,normal:Vector3):
+	var start=ground_point(landing);var deck=deck_at(normal)
 	var pier=Node3D.new();globe.add_child(pier);piers[chart]=pier
-	pier.set_meta("shore",a);pier.set_meta("deck",b)
-	var end=a.lerp(b,maxf(0.,1.-.41/length));var up=(a+b).normalized()
-	var frame=Basis.looking_at(end-a,up)
-	var planks=maxi(2,ceili(a.distance_to(end)/.19))
-	for i in planks:
-		var plank=MeshInstance3D.new();var box=BoxMesh.new()
-		box.size=Vector3(.43,.065,a.distance_to(end)/planks*.95)
-		plank.mesh=box;plank.material_override=mat("A37F58" if i%3 else "BE9668")
-		pier.add_child(plank);plank.basis=frame;plank.position=a.lerp(end,(i+.5)/planks)-up*.04
+	pier.name="Pier"+str(chart);pier.set_meta("landing",landing)
+	var landward=(start-deck).slide(normal);var length=landward.length()
+	var frame=Basis.looking_at(-landward.normalized(),normal)
+	var planks=maxi(3,ceili((length-.42)/.16));var top=[start]
+	var timbers=[[],[]]
+	for i in range(1,planks+1):
+		var d=lerpf(length,.42,float(i)/planks)
+		var point=deck+landward.normalized()*d
+		# The outer jetty lies in one tangent plane. Raised, level treads
+		# on the approach clear the actual hex surface, including its bluff.
+		var lift=maxf(0.,(start-point).dot(normal))*smoothstep(.80,length-.45,d)
+		var xy=terrain.chart_coordinates(chart,point.normalized())
+		if on_land(xy):lift=maxf(lift,(ground_point(xy)-point).dot(normal)+.035)
+		point+=normal*lift
+		var prev:Vector3=top[-1]
+		var plank_center=(prev+point)*.5+normal*(maxf(0.,prev.dot(normal)-point.dot(normal))*.5-.045)
+		var dims=Vector3(.51,.09,maxf(.045,(point-prev).slide(normal).length()-.008))
+		timbers[i%2].append(Transform3D(frame*Basis.from_scale(dims),plank_center))
+		top.append(point)
+	top.append(deck);pier.set_meta("walkway",top)
 	for side in [-1,1]:
-		var pile=MeshInstance3D.new();var post=CylinderMesh.new()
-		post.radial_segments=6;post.top_radius=.05;post.bottom_radius=.06;post.height=.95
-		pile.mesh=post;pile.material_override=mat("8B7357");pier.add_child(pile)
-		pile.basis=Basis(Quaternion(Vector3.UP,up));pile.position=end+frame.x*side*.24-up*.28
+		for d in [.47,1.08]:
+			var post=deck+landward.normalized()*d+frame.x*side*.27-normal*.31
+			timbers[0].append(Transform3D(frame*Basis.from_scale(Vector3(.085,1.,.085)),post))
+	for i in 2:
+		var mm=MultiMesh.new();mm.transform_format=MultiMesh.TRANSFORM_3D
+		mm.mesh=BoxMesh.new();mm.instance_count=timbers[i].size()
+		for j in timbers[i].size():mm.set_instance_transform(j,timbers[i][j])
+		var mesh=MultiMeshInstance3D.new();mesh.multimesh=mm
+		mesh.material_override=mat(["9B7653","C49A6B"][i]);pier.add_child(mesh)
 
 func append_harbor_walk(origin:Vector2,route:Array):
 	ferry_tween.tween_callback(func():ferry_walking=true)
@@ -723,14 +743,18 @@ func append_harbor_walk(origin:Vector2,route:Array):
 		origin=waypoint
 	ferry_tween.tween_callback(func():ferry_walking=false)
 
-func append_boarding(a:Vector3,b:Vector3):
+func append_boarding(pier:Node3D,boarding:bool):
+	var points:Array=pier.get_meta("walkway").duplicate()
+	if not boarding:points.reverse()
 	ferry_tween.tween_callback(func():ferry_walking=true)
-	var axis=(a+b).normalized();var face=(b-a).slide(axis)
-	var facing=Basis.looking_at(face.normalized(),axis) if face.length_squared()>.001 else builder.basis.orthonormalized()
-	ferry_tween.tween_method(func(t):
-		builder.position=a.lerp(b,t)+axis*.035*sin(PI*t)
-		builder.basis=builder.basis.orthonormalized().slerp(facing,.28),
-		0.,1.,maxf(.4,a.distance_to(b)/1.22))
+	for i in range(1,points.size()):
+		var a:Vector3=points[i-1];var b:Vector3=points[i]
+		var axis=(a+b).normalized()
+		var facing=Basis.looking_at((b-a).slide(axis).normalized(),axis)
+		ferry_tween.tween_method(func(t):
+			builder.position=a.lerp(b,t)
+			builder.basis=builder.basis.orthonormalized().slerp(facing,.28),
+			0.,1.,a.distance_to(b)/1.22)
 	ferry_tween.tween_callback(func():ferry_walking=false)
 
 func set_ferry_pose(normal:Vector3,ahead:Vector3,passenger:bool):
@@ -740,14 +764,34 @@ func set_ferry_pose(normal:Vector3,ahead:Vector3,passenger:bool):
 	ferry.basis=heading.scaled(Vector3.ONE*.8)
 	if passenger:builder.position=ferry.position+normal*.33;builder.basis=heading
 
+# Arc length keeps the same speed through densely sampled bends. Ease speed
+# at the ends of the entire crossing, never at the internal waypoints.
+func sailing_sample(path:Array,lengths:PackedFloat32Array,d:float)->Vector3:
+	var i=clampi(lengths.bsearch(d)-1,0,path.size()-2)
+	return path[i].slerp(path[i+1],clampf((d-lengths[i])/maxf(.000001,lengths[i+1]-lengths[i]),0.,1.)).normalized()
+
 func append_sailing(path:Array,passenger:bool):
-	for i in range(path.size()-1):
-		var a:Vector3=path[i];var b:Vector3=path[i+1]
-		if a.distance_squared_to(b)<.000002:continue
-		ferry_tween.tween_method(func(t):
-			var n=a.slerp(b,t).normalized()
-			set_ferry_pose(n,b-a,passenger),
-			0.,1.,maxf(.16,a.angle_to(b)*2.8))
+	var lengths=PackedFloat32Array([0.])
+	for i in range(1,path.size()):lengths.append(lengths[-1]+path[i-1].angle_to(path[i])*IslandWater.BASE_RADIUS)
+	var length=lengths[-1]
+	if length<.001:return
+	var speed=minf(3.9,sqrt(length*2.5));var ramp=minf(1.45,length/speed)
+	var duration=length/speed+ramp
+	var initial=[Basis.IDENTITY]
+	ferry_tween.tween_callback(func():initial[0]=ferry.basis.orthonormalized())
+	ferry_tween.tween_method(func(t):
+		var coast=minf(t,duration-t)
+		var u=clampf(coast/ramp,0.,1.)
+		var d=speed*ramp*(u*u*u-.5*u*u*u*u) if coast<ramp else speed*(coast-.5*ramp)
+		if t>duration*.5:d=length-d
+		var n=sailing_sample(path,lengths,d)
+		var tangent=sailing_sample(path,lengths,minf(length,d+.13))-sailing_sample(path,lengths,maxf(0.,d-.13))
+		if t<.72:
+			var start_facing=-initial[0].z.slide(n).normalized()
+			var goal=tangent.slide(n).normalized()
+			tangent=start_facing.rotated(n,start_facing.signed_angle_to(goal,n)*smoothstep(0.,.72,t))
+		set_ferry_pose(n,tangent,passenger),
+		0.,duration,duration)
 func prepare_resource(animate=true):
 	production_route=game.frontier.work_route()
 	active_kind=int(production_route.tool)

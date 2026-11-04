@@ -20,6 +20,7 @@ func run():
 	await create_timer(1).timeout;await shot("rest-lying-preview")
 	game.world.worker.rest_variant=2;game.world.worker.rest_time=0
 	await create_timer(1).timeout;await shot("rest-stretch-preview")
+	while game.introducing():game.introduce_word(game.current.id)
 	game.answer(game.current.correct)
 	await create_timer(3).timeout;await shot("earned-work-preview")
 	print("PACING_VISUAL_COMPLETE")

@@ -1,35 +1,63 @@
 shader_type spatial;
-render_mode unshaded, cull_disabled, depth_draw_never, fog_disabled;
+render_mode unshaded, cull_back, depth_draw_never, fog_disabled;
 
-// Data, not color artwork: the two lookup maps store the emitting disk
-// coordinate hit by each bent ray, its weight, optical scatter and shadow.
-uniform sampler2D disk_orbits : filter_linear, repeat_disable;
-uniform sampler2D disk_light : filter_linear, repeat_disable;
+uniform sampler2D null_orbits : filter_linear, repeat_disable;
+uniform float flow_time;
+varying vec3 surface_pos;
+varying vec3 eye;
+
+void vertex() {
+	surface_pos = VERTEX;
+	eye = (inverse(MODEL_MATRIX) * vec4(INV_VIEW_MATRIX[3].xyz, 1.0)).xyz;
+}
+
 float grain(vec2 p){
 	vec2 cell=floor(p);vec2 f=fract(p);f=f*f*(3.-2.*f);
 	vec4 h=fract(sin(dot(cell,vec2(127.1,311.7))+vec4(0.,127.1,311.7,438.8))*43758.54);
 	return mix(mix(h.x,h.y,f.x),mix(h.z,h.w,f.x),f.y);
 }
-void fragment(){
-	vec3 source=texture(disk_light,UV).rgb;
-	if(source.r+source.g+source.b<.002)discard;
-	vec3 orbit=texture(disk_orbits,UV).rgb;
-	float radius=mix(5.8,21.6,orbit.r);
-	vec2 az=orbit.gb*2.-1.;
-	float a=TIME*.076*pow(5.8/radius,1.5);
-	vec2 flow=mat2(vec2(cos(a),sin(a)),vec2(-sin(a),cos(a)))*az;
-	float swirls=grain(flow*2.6+radius*.14);
-	float warped_radius=radius*(.95+.10*swirls)+.47*flow.y;
-	float crease=grain(vec2(warped_radius*1.7+2.7*swirls,flow.x*4.1+flow.y*1.2));
-	float splits=grain(vec2(warped_radius*5.4+swirls*4.8,flow.y*4.7-flow.x));
-	float matter=source.r*(.45+.62*crease+.25*splits);
-	vec2 border=min(UV,1.-UV);
-	float bloom=source.g*source.g*smoothstep(0.,.08,border.x)*smoothstep(0.,.11,border.y);
-	// An ivory core within a cooler amber veil; preserve a genuinely dark
-	// central shadow and a soft luminous foot along its upper silhouette.
-	vec3 emission=vec3(.95,.67,.54)*bloom*.55;
-	emission+=mix(vec3(.74,.37,.235),vec3(1.13,1.00,.88),smoothstep(.05,.70,matter))*(1.48*matter);
-	emission+=vec3(.91,.91,.88)*smoothstep(.53,1.09,matter)*.20;
-	float alpha=clamp(source.b+source.r*4.4+bloom*1.85,0.,1.);
-	ALBEDO=emission/max(alpha,.001);ALPHA=alpha;
+
+// Locate the emitting gas where the ray crosses the plane of the disk.
+// Both visible images sample the same orbiting material.
+vec4 disk_crossing(vec3 from, vec3 side, float impact, float phi) {
+	vec2 coord = (vec2(clamp((impact-.05)/25.95, 0., 1.)*1023., phi/TAU*511.)+.5)/vec2(1024., 512.);
+	float inv_radius = dot(texture(null_orbits, coord).rg, vec2(65280.,255.))/131070.;
+	float radius = 1./max(inv_radius,.03);
+	float density = smoothstep(5.75,6.45,radius)*(1.-smoothstep(15.,22.,radius));
+	vec3 hit = from*cos(phi)+side*sin(phi);
+	float az = atan(hit.z,hit.x);
+	// Adjacent annuli shear at different rates. Each pattern is periodic around the orbit.
+	float drift = az-flow_time*.90*pow(6./max(radius,5.8),1.5);
+	float swirl = sin(drift*2.+radius*.57)+.48*sin(drift*3.-radius*.91);
+	vec2 orbit = vec2(cos(drift),sin(drift));
+	float eddies = grain(orbit*3.6+radius*.43)+.50*grain(orbit*9.-radius*.65);
+	float stream = .5+.5*cos(radius*3.2+swirl*1.4+drift*2.+3.5*eddies);
+	float knot = pow(.5+.5*cos(drift*3.+radius*.62+swirl*.46),3.);
+	float fine = .5+.5*cos(radius*7.4+swirl*2.3+5.*eddies);
+	float heat = (.28+.40*stream+.93*knot+.14*fine)*(.54+.74*eddies)*exp(-.050*max(radius-7.,0.));
+	float boost = .80+.27*dot(cross(vec3(0.,1.,0.),hit),from);
+	vec3 tint = mix(vec3(.94,.29,.075), vec3(1.30,1.08,.85), smoothstep(.22,1.15,heat));
+	return vec4(tint*heat*boost,density);
+}
+void fragment() {
+	vec3 ray=normalize(surface_pos-eye);
+	vec3 lateral=eye-ray*dot(eye,ray);
+	float impact=length(lateral)/.42;
+	vec3 side=lateral/max(length(lateral),.0001);
+	vec3 from=-ray;
+	// A distant observer. Correct the intersection angle for the finite camera distance.
+	float start=asin(clamp(length(lateral)/length(eye),0.,1.));
+	float phi=mod(atan(-from.y,side.y)+PI,PI);
+	if (phi<start) {phi+=PI;}
+	vec4 front=disk_crossing(from,side,impact,phi);
+	vec4 rear=disk_crossing(from,side,impact,min(phi+PI,TAU));
+	float aa=clamp(fwidth(impact),.015,.22);
+	float shadow=1.-smoothstep(5.196-aa,5.196+aa,impact);
+	float rim=exp(-abs(impact-5.26)/max(.058,aa))*.10;
+	rear.rgb*=.44;
+	float alpha=front.a+(1.-front.a)*(rear.a+(1.-rear.a)*shadow);
+	vec3 color=front.rgb*front.a+(1.-front.a)*rear.rgb*rear.a;
+	color+=vec3(1.,.63,.33)*rim;alpha=max(alpha,rim);
+	if(alpha<.002)discard;
+	ALBEDO=color/max(.001,alpha);ALPHA=alpha;
 }

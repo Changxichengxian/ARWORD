@@ -166,6 +166,7 @@ func test_production(world):
 	check(game.learning.data.practice==practice and game.learning.data.words==words,"developer exercise records production without pretending to learn")
 	await create_timer(3.4).timeout
 	game.frontier.data.turns.coral=0;game.locked=false;game.next_task();game.exploring=false;game.hud.close()
+	while game.introducing():game.introduce_word(game.current.id)
 	var word=str(game.current.id);var old_correct=int(game.learning.data.words.get(word,{}).get("correct",0));var old_delivery=total(game.frontier.data.deliveries)
 	game.answer(int(game.current.correct))
 	check(total(game.frontier.data.deliveries)==old_delivery+1 and int(game.learning.data.words[word].correct)==old_correct+1,"a correct real word exercise records both learning and exactly one delivery")

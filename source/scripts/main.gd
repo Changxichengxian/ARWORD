@@ -17,6 +17,9 @@ var hud:IslandHUD
 var camera:Camera3D
 var camera_focus=Vector3(0,10.0,0)
 var camera_tween:Tween
+var inspection_tilt=0.0
+const HOME_CAMERA=Vector3(0,24,21)
+const CLOSE_PITCH=35.0
 var current:Dictionary={}
 var mission:Dictionary={}
 var dictionary={}
@@ -143,8 +146,15 @@ func select_site(site):
 	world.worker.visit(frontier.target(id))
 	if exploring:resume_collect()
 
+func introducing()->bool:
+	return mode=="word" and not current.is_empty() and learning.needs_intro(current.id)
+
+func introduce_word(id:String):
+	if not introducing() or current.id!=id or locked or exploring or hud.overlay.visible:return
+	learning.introduce(id);speech.stop();save_progress();next_task()
+
 func answer(index:int):
-	if locked or help_visible or hud.overlay.visible or exploring:return
+	if locked or help_visible or hud.overlay.visible or exploring or introducing():return
 	var correct=int(current.correct) if mode=="word" else int(mission.correct if mode=="read" else mission.cue_correct)
 	if index!=correct:
 		if mode=="word":reveal()
@@ -243,12 +253,29 @@ func sentence_reset():
 	if locked:return
 	sentence_used=[];sentence_chosen=[];sentence_hint="";hud.show_task()
 
+func zoom_tilt(zoom:float)->float:
+	return 1.-smoothstep(3.2,12.,zoom) if exploring else 0.
+
+func apply_framing(focus:Vector3,zoom:float,tilt:float):
+	camera_focus=focus;camera.size=zoom;inspection_tilt=tilt
+	var pivot=focus.lerp(Vector3.UP*IslandGrove.RADIUS,tilt)
+	var pitch=deg_to_rad(CLOSE_PITCH)
+	var close_position=Vector3.UP*IslandGrove.RADIUS+Vector3(0,sin(pitch),cos(pitch))*25.
+	camera.position=HOME_CAMERA.lerp(close_position,tilt)
+	camera.look_at(pivot)
+
+func set_user_zoom(zoom:float):
+	var size_new=clampf(zoom,3.2,29.)
+	apply_framing(camera_focus,size_new,zoom_tilt(size_new))
+	if not exploring:world_zoom=size_new
+
 func frame_view(focus:Vector3,zoom:float,animate=true):
 	if camera_tween and camera_tween.is_valid():camera_tween.kill()
-	if not animate:camera_focus=focus;camera.look_at(focus);camera.size=zoom;return
-	var from_focus=camera_focus;var from_zoom=camera.size
+	var tilt=zoom_tilt(zoom)
+	if not animate:apply_framing(focus,zoom,tilt);return
+	var from_focus=camera_focus;var from_zoom=camera.size;var from_tilt=inspection_tilt
 	camera_tween=create_tween();camera_tween.tween_method(func(t):
-		camera_focus=from_focus.lerp(focus,t);camera.look_at(camera_focus);camera.size=lerpf(from_zoom,zoom,t),0.0,1.0,.42).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		apply_framing(from_focus.lerp(focus,t),lerpf(from_zoom,zoom,t),lerpf(from_tilt,tilt,t)),0.0,1.0,.42).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 func stop_view_transition():
 	if camera_tween and camera_tween.is_valid():camera_tween.kill()
 func explore(wide=false,animate=true):
@@ -284,6 +311,9 @@ func finger_line(points:Dictionary)->Vector2:
 func surface_grip(line:Vector2)->Basis:
 	var fingers=touch_points.values()
 	var midpoint:Vector2=(fingers[0]+fingers[1])*.5
+	return grip_at(midpoint,line)
+
+func grip_at(midpoint:Vector2,line:Vector2)->Basis:
 	var to_view=camera.global_basis.z.normalized()
 	var ray_offset=camera.project_ray_origin(midpoint)-world.globe.global_position
 	var radial=ray_offset-to_view*ray_offset.dot(to_view)
@@ -291,7 +321,7 @@ func surface_grip(line:Vector2)->Basis:
 	var rr=radial.length_squared()/(radius*radius)
 	# Continue the virtual surface beyond the visible limb. This keeps a pair
 	# partly over the sky well conditioned, even when the globe is very close.
-	var depth=radius*sqrt(1.0-rr) if rr<=.5 else radius*.5/sqrt(rr)
+	var depth=radius*(sqrt(1.0-rr) if rr<=.90 else maxf(.001,sqrt(.10)*exp(-5.*(rr-.90))))
 	var normal=(radial+to_view*depth).normalized()
 	var screen_direction=camera.global_basis.x*line.x-camera.global_basis.y*line.y
 	# Tangent whose projection points along the displayed line between fingers.
@@ -335,8 +365,7 @@ func captured_world_touch(event)->bool:
 	elif pair_span==0.0:
 		begin_world_pair()
 	else:
-		camera.size=clampf(pair_zoom*pair_span/line.length(),3.2,29)
-		if not exploring:world_zoom=camera.size
+		set_user_zoom(pair_zoom*pair_span/line.length())
 		var turn=surface_grip(line)*pair_frame.transposed()
 		world.desired_rotation=(turn.get_rotation_quaternion()*pair_rotation).normalized()
 	return true
@@ -362,8 +391,11 @@ func _unhandled_input(event):
 					mouse_drag=false
 			elif event.pressed and world_area(event.position) and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 				stop_view_transition()
-				camera.size=clampf(camera.size*(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1),3.2,29)
-				if not exploring:world_zoom=camera.size
+				var before=grip_at(event.position,Vector2.RIGHT)
+				set_user_zoom(camera.size*(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1))
+				if exploring:
+					var turn=grip_at(event.position,Vector2.RIGHT)*before.transposed()
+					world.desired_rotation=(turn.get_rotation_quaternion()*world.desired_rotation).normalized()
 		if event is InputEventMouseMotion and mouse_drag:stop_view_transition();drag_distance+=event.relative.length();world.drag(event.relative)
 
 func _input(event):

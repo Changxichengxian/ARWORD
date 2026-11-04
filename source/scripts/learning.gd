@@ -20,6 +20,7 @@ var data={"version":4,"build":[0,0,0],"active":0,"actions":0,"band":1,"words":{}
 func _init():
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
 	data["lesson_schedule"]={}
+	data["word_turn"]=0
 	data["black_hole"]=DEFAULT_BLACK_HOLE
 	data["sky_default_version"]=1
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
@@ -64,7 +65,7 @@ func accept_save(candidate)->bool:
 		if candidate.has(k) and typeof(candidate[k])==typeof(data[k]):data[k]=candidate[k]
 	# Earlier saves wrote the old default even when the sky setting had never been opened.
 	if not candidate.has("sky_default_version"):data.black_hole=DEFAULT_BLACK_HOLE
-	for k in ["active","actions","band","success_run","miss_run","dev_steps"]:
+	for k in ["active","actions","band","success_run","miss_run","dev_steps","word_turn"]:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))
 	for i in range(3):data.build[i]=clampi(int(candidate.build[i]),0,NEEDS[i])
 	data.active=clampi(data.active,0,2);data.band=clampi(data.band,0,3)
@@ -96,13 +97,21 @@ func accept_save(candidate)->bool:
 func next_word(now:float,focus:Array=[])->Dictionary:
 	if by_id.has(data.help_pending) and (data.book_id.is_empty() or wordbooks.contains(data.book_id,data.help_pending)):return by_id[data.help_pending]
 	var due=[];var fresh=[];var other=[]
+	var queued={};var first_turn=INF
 	for q in active_bank:
 		var s=data.words.get(q.id,{})
-		if not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):due.append(q)
+		if s.has("review_at"):
+			var at=int(s.review_at)
+			if at<first_turn:queued=q;first_turn=at
+		elif not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):due.append(q)
 		elif s.is_empty() and absi(int(q.band)-data.band)==0:fresh.append(q)
 		elif s.is_empty():other.append(q)
 	var result={}
-	if not due.is_empty() and ((fresh.is_empty() and other.is_empty()) or int(data.actions)%3==0):
+	if not due.is_empty() and int(data.word_turn)%4==0:
+		due.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due);result=due[0]
+	elif not queued.is_empty() and (first_turn<=data.word_turn or (fresh.is_empty() and other.is_empty())):
+		result=queued
+	elif not due.is_empty() and fresh.is_empty() and other.is_empty():
 		due.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due);result=due[0]
 	elif not focus.is_empty():
 		var targets=[]
@@ -120,6 +129,15 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 	if recent.size()>8:recent.pop_front()
 	return result
 
+func needs_intro(id:String)->bool:
+	return not data.words.has(id) and not data.pending_help.has(id)
+
+func introduce(id:String):
+	if not by_id.has(id) or not needs_intro(id):return
+	data.word_turn+=1
+	data.words[id]={"seen":0,"correct":0,"strength":0,"last":0,"due":0,"helped":0,
+		"review_round":0,"review_at":data.word_turn+1}
+
 func mark_help(id:String):data.help_pending=id;data.pending_help[id]=true
 
 func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)->Dictionary:
@@ -136,6 +154,14 @@ func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)-
 		var gaps=[120,120,600,14400,86400,259200]
 		s.due=maxf(float(s.due),now+gaps[int(s.strength)]);data.miss_run=0;data.success_run+=1
 		if data.success_run>=4:data.band=mini(3,data.band+1);data.success_run=0
+	data.word_turn+=1
+	if s.has("review_round") or helped:
+		var round_done=0 if helped else mini(3,int(s.get("review_round",0))+1)
+		s.review_round=round_done
+		if round_done<3:s.review_at=data.word_turn+[1,2,5][round_done]
+		else:
+			s.erase("review_at")
+			s.due=maxf(float(s.due),now+86400.)
 	s.last=now;data.words[id]=s;data.pending_help.erase(id)
 	if data.help_pending==id:data.help_pending=""
 	data.harvested[harvest_kind if harvest_kind>=0 else (1 if data.active==1 else 0)]+=1

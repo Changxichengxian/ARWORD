@@ -20,7 +20,7 @@ func rebuild():
 	if land_count==world.land.size():return
 	land_count=world.land.size()
 	if world.water.land_count!=land_count:world.water.rebuild()
-	graph.clear();grid.clear();ports.clear()
+	graph.clear();grid.clear()
 	for row in range(1,ROWS):
 		for col in range(COLS):
 			var latitude=PI*row/ROWS;var longitude=TAU*col/COLS
@@ -58,10 +58,7 @@ func route(origin:Vector2,target:Vector2)->Array:
 	return sea_path(port(world.terrain.chart_at(origin)),port(world.terrain.chart_at(target)))
 
 func port(chart:int)->Vector3:
-	if not ports.has(chart):
-		var shore=world.game.frontier.target(["shipyard","sunreach","basalt","goldmine","rocket"][chart])
-		ports[chart]=coast(chart,world.surface(shore).normalized())
-	return ports[chart]
+	return ports.get(chart,Vector3.ZERO)
 
 func sea_path(a:Vector3,b:Vector3)->Array:
 	if a.length_squared()<.5 or b.length_squared()<.5:return []
@@ -72,4 +69,35 @@ func sea_path(a:Vector3,b:Vector3)->Array:
 	if path.is_empty():return []
 	var result=[a]
 	for point in path:result.append(point.normalized())
-	result.append(b);return result
+	result.append(b)
+	var visible=[a]
+	var i=0
+	while i<result.size()-1:
+		var next=result.size()-1
+		while next>i+1 and not clear_arc(result[i],result[next]):next-=1
+		if result[next].distance_squared_to(visible[-1])>.0000001:visible.append(result[next])
+		i=next
+	return round_corners(visible)
+
+func round_corners(points:Array)->Array:
+	var curve=[points[0]]
+	for i in range(1,points.size()-1):
+		var before:Vector3=points[i-1];var pivot:Vector3=points[i];var after:Vector3=points[i+1]
+		var left=pivot.angle_to(before);var right=pivot.angle_to(after)
+		var cut=minf(.32,.46*minf(left,right))
+		var arc=[]
+		while cut>.0001:
+			var start=pivot.slerp(before,cut/left);var end=pivot.slerp(after,cut/right)
+			var count=maxi(6,ceili(cut*IslandTerrain.RADIUS/.10))
+			arc=[start]
+			for j in range(1,count+1):
+				var t=float(j)/count
+				var p=start.slerp(pivot,t).slerp(pivot.slerp(end,t),t).normalized()
+				if not clear_arc(arc[-1],p):arc.clear();break
+				arc.append(p)
+			if not arc.is_empty():break
+			cut*=.5
+		if arc.is_empty():curve.append(pivot)
+		else:curve.append_array(arc)
+	curve.append(points[-1])
+	return curve

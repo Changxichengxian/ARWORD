@@ -184,13 +184,24 @@ func show_task():
 		"listen":show_listen()
 		"sentence":show_sentence()
 func show_word():
-	layout_card(365);var q=game.current;var r=task_heading(("听音 · " if game.learning.data.listen else "回忆 · ")+str(game.world.production_route.get("name","采集")))
+	var q=game.current
+	var intro=game.introducing()
+	layout_card(247 if intro else 365)
+	var listen=game.learning.data.listen and not intro
+	var state=game.learning.data.words.get(q.id,{})
+	var title="新词" if intro else ("复习 "+str(int(state.get("review_round",0))+1)+"/3" if state.has("review_at") else "到期复习")
+	var r=task_heading(title+(" · 听音" if listen else ""))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
-	word_label=ghost(body,"点一下，再听一遍" if game.learning.data.listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if game.learning.data.listen else 34)
-	if not game.learning.data.listen:
+	word_label=ghost(body,"点一下，再听一遍" if listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
+	if not listen:
 		var width=game.font.get_string_size(q.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x
 		word_label.add_theme_font_size_override("font_size",clampi(int(34*minf(1.0,(size.x-80)/maxf(1,width))),19,34))
 	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	if intro:
+		text(body,q.options[int(q.correct)],23).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		spacer(body,12);button(body,"记好了",game.introduce_word.bind(q.id),true)
+		if not game.exploring and (game.learning.data.speech or game.learning.data.listen):game.call_deferred("speak_word")
+		return
 	var grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",10);grid.add_theme_constant_override("v_separation",9);body.add_child(grid)
 	for i in range(4):
 		var answer=game.order[i];var b=button(grid,q.options[answer],game.answer.bind(answer),false,57);b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)

@@ -38,6 +38,7 @@ func run():
 	check(frontier.available("mountain") and reloaded.data.practice.read==0,"developer progress opens terrain without faking learning statistics")
 	game.learning.data.dev_skip=false;before=game.learning.data.actions;game.skip_learning()
 	check(game.learning.data.actions==before,"disabled privilege cannot bypass an exercise")
+	while game.introducing():game.introduce_word(game.current.id)
 	game.reveal();game.settings();game.toggle_developer();game.hud.close()
 	check(game.help_visible and game.hud.screen=="help" and game.hud.answers.is_empty(),"changing developer privilege preserves the active explanation and retry action")
 	game.retry();check(not game.help_visible and game.hud.answers.size()==4,"a hinted word remains answerable after changing the developer switch")

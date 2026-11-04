@@ -77,11 +77,15 @@ func run():
 	var retained=IslandLearning.new();retained.accept_save(JSON.parse_string(JSON.stringify(f.learning.data)));var ff=IslandFrontier.new(retained)
 	check(ff.cells().size()==57 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")
 	check(not game.hud.sites.visible and game.hud.site_buttons.is_empty(),"fixed three-building navigation is absent")
-	var before=game.learning.data.actions;game.current=game.learning.by_id.retain;game.order=[0,1,2,3];game.hud.show_task();game.answer(game.current.correct);game.answer(game.current.correct)
+	var before=game.learning.data.actions
+	while game.introducing():game.introduce_word(game.current.id)
+	game.answer(game.current.correct);game.answer(game.current.correct)
 	check(game.learning.data.actions==before+1,"double tap cannot collect twice")
 	check(game.world.effects.size()>=5 and not game.hud.overlay.visible,"recall moves actual 3D material without reward dialog")
 	await create_timer(1.45).timeout
-	before=game.learning.data.actions;game.answer((int(game.current.correct)+1)%4)
+	before=game.learning.data.actions
+	while game.introducing():game.introduce_word(game.current.id)
+	game.answer((int(game.current.correct)+1)%4)
 	check(game.help_visible and game.learning.data.actions==before,"wrong meaning teaches without false collection")
 	var id=game.current.id;game.retry();game.answer(game.current.correct)
 	check(game.learning.data.actions==before+1 and game.learning.data.words[id].strength==0,"assisted recall builds without counting independent mastery")
@@ -175,7 +179,7 @@ func run():
 	root.size=Vector2i(540,960);await settle();game.help_visible=false;game.mode="word";game.order=[0,1,2,3]
 	var all_fit=true;var help_fit=true
 	for q in game.learning.bank:
-		game.current=q;game.hud.show_task();await settle()
+		game.learning.introduce(q.id);game.current=q;game.hud.show_task();await settle()
 		if not fits():all_fit=false;print("WORD_OVERFLOW ",q.id," ",game.hud.card.get_global_rect())
 		game.hud.show_help();await settle()
 		if not fits():help_fit=false;print("HELP_OVERFLOW ",q.id," ",game.hud.card.get_global_rect())

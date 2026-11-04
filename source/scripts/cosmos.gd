@@ -56,12 +56,16 @@ func setup(owner_game):
 	solar_surface=sphere(sun,1.48,Color("FFD783"),28,14);var solar_material=ShaderMaterial.new();solar_material.shader=preload("res://assets/cosmos_sun.gdshader");solar_surface.material_override=solar_material
 	glow(sun,8.0,Color(1,.46,.12,.22));glow(sun,4.6,Color(1,.76,.30,.36))
 	black_hole=MeshInstance3D.new();black_hole.name="AccretionDisk";space.add_child(black_hole)
-	black_hole.position=CENTER;black_hole.mesh=QuadMesh.new();black_hole.mesh.size=Vector2(19.8,11.)
+	black_hole.position=CENTER
+	var volume=SphereMesh.new();volume.radius=11.;volume.height=22.;volume.radial_segments=40;volume.rings=24
+	black_hole.mesh=volume
 	black_hole.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var accretion=ShaderMaterial.new();accretion.shader=preload("res://assets/accretion_disk.gdshader");black_hole.material_override=accretion
-	accretion.set_shader_parameter("disk_orbits",preload("res://assets/cosmos/disk_orbits.png"))
-	accretion.set_shader_parameter("disk_light",preload("res://assets/cosmos/disk_light.png"))
-	black_hole.look_at(Vector3.ZERO,Vector3.UP)
+	accretion.set_shader_parameter("null_orbits",preload("res://assets/cosmos/null_orbits.png"))
+	var sight=(-CENTER).normalized()
+	var up=Vector3.UP.slide(sight).normalized()
+	var disk_axis=(up*cos(.14)+sight*sin(.14)).rotated(sight,-.10)
+	black_hole.basis=Basis(Quaternion(Vector3.UP,disk_axis))
 	set_black_hole(game.learning.data.get("black_hole",IslandLearning.DEFAULT_BLACK_HOLE))
 	add_body("ring",14.0,.4,.0060,1.05,Color("71655F"),Color("D9BE96"),0)
 	add_body("ice",20.0,-1.3,.0043,1.05,Color("224866"),Color("BDE9EC"),1)
@@ -182,14 +186,6 @@ func advance_observation(dt:float):
 		var target=region.node.position
 		if primary_close:target=CENTER;distance=41.*observation_zoom
 		var toward_camera=(-target).normalized()
-		if primary_close:
-			# A fixed transfer table describes one viewing inclination. Pan
-			# across that image instead of orbiting a flat emitting surface.
-			target+=space_camera.global_basis.x*observation_yaw*3.0+space_camera.global_basis.y*observation_pitch*3.0
-			toward_camera=(-CENTER).normalized()
-			space_camera.position=space_camera.position.lerp(CENTER+toward_camera*distance,1-exp(-dt*5.5))
-			space_camera.look_at(target,Vector3.UP);space_camera.rotate_object_local(Vector3.BACK,observation_roll)
-			update_sky_camera();return
 		var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
 		space_camera.position=space_camera.position.lerp(target+offset,1-exp(-dt*5.5))
 		space_camera.look_at(target);space_camera.fov=base_fov
@@ -245,6 +241,7 @@ func add_meteor():
 	shooting_star=MeshInstance3D.new();var mesh=QuadMesh.new();mesh.size=Vector2(2.5,.035);shooting_star.mesh=mesh;var material=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_color=Color(.64,.83,1,.0);material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;shooting_star.material_override=material;space.add_child(shooting_star)
 func advance(dt:float):
 	clock+=dt;meteor_clock+=dt
+	if black_hole.visible:black_hole.material_override.set_shader_parameter("flow_time",clock)
 	nebula_clock+=dt*settings.drift
 	star_material.set_shader_parameter("drift",nebula_clock)
 	star_material.set_shader_parameter("twinkle_time",clock)

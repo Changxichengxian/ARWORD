@@ -40,7 +40,7 @@ func run():
 	for q in entries.slice(0,8):candidates.append(q)
 	var fit=true;var text_fit=true
 	for q in candidates:
-		game.current=q;game.mode="word";game.order=[0,1,2,3];game.help_visible=false;game.hud.show_task();await settle()
+		game.learning.introduce(q.id);game.current=q;game.mode="word";game.order=[0,1,2,3];game.help_visible=false;game.hud.show_task();await settle()
 		if not card_fits():fit=false;print("CARD_OVERFLOW ",q.word," ",game.hud.card.get_global_rect())
 		for answer in game.hud.answers:
 			if answer.get_minimum_size().x>answer.size.x+1:text_fit=false
