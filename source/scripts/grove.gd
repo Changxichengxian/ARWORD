@@ -99,6 +99,7 @@ func activate_local_avatar(candidate:Node3D)->Dictionary:
 	if is_instance_valid(avatar):avatar.free()
 	avatar=candidate;avatar.enabled=true;avatar.show()
 	actor.find_child("ContinuousBody",true,false).hide()
+	builder.show()
 	worker.rest_ground_ready=false;navigation_signature="";rebuild_navigation()
 	if move_tween and move_tween.is_valid():move_tween.kill()
 	if not transporting:
@@ -110,7 +111,7 @@ func clear_local_avatar():
 	if is_instance_valid(avatar):avatar.free()
 	avatar=null
 	for name in tools:tools[name].position=avatar_tool_homes.get(name,Vector3.ZERO)
-	worker.carry.position=Vector3.ZERO;actor.find_child("ContinuousBody",true,false).show()
+	worker.carry.position=Vector3.ZERO;actor.find_child("ContinuousBody",true,false).hide();builder.hide()
 	worker.rest_ground_ready=false;navigation_signature="";rebuild_navigation();worker.update_skin()
 func surface(p:Vector2)->Vector3:return terrain.point(p)
 func ground_point(p:Vector2)->Vector3:
@@ -461,6 +462,8 @@ func setup(owner_node):
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
 	make_selection_ring()
 	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
+	# Keep the authored rig as an invisible motion driver, never as a character.
+	actor.find_child("ContinuousBody",true,false).hide();builder.hide()
 	for part in ["ArmL","ArmR","LegL","LegR","Body","KneeL","KneeR","ElbowL","ElbowR"]:limbs[part]=actor.find_child(part,true,false)
 	for name in ["Axe","Pickaxe","Mallet"]:tools[name]=actor.find_child(name,true,false);avatar_tool_homes[name]=tools[name].position
 	for i in range(5):

@@ -51,9 +51,9 @@ func run():
 		var rest=avatar_metrics(world);print("REST_METRICS ",variant," ",rest)
 		check(rest.gap>=0 and rest.gap<.05,"the full visible skin remains above actual ground in rest pose "+str(variant))
 		await shot("sitting" if variant==0 else "napping")
-	world.clear_local_avatar();check(world.avatar==null and world.actor.find_child("ContinuousBody",true,false).visible,"removing the local model restores the white fallback")
+	world.clear_local_avatar();check(world.avatar==null and not world.builder.is_visible_in_tree() and not world.actor.find_child("ContinuousBody",true,false).visible,"removing the local model hides the motion rig without exposing the white body")
 	print("LOCAL_AVATAR_RESULT ",passed," passed / ",failed," failed")
-	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;game.queue_free();await process_frame;await process_frame;quit(0 if failed==0 else 1)
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;game.queue_free();await process_frame;await process_frame;quit.call_deferred(0 if failed==0 else 1)
 func shot(label:String):
 	if output.is_empty():return
 	DirAccess.make_dir_recursive_absolute(output);await create_timer(.12).timeout;await RenderingServer.frame_post_draw

@@ -528,26 +528,22 @@ func initialize_avatar():
 		legacy=""
 	cast_store=FixedCast.new(directory)
 	if qa and not "--qa-with-cast" in OS.get_cmdline_user_args():
-		fixed_character="default"
+		fixed_character=""
 		return
 	study_voice.prepare(directory)
 	cast_store.prepare(FixedCast.BUILTIN,legacy)
-	fixed_character="default"
+	fixed_character=""
 	if cast_store.preferred()=="deepseek":apply_fixed_character("deepseek",false)
 
 func apply_fixed_character(id:String,persist:bool)->bool:
-	if cast_store==null or id not in ["deepseek","default"]:return false
-	var candidate:Node3D=null
-	if id=="deepseek":
-		if cast_store.model_path.is_empty():return false
-		var result=world.prepare_local_avatar(cast_store.model_path)
-		if not result.get("ok",false):return false
-		candidate=result.candidate
+	if cast_store==null or id!="deepseek" or cast_store.model_path.is_empty():return false
+	var result=world.prepare_local_avatar(cast_store.model_path)
+	if not result.get("ok",false):return false
+	var candidate:Node3D=result.candidate
 	if persist and not cast_store.remember(id):
 		if candidate:candidate.free()
 		return false
-	if candidate:world.activate_local_avatar(candidate)
-	else:world.clear_local_avatar()
+	world.activate_local_avatar(candidate)
 	fixed_character=id
 	return true
 
@@ -561,9 +557,11 @@ func show_avatar_settings():
 	var box=hud.modal("人物")
 	hud.screen="avatar"
 	if cast_store!=null and not cast_store.model_path.is_empty():
-		hud.button(box,("✓  " if fixed_character=="deepseek" else "")+"大肥鱼",select_fixed_character.bind("deepseek"),fixed_character=="deepseek",56)
+		hud.text(box,"大肥鱼",24,IslandHUD.GREEN)
 		hud.text(box,"DeepSeek 娘 · 木子恶魔",16,IslandHUD.GREEN)
-	hud.button(box,("✓  " if fixed_character=="default" else "")+"默认人物",select_fixed_character.bind("default"),fixed_character=="default",56)
+	else:
+		hud.text(box,"大肥鱼尚未安装",22,IslandHUD.GREEN)
+		hud.text(box,"请使用含人物的个人安装包，已有学习记录会保留。",16)
 	hud.ghost(box,"返回",settings)
 
 func space_settings():
@@ -638,7 +636,6 @@ func show_developer():
 	var rewind=hud.row(box)
 	hud.ghost(rewind,"重做当前工地",confirm_rewind.bind(false),44).disabled=not learning.data.dev_skip
 	hud.ghost(rewind,"星球回到开局",confirm_rewind.bind(true),44).disabled=not learning.data.dev_skip
-	hud.button(box,"巡游与海底",show_explore_tools,false,48).disabled=not learning.data.dev_skip
 	hud.text(box,"只推进建设，保留真实学习记录。",16,IslandHUD.GREEN)
 	hud.ghost(box,"关闭",hud.close)
 func confirm_rewind(all_sites:bool):
@@ -666,16 +663,6 @@ func fast_forward(everything=false):
 	frontier.finish_for_development(everything);save_progress();hud.close()
 	world.sync_buildings(true);next_task();explore(everything)
 	hud.toast("建设已完成" if everything else "这处工地已完成")
-
-func show_explore_tools():
-	if not learning.data.dev_skip:return
-	var box=hud.modal("去看看");hud.screen="developer_tour"
-	for pair in [["goldmine","远岛矿洞"],["smelter","主岛铸币坊"],["rocket","背面火箭"],["shipyard","船坞"],["mountain","高山望远镜"]]:
-		var id=str(pair[0]);var available=frontier.done(id) or id=="rocket"
-		hud.button(box,str(pair[1])+("" if available else " · 尚未建好"),tour_site.bind(id),false,46).disabled=not available
-	var row=hud.row(box);hud.button(row,"蓝鲸",preview_nature.bind("whale"),false,46);hud.button(row,"深海洞窟",preview_nature.bind("cave"),false,46)
-	var coast=hud.row(box);hud.button(coast,"虎鲸",preview_nature.bind("orca"),false,46);hud.button(coast,"潮间岩台",preview_nature.bind("tidepool"),false,46).disabled=not world.wildlife.tidepool.visible
-	hud.ghost(box,"返回",show_developer)
 
 func show_rocket():
 	if locked:return
@@ -780,8 +767,9 @@ func preview_nature(kind:String):
 	if not learning.data.dev_skip:return
 	hud.close();explore(false);var normal=world.wildlife.preview_event(kind)
 	world.desired_rotation=Quaternion(normal,Vector3.UP)
-	var zoom={"whale":16.0,"orca":8.2,"tidepool":3.6,"cave":12.0}
-	frame_view(Vector3(0,11.5,0) if kind=="tidepool" else Vector3(0,9.6,0),zoom[kind])
+	var zoom={"whale":16.0,"orca":8.2,"tidepool":3.6,"cave":12.0,"rabbit":4.5,"turtle":4.8,"dolphin":6.0,"seahorse":4.2,"puffer":4.2,"squid":4.8}
+	var height=11.7 if kind=="rabbit" else 11.5 if kind=="tidepool" else 10.7 if kind in ["turtle","dolphin","seahorse","puffer","squid"] else 9.6
+	frame_view(Vector3(0,height,0),zoom.get(kind,8.0))
 func open_observatory(primary=false):
 	if cosmos.observatory_active:return
 	if primary and not learning.data.black_hole:return

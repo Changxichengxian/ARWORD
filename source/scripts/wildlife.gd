@@ -21,6 +21,7 @@ var butterfly_scene=preload("res://assets/models/wild_butterfly.glb")
 var whale_scene=preload("res://assets/models/wild_whale.glb")
 var orca_scene=preload("res://assets/models/wild_orca.glb")
 var tidepool=preload("res://scripts/tidepool.gd").new()
+var land_life=preload("res://scripts/land_wildlife.gd").new()
 var fish_scenes={"gold":preload("res://assets/models/wild_fish.glb"),"silver":preload("res://assets/models/wild_silver_fish.glb"),"reef":preload("res://assets/models/wild_reef_fish.glb"),"ray":preload("res://assets/models/wild_ray.glb"),"turtle":preload("res://assets/models/wild_turtle.glb")}
 var coral_scene=preload("res://assets/models/sea_coral.glb")
 var grass_scene=preload("res://assets/models/sea_grass.glb")
@@ -28,12 +29,16 @@ var relic_scene=preload("res://assets/models/sea_relic.glb")
 var cave_scene=preload("res://assets/models/sea_cave.glb")
 var water_math=preload("res://scripts/water.gd")
 var spray_material:StandardMaterial3D
-const SPECIES=["gold","silver","reef","ray","turtle"]
-const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66,"jelly":.81}
-const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22,"jelly":.32}
-const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65,"jelly":.26}
+const SPECIES=["gold","silver","reef","ray","turtle","jelly","dolphin","seahorse","puffer","squid"]
+const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66,"jelly":.81,"dolphin":.65,"seahorse":.60,"puffer":.70,"squid":.65}
+const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22,"jelly":.32,"dolphin":.40,"seahorse":.34,"puffer":.22,"squid":.25}
+const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65,"jelly":.26,"dolphin":.95,"seahorse":.35,"puffer":.38,"squid":.72}
 const WHALE_RATE=.085
 const WHALE_HALF_LENGTH=2.31
+var depth_sample_directions=PackedVector2Array()
+
+func _init():
+	for i in range(8):depth_sample_directions.append(Vector2(cos(i*TAU/8),sin(i*TAU/8)))
 
 func setup(owner_world):
 	world=owner_world
@@ -41,6 +46,8 @@ func setup(owner_world):
 	position=Vector3.ZERO;basis=Basis.IDENTITY
 	add_child(tidepool)
 	fish_scenes["jelly"]=preload("res://assets/models/wild_jelly.glb")
+	for type in ["dolphin","seahorse","puffer","squid"]:fish_scenes[type]=load("res://assets/models/wild_"+type+".glb")
+	add_child(land_life);land_life.setup(self)
 	spray_material=StandardMaterial3D.new();spray_material.albedo_color=Color("D1F3F0");spray_material.roughness=.18
 	refresh_habitats()
 
@@ -60,7 +67,14 @@ func offset_direction(n:Vector3,offset:Vector2)->Vector3:
 	return (n*cos(length/water_math.BASE_RADIUS)+tangent*sin(length/water_math.BASE_RADIUS)).normalized()
 func body_depth_normal(n:Vector3,radius:float)->float:
 	var depth=depth_at(n)
-	for i in range(8):depth=minf(depth,depth_at(offset_direction(n,Vector2(cos(i*TAU/8),sin(i*TAU/8))*radius)))
+	var axes=tangent_axes(n)
+	# All eight footprint samples share one tangent frame. Keep every depth query.
+	for direction in depth_sample_directions:
+		var offset=direction*radius;var length=offset.length()
+		if length<.00001:depth=minf(depth,depth_at(n));continue
+		var tangent=(axes[0]*offset.x+axes[1]*offset.y)/length
+		var sample_normal=(n*cos(length/water_math.BASE_RADIUS)+tangent*sin(length/water_math.BASE_RADIUS)).normalized()
+		depth=minf(depth,depth_at(sample_normal))
 	return depth
 func body_depth(p:Vector2,radius:float)->float:return body_depth_normal(sea_direction(p),radius)
 func water_at(p:Vector2,margin=0.0)->bool:return outside_land(sea_direction(p),margin)
@@ -76,6 +90,10 @@ func safe_sea(p:Vector2,margin:float,minimum_depth:float)->bool:return deep_sea(
 func clear_of_cave(n:Vector3,margin:float)->bool:
 	return cave.is_empty() or n.distance_to(cave.normal)*water_math.BASE_RADIUS>3.2+margin
 func fish_depth(species_name:String)->float:
+	if species_name=="dolphin":return .90
+	if species_name=="seahorse":return .68
+	if species_name=="puffer":return .57
+	if species_name=="squid":return .85
 	return 1.08 if species_name=="ray" else .48 if species_name=="turtle" else .68 if species_name=="silver" else .46
 func clear_of_seabed_props(n:Vector3,extent:float,bottom_depth:float)->bool:
 	for obstacle in seabed_obstacles:
@@ -105,8 +123,9 @@ func refresh_habitats():
 	if coast.is_empty():coast.assign(offshore)
 	rebuild_seabed_life()
 	tidepool.choose_coast(self)
+	land_life.refresh_habitat()
 	if tidepool.visible:seabed_obstacles.append({"normal":tidepool.normal,"radius":1.42,"depth":0.})
-	var desired={"bird":mini(4,1+land_count/8),"fish":24 if land_count>=18 else 20,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
+	var desired={"bird":mini(4,1+land_count/8),"fish":32 if land_count>=18 else 28,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
 	for kind in desired:
 		var count=0
 		for animal in animals:
@@ -128,7 +147,8 @@ func species(index:int)->String:
 	if index<16:return "ray"
 	if index<18:return "turtle"
 	if index<20:return "jelly"
-	return "silver" if index<22 else "reef"
+	if index<28:return ["dolphin","seahorse","puffer","squid"][int((index-20)/2)]
+	return "silver" if index<30 else "reef"
 func spawn(kind:String,index:int):
 	var anchor=Node3D.new();add_child(anchor)
 	var type=species(index) if kind=="fish" else kind
@@ -137,15 +157,165 @@ func spawn(kind:String,index:int):
 	var scale_factor=float(SCALES[type]) if kind=="fish" else .68 if kind=="bird" else (1.62 if index==0 else .82) if kind=="whale" else .66
 	if kind=="orca":scale_factor=1.52
 	model.scale=Vector3.ONE*scale_factor
+	if type=="seahorse":model.position.y=-.267
 	for mesh in model.find_children("*","MeshInstance3D",true,false):mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	animals.append({"kind":kind,"species":type,"index":index,"anchor":anchor,"model":model,"scale":scale_factor,"home":meadows[(index*5)%meadows.size()],"normal":Vector3.UP,"radius":.7,"phase":float(index)*.63,"action_offset":0.0,"startle":0.0,"left":model.find_child("FlipperL" if kind=="whale" or type in ["ray","turtle"] else "WingL",true,false),"right":model.find_child("FlipperR" if kind=="whale" or type in ["ray","turtle"] else "WingR",true,false),"tail":model.find_child("Tail",true,false),"fluke":model.find_child("Fluke",true,false),"blowhole":model.find_child("Blowhole",true,false),"last":Vector3.ZERO,"state":"swim","breath_cycle":-1,"route_valid":true,"depth":.3})
+	bind_joints(animals.back())
+
+func bind_joints(animal:Dictionary):
+	# Cache articulated parts once, including optional parts of older models.
+	var model:Node3D=animal.model
+	var flippers=animal.species in ["ray","turtle","whale","orca","dolphin"]
+	var names={"left":"FlipperL" if flippers else "WingL","right":"FlipperR" if flippers else "WingR","tip_left":"FlipperTipL" if flippers else "WingTipL","tip_right":"FlipperTipR" if flippers else "WingTipR","hind_left":"HindL","hind_right":"HindR","fin_left":"FinL","fin_right":"FinR","head":"Head","tail":"Tail","body":"Body"}
+	for key in names:animal[key]=model.find_child(names[key],true,false)
+	animal.hind_wing_left=model.find_child("HindWingL",true,false)
+	animal.hind_wing_right=model.find_child("HindWingR",true,false)
+	animal.fringe=model.find_child("Fringe",true,false)
+	animal.fluke=model.find_child("Fluke",true,false)
+	animal.arms=[];animal.arm_tips=[]
+	if animal.species=="squid":
+		for i in 8:
+			animal.arms.append(model.find_child("Arm"+str(i),true,false))
+			animal.arm_tips.append(model.find_child("ArmTip"+str(i),true,false))
+		animal.tentacle_left=model.find_child("TentacleL",true,false);animal.tentacle_right=model.find_child("TentacleR",true,false)
+	animal.reaction=0.0
+	animal.travel_phase=float(animal.get("phase",0.))*.30
+	animal.motion_weight=1.0
+
+func bird_effort(animal:Dictionary,t:float)->float:
+	# Ease from a short series of wingbeats into a long, quiet glide.
+	var phase=fposmod(t,9.5)
+	var effort=1.-smoothstep(3.2,4.5,phase)+smoothstep(8.4,9.5,phase)
+	return maxf(effort,smoothstep(0.,1.2,animal.startle))
+
+func animate_bird(animal:Dictionary,t:float):
+	var effort=bird_effort(animal,t)
+	var beat=t*7.5
+	var flap=sin(beat)*.50*effort+.065*(1.-effort)
+	animal.left.rotation=Vector3(0.,.045*effort*(1.-cos(beat)),-flap)
+	animal.right.rotation=Vector3(0.,-.045*effort*(1.-cos(beat)),flap)
+	# The hand wing follows the shoulder with a small delay on recovery.
+	var tip=(sin(beat-.65)*.19-.06)*effort+.045*(1.-effort)
+	if animal.tip_left:animal.tip_left.rotation.z=-tip
+	if animal.tip_right:animal.tip_right.rotation.z=tip
+	animal.model.rotation.z=.13+.12*sin(t*.30)+.025*sin(t*.81)
+	animal.model.rotation.x=.025*sin(beat-.4)*effort-.045*sin(t*.55)*(1.-effort)
+	if animal.head:
+		animal.head.rotation.y=.28*sin(t*.7)*(1.-effort*.7)
+		animal.head.rotation.x=.10*(.5+.5*sin(t*.43))*(1.-effort)
+	if animal.tail:
+		animal.tail.rotation.x=.04+.06*(1.-effort)+.025*sin(beat-.7)*effort
+		animal.tail.rotation.y=.035*sin(t*.6)
+	animal.state="flap" if effort>.5 else "glide"
+
+func animate_butterfly(animal:Dictionary,t:float):
+	# Fore/hind wing silhouettes stay distinct as the paired wings close.
+	var hover=smoothstep(.3,.9,sin(t*.7))
+	var flap=.12+(.5+.5*sin(t*23.))*(.85+.23*hover)
+	animal.left.rotation.z=-flap;animal.right.rotation.z=flap
+	if animal.hind_wing_left:animal.hind_wing_left.rotation.z=-.09*sin(t*23.-.5)
+	if animal.hind_wing_right:animal.hind_wing_right.rotation.z=.09*sin(t*23.-.5)
+	animal.model.rotation.x=.13*sin(t*2.1)+.12*hover
+	animal.model.rotation.z=.22*sin(t*1.3)
+	animal.state="hover" if hover>.6 else "flutter"
+
+func animate_fish(animal:Dictionary,t:float):
+	var alert=smoothstep(0.,1.5,animal.startle)
+	var type:String=animal.species
+	animal.model.rotation=Vector3(0.,0.,sin(t*.65)*.035)
+	if type=="dolphin":
+		var beat=t*3.0
+		animal.tail.rotation.x=.22*sin(beat)
+		if animal.fluke:animal.fluke.rotation.x=.18*sin(beat-.65)
+		animal.left.rotation.z=-.13+.10*sin(t*.85)
+		animal.right.rotation.z=.13-.10*sin(t*.85+.5)
+		animal.model.rotation.z=.12*sin(t*.48)
+		animal.model.rotation.x=.04*sin(beat-.6)
+		animal.state="swim"
+	elif type=="seahorse":
+		animal.model.rotation.x=.08*sin(t*.9)
+		animal.model.rotation.z=.09*sin(t*.53)
+		if animal.head:animal.head.rotation.y=.18*sin(t*.63)
+		if animal.tail:animal.tail.rotation.x=.12*sin(t*.8-.6)
+		if animal.fin_left:animal.fin_left.rotation.z=-.15+.28*sin(t*18.)
+		if animal.fin_right:animal.fin_right.rotation.z=.15-.28*sin(t*18.)
+		animal.state="hover"
+	elif type=="puffer":
+		# A small breathing pulse, with a smooth rounder response to a tap.
+		var roundness=1.+.025*sin(t*2.5)+.17*animal.get("reaction",0.)
+		if animal.body:animal.body.scale=Vector3(roundness,roundness,1.)
+		if animal.tail:animal.tail.rotation.y=.17*sin(t*7.)
+		if animal.fin_left:animal.fin_left.rotation.z=-.2-.32*sin(t*11.)
+		if animal.fin_right:animal.fin_right.rotation.z=.2+.32*sin(t*11.+.35)
+		animal.model.rotation.x=.06*sin(t*.9)
+		animal.model.rotation.y=.12*sin(t*.6)
+		animal.state="puff" if animal.get("reaction",0.)>.3 else "paddle"
+	elif type=="squid":
+		var pulse=pow(maxf(0.,sin(t*2.4)),3.)
+		if animal.body:animal.body.scale=Vector3(1.-.08*pulse,1.-.08*pulse,1.+.05*pulse)
+		if animal.fin_left:animal.fin_left.rotation.z=-.18*sin(t*4.)
+		if animal.fin_right:animal.fin_right.rotation.z=.18*sin(t*4.)
+		for i in animal.arms.size():
+			if animal.arms[i]:animal.arms[i].rotation=Vector3(.13*sin(t*2.4-i*.38),.10*cos(t*1.7+i*.8),.06*sin(t*1.9+i))
+			if animal.arm_tips[i]:animal.arm_tips[i].rotation.x=.22*sin(t*2.4-i*.38-.8)
+		if animal.tentacle_left:animal.tentacle_left.rotation.y=.12*sin(t*1.8-.6)
+		if animal.tentacle_right:animal.tentacle_right.rotation.y=-.12*sin(t*1.8-.2)
+		animal.model.rotation.x=.05*sin(t*2.4-.5)
+		animal.state="pulse" if pulse>.3 else "glide"
+	elif type=="turtle":
+		# Both long foreflippers drive together, then hold a shallow glide.
+		# The short rear paddles steer, never swing like walking legs.
+		var phase=fposmod(t,9.)
+		var effort=maxf(1.-smoothstep(3.4,4.6,phase)+smoothstep(7.6,9.,phase),alert)
+		var beat=t*2.0
+		var stroke=.055+sin(beat)*.28*effort
+		var sweep=sin(beat-.65)*.10*effort
+		animal.left.rotation=Vector3(0.,sweep,-stroke)
+		animal.right.rotation=Vector3(0.,-sweep,stroke)
+		var steer=.06*sin(t*.48)
+		if animal.hind_left:animal.hind_left.rotation=Vector3(.035*sin(beat-.9)*effort,steer,-.055-.055*sin(beat-1.0)*effort)
+		if animal.hind_right:animal.hind_right.rotation=Vector3(.035*sin(beat-.9)*effort,steer,.055+.055*sin(beat-1.0)*effort)
+		if animal.head:
+			animal.head.rotation.x=.09*sin(t*.55)+.06*(1.-effort)
+			animal.head.rotation.y=.16*sin(t*.48)
+		if animal.tail:animal.tail.rotation.y=steer*.5
+		animal.model.rotation.x=.025*sin(beat-.6)*effort
+		animal.state="paddle" if effort>.5 else "glide"
+	elif type=="ray":
+		var beat=t*1.65
+		var stroke=.045+sin(beat)*.19
+		animal.left.rotation.z=-stroke;animal.right.rotation.z=stroke
+		var tip=sin(beat-.8)*.16
+		if animal.tip_left:animal.tip_left.rotation.z=-tip
+		if animal.tip_right:animal.tip_right.rotation.z=tip
+		if animal.tail:animal.tail.rotation.y=sin(beat-1.1)*.065
+		animal.model.rotation.x=.025*sin(beat-.5)
+		animal.state="glide"
+	elif type=="jelly":
+		# Quick bell contraction followed by a slower reopening.
+		var beat=sin(t*2.+.4)
+		animal.model.scale=Vector3(1.-.10*beat,1.+.19*beat,1.-.10*beat)*animal.scale
+		animal.model.rotation.z=.055*sin(t*.5)
+		if animal.fringe:
+			animal.fringe.rotation.x=.07*sin(t*2.-.6)
+			animal.fringe.rotation.z=.065*sin(t*1.5-.9)
+		animal.state="pulse"
+	else:
+		var frequency=7.5 if type=="silver" else 6.0 if type=="gold" else 5.0
+		var effort=clampf(animal.get("motion_weight",1.),.25,1.15)
+		var beat=t*frequency
+		if animal.tail:animal.tail.rotation.y=sin(beat)*(.25+.08*alert)*effort
+		animal.model.rotation.y=sin(beat-.65)*.025*effort
+		if animal.fin_left:animal.fin_left.rotation.z=-.12-.12*sin(beat*.65)
+		if animal.fin_right:animal.fin_right.rotation.z=.12+.12*sin(beat*.65+.3)
+		animal.state="swim"
 
 func configure_fish(animal:Dictionary):
-	var broad=animal.species in ["ray","turtle"];var pool=outer_sea if animal.species=="ray" and not outer_sea.is_empty() else offshore if broad or animal.species=="silver" else coast
+	var broad=animal.species in ["ray","turtle","dolphin"];var pool=outer_sea if animal.species in ["ray","dolphin"] and not outer_sea.is_empty() else offshore if broad or animal.species in ["silver","squid","seahorse"] else coast
 	if pool.is_empty():pool=coast if not coast.is_empty() else offshore
 	animal.route_valid=false
 	if pool.is_empty():return
-	var extent=float(BODY_RADIUS[animal.species]);var min_depth=maxf(1.45 if animal.species=="ray" else .95 if broad else .62,float(BODY_HEIGHT[animal.species])*2+.35)
+	var extent=float(BODY_RADIUS[animal.species]);var min_depth=maxf(1.60 if animal.species=="dolphin" else 1.45 if animal.species=="ray" else .95 if broad else .62,float(BODY_HEIGHT[animal.species])*2+.35)
 	for attempt in range(pool.size()):
 		var normal:Vector3=pool[(int(animal.index/3)*5+attempt)%pool.size()]
 		var crowded=false
@@ -239,6 +409,8 @@ func orca_position(animal:Dictionary,t:float)->Vector3:
 	animal.model.rotation.z=.33*sin(t*.38)*surface_pass
 	animal.model.rotation.x=.075*sin(phase*.47)
 	animal.tail.rotation.x=.22*sin(t*1.75);animal.fluke.rotation.x=.17*sin(t*1.75-.55)
+	if animal.left:animal.left.rotation.z=-.08+.055*sin(t*.9-.5)-.09*surface_pass
+	if animal.right:animal.right.rotation.z=.08-.055*sin(t*.9-.5)+.09*surface_pass
 	var cycle=int(floor((t+animal.action_offset)/26.))
 	if phase>=8. and phase<12. and animal.breath_cycle!=cycle and animal.anchor.visible:
 		animal.breath_cycle=cycle;world.water.ripple(n,1.6)
@@ -281,10 +453,22 @@ func place_bed_model(scene:PackedScene,n:Vector3,size:float,yaw:float)->Node3D:
 	return model
 func update_seagrass():
 	for plant in grass:plant.node.rotation.z=sin(clock*.85+plant.phase)*.065
+func has_animal_event(event:String)->bool:
+	if event=="rabbit":
+		for rabbit in land_life.rabbits:
+			if rabbit.anchor.visible:return true
+	for animal in animals:
+		if animal.species==event and animal.anchor.visible:return true
+	return false
+
 func preview_event(event:String)->Vector3:
 	if event=="cave" and not cave.is_empty():return cave.normal
 	if event=="tidepool":return tidepool.normal
+	if event=="rabbit":
+		for rabbit in land_life.rabbits:
+			if rabbit.anchor.visible:return rabbit.anchor.position.normalized()
 	for animal in animals:
+		if event in ["turtle","dolphin","seahorse","puffer","squid"] and animal.species==event and animal.anchor.visible:return animal.anchor.position.normalized()
 		if event=="orca" and animal.kind=="orca":
 			animal.action_offset=8.-fposmod(animal.phase,26.)
 			return whale_direction(animal,animal.phase)
@@ -299,37 +483,55 @@ func _process(dt):
 	clock+=dt
 	if land_count!=world.land.size():refresh_habitats()
 	tidepool.animate(clock,dt)
+	land_life.animate(clock,dt)
 	for animal in animals:
-		animal.startle=maxf(0,animal.startle-dt);animal.phase+=dt*(1.8 if animal.startle>0 and animal.kind!="whale" else 1.0)
+		animal.startle=maxf(0,animal.startle-dt)
+		animal.reaction=lerpf(animal.reaction,smoothstep(0.,1.2,animal.startle),1.-exp(-dt*5.))
+		animal.phase+=dt*(1.+.8*animal.reaction if animal.kind!="whale" else 1.)
 		var t=animal.phase;var pos:Vector3
 		if animal.kind=="fish":
 			var broad=animal.species in ["ray","turtle"];var rate=.25 if broad else .48
-			if animal.species=="jelly":rate=.16
-			var n=offset_direction(animal.normal,Vector2(sin(t*rate),cos(t*rate)*.65)*animal.radius)
+			var weight=.34+.66*(.5+.5*sin(t*.65+animal.index))
+			if animal.species=="jelly":rate=.16;weight=.7+.3*pow(maxf(0.,sin(t*2.+.4)),2.)
+			elif animal.species=="dolphin":rate=.36;weight=.85+.15*sin(t*.45)
+			elif animal.species=="seahorse":rate=.10;weight=.25+.55*(.5+.5*sin(t*.5))
+			elif animal.species=="puffer":rate=.23
+			elif animal.species=="squid":rate=.38;weight=.32+.85*pow(maxf(0.,sin(t*2.4)),3.)
+			animal.motion_weight=lerpf(weight,1.3,animal.reaction)
+			animal.travel_phase+=dt*rate*animal.motion_weight
+			var n=offset_direction(animal.normal,Vector2(sin(animal.travel_phase),cos(animal.travel_phase)*.65)*animal.radius)
 			var bed=body_depth_normal(n,float(BODY_RADIUS[animal.species]));var height=float(BODY_HEIGHT[animal.species])
 			var depth=fish_depth(animal.species)+sin(t*.75)*.045
 			if animal.species=="jelly":
 				var beat=sin(t*2.+.4)
-				animal.model.scale=Vector3(1.-.10*beat,1.+.19*beat,1.-.10*beat)*animal.scale
 				depth=.72-.11*beat
-			depth=clampf(depth,height+.13,maxf(height+.13,bed-height-.13));animal.depth=depth
+			var surfacing=0.
+			var surface_pitch=0.
+			if animal.species=="dolphin":
+				var breath=fposmod(t+animal.action_offset,24.)
+				surfacing=smoothstep(3.,6.,breath)*(1.-smoothstep(8.,11.,breath))
+				surface_pitch=.15*sin(clampf((breath-3.)/3.,0.,1.)*PI)-.19*sin(clampf((breath-8.)/3.,0.,1.)*PI)
+				depth=lerpf(.90,.11,surfacing)
+				var cycle=int(floor((t+animal.action_offset)/24.))
+				if breath>=6. and breath<8. and animal.breath_cycle!=cycle and animal.route_valid:
+					animal.breath_cycle=cycle;world.water.ripple(n,.65)
+			var minimum=.10 if animal.species=="dolphin" else height+.13
+			depth=clampf(depth,minimum,maxf(minimum,bed-height-.13));animal.depth=depth
 			animal.anchor.visible=animal.route_valid and bed>height*2+.27;pos=water_point_normal(n,depth)
-			if animal.tail:animal.tail.rotation.y=sin(t*(1.8 if broad else 7.5))*(.13 if broad else .34)
-			if broad:
-				var flap=sin(t*(1.65 if animal.species=="ray" else 2.0))*.22
-				animal.left.rotation.z=-flap;animal.right.rotation.z=flap
-				if animal.species=="turtle":animal.left.rotation.y=sin(t*2.0)*.30;animal.right.rotation.y=-sin(t*2.0)*.30
-			animal.model.rotation.z=sin(t*.65)*.045
+			animate_fish(animal,t)
+			if animal.species=="dolphin":
+				animal.model.rotation.x+=surface_pitch
+				if surfacing>.02:animal.state="surface"
 		elif animal.kind=="whale":pos=whale_position(animal,t)
 		elif animal.kind=="orca":pos=orca_position(animal,t)
 		else:
 			var p:Vector2=animal.home
 			if animal.kind=="bird":
-				p+=Vector2(cos(t*.30)*1.6,sin(t*.30)*1.0);pos=world.surface(p);pos+=pos.normalized()*(2.9+sin(t*.55)*.25+animal.startle*.35)
-				var flap=sin(t*7.5)*.58*(.22 if fmod(t,8.0)>4.2 else 1.0);animal.left.rotation.z=-flap;animal.right.rotation.z=flap
+				p+=Vector2(cos(t*.30)*1.6,sin(t*.30)*1.0);pos=world.surface(p);pos+=pos.normalized()*(2.9+sin(t*.55)*.42+animal.reaction*.65)
+				animate_bird(animal,t)
 			else:
-				p+=Vector2(sin(t*.8)*.29,sin(t*1.3)*.23);pos=world.surface(p);pos+=pos.normalized()*(.40+.09*sin(t*2)+animal.startle*.22)
-				var flap=.35+abs(sin(t*15))*.95;animal.left.rotation.z=-flap;animal.right.rotation.z=flap
+				p+=Vector2(sin(t*.8)*.42,sin(t*1.3)*.32);pos=world.surface(p);pos+=pos.normalized()*(.42+.12*sin(t*2)+.06*sin(t*.7)+animal.reaction*.40)
+				animate_butterfly(animal,t)
 		var forward=pos-animal.last
 		if animal.last==Vector3.ZERO:forward=tangent_axes(pos.normalized())[0]
 		animal.anchor.position=pos
@@ -350,12 +552,9 @@ func update_water_effects(dt:float):
 		if age>=effect.life:effect.node.queue_free();water_effects.remove_at(i)
 func handle_tap(screen_pos:Vector2)->bool:
 	if not is_instance_valid(world.game.camera):return false
+	if land_life.handle_tap(screen_pos):return true
 	var camera=world.game.camera;var nearest={};var distance=30.0
-	if tidepool.visible and (world.globe.global_basis*tidepool.normal).dot((camera.global_position-tidepool.global_position).normalized())>.12:
-		for kind in ["crab","seal"]:
-			var target=tidepool.get(kind).global_position
-			if not camera.is_position_behind(target) and camera.unproject_position(target).distance_to(screen_pos)<18.:
-				tidepool.notice(kind);return true
+	if tidepool.handle_tap(screen_pos,camera):return true
 	for animal in animals:
 		if not animal.anchor.visible:continue
 		var p=animal.anchor.global_position;var normal=world.globe.global_basis*animal.anchor.position.normalized()
@@ -366,6 +565,7 @@ func handle_tap(screen_pos:Vector2)->bool:
 	if nearest.kind=="whale":nearest.action_offset=12.0-fmod(nearest.phase,124.0);nearest.breath_cycle=-1
 	elif nearest.kind=="orca":nearest.action_offset=4.-fposmod(nearest.phase,26.)
 	elif nearest.kind=="fish":
+		if nearest.species=="dolphin" and nearest.state=="swim":nearest.action_offset=3.-fposmod(nearest.phase,24.)
 		for animal in animals:
 			if animal.kind=="fish" and animal.species==nearest.species:animal.startle=2.4
 	else:nearest.startle=2.4

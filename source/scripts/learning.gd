@@ -99,7 +99,8 @@ func accept_save(candidate)->bool:
 
 func next_word(now:float,focus:Array=[])->Dictionary:
 	if by_id.has(data.help_pending) and (data.book_id.is_empty() or wordbooks.contains(data.book_id,data.help_pending)):return by_id[data.help_pending]
-	var due=[];var fresh=[];var other=[]
+	var due:Dictionary={};var due_time=INF
+	var fresh=[];var other:Dictionary={};var other_gap=INF
 	var queued={};var first_turn=INF
 	for q in active_bank:
 		var s=data.words.get(q.id,{})
@@ -108,16 +109,20 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 			var at=int(s.review_at)
 			if s.has("spot_hits") and at>data.word_turn:continue
 			if at<first_turn:queued=q;first_turn=at
-		elif not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):due.append(q)
+		elif not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):
+			var at=float(s.get("due",0))
+			if due.is_empty() or at<due_time:due=q;due_time=at
 		elif s.is_empty() and absi(int(q.band)-data.band)==0:fresh.append(q)
-		elif s.is_empty():other.append(q)
+		elif s.is_empty():
+			var gap=absi(int(q.band)-data.band)
+			if other.is_empty() or gap<other_gap:other=q;other_gap=gap
 	var result={}
 	if not due.is_empty() and int(data.word_turn)%4==0:
-		due.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due);result=due[0]
+		result=due
 	elif not queued.is_empty() and (first_turn<=data.word_turn or (fresh.is_empty() and other.is_empty())):
 		result=queued
 	elif not due.is_empty() and fresh.is_empty() and other.is_empty():
-		due.sort_custom(func(a,b):return data.words[a.id].due<data.words[b.id].due);result=due[0]
+		result=due
 	elif not focus.is_empty():
 		var targets=[]
 		for id in focus:
@@ -125,16 +130,20 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 		if not targets.is_empty():result=targets[rng.randi_range(0,targets.size()-1)]
 	if result.is_empty() and not fresh.is_empty():result=fresh[rng.randi_range(0,fresh.size()-1)]
 	elif result.is_empty() and not other.is_empty():
-		other.sort_custom(func(a,b):return absi(a.band-data.band)<absi(b.band-data.band));result=other[0]
+		result=other
 	elif result.is_empty():
-		var pool=active_bank.filter(func(q):
+		# Only one result is needed. Keep the earliest eligible review without
+		# allocating two filtered copies and sorting the whole book.
+		var earliest:Dictionary={};var earliest_time=INF
+		var varied:Dictionary={};var varied_time=INF
+		for q in active_bank:
 			var s=data.words.get(q.id,{})
-			return not s.get("mastered",false) and not s.has("spot_hits"))
-		if pool.is_empty():return {}
-		var varied=pool.filter(func(q):return not recent.has(q.id))
-		if not varied.is_empty():pool=varied
-		pool.sort_custom(func(a,b):return float(data.words.get(a.id,{}).get("due",0))<float(data.words.get(b.id,{}).get("due",0)))
-		result=pool[0]
+			if s.get("mastered",false) or s.has("spot_hits"):continue
+			var at=float(s.get("due",0))
+			if earliest.is_empty() or at<earliest_time:earliest=q;earliest_time=at
+			if not recent.has(q.id) and (varied.is_empty() or at<varied_time):varied=q;varied_time=at
+		result=varied if not varied.is_empty() else earliest
+		if result.is_empty():return {}
 	recent.append(result.id)
 	if recent.size()>8:recent.pop_front()
 	return result

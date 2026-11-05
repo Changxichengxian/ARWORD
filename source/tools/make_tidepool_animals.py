@@ -103,9 +103,15 @@ def orca():
 
 def seal():
     clean();root=node('HarborSeal');body=node('Body',root)
-    loft('Resting spindle',[(-.76,.08,.08,.11),(-.55,.18,.15,.16),(-.30,.29,.23,.23),
-            (.02,.33,.29,.29),(.27,.28,.26,.31),(.43,.19,.18,.35)],body,[pewter,cream])
-    head=node('Head',root,(0,.36,.34))
+    torso=loft('Resting spindle',[(-.76,.08,.08,.11),(-.55,.18,.15,.16),(-.30,.29,.23,.23),
+            (.02,.33,.29,.29),(.22,.28,.245,.285),(.33,.20,.19,.30)],body,[pewter,cream])
+    # Mottling is painted into the coat instead of separate floating bumps.
+    torso.data.materials.append(slate)
+    for face in torso.data.polygons:
+        if face.center.z>.34 and int((face.center.y+.9)*37+abs(face.center.x)*61)%7==0:face.material_index=2
+    chest=node('Chest',body,(0,.16,.22))
+    loft('Flexible shoulder',[(-.11,.27,.21,.055),(.035,.27,.23,.075),(.17,.205,.18,.12),(.27,.14,.13,.14)],chest,[pewter,cream])
+    head=node('Head',chest,(0,.20,.12))
     ico('Round head',(0,.12,.12),(.23,.23,.21),pewter,head,3)
     for s in [-1,1]:
         ico('Whisker pad',(s*.078,.294,.075),(.115,.085,.085),cream,head,2)
@@ -113,18 +119,16 @@ def seal():
         ico('Catch light',(s*.165,.269,.196),(.012,.012,.014),milk,head,1)
         for j in range(3):
             rod('Whisker',(s*.115,.341,.06+j*.023),(s*(.24+j*.014),.36-j*.02,.038+j*.027),.008,cream,head)
-        for j in range(6):
-            y=-.40+.113*j; ang=.65+.29*math.sin(j*2.2+s)
-            w=.30 if j>0 else .25
-            ico('Mottling',(s*w*math.cos(ang),y,.245+.245*math.sin(ang)),(.041,.055,.027),slate,body,1)
     ico('Button nose',(0,.352,.115),(.075,.042,.037),ink,head,2)
     fins=[]
     for s,label in [(-1,'L'),(1,'R')]:
-        fin=node('Flipper'+label,root,(s*.23,.21,.13));fins.append(fin)
+        fin=node('Flipper'+label,chest,(s*.23,.05,-.09));fins.append(fin)
         blade('Fore flipper',[(0,.07,0),(s*.15,.08,-.04),(s*.28,-.04,-.09),
               (s*.27,-.18,-.106),(s*.19,-.20,-.09),(0,-.09,0)],(0,0,.027),pewter,fin)
-        toe=ico('Hind flipper',(s*.092,-.745,.08),(.093,.23,.055),pewter,body,2);toe.rotation_euler.z=s*.42
-    export('wild_seal',[body,head,*fins])
+        hind=node('Hind'+label,body,(s*.075,-.67,.075));fins.append(hind)
+        blade('Webbed hind flipper',[(0,.06,0),(s*.08,.015,.005),(s*.13,-.20,-.012),
+              (s*.09,-.29,-.01),(s*.035,-.26,0),(-s*.025,-.23,0),(-s*.045,-.06,0)],(0,0,.035),pewter,hind)
+    export('wild_seal',[body,chest,head,*fins])
 
 
 def crab():
@@ -133,10 +137,16 @@ def crab():
     ico('Shell crown',(0,.012,.231),(.232,.156,.082),apricot,body,2)
     parts=[body]
     for s,label in [(-1,'L'),(1,'R')]:
-        for j in range(3):
-            x=s*(.34+.037*(j%2));y=-.13+j*.10
-            rod('Leg thigh',(s*.19,y,.15),(x,y-.035,.115),.033,rust,body)
-            rod('Leg tip',(x,y-.035,.115),(x+s*.078,y-.081,.015),.021,apricot,body)
+        for j in range(4):
+            # Four walking legs per side, with the hip under the carapace.
+            # Each joined angular leg pivots as a unit while scuttling.
+            y=-.145+j*.088
+            leg=node('Leg'+label+str(j),root,(s*.19,y,.15));parts.append(leg)
+            x=s*(.15+.032*(j%2));splay=(j-1.5)*.055
+            rod('Leg thigh',(0,0,0),(x,splay,-.035),.029,rust,leg)
+            knee=node('Knee',leg,(x,splay,-.035));parts.append(knee)
+            rod('Leg tip',(0,0,0),(s*.09,splay*.6,-.102),.018,apricot,knee)
+            node('Toe',knee,(s*.09,splay*.6,-.102))
         rod('Eyestalk',(s*.13,.12,.23),(s*.145,.165,.30),.029,rust,body)
         ico('Eye',(s*.145,.17,.314),(.035,.034,.041),ink,body,2)
         claw=node('Claw'+label,root,(s*.22,.080,.146));parts.append(claw)
@@ -144,7 +154,10 @@ def crab():
         rod('Elbow',(0,0,0),(s*.135,.13,.065),.047,rust,claw)
         palm=ico('Palm',(s*.14,.15,.09),(.105*scale,.127*scale,.10*scale),apricot,claw,2)
         for j in [-1,1]:
-            rod('Ivory pincer',(s*.14+j*.063*scale,.17,.095),(s*.14+j*.030*scale,.17+.16*scale,.145),.031*scale,milk,claw)
+            if j<0:
+                finger=node('Pincer'+label,claw,(s*.14+j*.063*scale,.17,.095));parts.append(finger)
+                rod('Movable ivory pincer',(0,0,0),(-j*.033*scale,.16*scale,.05),.031*scale,milk,finger)
+            else:rod('Fixed ivory pincer',(s*.14+j*.063*scale,.17,.095),(s*.14+j*.030*scale,.17+.16*scale,.145),.031*scale,milk,claw)
     export('wild_crab',parts)
 
 

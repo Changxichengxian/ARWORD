@@ -2,6 +2,7 @@
 import bpy,math,sys
 from pathlib import Path
 from mathutils import Vector
+from mathutils.geometry import delaunay_2d_cdt
 ROOT=Path(__file__).resolve().parents[1]
 ONLY=sys.argv[sys.argv.index('--only')+1].split(',') if '--only' in sys.argv else []
 bpy.context.preferences.filepaths.save_version=0
@@ -46,54 +47,168 @@ def export(name,parts):
     bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'art-source'/f'{name}.blend'))
 def fin(parent,name,vertices,m):
     return mesh(name,vertices,[tuple(range(len(vertices))),tuple(reversed(range(len(vertices))))],m,parent)
+
+def blade(parent,name,stations,upper,lower,sign=1):
+    """Closed foil with an elliptical cross section; first station buries the joint.
+
+    Each station is (x, y, z, half_chord, half_thickness). Unlike scaled spheres,
+    the outer sections can taper and sweep back without leaving the shoulder.
+    """
+    vertices=[];faces=[];sides=10
+    for x,y,z,width,thickness in stations:
+        for j in range(sides):
+            a=2*math.pi*j/sides
+            vertices.append((sign*x,y+math.cos(a)*width,z+math.sin(a)*thickness))
+    faces.append(tuple(reversed(range(sides))))
+    for i in range(len(stations)-1):
+        for j in range(sides):
+            k=(j+1)%sides
+            faces.append((i*sides+j,i*sides+k,(i+1)*sides+k,(i+1)*sides+j))
+    faces.append(tuple((len(stations)-1)*sides+j for j in range(sides)))
+    if sign<0:faces=[tuple(reversed(f)) for f in faces]
+    o=mesh(name,vertices,faces,upper,parent);o.data.materials.append(lower)
+    for p in o.data.polygons:
+        if p.normal.z<-.01:p.material_index=1
+    return o
+
+def fish_body(parent,name,stations,top,side,bottom):
+    """One continuous fusiform skin instead of intersecting back/belly balls."""
+    vertices=[];faces=[];sides=12
+    for y,width,height,z in stations:
+        for j in range(sides):
+            a=2*math.pi*j/sides
+            vertices.append((math.cos(a)*width,y,z+math.sin(a)*height))
+    faces.append(tuple(range(sides)))
+    for i in range(len(stations)-1):
+        for j in range(sides):
+            k=(j+1)%sides
+            faces.append((i*sides+j,(i+1)*sides+j,(i+1)*sides+k,i*sides+k))
+    faces.append(tuple(reversed([(len(stations)-1)*sides+j for j in range(sides)])))
+    o=mesh(name,vertices,faces,side,parent);o.data.materials.append(top);o.data.materials.append(bottom)
+    for p in o.data.polygons:
+        z=p.center.z
+        if z>.055:p.material_index=1
+        elif z<-.04:p.material_index=2
+    return o
 silver=mat('silver blue','9ACFD3');deep=mat('deep teal','356983');cream=mat('ivory','E8E4BD');ink=mat('eyes','142F42');gold=mat('soft gold','EDC96C');turq=mat('reef teal','3AAFA9');green=mat('shell green','577D57');lightgreen=mat('shell plates','8EA66D')
 
 clean();root=node('SilverFish');body=node('Body',root)
-ico('slender body',(0,0,0),(.13,.48,.14),silver,body)
-ico('dark back',(0,-.02,.06),(.105,.41,.105),deep,body)
-for s in [-1,1]:ico('eye',(s*.104,.30,.035),(.019,.023,.021),ink,body,1)
+fish_body(body,'continuous silver body',[(-.42,.026,.04,0),(-.26,.075,.085,.005),(-.06,.13,.145,0),(.17,.119,.13,0),(.34,.078,.08,-.005),(.44,.018,.029,-.008)],deep,silver,cream)
+for s in [-1,1]:ico('eye',(s*.092,.27,.035),(.016,.022,.018),ink,body,2)
 fin(body,'dorsal',[(0,.12,.09),(0,-.03,.29),(0,-.17,.10)],deep)
-for s in [-1,1]:fin(body,'pectoral',[(s*.10,.05,0),(s*.28,-.13,-.01),(s*.10,-.16,-.03)],cream)
+fins=[]
+for side,s in [('L',-1),('R',1)]:
+    p=node('Fin'+side,root,(s*.095,.10,-.02));fins.append(p)
+    blade(p,'tapered pectoral',[(0,0,0,.07,.012),(.12,-.10,-.035,.06,.009),(.19,-.19,-.04,.004,.003)],silver,cream,s)
 tail=node('Tail',root,(0,-.39,0))
 fin(tail,'forked tail',[(0,.02,0),(0,-.27,.24),(0,-.17,.03),(0,-.27,-.21),(0,-.04,-.02)],deep)
-export('wild_silver_fish',[body,tail])
+export('wild_silver_fish',[body,tail,*fins])
 
 clean();root=node('ReefFish');body=node('Body',root)
-ico('tall body',(0,0,0),(.095,.28,.34),turq,body)
-ico('cream face',(0,.21,.02),(.078,.13,.20),cream,body)
-for y,z in [(-.08,.03),(.055,.01)]:ico('dark narrow stripe',(0,y,z),(.097,.030,.295 if y<0 else .26),deep,body)
-for s in [-1,1]:ico('eye',(s*.075,.265,.105),(.020,.025,.024),ink,body,1)
+reef=fish_body(body,'continuous reef body',[(-.25,.018,.06,0),(-.17,.065,.23,0),(-.11,.082,.29,0),(-.075,.091,.315,0),(-.03,.095,.33,0),(.055,.094,.31,0),(.085,.092,.296,0),(.14,.086,.27,0),(.25,.062,.17,.005),(.33,.018,.035,0)],turq,turq,cream)
+# Color bands belong to the continuous skin, with no raised geometry.
+reef.data.materials.append(deep)
+for p in reef.data.polygons:
+    if -.111<p.center.y<-.074 or .054<p.center.y<.086:p.material_index=3
+for s in [-1,1]:ico('eye',(s*.055,.255,.080),(.016,.023,.022),ink,body,2)
 fin(body,'high dorsal',[(0,.17,.20),(0,-.10,.53),(0,-.24,.20)],gold)
 fin(body,'lower fin',[(0,.10,-.20),(0,-.14,-.41),(0,-.23,-.12)],gold)
 tail=node('Tail',root,(0,-.24,0));fin(tail,'rounded tail',[(0,0,.05),(0,-.22,.17),(0,-.26,0),(0,-.22,-.16),(0,0,-.05)],gold)
-export('wild_reef_fish',[body,tail])
+fins=[]
+for side,s in [('L',-1),('R',1)]:
+    p=node('Fin'+side,root,(s*.075,.15,-.025));fins.append(p)
+    blade(p,'reef paddle',[(0,0,0,.055,.009),(.10,-.065,-.02,.08,.006),(.15,-.13,-.03,.005,.002)],gold,cream,s)
+export('wild_reef_fish',[body,tail,*fins])
 
 clean();root=node('Ray');body=node('Body',root)
-ico('flat body',(0,.02,0),(.31,.56,.13),deep,body)
-ico('pale belly',(0,.04,-.065),(.29,.46,.071),cream,body)
-for s in [-1,1]:ico('raised eye',(s*.16,.31,.105),(.05,.07,.04),gold,body,1)
+fish_body(body,'ray central disc',[(-.48,.09,.04,-.015),(-.28,.23,.10,0),(.02,.31,.13,0),(.30,.24,.11,.005),(.49,.12,.055,0),(.54,.025,.022,-.005)],deep,deep,cream)
+for s in [-1,1]:
+    ico('eye hood',(s*.14,.29,.10),(.052,.068,.04),deep,body,2)
+    ico('small eye',(s*.159,.32,.12),(.018,.023,.013),ink,body,2)
+    ico('spiracle',(s*.15,.19,.127),(.022,.037,.009),ink,body,1)
 wings=[]
 for side,s in [('L',-1),('R',1)]:
-    wing=node('Flipper'+side,root,(s*.21,0,0));wings.append(wing)
-    v=[(0,.40,.015),(s*.36,.17,.035),(s*.78,-.15,-.06),(s*.66,-.36,-.09),(s*.20,-.43,-.025),(0,-.36,-.015),(s*.28,-.08,.055)]
-    mesh('diamond wing',v,[(0,1,6),(1,2,6),(2,3,6),(3,4,6),(4,5,6),(5,0,6),(5,4,3,2,1,0)],deep,wing)
+    wing=node('Flipper'+side,root,(s*.18,-.025,0));wings.append(wing)
+    blade(wing,'supple inner disc',[(-.08,0,0,.38,.058),(.10,-.045,0,.40,.045),(.25,-.11,-.005,.32,.03),(.42,-.18,-.012,.22,.015)],deep,cream,s)
+    tip=node('FlipperTip'+side,wing,(s*.36,-.15,-.008));wings.append(tip)
+    blade(tip,'swept outer disc',[(-.035,0,0,.255,.022),(.12,-.07,-.012,.17,.015),(.30,-.17,-.025,.07,.008),(.40,-.24,-.025,.006,.002)],deep,cream,s)
 tail=node('Tail',root,(0,-.44,0));rod('long tail',(0,0,0),(0,-.98,-.035),.046,deep,tail);rod('tail end',(0,-.8,-.03),(.08,-1.38,.01),.022,deep,tail)
 export('wild_ray',[body,tail,*wings])
 
 clean();root=node('Turtle');body=node('Body',root)
-ico('belly',(0,0,-.055),(.36,.48,.14),cream,body)
-ico('faceted shell',(0,-.04,.07),(.37,.47,.24),green,body)
-for x,y in [(0,0),(0,.22),(0,-.25),(-.20,.06),(.20,.06),(-.18,-.20),(.18,-.20)]:ico('shell scute',(x,y,.195 if x else .267),(.11,.14,.025),lightgreen,body,1)
-ico('head',(0,.51,.015),(.13,.19,.12),lightgreen,body)
-for s in [-1,1]:ico('eye',(s*.102,.57,.058),(.023,.026,.024),ink,body,1)
+shellrim=mat('shell rim olive','687A4E');shellshade=mat('shell seams','3C583F');skin=mat('flipper ochre olive','A5AF78');shellwarm=mat('warm scute','7F9254')
+ico('plastron',(0,-.035,-.065),(.335,.455,.098),cream,body,2)
+# The complete dome is one constrained triangulation: scutes and seams share
+# vertices, so their surface cannot intersect or float above the carapace.
+def dome_z(x,y):
+    return .005+.275*math.sqrt(max(0.0,1-(x/.375)**2-((y+.035)/.49)**2))
+def clip(poly,nx,ny,d):
+    result=[]
+    for a,b in zip(poly,poly[1:]+poly[:1]):
+        da=nx*a[0]+ny*a[1]-d;db=nx*b[0]+ny*b[1]-d
+        if da<=0:result.append(a)
+        if (da<0)!=(db<0):
+            t=da/(da-db);result.append((a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t))
+    return result
+count=48
+ellipse=[(.375*.93*math.cos(i*2*math.pi/count),-.035+.49*.93*math.sin(i*2*math.pi/count)) for i in range(count)]
+# Five vertebral scutes and offset costal pairs form staggered five/six-sided
+# plates. A peripheral row follows the curved rim instead of a square grid.
+seeds=[(0,-.355),(.008,-.195),(-.008,-.025),(.006,.145),(0,.315)]
+seeds += [(s*(.205+.018*math.cos(i*1.3)),y+(.008 if s<0 else -.008))
+          for s in [-1,1] for i,y in enumerate([-.28,-.115,.065,.245])]
+seeds += [(.375*.89*math.cos((i+.24)*2*math.pi/18),
+           -.035+.49*.89*math.sin((i+.24)*2*math.pi/18)) for i in range(18)]
+polygons=[]
+for x,y in seeds:
+    poly=ellipse[:]
+    for ox,oy in seeds:
+        if (x,y)!=(ox,oy):poly=clip(poly,ox-x,oy-y,(ox*ox+oy*oy-x*x-y*y)/2)
+    # A narrow inset forms the dark seam, without any separate overlay.
+    original=poly[:]
+    for a,b in zip(original,original[1:]+original[:1]):
+        nx=b[1]-a[1];ny=a[0]-b[0];length=math.hypot(nx,ny)
+        poly=clip(poly,nx,ny,nx*a[0]+ny*a[1]-.0035*length)
+    polygons.append(poly)
+verts2=[Vector((0,-.035))];edges=[]
+for radius in [.18,.36,.54,.72,.86,.95,1.0]:
+    for i in range(count):
+        a=i*2*math.pi/count;verts2.append(Vector((.375*radius*math.cos(a),-.035+.49*radius*math.sin(a))))
+for poly in polygons:
+    start=len(verts2);verts2.extend(Vector(p) for p in poly)
+    edges.extend((start+i,start+(i+1)%len(poly)) for i in range(len(poly)))
+triangulated=delaunay_2d_cdt(verts2,edges,[],0,1e-6,False)
+shell=mesh('continuous scuted carapace',[(v.x,v.y,dome_z(v.x,v.y)) for v in triangulated[0]],triangulated[2],shellshade,body)
+for m in [shellwarm,lightgreen,green,shellrim]:shell.data.materials.append(m)
+def inside(x,y,poly):
+    return all((b[0]-a[0])*(y-a[1])-(b[1]-a[1])*(x-a[0])>=-1e-7 for a,b in zip(poly,poly[1:]+poly[:1]))
+for face in shell.data.polygons:
+    x,y=face.center.x,face.center.y
+    if (x/.375)**2+((y+.035)/.49)**2>.91**2:face.material_index=4
+    else:
+        for i,poly in enumerate(polygons):
+            if inside(x,y,poly):face.material_index=([1,2,1,2,1][i] if i<5 else [3,1,3,1][(i-5)%4] if i<13 else [4,3,4][i%3]);break
+count=24
+for i in range(count):
+    a=i*2*math.pi/count;b=(i+1)*2*math.pi/count
+    rod('carapace edge',(.37*math.cos(a),-.035+.485*math.sin(a),.008),(.37*math.cos(b),-.035+.485*math.sin(b),.008),.025,shellrim,body)
+head=node('Head',root,(0,.34,-.025))
+ico('short neck',(0,.035,0),(.10,.15,.075),skin,head,2)
+ico('sea turtle head',(0,.19,.012),(.117,.16,.091),skin,head,2)
+ico('blunt beak',(0,.30,-.007),(.073,.067,.056),lightgreen,head,2)
+ico('lower beak',(0,.295,-.043),(.065,.061,.018),cream,head,1)
+for s in [-1,1]:
+    ico('eye socket',(s*.102,.21,.043),(.021,.032,.025),shellshade,head,2)
+    ico('eye',(s*.116,.22,.046),(.012,.021,.017),ink,head,2)
+    ico('eye glint',(s*.125,.228,.051),(.004,.006,.005),cream,head,1)
 limbs=[]
 for side,s in [('L',-1),('R',1)]:
-    f=node('Flipper'+side,root,(s*.27,.21,-.035));limbs.append(f)
-    ico('long front flipper',(s*.23,-.12,-.025),(.14,.35,.048),lightgreen,f)
-    back=node('Hind'+side,root,(s*.24,-.32,-.04));limbs.append(back)
-    ico('back paddle',(s*.11,-.14,0),(.12,.22,.046),green,back)
-tail=node('Tail',root,(0,-.43,-.035));rod('tail',(0,0,0),(0,-.21,0),.045,green,tail)
-export('wild_turtle',[body,tail,*limbs])
+    f=node('Flipper'+side,root,(s*.26,.22,-.06));limbs.append(f)
+    blade(f,'swept front flipper',[(-.08,.01,0,.085,.046),(.06,-.025,-.008,.12,.035),(.22,-.085,-.015,.125,.025),(.40,-.20,-.026,.09,.018),(.58,-.39,-.03,.007,.004)],skin,cream,s)
+    back=node('Hind'+side,root,(s*.235,-.34,-.06));limbs.append(back)
+    blade(back,'short steering paddle',[(-.06,.035,0,.065,.035),(.07,-.06,-.008,.105,.023),(.19,-.15,-.01,.075,.014),(.24,-.24,-.005,.008,.004)],lightgreen,cream,s)
+tail=node('Tail',root,(0,-.43,-.06));rod('small tail',(0,0,0),(0,-.16,-.007),.03,skin,tail)
+export('wild_turtle',[body,head,tail,*limbs])
 
 coral=mat('coral salmon','DC967D');violet=mat('coral lavender','9C9CBC');stone=mat('reef stone','627F7C');weed=mat('sea grass','629C82');weedlight=mat('sea grass light','8FBA91')
 clean();root=node('CoralCluster');body=node('Body',root)

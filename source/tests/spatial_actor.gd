@@ -64,7 +64,7 @@ func run():
 		if arg.begins_with("--visual-out="):await visual(game,arg.trim_prefix("--visual-out="))
 	print("SPATIAL_ACTOR_RESULT ",passed," passed / ",failed," failed")
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;game.queue_free();await process_frame;await process_frame
-	quit(0 if failed==0 else 1)
+	quit.call_deferred(0 if failed==0 else 1)
 func visual(game,directory:String):
 	DirAccess.make_dir_recursive_absolute(directory);game.hud.hide()
 	var world=game.world;game.frontier.data.active="cottage";world.update_selection_ring()

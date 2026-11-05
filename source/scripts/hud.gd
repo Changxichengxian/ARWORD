@@ -78,7 +78,7 @@ func _ready():
 	icon(top,"books",game.show_wordbooks,"词书")
 	icon(top,"gear",game.settings,"设置")
 	toast_label=text(safe_frame,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
-	clock_label=text(safe_frame,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.135;clock_label.anchor_bottom=.135;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	clock_label=text(safe_frame,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.19;clock_label.anchor_bottom=.19;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label.add_theme_color_override("font_shadow_color",Color(.01,.025,.05,.75));clock_label.add_theme_constant_override("shadow_offset_x",1);clock_label.add_theme_constant_override("shadow_offset_y",2);clock_label.add_theme_constant_override("shadow_outline_size",3)
 	sites=HBoxContainer.new();safe_frame.add_child(sites);sites.anchor_top=1;sites.anchor_bottom=1;sites.anchor_right=1;sites.offset_left=22;sites.offset_right=-22;sites.add_theme_constant_override("separation",9)
 	sites.hide()
@@ -159,6 +159,7 @@ func sync_goal():
 		item.small.visible=selected and ready and not done and quota>1
 		item.small.text="这一步  "+str(roundi(part*quota))+" / "+str(quota)
 		item.stepbar.visible=item.small.visible;item.stepbar.value=part
+		item.panel.reset_size()
 	update_world_progress()
 func add_world_progress(id:String):
 	var panel=PanelContainer.new();panel.name="WorldProgress_"+id;panel.mouse_filter=Control.MOUSE_FILTER_IGNORE;safe_frame.add_child(panel)
@@ -175,20 +176,30 @@ func add_world_progress(id:String):
 	var stepbar=progress.duplicate();box.add_child(stepbar);stepbar.custom_minimum_size.y=3;stepbar.get_theme_stylebox("fill").bg_color=Color("EBC673")
 	for child in panel.find_children("*","Control",true,false):child.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	world_progress[id]={"panel":panel,"title":title_label,"count":count_label,"bar":progress,"small":small,"stepbar":stepbar}
+	# Text, theme and child visibility change layout; moving the globe does not.
+	panel.minimum_size_changed.connect(panel.reset_size,CONNECT_DEFERRED)
 func update_world_progress():
 	if not is_instance_valid(card) or not is_instance_valid(overlay):return
+	var camera=game.camera
+	var camera_position=camera.global_position
+	var globe_basis=game.world.globe.global_basis
+	var bottom=card.position.y-8 if card.visible else safe_rect.size.y-8
 	for id in world_progress:
 		var panel=world_progress[id].panel;var active=id==game.frontier.data.active
-		panel.visible=not overlay.visible and game.frontier.previewable(id) and (active or not game.frontier.done(id))
-		if not panel.visible:continue
-		var marker=game.world.markers[id];var normal=game.world.globe.global_basis*marker.position.normalized()
-		if normal.dot((game.camera.global_position-marker.global_position).normalized())<.20:panel.hide();continue
-		var point=game.world.progress_anchor(id)
-		if game.camera.is_position_behind(point):panel.hide();continue
-		panel.reset_size();panel.position=game.camera.unproject_position(point)-safe_rect.position-Vector2(panel.size.x*.5,panel.size.y+8)
-		var bottom=card.position.y-8 if card.visible else safe_rect.size.y-8
-		# Never pin a label to the screen edge: it belongs to the object below it.
-		if panel.position.x<5 or panel.position.x+panel.size.x>safe_rect.size.x-5 or panel.position.y<86 or panel.position.y+panel.size.y>bottom:panel.hide()
+		var display=not overlay.visible and game.frontier.previewable(id) and (active or not game.frontier.done(id))
+		if display:
+			var marker=game.world.markers[id];var normal=globe_basis*marker.position.normalized()
+			display=normal.dot((camera_position-marker.global_position).normalized())>=.20
+		if display:
+			var point=game.world.progress_anchor(id)
+			display=not camera.is_position_behind(point)
+			if display:
+				var position=camera.unproject_position(point)-safe_rect.position-Vector2(panel.size.x*.5,panel.size.y+8)
+				# Never pin a label to the screen edge: it belongs to the object below it.
+				display=position.x>=5 and position.x+panel.size.x<=safe_rect.size.x-5 and position.y>=86 and position.y+panel.size.y<=bottom
+				if display:panel.position=position
+		# Apply the final result once. Occluded labels must not show/hide every frame.
+		panel.visible=display
 
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
@@ -330,7 +341,6 @@ func _process(dt):
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
 	clock_label.visible=game.exploring and not overlay.visible
-	clock_label.anchor_top=.19;clock_label.anchor_bottom=.19
 	clock_label.modulate.a=1.0-card.modulate.a if card.visible else 1.0
 	var second=int(Time.get_unix_time_from_system())
 	if clock_label.visible and second!=clock_second:

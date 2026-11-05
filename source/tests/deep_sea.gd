@@ -32,7 +32,7 @@ func run():
 		if animal.kind=="fish" and animal.anchor.visible:seen[animal.species]=true
 		if animal.kind=="whale" and animal.index==0:adult=animal
 	print("VISIBLE_SEA_KINDS ",seen.keys())
-	check(seen.size()==6 and seen.has("jelly"),"six distinct aquatic silhouettes have usable routes at the starting island")
+	check(seen.size()==10 and seen.has("dolphin") and seen.has("seahorse") and seen.has("puffer") and seen.has("squid"),"ten distinct aquatic silhouettes have usable routes at the starting island")
 	check(not adult.is_empty() and adult.scale>1.5 and adult.route_valid,"the adult whale is substantially larger and has a valid deep-sea route")
 	var safe_fish=true;var safe_whale=true;var fish_under=true;var whale_under=true;var visible=0
 	for step in range(0,650,5):
@@ -47,7 +47,7 @@ func run():
 					if p.length()<game.world.water.floor_radius(n)-.04:
 						if animal.kind=="fish":safe_fish=false
 						else:safe_whale=false
-					if animal.kind=="fish" and p.length()>IslandWater.surface_radius(n,game.world.time)+.02:fish_under=false
+					if animal.kind=="fish" and not (animal.species=="dolphin" and animal.state=="surface") and p.length()>IslandWater.surface_radius(n,game.world.time)+.02:fish_under=false
 					if animal.kind=="whale" and animal.state=="swim" and p.length()>IslandWater.surface_radius(n,game.world.time)+.02:whale_under=false
 	check(visible>500 and safe_fish,"complete fish meshes remain above the real seabed during their swimming cycles")
 	check(safe_whale,"the enlarged whale body and articulated tail avoid the seabed")

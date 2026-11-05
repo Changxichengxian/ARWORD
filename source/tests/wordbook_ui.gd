@@ -74,4 +74,4 @@ func run():
 	check(seed!=game.cosmos.sky_seed and settings==game.learning.data.space_settings,"new sky varies the scene without resetting saved slider choices")
 	print("WORDBOOK_UI_RESULT ",passed," passed / ",failed," failed")
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.1).timeout
-	game.queue_free();await process_frame;await process_frame;quit(0 if failed==0 else 1)
+	game.queue_free();await process_frame;await process_frame;quit.call_deferred(0 if failed==0 else 1)

@@ -48,7 +48,7 @@ func run():
 			if not animal.anchor.visible:continue
 			if animal.kind=="fish":
 				var normal=animal.anchor.position.normalized();var surface=IslandWater.surface_radius(normal,world.time)
-				if animal.anchor.position.length()+.17>surface:fish_submerged=false
+				if not (animal.species=="dolphin" and animal.state=="surface") and animal.anchor.position.length()+.17>surface:fish_submerged=false
 				if animal.anchor.position.length()-.14<world.water.floor_radius(normal):fish_above_floor=false
 			elif animal.kind=="whale":
 				if animal.state=="swim":swimming_whale=true
@@ -66,7 +66,7 @@ func run():
 		if animal.kind=="fish" and animal.anchor.visible:species[animal.species]=true
 		if animal.kind=="whale" and animal.index==0:adult=animal
 	print("VISIBLE_AQUATIC_SPECIES ",species.keys())
-	check(species.size()==6 and species.has("jelly"),"six small aquatic species have visible safe routes on the initial island")
+	check(species.size()==10 and species.has("dolphin") and species.has("seahorse") and species.has("puffer") and species.has("squid"),"all ten aquatic species have visible safe routes on the initial island")
 	check(adult.scale>1.5 and adult.route_valid,"the adult whale uses the enlarged body and a checked deep-water route")
 	check(not life.cave.is_empty() and life.deep_sea(life.cave.normal,3.2,2.85),"a real hollow cave is placed in water deep enough for its entire shell")
 	check(not life.cave.has("watcher") and life.preview_event("cave").is_equal_approx(life.cave.normal),"the camera can revisit the hollow cave after its inhabitant takes up trading")

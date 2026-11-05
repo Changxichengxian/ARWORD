@@ -38,8 +38,10 @@ func run():
 	worker.grant("word",Vector2.ZERO,game.world.selected_entry,0)
 	check(worker.work_left>=11.9,"one successful word grants a substantial work period")
 	game.next_task();check(worker.work_left>=11.8,"moving to the next exercise does not cancel earned work")
-	await create_timer(.8).timeout
-	check(worker.work_left>10 and game.world.tools.Axe.visible,"character wakes and resumes work")
+	# Lying characters first gather their legs and push up before setting off.
+	# Check the completed transition, not the old half-second interpolation.
+	await create_timer(worker.wake_duration+.15).timeout
+	check(worker.waking==0 and worker.work_left>10 and game.world.tools.Axe.visible,"character completes the staged rise and resumes work")
 	for i in range(8):worker.grant("word",Vector2.ZERO,game.world.selected_entry,0)
 	check(worker.work_left==36,"rapid answers extend work without creating an endless queue")
 	# The budget is only spent while working at the site.

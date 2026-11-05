@@ -51,15 +51,12 @@ func prepare(bundled:String=BUILTIN,legacy:String=""):
 		saved_for_update=true
 
 func preferred()->String:
-	for file in ["choice.cfg","choice.cfg.bak"]:
-		var cfg=ConfigFile.new()
-		if cfg.load(folder.path_join(file))==OK:
-			var id=cfg.get_value("cast","id","")
-			if id=="default" or (id=="deepseek" and not model_path.is_empty()):return id
-	return "default" if model_path.is_empty() else "deepseek"
+	# Old choice files may still select the retired white placeholder. The
+	# approved character is now the sole visible choice; never revive that mesh.
+	return "" if model_path.is_empty() else "deepseek"
 
 func remember(id:String)->bool:
-	if id not in ["default","deepseek"] or (id=="deepseek" and model_path.is_empty()):return false
+	if id!="deepseek" or model_path.is_empty():return false
 	if DirAccess.make_dir_recursive_absolute(folder)!=OK:return false
 	var cfg=ConfigFile.new()
 	cfg.set_value("cast","id",id)

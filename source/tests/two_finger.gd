@@ -76,4 +76,4 @@ func run():
 	game.close_observatory()
 	print("TWO_FINGER_RESULT ",checks," checks / ",failures," failed")
 	game.closing=true;game.ambience.shutdown();game.queue_free();await process_frame;await process_frame
-	quit(0 if failures==0 else 1)
+	quit.call_deferred(0 if failures==0 else 1)

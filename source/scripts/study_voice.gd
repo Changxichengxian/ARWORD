@@ -4,9 +4,16 @@ const PACK_NAME="feiyu-cute-v1.arvoice"
 const PACK_SIZE=56907124
 const PACK_HASH="b8df8b5e2222f2aa5a287003f0fe6673c7a9cf0445d16fd8ba733f2495fb77f9"
 const RELEASE_PATH="/Changxichengxian/ARWORD-voice/releases/download/feiyu-cute-v1/"+PACK_NAME
+const CACHE_MAX_RECORDINGS=32
+const CACHE_MAX_BYTES=8*1024*1024
 var archive:ZIPReader
+var _recordings:Dictionary={}
+var _recording_order:Array[String]=[]
+var _recording_bytes=0
 
 func prepare(folder:String):
+	_recordings.clear();_recording_order.clear();_recording_bytes=0
+	if archive!=null:archive.close()
 	archive=open_cache(folder.path_join(PACK_NAME))
 
 func install_file(folder:String,source_path:String)->bool:
@@ -46,7 +53,24 @@ func copy_recordings(source_path:String,path:String)->bool:
 	return digest.finish().hex_encode()==PACK_HASH and FileAccess.get_sha256(path)==PACK_HASH
 
 func recording(path:String)->AudioStream:
-	if archive==null or not archive.file_exists(path):return null
+	if archive==null:return null
+	if _recordings.has(path):
+		_recording_order.erase(path);_recording_order.append(path)
+		return _recordings[path].stream
+	if not archive.file_exists(path):return null
 	var bytes=archive.read_file(path)
-	return AudioStreamMP3.load_from_buffer(bytes) if not bytes.is_empty() else null
+	if bytes.is_empty():return null
+	var stream=AudioStreamMP3.load_from_buffer(bytes)
+	if stream==null:return null
+	# Bound both the number of recordings and their encoded MP3 data. Long
+	# recordings can still play without displacing the entire recent cache.
+	if bytes.size()>CACHE_MAX_BYTES:return stream
+	while not _recording_order.is_empty() and (_recordings.size()>=CACHE_MAX_RECORDINGS or _recording_bytes+bytes.size()>CACHE_MAX_BYTES):
+		var oldest=_recording_order.pop_front()
+		_recording_bytes-=int(_recordings[oldest].bytes)
+		_recordings.erase(oldest)
+	_recordings[path]={"stream":stream,"bytes":bytes.size()}
+	_recording_order.append(path)
+	_recording_bytes+=bytes.size()
+	return stream
 

@@ -5,6 +5,13 @@ class_name IslandAvatar
 const MAX_BYTES=64*1024*1024
 const HEIGHT=1.085
 const REQUIRED=["hips","spine","head","leftUpperArm","leftLowerArm","leftHand","rightUpperArm","rightLowerArm","rightHand","leftUpperLeg","leftLowerLeg","leftFoot","rightUpperLeg","rightLowerLeg","rightFoot"]
+const FACE_EXPRESSIONS=["blink","blinkLeft","blinkRight","lookUp","lookDown","lookLeft","lookRight","ih","happy","angry","relaxed"]
+const FACE_FOCUS=.10
+const FACE_EFFORT=.18
+const FACE_MOUTH=.07
+const FACE_HAPPY=.08
+const FACE_RELAX=.18
+const FACE_LOOK=.22
 var world
 var scene:Node3D
 var skeleton:Skeleton3D
@@ -19,6 +26,8 @@ var meshes:Array=[]
 var foot_probes:Array=[]
 var support_probes:Array=[]
 var blink_bindings:Array=[]
+var expression_bindings:Dictionary={}
+var expression_targets:Array=[]
 var native_to_game=Basis.IDENTITY
 var unit_scale=1.0
 var clearance=.43
@@ -234,21 +243,114 @@ func add_contacts(arrays:Array,binds:Array,points:Array):
 		if int(encoded)%2==1:foot_probes.append(probe)
 
 func prepare_blink(json:Dictionary,state:GLTFState):
-	var ext=json.extensions;var bindings=[]
-	if ext.has("VRMC_vrm"):
-		var expressions=ext.VRMC_vrm.get("expressions",{});var preset=expressions.get("preset",{}) if expressions is Dictionary else {};var blink=preset.get("blink",{}) if preset is Dictionary else {};var targets=blink.get("morphTargetBinds",[]) if blink is Dictionary else []
-		if not targets is Array:targets=[]
+	# Resolve only known facial expressions once. Clothing morphs (such as TiePen)
+	# and the original model bytes are never changed by the expression driver.
+	blink_bindings.clear();expression_bindings.clear();expression_targets.clear()
+	var ext=json.get("extensions",{});var vrm=ext.get("VRMC_vrm",{}) if ext is Dictionary else {}
+	var expressions=vrm.get("expressions",{}) if vrm is Dictionary else {}
+	var preset=expressions.get("preset",{}) if expressions is Dictionary else {}
+	for name in FACE_EXPRESSIONS:
+		expression_bindings[name]=[]
+		var expression=preset.get(name,{}) if preset is Dictionary else {}
+		var targets=expression.get("morphTargetBinds",[]) if expression is Dictionary else []
+		if not targets is Array:continue
 		for bind in targets:
-			if not bind is Dictionary or not (bind.get("node") is int or bind.get("node") is float) or not (bind.get("index") is int or bind.get("index") is float) or not (bind.get("weight") is int or bind.get("weight") is float):continue
-			if int(bind.node)<0 or int(bind.node)>=state.get_nodes().size():continue
+			if not bind is Dictionary:continue
+			var valid=true
+			for key in ["node","index","weight"]:
+				var value=bind.get(key)
+				if not (value is int or value is float) or not is_finite(float(value)):valid=false;break
+			if not valid or float(bind.node)!=float(int(bind.node)) or float(bind.index)!=float(int(bind.index)) or int(bind.node)<0 or int(bind.node)>=state.get_nodes().size():continue
 			var node=state.get_scene_node(int(bind.node))
-			if node is MeshInstance3D:bindings.append({"mesh":node,"index":int(bind.index),"weight":float(bind.weight)})
-	for binding in bindings:
-		if binding.index>=0 and binding.index<binding.mesh.mesh.get_blend_shape_count():blink_bindings.append(binding)
-	if blink_bindings.is_empty():
+			if not is_instance_valid(node):continue
+			add_expression_binding(name,node,int(bind.index),float(bind.weight))
+	# Older models may only expose blend-shape names. Keep their blink support.
+	for name in FACE_EXPRESSIONS:
+		if not expression_bindings[name].is_empty():continue
 		for mesh in meshes:
-			for i in mesh.mesh.get_blend_shape_count():
-				if str(mesh.mesh.get_blend_shape_name(i)).to_lower()=="blink":blink_bindings.append({"mesh":mesh,"index":i,"weight":1.0})
+			if not is_instance_valid(mesh):continue
+			if not mesh is MeshInstance3D or not is_instance_valid(mesh.mesh):continue
+			for i in mini(mesh.mesh.get_blend_shape_count(),mesh.get_blend_shape_count()):
+				if str(mesh.mesh.get_blend_shape_name(i)).to_lower()==name.to_lower():add_expression_binding(name,mesh,i,1.0)
+	blink_bindings.append_array(expression_bindings.blink)
+	if blink_bindings.is_empty():
+		blink_bindings.append_array(expression_bindings.blinkLeft);blink_bindings.append_array(expression_bindings.blinkRight)
+	# Several expressions can share a shape. Sum them before writing it once.
+	var by_target={}
+	for name in FACE_EXPRESSIONS:
+		for binding in expression_bindings[name]:
+			if not valid_expression_target(binding.mesh,binding.index):continue
+			var key=str(binding.mesh.get_instance_id())+":"+str(binding.index)
+			if not by_target.has(key):
+				var target={"mesh":binding.mesh,"index":binding.index,"weights":{}}
+				by_target[key]=target;expression_targets.append(target)
+			by_target[key].weights[name]=binding.weight
+
+func valid_expression_target(node,index:int)->bool:
+	# GLTF may retain a scene-node reference after replacing a generated node.
+	# A freed reference must be rejected before even using the type operator.
+	if not is_instance_valid(node):return false
+	if not node is MeshInstance3D or not is_instance_valid(node.mesh):return false
+	return index>=0 and index<node.mesh.get_blend_shape_count() and index<node.get_blend_shape_count()
+
+func add_expression_binding(name:String,node,index:int,weight:float):
+	if not valid_expression_target(node,index) or not is_finite(weight) or weight<=0 or not expression_bindings.has(name):return
+	for binding in expression_bindings[name]:
+		if binding.mesh==node and binding.index==index:return
+	expression_bindings[name].append({"mesh":node,"index":index,"weight":clampf(weight,0,1)})
+
+static func expression_amount(state:Dictionary,key:String)->float:
+	var value=state.get(key,0.0)
+	return clampf(float(value),0,1) if (value is int or value is float) and is_finite(float(value)) else 0.0
+
+static func blink_pulse(t:float)->float:
+	if t<0 or t>.22:return 0.0
+	return smoothstep(0,.065,t) if t<.065 else 1.0-smoothstep(.065,.22,t)
+
+static func natural_blink(now:float)->float:
+	# Pure time sampling: settling the feet can evaluate the same pose twice.
+	# Neither that nor the frame rate should advance a blink or consume randomness.
+	var time=maxf(0,now) if is_finite(now) else 0.0
+	var cycle=floori(time/5.1);var phase=fmod(time,5.1)
+	var seed=sin(float(cycle)*12.9898+4.71)*43758.5453
+	var start=1.3+(seed-floor(seed))*2.3
+	var blink=blink_pulse(phase-start)
+	if cycle%7==4:blink=maxf(blink,blink_pulse(phase-start-.31)*.85)
+	return blink
+
+static func expression_values(state:Dictionary,now:float,neutral:bool=false)->Dictionary:
+	var values={}
+	for name in FACE_EXPRESSIONS:values[name]=0.0
+	if neutral:return values
+	var sleep=expression_amount(state,"sleep")
+	var effort=expression_amount(state,"effort")*(1.0-sleep)
+	var focus=expression_amount(state,"focus")*(1.0-sleep)
+	var relax=expression_amount(state,"relax")*(1.0-sleep)*(1.0-effort*.75)
+	# A small sustained squint follows strain; full blinks remain brief. It
+	# relaxes with the load instead of switching the whole face at each step.
+	values.blink=lerpf(maxf(natural_blink(now),effort*effort*.22),.94,sleep)
+	values.blinkLeft=values.blink;values.blinkRight=values.blink
+	values.angry=FACE_FOCUS*focus+FACE_EFFORT*effort
+	values.ih=FACE_MOUTH*effort
+	values.happy=FACE_HAPPY*relax
+	values.relaxed=FACE_RELAX*(relax+sleep)
+	var look=state.get("look",Vector2.ZERO)
+	if look is Vector2 and look.is_finite():
+		# Positive X looks to the character's right; positive Y looks up.
+		var strength=FACE_LOOK*(1.0-sleep)
+		values.lookRight=clampf(look.x,0,1)*strength;values.lookLeft=clampf(-look.x,0,1)*strength
+		values.lookUp=clampf(look.y,0,1)*strength;values.lookDown=clampf(-look.y,0,1)*strength
+	return values
+
+func apply_expression(state:Dictionary,now:float,neutral:bool=false):
+	var values=expression_values(state,now,neutral)
+	# Combined and per-eye blink shapes usually deform the same vertices.
+	if not expression_bindings.get("blink",[]).is_empty():values.blinkLeft=0.0;values.blinkRight=0.0
+	for target in expression_targets:
+		if not valid_expression_target(target.mesh,target.index):continue
+		var value=0.0
+		for name in target.weights:value+=values.get(name,0.0)*target.weights[name]
+		target.mesh.set_blend_shape_value(target.index,clampf(value,0,1))
 
 func canonical(rotation:Basis)->Basis:return native_to_game.inverse()*rotation*native_to_game
 func update_pose(neutral=false):
@@ -256,7 +358,6 @@ func update_pose(neutral=false):
 	position=Vector3.ZERO
 	var body=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs.Body.rotation);var head=Basis.from_euler(world.worker.head_pivot.rotation) if not neutral and world.worker.head_pivot else Basis.IDENTITY
 	var napping=not neutral and world.worker.work_left<=0 and world.worker.rest_variant==1 and world.worker.waking<=0
-	if napping:head=Basis.from_euler(Vector3(.14,0,.035))
 	var rotations={humanoid.spine:canonical(Basis.IDENTITY.slerp(body,.55)),humanoid.head:canonical(body*head)}
 	for part in ["chest","upperChest","neck"]:
 		if humanoid.has(part):rotations[humanoid[part]]=canonical(body)
@@ -280,6 +381,8 @@ func update_pose(neutral=false):
 			else:pose.basis=pose.basis*Basis(Vector3.FORWARD,wave)
 		poses[i]=pose;skeleton.set_bone_global_pose_override(i,pose,1.0,true)
 	skeleton.force_update_all_bone_transforms()
+	var expression=world.worker.get("expression")
+	apply_expression(expression if expression is Dictionary else {},world.time,neutral)
 	if neutral:return
 	var worker=world.worker;var resting=worker.work_left<=0 and worker.waking<=0 and not (world.move_tween and world.move_tween.is_running())
 	var key=str(worker.rest_variant)+str(world.builder.position.snapped(Vector3.ONE*.001))+str(world.land.size())
@@ -295,13 +398,12 @@ func update_pose(neutral=false):
 		rest_cached=resting and worker.rest_time>=.95;rest_key=key
 	rest_actor_height=world.actor.position.y
 	global_position+=world.builder.global_basis.y.normalized()*ground_offset
-	var blink_time=fmod(world.time+1.7,4.6);var blink=sin(blink_time/.18*PI) if blink_time<.18 else 0.0
-	if napping:blink=.94
-	for binding in blink_bindings:binding.mesh.set_blend_shape_value(binding.index,blink*binding.weight)
 	var hand=hand_point("right")
 	for tool in world.tools.values():tool.global_position=hand
 	if worker.carry.visible:
-		worker.carry.global_position=(hand+hand_point("left"))*.5-worker.carry.global_basis*Vector3(0,.29,-.42)
+		# Cradle the bottom of the bundle with both palms; its centre should not
+		# occupy the hands. Keep it slightly toward the body so the grip reads.
+		worker.carry.global_position=(hand+hand_point("left"))*.5-worker.carry.global_basis*Vector3(0,.16,-.46)
 
 func probe_point(probe:Dictionary)->Vector3:
 	var point=Vector3.ZERO
