@@ -17,6 +17,8 @@ func run():
 		if step>=1:
 			continuously_visible=continuously_visible and land.rabbits.size()==1
 			for rabbit in land.rabbits:continuously_visible=continuously_visible and rabbit.anchor.is_visible_in_tree() and rabbit.model.scale.x>.1
+	if "--qa-with-cast" in OS.get_cmdline_user_args():
+		check(is_instance_valid(world.avatar) and world.avatar.is_fish,"rabbit startup is exercised with the real fish character loaded")
 	check(continuously_visible,"natural startup keeps one visible rabbit after the worker clears the grass")
 	life.set_process(false)
 	if world.move_tween and world.move_tween.is_valid():world.move_tween.kill()
@@ -40,7 +42,7 @@ func run():
 			var rabbit=land.rabbits[i];states[rabbit.state]=true
 			if known_route.is_empty() and rabbit.state=="hop" and rabbit.from!=rabbit.to:known_route=[rabbit.from,rabbit.to]
 			var current_safe=land.grass_safe(rabbit.point,false) and rabbit.anchor.transform.is_finite()
-			if safe and not current_safe:print("RABBIT_UNSAFE frame=",frame," point=",rabbit.point," state=",rabbit.state," from=",rabbit.from," to=",rabbit.to," ground=",world.clear_ground(rabbit.point,land.CLEARANCE)," kind=",world.terrain.kind(world.terrain.cell_at(rabbit.point)))
+			if safe and not current_safe:print("RABBIT_UNSAFE frame=",frame," point=",rabbit.point," state=",rabbit.state," from=",rabbit.from," to=",rabbit.to," ground=",world.clear_ground(rabbit.point,land.CLEARANCE,false)," kind=",world.terrain.kind(world.terrain.cell_at(rabbit.point)))
 			safe=safe and current_safe
 			moved+=old[i].p.distance_to(rabbit.point)
 			if old[i].state!="hop" and rabbit.state!="hop" and old[i].p!=rabbit.point:planted=false
@@ -75,4 +77,4 @@ func run():
 	print("RABBIT_RESULT ",failed," failed; states=",states," moved=",moved)
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null
 	game.queue_free();await process_frame;await process_frame;await create_timer(.1).timeout
-	quit(0 if failed==0 else 1)
+	quit.call_deferred(0 if failed==0 else 1)

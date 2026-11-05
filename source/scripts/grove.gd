@@ -552,8 +552,8 @@ func on_land(p:Vector2)->bool:
 	if dq>dr and dq>ds:iq=-ir-ids
 	elif dr>ds:ir=-iq-ids
 	return land.has(Vector2i(iq,ir))
-func clear_ground(p:Vector2,clearance=WALK_CLEARANCE)->bool:
-	if is_instance_valid(avatar):clearance=maxf(clearance,avatar.clearance)
+func clear_ground(p:Vector2,clearance=WALK_CLEARANCE,use_character_clearance=true)->bool:
+	if use_character_clearance and is_instance_valid(avatar):clearance=maxf(clearance,avatar.clearance)
 	if not on_land(p):return false
 	for i in range(8):
 		if not on_land(p+Vector2.from_angle(i*TAU/8)*minf(clearance,.20)):return false
@@ -564,10 +564,10 @@ func clear_ground(p:Vector2,clearance=WALK_CLEARANCE)->bool:
 		for i in range(polygon.size()-1):
 			if p.distance_to(Geometry2D.get_closest_point_to_segment(p,polygon[i],polygon[i+1]))<clearance:return false
 	return true
-func clear_segment(a:Vector2,b:Vector2,clearance=WALK_CLEARANCE)->bool:
+func clear_segment(a:Vector2,b:Vector2,clearance=WALK_CLEARANCE,use_character_clearance=true)->bool:
 	var count=maxi(1,ceili(a.distance_to(b)/.10))
 	for i in range(count+1):
-		if not clear_ground(a.lerp(b,float(i)/count),clearance):return false
+		if not clear_ground(a.lerp(b,float(i)/count),clearance,use_character_clearance):return false
 	return true
 func rebuild_navigation():
 	# Buildings reserve their finished footprint. Only a new site, addition,

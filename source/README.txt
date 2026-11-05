@@ -104,7 +104,7 @@ android-plugin 保存原生更新插件源代码，tools/make_apk_update.py 从�
 
 第二轮动物试玩（2026-11-05）：Windows 入口为 outputs/wildlife-expanded/Windows/ARWORD.exe。新增兔子、海豚、海马、河豚和鱿鱼，运行模型与 Blender 源文件增加到 89 对。兔子在草地短跳、嗅闻、理毛与停坐，开局 1 只，扩地最多 2 只；避让建筑、装饰、海岸和人物。海豚上浮换气后再下潜，海马小鳍悬游，河豚轻触后逐渐鼓起，鱿鱼收缩身体和分段摆腕。鱼群交替游动、放慢与停留，鸟蝶增加转头和姿态变化。
 龟甲改成沿椭圆轮廓排列的错落多边形，取消横平竖直的内部格子。岩台有三只错开行动的螃蟹，沿岩壁爬到真实海床觅食，再返回岩台；扩地后只使用安全路线，周围受阻的个体留台活动。海豹会腹部挪动、伸展、侧躺晒背和抬头回应。按用户要求取消“去看看”及“巡游与海底”入口和整页跳转面板，观察动物使用正常的星球拖动、缩放和轻触；内部镜头检查只供开发验证。
-新增制作入口 tools/make_rabbit.py、tools/make_ocean_guests.py；兔子地面行为位于 scripts/land_wildlife.gd。所有动物行为均不写学习、材料或建设记录。安卓继续使用同一套原生源码，本轮交付 Windows 试玩，不重新发布安装包。
+新增制作入口 tools/make_rabbit.py、tools/make_ocean_guests.py；兔子地面行为位于 scripts/land_wildlife.gd。兔子按自身大小避开建筑，安全位置搜索覆盖四圈草地；人物停在初始位置时也能找到安全活动区域。所有动物行为均不写学习、材料或建设记录。安卓继续使用同一套原生源码，本轮交付 Windows 试玩，不重新发布安装包。
 
 第一轮动物外观与动作修订（2026-11-05）：海鸥使用白头、灰色分段翼和黑色翼尖，拍翼与滑翔平滑交替；海龟前长后短的鳍从甲壳下连接，前鳍划水、后鳍转向，间歇滑行。鳐鱼内外翼分段摆动；三类鱼使用竖直尾鳍与独立胸鳍；蝴蝶前后翅略有延迟。螃蟹有八条可动步足，海豹双前鳍、虎鲸胸鳍和水母触须补充小幅动作。轻触鸟蝶后的上升与加速逐渐发生。相关 Blender 源文件保留在 art-source/；第一轮试玩保留在 outputs/wildlife-preview/Windows/ARWORD.exe。
 内部动物核对：Godot --headless --path . --script tests/wildlife_motion.gd -- --qa；原生姿态图：Godot --path . --script tests/wildlife_visual.gd -- --qa --visual-out=<截图目录>。两项使用隔离场景，不改本人学习记录。
@@ -138,6 +138,8 @@ Godot --path . --script tests/wordbook_ui.gd -- --qa --visual-out=<截图目录>
 Godot --path . --script tests/spatial_actor.gd -- --qa --visual-out=<截图目录>
 Godot --path . --script tests/cosmos_art.gd -- --qa --visual-out=<截图目录>
 Godot --headless --path . --script tests/space_settings.gd -- --qa
+Godot --headless --path . --script tests/land_wildlife.gd -- --qa
+Godot --headless --audio-driver Dummy --path . --script tests/land_wildlife.gd -- --qa --qa-with-cast --qa-avatar-scope=rabbit-with-character
 Godot --headless --path . --script tests/worker_motion.gd -- --qa
 Godot --headless --audio-driver Dummy --path . --script tests/character_actions.gd -- --qa --qa-with-cast --qa-avatar-scope=actions
 Godot --headless --audio-driver Dummy --path . --script tests/avatar_expression.gd -- --qa --qa-with-cast --qa-avatar-scope=expressions

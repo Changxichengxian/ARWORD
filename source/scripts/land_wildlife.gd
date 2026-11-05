@@ -23,7 +23,8 @@ func ground(p:Vector2)->Vector3:
 	return world.ground_point(p) if world.has_method("ground_point") else world.surface(p)
 
 func grass_safe(p:Vector2,avoid_actor=true)->bool:
-	if not world.has_method("clear_ground") or not world.clear_ground(p,CLEARANCE):return false
+	# Keep rabbit-sized building clearance even when a larger character loads.
+	if not world.has_method("clear_ground") or not world.clear_ground(p,CLEARANCE,false):return false
 	if not world.terrain.kind(world.terrain.cell_at(p)) in GRASS:return false
 	for prop in low_props:
 		if p.distance_squared_to(prop.center)<prop.radius*prop.radius:return false
@@ -41,7 +42,7 @@ func grass_safe(p:Vector2,avoid_actor=true)->bool:
 
 func safe_route(a:Vector2,b:Vector2,avoid_actor=true)->bool:
 	if a.distance_to(b)>.81 or world.terrain.chart_at(a)!=world.terrain.chart_at(b):return false
-	if not world.clear_segment(a,b,CLEARANCE):return false
+	if not world.clear_segment(a,b,CLEARANCE,false):return false
 	var count=maxi(2,ceili(a.distance_to(b)/.09));var previous=ground(a)
 	var builder=world.get("builder");var actor_limit=.85
 	if avoid_actor and is_instance_valid(builder):actor_limit=minf(.85,previous.distance_to(builder.position))
@@ -67,11 +68,14 @@ func refresh_habitat():
 	for cell in world.land:
 		if not world.terrain.kind(cell) in GRASS:continue
 		var center=IslandFrontier.point(cell)
-		for i in range(12):
-			var p=center+Vector2.from_angle(i*TAU/12+.35)*(.48 if i%2==0 else .82)
-			if grass_safe(p):
-				if world.terrain.kind(cell)=="meadow":homes.push_front(p)
-				else:homes.append(p)
+		# A stationary character can occupy all twelve old sample points while
+		# safe grass remains between them. Search more of the same real ground.
+		for radius in [.24,.48,.82,1.08]:
+			for i in range(24):
+				var p=center+Vector2.from_angle(i*TAU/24+.35)*radius
+				if grass_safe(p):
+					if world.terrain.kind(cell)=="meadow":homes.push_front(p)
+					else:homes.append(p)
 	var desired=2 if land_count>=18 else 1
 	while rabbits.size()>desired:
 		rabbits.pop_back().anchor.queue_free()
