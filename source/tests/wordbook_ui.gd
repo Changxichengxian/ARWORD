@@ -30,7 +30,7 @@ func run():
 	game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.5).timeout
 	var top=game.hud.header.find_children("*","Button",true,false)
-	check(top.size()==2 and top[0].kind=="books" and top[1].kind=="gear","the app toolbar has only books and settings")
+	check(top.size()==3 and top[0].kind=="books" and top[1].kind=="search" and top[2].kind=="gear","the app toolbar has books, word search and settings")
 	game.settings();await settle();check(modal_fits(),"compact settings fit on screen");await snap("settings")
 	game.voice_settings();await settle();check(modal_fits(),"optional voice picker fits");await snap("voices")
 	game.show_wordbooks();await settle();check(modal_fits(),"library, counts and study preferences fit");await snap("wordbooks")
@@ -74,4 +74,7 @@ func run():
 	check(seed!=game.cosmos.sky_seed and settings==game.learning.data.space_settings,"new sky varies the scene without resetting saved slider choices")
 	print("WORDBOOK_UI_RESULT ",passed," passed / ",failed," failed")
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.1).timeout
-	game.queue_free();await process_frame;await process_frame;quit.call_deferred(0 if failed==0 else 1)
+	game.queue_free();await process_frame;await process_frame
+	var drain_until=Time.get_ticks_msec()+250
+	while Time.get_ticks_msec()<drain_until:await process_frame
+	quit.call_deferred(0 if failed==0 else 1)

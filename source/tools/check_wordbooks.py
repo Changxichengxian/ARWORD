@@ -36,6 +36,11 @@ def main():
     check(all(r['audio']=='wordbooks/audio/'+hashlib.sha256(r['word'].encode()).hexdigest()[:20]+'.mp3' for r in rows),'safe deterministic audio paths')
     check(all((BASE/'licenses'/f).exists() for f in ['ECDICT-LICENSE.txt','OpenEtymology-DATA_LICENSE.md','CC-BY-SA-4.0.txt']),'data source licenses retained')
     raw=read(BASE/'sources/ecdict-selected.json');overrides=read(BASE/'sources/definition-overrides.json')
+    review=read(BASE/'sources/reviewed-meanings.json')
+    overrides={**review['entries'],**overrides}
+    check(all(entries[w]['zh']==d['zh'] and entries[w]['meaning_source']=='reviewed' for w,d in overrides.items() if w in entries),'reviewed main meanings cannot regress to dictionary first sense')
+    check(all(entries[w]['meaning_source']=='reviewed' for w in entries if 0<int(raw.get(w,{}).get('frq') or 0)<=review['frequency_rank_limit']),'common words require explicit reviewed main meanings')
+    check(entries['tradition']['zh'].startswith('传统') and entries['industry']['zh'].startswith('工业') and entries['kid']['zh'].startswith('小孩') and entries['stock']['zh'].startswith('股票'),'known misleading old first senses stay corrected')
     frequencies=read(BASE/'sources/ecdict-pos-frequency.json')
     check(len(frequencies)>10000 and frequencies['give']['pos']=='v:100' and frequencies['keep']['pos']=='n:1/v:99','real corpus POS evidence covers most entries and exposes noun-first bias')
     check(all(entries[w]['pos']=='动词' for w in ['settle','allow','affect','imagine']),'unreviewed common verbs use the corpus-supported verb group')

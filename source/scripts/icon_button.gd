@@ -17,6 +17,9 @@ func _draw():
 	var r=13.0;var col=ink
 	if disabled:col.a=.4
 	match kind:
+		"search":
+			draw_arc(c+Vector2(-3,-3),8,0,TAU,32,col,2.5,true)
+			draw_line(c+Vector2(3,3),c+Vector2(12,12),col,3,true)
 		"star":
 			var corners=[];var curve=PackedVector2Array()
 			for i in range(10):

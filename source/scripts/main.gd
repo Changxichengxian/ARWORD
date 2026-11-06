@@ -23,6 +23,10 @@ const CLOSE_PITCH=35.0
 var current:Dictionary={}
 var mission:Dictionary={}
 var dictionary={}
+var word_details
+var word_search_query=""
+var word_senses=preload("res://scripts/word_senses.gd").new()
+var word_selected:Array=[]
 var mode="word"
 var order:Array=[]
 var locked=false
@@ -80,6 +84,8 @@ func _ready():
 		for c in IslandFrontier.CHAPTERS:frontier.data.progress[c.id]=c.need
 		learning.data.build=[8,12,16];learning.data.development=[36,24,24];frontier.data.active="cottage"
 	dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/dictionary.json"))
+	word_details=preload("res://scripts/word_details.gd").new(learning.by_id,dictionary,learning.wordbooks.entries)
+	word_details.senses=word_senses.entries
 	world=IslandGrove.new();add_child(world);world.setup(self)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=Vector3(0,24,21);camera.look_at(Vector3(0,10.0,0));camera.current=true
 	cosmos=load("res://scripts/cosmos.gd").new();cosmos.name="Cosmos";add_child(cosmos);cosmos.setup(self)
@@ -116,17 +122,18 @@ func save_progress():
 func context_key()->String:return str(mission.id)+"_"+mode
 func next_task():
 	if closing:return
-	mode=frontier.mode();locked=false;help_visible=false;sentence_hint=""
+	mode=frontier.mode();locked=false;help_visible=false;sentence_hint="";word_selected=[]
 	context_between_words=false
 	if mode=="word":
 		current=learning.next_word(Time.get_unix_time_from_system())
+		if not current.is_empty():current=word_senses.prepare(current)
 		context_between_words=current.is_empty()
 		if context_between_words:mode=["read","listen","sentence"][int(learning.data.word_turn)%3]
 	mission=curriculum.preview(learning) if mode=="word" else curriculum.next(learning,mode)
 	context_assisted=learning.data.context_help.get(context_key(),false)
 	short_reading=curriculum.short_first(learning,mission)
 	if mode=="word":
-		helped=learning.data.help_pending==current.id;order=[0,1,2,3]
+		helped=learning.data.help_pending==current.id;order=range(current.options.size())
 	else:
 		current={};order=[0,1,2]
 		if mode=="sentence":
@@ -161,11 +168,29 @@ func introduce_word(id:String,already_known=false):
 
 func answer(index:int):
 	if locked or help_visible or hud.overlay.visible or exploring or introducing():return
+	if mode=="word" and word_senses.is_multi(current):return
 	var correct=int(current.correct) if mode=="word" else int(mission.correct if mode=="read" else mission.cue_correct)
 	if index!=correct:
 		if mode=="word":reveal()
 		else:mark_context_help();hud.show_task()
 		return
+	finish_answer(index)
+
+func toggle_word_answer(index:int):
+	if locked or help_visible or hud.overlay.visible or exploring or introducing() or not word_senses.is_multi(current):return
+	if index<0 or index>=current.options.size():return
+	if word_selected.has(index):word_selected.erase(index)
+	elif word_selected.size()<current.correct_indices.size():word_selected.append(index)
+	else:hud.toast("先取消一项，再选其他释义")
+	hud.update_word_selection()
+
+func submit_word_answers():
+	if locked or help_visible or hud.overlay.visible or exploring or introducing() or not word_senses.is_multi(current):return
+	if word_selected.size()!=current.correct_indices.size():return
+	if not word_senses.matches(current,word_selected):reveal();return
+	finish_answer(-1)
+
+func finish_answer(index:int):
 	locked=true;speech.stop();hud.feedback(index)
 	if mode=="word":learning.record(current.id,helped,Time.get_unix_time_from_system(),false,world.active_kind)
 	else:learning.finish_context(mode,mission.id,context_assisted,false)
@@ -204,7 +229,7 @@ func reveal():
 	helped=true;help_visible=true;learning.mark_help(current.id);save_progress();play_fx("soft");hud.show_help()
 func retry():
 	if locked:return
-	help_visible=false;order.shuffle();hud.show_task()
+	help_visible=false;word_selected=[];order.shuffle();hud.show_task()
 func toggle_short():
 	if locked:return
 	short_reading=not short_reading;speech.stop();hud.show_task()
@@ -443,7 +468,7 @@ func back():
 	elif hud.screen=="translation" and not journal_entry.is_empty():show_journal_page(journal_entry)
 	elif hud.screen in ["book_select","journal","bookmarks"]:show_wordbooks()
 	elif hud.screen=="voices":settings()
-	elif hud.overlay.visible:hud.close()
+	elif hud.overlay.visible:hide_word_keyboard();hud.close()
 	elif not exploring:explore()
 	else:settings()
 
@@ -876,15 +901,60 @@ func show_journal_translation():
 	hud.text(box,journal_entry.zh,21)
 	hud.ghost(box,"返回阅读",show_journal_page.bind(journal_entry))
 func lookup(word:String,play=true):
-	if hud.screen!="lookup":lookup_return=show_journal_page.bind(journal_entry) if hud.screen=="journal" else (func():hud.close()) if hud.screen not in ["bookmarks"] else lookup_return
-	var d=dictionary.get(word,{})
-	if d.is_empty() and learning.by_id.has(word):
-		var q=learning.by_id[word];d={"translation":q.get("definition",q.zh)}
+	word=word_details.normalize(word)
+	if not word_details.has_word(word):hud.toast("暂未收录这个单词");return
+	if hud.screen!="lookup":lookup_return=show_journal_page.bind(journal_entry) if hud.screen=="journal" else show_word_search if hud.screen=="search" else (func():hud.close()) if hud.screen!="bookmarks" else lookup_return
+	var d=word_details.entry(word)
 	if mode=="word" and word==str(current.get("id","")):helped=true;learning.mark_help(word);save_progress()
 	var box=hud.modal("");hud.screen="lookup";var r=hud.row(box)
-	var title=hud.ghost(r,word,func():play_speech(word_audio(word)));title.add_theme_font_size_override("font_size",30)
+	var title=hud.ghost(r,word,func():play_speech(word_audio(word)));title.add_theme_font_size_override("font_size",30);title.clip_text=true;title.name="LookupWord"
 	var star=hud.icon(r,"star",bookmark.bind(word),"收藏");star.lit=learning.data.bookmarks.has(word)
+	if not d.phonetic.is_empty():hud.text(box,"/"+d.phonetic+"/",18,IslandHUD.GREEN)
 	if learning.data.words.get(word,{}).get("mastered",false):hud.text(box,"已学会",16,IslandHUD.GREEN)
-	var rich=RichTextLabel.new();rich.text=str(d.get("translation","可在短文译文中查看这个词。"));rich.custom_minimum_size.y=clampf(ceil(rich.text.length()/22.0)*29,60,180);rich.add_theme_color_override("default_color",IslandHUD.INK);box.add_child(rich)
+	if not d.common.is_empty():
+		hud.text(box,"学习释义",16,IslandHUD.GREEN)
+		hud.text(box,d.common,24)
+	if not d.definition.is_empty():
+		hud.divider(box);hud.text(box,"更多释义",16,IslandHUD.GREEN);hud.text(box,d.definition,19)
+	var examples=word_details.sentences(word)
+	if not examples.is_empty():
+		hud.divider(box);hud.text(box,"例句",16,IslandHUD.GREEN)
+		var uses_corpus=false
+		for item in examples:
+			hud.text(box,item.en,20);hud.text(box,item.zh,18,Color("70857B"))
+			uses_corpus=uses_corpus or str(item.get("credit","")).begins_with("Tatoeba")
+		if uses_corpus:
+			var credit=RichTextLabel.new();credit.bbcode_enabled=true;credit.fit_content=true;credit.scroll_active=false;credit.add_theme_font_size_override("normal_font_size",13);credit.add_theme_color_override("default_color",Color("70857B"))
+			credit.text="例句来自 [url=https://tatoeba.org]Tatoeba[/url] · [url=https://creativecommons.org/licenses/by/2.0/fr/]CC BY 2.0 FR[/url]";box.add_child(credit)
+			credit.meta_clicked.connect(func(url):if str(url) in ["https://tatoeba.org","https://creativecommons.org/licenses/by/2.0/fr/"]:OS.shell_open(str(url)))
+	else:hud.text(box,"暂未收录例句",16,Color("70857B"))
 	hud.ghost(box,"返回",func():if lookup_return.is_valid():lookup_return.call())
 	if play:play_speech(word_audio(word))
+
+func show_word_search():
+	if locked:return
+	speech.stop();var box=hud.modal("搜索单词");hud.screen="search"
+	var line=hud.row(box)
+	var field=LineEdit.new();field.name="WordSearch";field.placeholder_text="输入英文单词";field.text=word_search_query;field.size_flags_horizontal=Control.SIZE_EXPAND_FILL;field.custom_minimum_size=Vector2(0,48);field.expand_to_text_length=false;field.max_length=60;field.virtual_keyboard_type=LineEdit.KEYBOARD_TYPE_DEFAULT;line.add_child(field)
+	field.add_theme_color_override("font_color",IslandHUD.INK);field.add_theme_color_override("font_placeholder_color",Color("70857B"));field.add_theme_stylebox_override("normal",hud.skin(Color("E5EFE4"),12))
+	var results=VBoxContainer.new();results.name="SearchResults";results.add_theme_constant_override("separation",8);box.add_child(results)
+	var submit=func(_value=""):
+		if word_details.has_word(field.text):field.release_focus();hide_word_keyboard();lookup(field.text)
+		else:hud.toast("请选择下方的单词")
+	hud.icon(line,"search",submit,"查词")
+	field.text_submitted.connect(submit)
+	field.text_changed.connect(func(value):word_search_query=value;update_word_search(results))
+	update_word_search(results)
+	hud.ghost(box,"返回",func():hide_word_keyboard();hud.close())
+	# Do not open the software keyboard again when returning from a definition.
+	if word_search_query.is_empty():field.call_deferred("grab_focus")
+
+func update_word_search(results:VBoxContainer):
+	for child in results.get_children():results.remove_child(child);child.queue_free()
+	var words=word_details.search(word_search_query)
+	if words.is_empty():hud.text(results,"输入单词，查看释义和例句" if word_search_query.strip_edges().is_empty() else "没有找到，试试单词原形",17,IslandHUD.GREEN)
+	for word in words:
+		var item=hud.button(results,word,func():hide_word_keyboard();lookup(word),false,44);item.alignment=HORIZONTAL_ALIGNMENT_LEFT;item.clip_text=true
+
+func hide_word_keyboard():
+	if OS.has_feature("android"):DisplayServer.virtual_keyboard_hide()

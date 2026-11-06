@@ -1,0 +1,44 @@
+学习释义与多义词题目（2026-11-06）
+
+单词总词频用于确定复核的优先级；词性频率仅用于词性分组。
+这两项都不能说明同一个词性内哪条词义最常用，不能把旧词典第一条当作频率第一。
+
+主释义：sources/reviewed-meanings.json 保存本轮核对的学习用语；
+sources/definition-overrides.json 保存专项修订并优先使用。
+当前在词书中收录、原数据 frq 排名不超过 1500 的词必须有明确记录，否则生成失败。
+核对之外的条目标为 dictionary，不能声称完成了全库的词义频率审核。
+主释义只决定学习卡与单选答案，不能覆盖、删减完整词典释义。
+本轮纠正了 tradition、industry、kid、stock、coach、facility 等默认义偏旧或偏少见的问题。
+
+多选：common-senses.json 是单独的逐义项复核表。
+每组保留独立编号、中文概括、词性、例句、参考页面与复核状态。
+参考现代学习词典的独立用法及基础等级，排除罕见、古旧和仅限专业的义项。
+同一用法的中文近义译法合为一组；例如 tradition 的传统、习俗、惯例不拆成三题。
+仅 reviewed 且有 2 或 3 组、连同干扰项共 6 项的词启用多选。
+干扰项也逐项核对，不把该词的次要但真实含义拿来当错误答案。
+多选里的义项是本轮已核准的教学范围，并非断言该词只有这几种常用义。
+general 表示编辑结合学习词典中的日常用法判定，没有伪造等级或语料占比。
+中文概括和配套教学例句为 ARWORD 编写，参考页面仅用于核对用法，不复制词典例句。
+
+首批参考：Cambridge Essential / English Dictionary 与 Collins COBUILD。
+各词具体页面见 common-senses.json 的 source 字段。
+bank 的银行、河岸分别见：
+https://dictionary.cambridge.org/dictionary/essential-british-english/bank
+light 的光线、轻、浅色分别见：
+https://dictionary.cambridge.org/us/dictionary/essential-british-english/light
+
+离线例句：word_examples.json，按需加载。
+原创例句优先；其余为 Tatoeba 的中英句对，经 ManyThings 整理。
+来源：https://tatoeba.org
+许可：CC BY 2.0 France https://creativecommons.org/licenses/by/2.0/fr/
+署名方法：https://en.wiki.tatoeba.org/articles/show/faq
+具体镜像版本、输入校验值和所选句对保存在 sources/example-pairs.json。
+旧镜像未提供逐句作者，因此采用 Tatoeba 官方 FAQ 指定的整体署名，并保留可用的署名字段。
+只筛选长度适合、确实含该词且不高度重复的句对；原始语料的译文质量不等同于逐句人工复核。
+例句不能用来估算义项频率，也不能自动决定多选题答案。
+词库没有合适例句时显示暂未收录，不拼凑假例句。
+
+复现：python tools/make_wordbooks.py
+      python tools/make_word_examples.py
+校验：python tools/check_wordbooks.py
+      python tools/check_word_details.py

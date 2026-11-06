@@ -1,0 +1,390 @@
+{
+  "version": 1,
+  "reviewed_on": "2026-11-06",
+  "policy": "仅对已逐组复核的独立基础用法出多选题；同义译法合并，古旧、罕见和专门用途不进入答案或干扰项。层级参考学习词典的基础用法标签，不当作词义频率百分比。中文标签与教学例句由 ARWORD 编写。",
+  "entries": {
+    "bank": {
+      "status": "reviewed",
+      "source": "https://dictionary.cambridge.org/dictionary/essential-british-english/bank",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "money",
+          "zh": "银行",
+          "pos": "名词",
+          "level": "A1",
+          "example": "There is a bank beside the station.",
+          "translation": "车站旁边有一家银行。"
+        },
+        {
+          "id": "riverside",
+          "zh": "河岸",
+          "pos": "名词",
+          "level": "B1",
+          "example": "We found a quiet place on the river bank.",
+          "translation": "我们在河岸上找到了一处安静的地方。"
+        }
+      ],
+      "distractors": [
+        "厨房",
+        "晚餐",
+        "膝盖",
+        "彩虹"
+      ]
+    },
+    "light": {
+      "status": "reviewed",
+      "source": "https://dictionary.cambridge.org/us/dictionary/essential-british-english/light",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "brightness",
+          "zh": "光；光线",
+          "pos": "名词",
+          "level": "B1",
+          "example": "Morning light came through the small window.",
+          "translation": "晨光透过小窗照了进来。"
+        },
+        {
+          "id": "weight",
+          "zh": "轻的",
+          "pos": "形容词",
+          "level": "A2",
+          "example": "The empty basket is light enough for me to carry.",
+          "translation": "空篮子很轻，我搬得动。"
+        },
+        {
+          "id": "pale",
+          "zh": "浅色的",
+          "pos": "形容词",
+          "level": "A1",
+          "example": "She chose a light green notebook.",
+          "translation": "她选了一本浅绿色的笔记本。"
+        }
+      ],
+      "distractors": [
+        "陡峭的",
+        "低语",
+        "收据"
+      ]
+    },
+    "right": {
+      "status": "reviewed",
+      "source": "https://dictionary.cambridge.org/us/dictionary/english/right?q=RIGHT",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "correct",
+          "zh": "正确的",
+          "pos": "形容词",
+          "level": "A1",
+          "example": "You chose the right answer this time.",
+          "translation": "这次你选对了答案。"
+        },
+        {
+          "id": "direction",
+          "zh": "右边；向右",
+          "pos": "名词／副词",
+          "level": "A2",
+          "example": "Turn right after the small bridge.",
+          "translation": "过了小桥后向右转。"
+        },
+        {
+          "id": "entitlement",
+          "zh": "权利",
+          "pos": "名词",
+          "level": "B2",
+          "example": "Every child has the right to learn.",
+          "translation": "每个孩子都有学习的权利。"
+        }
+      ],
+      "distractors": [
+        "昂贵的",
+        "肩膀",
+        "收获"
+      ]
+    },
+    "watch": {
+      "status": "reviewed",
+      "source": "https://dictionary.cambridge.org/us/dictionary/english/watch?q=watches",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "observe",
+          "zh": "观看；注视",
+          "pos": "动词",
+          "level": "A1",
+          "example": "We watch the birds from our kitchen window.",
+          "translation": "我们从厨房的窗边观察鸟儿。"
+        },
+        {
+          "id": "timepiece",
+          "zh": "手表",
+          "pos": "名词",
+          "level": "A1",
+          "example": "My watch fell behind the sofa.",
+          "translation": "我的手表掉到沙发后面了。"
+        }
+      ],
+      "distractors": [
+        "地毯",
+        "打喷嚏",
+        "成熟的",
+        "山谷"
+      ]
+    },
+    "match": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/match",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "game",
+          "zh": "比赛",
+          "pos": "名词",
+          "level": "A2",
+          "example": "The football match starts after lunch.",
+          "translation": "足球比赛在午饭后开始。"
+        },
+        {
+          "id": "fire",
+          "zh": "火柴",
+          "pos": "名词",
+          "level": "B2",
+          "example": "He used a match to light the stove.",
+          "translation": "他用一根火柴点燃了炉子。"
+        },
+        {
+          "id": "fit",
+          "zh": "相配；匹配",
+          "pos": "动词",
+          "level": "B1",
+          "example": "These blue curtains match the chairs.",
+          "translation": "这些蓝色窗帘和椅子很搭。"
+        }
+      ],
+      "distractors": [
+        "屋顶",
+        "沙漠",
+        "饥饿的"
+      ]
+    },
+    "letter": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/letter",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "message",
+          "zh": "信",
+          "pos": "名词",
+          "level": "A1",
+          "example": "I wrote a letter to my grandmother.",
+          "translation": "我给奶奶写了一封信。"
+        },
+        {
+          "id": "symbol",
+          "zh": "字母",
+          "pos": "名词",
+          "level": "A1",
+          "example": "The first letter of my name is L.",
+          "translation": "我名字的第一个字母是 L。"
+        }
+      ],
+      "distractors": [
+        "桥梁",
+        "柠檬",
+        "枕头",
+        "水池"
+      ]
+    },
+    "fine": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/fine",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "well",
+          "zh": "好的；健康的",
+          "pos": "形容词",
+          "level": "A1",
+          "example": "I feel fine after a good night of sleep.",
+          "translation": "睡了一晚好觉后，我感觉很好。"
+        },
+        {
+          "id": "weather",
+          "zh": "晴朗的",
+          "pos": "形容词",
+          "level": "B1",
+          "example": "We had fine weather for our boat trip.",
+          "translation": "我们乘船出游时天气晴朗。"
+        },
+        {
+          "id": "penalty",
+          "zh": "罚款",
+          "pos": "名词／动词",
+          "level": "general",
+          "example": "He had to pay a fine for parking there.",
+          "translation": "他在那里停车，必须交罚款。"
+        }
+      ],
+      "distractors": [
+        "村庄",
+        "下沉",
+        "潮湿的"
+      ]
+    },
+    "spring": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/spring",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "season",
+          "zh": "春天",
+          "pos": "名词",
+          "level": "A2",
+          "example": "We plant vegetables in spring.",
+          "translation": "我们在春天种蔬菜。"
+        },
+        {
+          "id": "coil",
+          "zh": "弹簧",
+          "pos": "名词",
+          "level": "general",
+          "example": "A small spring holds the lid in place.",
+          "translation": "一根小弹簧把盖子固定在原位。"
+        },
+        {
+          "id": "water",
+          "zh": "泉；泉水",
+          "pos": "名词",
+          "level": "general",
+          "example": "Clear water flows from the spring.",
+          "translation": "清澈的水从泉眼里流出。"
+        }
+      ],
+      "distractors": [
+        "晚餐",
+        "屋顶",
+        "勇敢的"
+      ]
+    },
+    "train": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/train",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "railway",
+          "zh": "火车",
+          "pos": "名词",
+          "level": "A1",
+          "example": "The train leaves at seven in the morning.",
+          "translation": "火车早上七点出发。"
+        },
+        {
+          "id": "practice",
+          "zh": "训练；培训",
+          "pos": "动词",
+          "level": "general",
+          "example": "They train together before every competition.",
+          "translation": "每次比赛前他们都一起训练。"
+        }
+      ],
+      "distractors": [
+        "蜂蜜",
+        "害羞的",
+        "抹去",
+        "池塘"
+      ]
+    },
+    "patient": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/patient",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "person",
+          "zh": "病人",
+          "pos": "名词",
+          "level": "B1+",
+          "example": "The nurse brought the patient a glass of water.",
+          "translation": "护士给病人端来了一杯水。"
+        },
+        {
+          "id": "wait",
+          "zh": "有耐心的",
+          "pos": "形容词",
+          "level": "general",
+          "example": "Our teacher is patient with new students.",
+          "translation": "我们的老师对新学生很有耐心。"
+        }
+      ],
+      "distractors": [
+        "操场",
+        "谎言",
+        "疲惫的",
+        "寻找"
+      ]
+    },
+    "kind": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/kind",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "type",
+          "zh": "种类",
+          "pos": "名词",
+          "level": "B1",
+          "example": "What kind of music do you like?",
+          "translation": "你喜欢哪种音乐？"
+        },
+        {
+          "id": "caring",
+          "zh": "友善的；体贴的",
+          "pos": "形容词",
+          "level": "general",
+          "example": "It was kind of you to help me carry this.",
+          "translation": "你帮我搬这个，真是太好了。"
+        }
+      ],
+      "distractors": [
+        "楼梯",
+        "乌云",
+        "严厉的",
+        "忘记"
+      ]
+    },
+    "break": {
+      "status": "reviewed",
+      "source": "https://www.collinsdictionary.com/dictionary/english/break",
+      "reason": "词典分别列出的日常用法；已合并同义译法，逐项核对与干扰项不重叠。",
+      "senses": [
+        {
+          "id": "damage",
+          "zh": "打破；弄坏",
+          "pos": "动词",
+          "level": "A2",
+          "example": "Please be careful not to break the glass.",
+          "translation": "请小心，别把杯子打破。"
+        },
+        {
+          "id": "pause",
+          "zh": "休息；间歇",
+          "pos": "名词",
+          "level": "general",
+          "example": "We took a short break beside the lake.",
+          "translation": "我们在湖边休息了一会儿。"
+        }
+      ],
+      "distractors": [
+        "借入",
+        "地板",
+        "庆祝",
+        "叶子"
+      ]
+    }
+  }
+}

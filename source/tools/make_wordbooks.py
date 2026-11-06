@@ -80,6 +80,9 @@ def main():
         rows=json.loads((BASE/'sources/ecdict-selected.json').read_text('utf-8'))
         for book,words in json.loads((BASE/'sources/exam-headwords.json').read_text('utf-8')).items():raw[book]=set(words)
     overrides=json.loads((BASE/'sources/definition-overrides.json').read_text('utf-8'))
+    review=json.loads((BASE/'sources/reviewed-meanings.json').read_text('utf-8'))
+    reviewed=review['entries']
+    primary={**reviewed,**overrides}
     pronunciation=json.loads((BASE/'sources/pronunciation-overrides.json').read_text('utf-8'))
     frequencies=json.loads((BASE/'sources/ecdict-pos-frequency.json').read_text('utf-8'))
     related={}
@@ -102,19 +105,26 @@ def main():
         row=rows.get(word,{})
         ordered=ordered_dictionary_row(row,frequencies.get(word,{})) if row else {}
         pos,meanings=definitions(ordered) if row else ('',[])
-        if word in overrides:
-            override=overrides[word];pos=override['pos'];zh=override['zh']
+        if word in primary:
+            override=primary[word];pos=override['pos'];zh=override['zh']
             meanings=list(dict.fromkeys([zh]+meanings))
         else:
+            rank=int(row.get('frq') or 0)
+            if 0<rank<=review['frequency_rank_limit']:
+                raise ValueError('Common word needs an explicit reviewed main meaning: '+word)
             # Prefer a concise general sense over specialist dictionary annotations.
             candidates=[m for m in meanings if len(m)<=30 and not re.search(r'[=<>\[\]]|人名|姓氏|地名|音译',m)]
             zh=candidates[0] if candidates else (meanings[0] if meanings else '')
         if not zh:raise ValueError('No validated definition for '+word)
         if len(zh)>24 or re.search(r'[=<>\[\]]',zh):issues.append({'word':word,'zh':zh,'translation':row.get('translation','')})
         meaning_sets[word]=set(meanings)
-        full_definition=(pos+'：'+zh) if word in overrides else (clean_definition(row.get('translation','')) or zh)
+        # A reviewed short answer must not erase the remaining dictionary senses.
+        full_definition=clean_definition(row.get('translation','')) or zh
+        if word in primary:
+            full_definition=primary[word].get('definition',full_definition)
         entries.append({'id':word,'word':word,'zh':zh,'definition':full_definition,'pos':pos or '词语','band':word_bands[word],'audio':'wordbooks/audio/'+hashlib.sha256(word.encode()).hexdigest()[:20]+'.mp3','options':[],'correct':0,'example':'','translation':'','phonetic':row.get('phonetic','')})
         if word in pronunciation:entries[-1]['phonetic']=pronunciation[word]['phonetic']
+        entries[-1]['meaning_source']='reviewed' if word in primary else 'dictionary'
     by_pos={}
     for entry in entries:by_pos.setdefault(entry['pos'],[]).append(entry)
     for entry in entries:

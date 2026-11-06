@@ -28,7 +28,12 @@ func _init():
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
 	rng.randomize()
 	bank=JSON.parse_string(FileAccess.get_file_as_string("res://assets/vocabulary.json"))
-	for q in bank:by_id[q.id]=q
+	for q in bank:
+		# Share the reviewed answer with lookup and wordbooks, keeping authored audio/examples.
+		if wordbooks.entries.has(q.id):
+			var full=wordbooks.entries[q.id]
+			for key in ["zh","pos","definition","options","correct","meaning_source"]:q[key]=full[key]
+		by_id[q.id]=q
 	for id in wordbooks.entries:
 		if not by_id.has(id):by_id[id]=wordbooks.entries[id]
 	refresh_book()

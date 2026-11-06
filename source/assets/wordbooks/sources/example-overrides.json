@@ -1,0 +1,334 @@
+{
+  "tradition": [
+    {
+      "en": "Sharing a meal is an important family tradition.",
+      "zh": "一起吃饭是一项重要的家庭传统。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "The village keeps its tradition of making wooden toys.",
+      "zh": "这个村子保留着制作木玩具的传统。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "It is a local tradition to welcome guests with tea.",
+      "zh": "用茶招待客人是当地的习俗。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "bank": [
+    {
+      "en": "There is a bank beside the station.",
+      "zh": "车站旁边有一家银行。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We found a quiet place on the river bank.",
+      "zh": "我们在河岸上找到了一处安静的地方。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "The bank is closed on Sundays.",
+      "zh": "这家银行星期日不营业。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "light": [
+    {
+      "en": "Morning light came through the small window.",
+      "zh": "晨光透过小窗照了进来。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "The empty basket is light enough for me to carry.",
+      "zh": "空篮子很轻，我搬得动。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "She chose a light green notebook.",
+      "zh": "她选了一本浅绿色的笔记本。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "right": [
+    {
+      "en": "You chose the right answer this time.",
+      "zh": "这次你选对了答案。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "Turn right after the small bridge.",
+      "zh": "过了小桥后向右转。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "Every child has the right to learn.",
+      "zh": "每个孩子都有学习的权利。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "watch": [
+    {
+      "en": "We watch the birds from our kitchen window.",
+      "zh": "我们从厨房的窗边观察鸟儿。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "My watch fell behind the sofa.",
+      "zh": "我的手表掉到沙发后面了。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "Please watch the soup while I get the bowls.",
+      "zh": "我去拿碗，请帮忙看着锅里的汤。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "industry": [
+    {
+      "en": "Many people here work in the fishing industry.",
+      "zh": "这里很多人在渔业工作。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "Tourism is an important industry in this town.",
+      "zh": "旅游业是这个小镇的重要产业。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "New machines have changed the car industry.",
+      "zh": "新机器改变了汽车行业。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "kid": [
+    {
+      "en": "The kids are playing near the pond.",
+      "zh": "孩子们正在池塘边玩耍。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "I am only kidding; your drawing looks great.",
+      "zh": "我只是在开玩笑，你的画很好看。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "When I was a kid, I wanted to build a boat.",
+      "zh": "我小时候想造一艘船。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "stock": [
+    {
+      "en": "The shop has no milk in stock today.",
+      "zh": "这家店今天没有牛奶存货。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "She bought stock in a small company.",
+      "zh": "她买了一家小公司的股票。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We keep a small stock of tools in the shed.",
+      "zh": "我们在棚子里备着少量工具。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "coach": [
+    {
+      "en": "Our coach showed us how to pass the ball.",
+      "zh": "教练教我们如何传球。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We took a coach to the next town.",
+      "zh": "我们坐长途客车去了邻镇。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "She wants to coach the school team.",
+      "zh": "她想执教学校的队伍。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "facility": [
+    {
+      "en": "The town needs a new sports facility.",
+      "zh": "这个小镇需要一处新的体育设施。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "The hotel has facilities for young children.",
+      "zh": "这家酒店有供幼儿使用的设施。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We visited a facility that cleans drinking water.",
+      "zh": "我们参观了一处净化饮用水的设施。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "present": [
+    {
+      "en": "I wrapped a small present for my sister.",
+      "zh": "我给妹妹包好了一份小礼物。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "All six students are present today.",
+      "zh": "今天六名学生都到齐了。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We are staying here at present.",
+      "zh": "我们目前住在这里。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "fine": [
+    {
+      "en": "I feel fine after a good night of sleep.",
+      "zh": "睡了一晚好觉后，我感觉很好。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We had fine weather for our boat trip.",
+      "zh": "我们乘船出游时天气晴朗。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "He had to pay a fine for parking there.",
+      "zh": "他在那里停车，必须交罚款。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "book": [
+    {
+      "en": "I left my book on the kitchen table.",
+      "zh": "我把书忘在厨房桌上了。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "You can book a room on the hotel website.",
+      "zh": "你可以在酒店网站上预订房间。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "This book explains how to grow vegetables.",
+      "zh": "这本书介绍如何种蔬菜。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "river": [
+    {
+      "en": "The river runs through the village.",
+      "zh": "这条河穿过村庄。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We crossed the river in a small boat.",
+      "zh": "我们乘小船过了河。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "The river is deeper after the rain.",
+      "zh": "下雨后，河水变深了。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "match": [
+    {
+      "en": "The football match starts after lunch.",
+      "zh": "足球比赛在午饭后开始。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "He used a match to light the stove.",
+      "zh": "他用一根火柴点燃了炉子。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "These blue curtains match the chairs.",
+      "zh": "这些蓝色窗帘和椅子很搭。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "letter": [
+    {
+      "en": "I wrote a letter to my grandmother.",
+      "zh": "我给奶奶写了一封信。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "The first letter of my name is L.",
+      "zh": "我名字的第一个字母是 L。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "spring": [
+    {
+      "en": "We plant vegetables in spring.",
+      "zh": "我们在春天种蔬菜。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "A small spring holds the lid in place.",
+      "zh": "一根小弹簧把盖子固定在原位。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "Clear water flows from the spring.",
+      "zh": "清澈的水从泉眼里流出。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "train": [
+    {
+      "en": "The train leaves at seven in the morning.",
+      "zh": "火车早上七点出发。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "They train together before every competition.",
+      "zh": "每次比赛前他们都一起训练。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "patient": [
+    {
+      "en": "The nurse brought the patient a glass of water.",
+      "zh": "护士给病人端来了一杯水。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "Our teacher is patient with new students.",
+      "zh": "我们的老师对新学生很有耐心。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "kind": [
+    {
+      "en": "What kind of music do you like?",
+      "zh": "你喜欢哪种音乐？",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "It was kind of you to help me carry this.",
+      "zh": "你帮我搬这个，真是太好了。",
+      "credit": "ARWORD 原创例句"
+    }
+  ],
+  "break": [
+    {
+      "en": "Please be careful not to break the glass.",
+      "zh": "请小心，别把杯子打破。",
+      "credit": "ARWORD 原创例句"
+    },
+    {
+      "en": "We took a short break beside the lake.",
+      "zh": "我们在湖边休息了一会儿。",
+      "credit": "ARWORD 原创例句"
+    }
+  ]
+}

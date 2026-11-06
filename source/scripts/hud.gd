@@ -20,6 +20,8 @@ var toast_label:Label
 var toast_timer=0.0
 var answers:Array=[]
 var word_label:Button
+var word_submit:Button
+var word_selection_count:Label
 var screen=""
 var word_tween:Tween
 var clock_label:Label
@@ -43,6 +45,13 @@ func ghost(parent:Node,value:String,action:Callable,height=40)->Button:
 	var b=button(parent,value,action,false,height)
 	for state in ["normal","hover","pressed","disabled"]:b.add_theme_stylebox_override(state,StyleBoxEmpty.new())
 	b.add_theme_font_size_override("font_size",16);b.add_theme_color_override("font_color",GREEN);return b
+func word_button(parent:Node,value:String,word:String,height=62)->Button:
+	var b=preload("res://scripts/word_button.gd").new();b.text=value;b.custom_minimum_size=Vector2(0,height);b.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	style_button(b);parent.add_child(b)
+	for state in ["normal","hover","pressed","disabled"]:b.add_theme_stylebox_override(state,StyleBoxEmpty.new())
+	b.add_theme_color_override("font_color",GREEN);b.tooltip_text="轻点发音，长按查看释义和例句"
+	b.short_pressed.connect(game.speak_word);b.held.connect(game.lookup.bind(word))
+	return b
 func icon(parent:Node,kind:String,action:Callable,hint:String)->IslandIcon:
 	var b=IslandIcon.new();b.kind=kind;b.tooltip_text=hint;b.custom_minimum_size=Vector2(44,44);style_button(b);parent.add_child(b);b.pressed.connect(action);return b
 func text(parent:Node,value:String,font_size=21,color=INK)->Label:
@@ -76,6 +85,7 @@ func _ready():
 	header=MarginContainer.new();safe_frame.add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
 	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
 	icon(top,"books",game.show_wordbooks,"词书")
+	icon(top,"search",game.show_word_search,"搜索单词")
 	icon(top,"gear",game.settings,"设置")
 	toast_label=text(safe_frame,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label=text(safe_frame,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.19;clock_label.anchor_bottom=.19;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
@@ -94,7 +104,7 @@ func clear_body():
 	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
 	card_scroll.scroll_vertical=0
 	for child in body.get_children():child.hide();child.queue_free()
-	answers.clear();word_label=null
+	answers.clear();word_label=null;word_submit=null;word_selection_count=null
 func layout_card(height:float):
 	card_height=height
 	position_card(card_shift)
@@ -139,6 +149,9 @@ func apply_safe_rect(rect:Rect2):
 func fit_modal():
 	if not is_instance_valid(active_center) or active_center.is_queued_for_deletion():return
 	var rect=safe_rect.grow_individual(-18,-12,-18,-20)
+	if OS.has_feature("android") and screen=="search" and DisplayServer.virtual_keyboard_get_height()>0:
+		var pixel_height=maxf(1,DisplayServer.window_get_size().y)
+		rect.size.y=maxf(160,rect.size.y-DisplayServer.virtual_keyboard_get_height()*get_viewport_rect().size.y/pixel_height)
 	active_panel.custom_minimum_size.x=rect.size.x
 	active_scroll.custom_minimum_size.y=clampf(active_box.get_parent().get_combined_minimum_size().y,1,maxf(1,rect.size.y-24))
 	active_center.position=rect.position;active_center.size=rect.size
@@ -219,40 +232,46 @@ func show_task():
 func show_word():
 	var q=game.current
 	var intro=game.introducing()
+	var multi=game.word_senses.is_multi(q)
 	if intro:
 		card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-	layout_card(225 if intro else 365)
+	layout_card((285 if multi else 225) if intro else (510 if multi else 365))
 	var listen=game.learning.data.listen and not intro
 	var state=game.learning.data.words.get(q.id,{})
 	var title="新词" if intro else ("复习 "+str(int(state.get("review_round",0))+1)+"/3" if state.has("review_at") else "到期复习")
 	if state.has("spot_hits"):title="回忆"
 	var r=task_heading(title+(" · 听音" if listen else ""))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
-	word_label=ghost(body,"点一下，再听一遍" if listen else q.word,game.speak_word,62);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
+	word_label=word_button(body,"点一下，再听一遍" if listen else q.word,q.id);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
 	if not listen:
 		var width=game.font.get_string_size(q.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x
 		word_label.add_theme_font_size_override("font_size",clampi(int(34*minf(1.0,(size.x-80)/maxf(1,width))),19,34))
 	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	if intro:
-		text(body,q.options[int(q.correct)],23).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		text(body,"\n".join(q.sense_labels) if multi else q.options[int(q.correct)],21 if multi else 23).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		var actions=row(body)
 		button(actions,"记好了",game.introduce_word.bind(q.id),true)
 		button(actions,"学会",game.introduce_word.bind(q.id,true))
 		if not game.exploring and (game.learning.data.speech or game.learning.data.listen):game.call_deferred("speak_word")
 		return
+	if multi:
+		word_selection_count=text(body,"",16,GREEN);word_selection_count.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	var grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",10);grid.add_theme_constant_override("v_separation",9);body.add_child(grid)
-	for i in range(4):
-		var answer=game.order[i];var b=button(grid,q.options[answer],game.answer.bind(answer),false,57);b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)
+	for i in range(q.options.size()):
+		var answer=game.order[i];var b=button(grid,q.options[answer],game.toggle_word_answer.bind(answer) if multi else game.answer.bind(answer),false,51 if multi else 57);b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)
 		if str(q.options[answer]).length()>18:b.add_theme_font_size_override("font_size",15)
+	if multi:
+		word_submit=button(body,"确认",game.submit_word_answers,true,44);word_submit.name="WordSubmit"
+		update_word_selection()
 	spacer(body,5);divider(body);ghost(body,"想不起来？看提示",game.reveal,35)
 	if not game.exploring and (game.learning.data.listen or game.learning.data.speech):game.call_deferred("speak_word")
 func show_help():
 	clear_body();screen="help";layout_card(365);var q=game.current
-	var r=row(body);word_label=ghost(r,q.word,game.speak_word,48);word_label.add_theme_font_size_override("font_size",30)
+	var r=row(body);word_label=word_button(r,q.word,q.id,48);word_label.add_theme_font_size_override("font_size",30)
 	if game.frontier.data.active in ["goldmine","smelter"]:
 		ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
-	text(body,q.zh,23,GREEN)
+	text(body,"\n".join(q.sense_labels) if game.word_senses.is_multi(q) else q.zh,21,GREEN)
 	if not str(q.get("example","")).is_empty():reading(body,q.example,72,20);text(body,q.translation,17,Color("70857B"))
 	spacer(body,5);button(body,"遮住释义，再想一次",game.retry,true,47)
 func show_read():
@@ -286,10 +305,20 @@ func show_sentence():
 	text(body,game.sentence_hint if not game.sentence_hint.is_empty() else " ",16,GREEN).custom_minimum_size.y=42
 	divider(body);var r=row(body);ghost(r,"重新组织",game.sentence_reset,32);ghost(r,"提示",game.sentence_help,32)
 func feedback(answer:int):
+	if is_instance_valid(word_submit):word_submit.disabled=true
 	for i in range(answers.size()):
 		answers[i].disabled=true
-		if game.order[i]==answer:
+		if game.order[i]==answer or (game.mode=="word" and game.current.get("correct_indices",[]).has(game.order[i])):
 			var style=answers[i].get_theme_stylebox("disabled").duplicate();style.bg_color=Color("B6DDAC");answers[i].add_theme_stylebox_override("disabled",style)
+func update_word_selection():
+	if not is_instance_valid(word_submit) or not is_instance_valid(word_selection_count):return
+	var count=game.current.correct_indices.size()
+	word_selection_count.text="选出 %d 个常见意思 · 已选 %d/%d" % [count,game.word_selected.size(),count]
+	word_submit.disabled=game.word_selected.size()!=count or game.locked
+	for i in range(answers.size()):
+		var selected=game.word_selected.has(game.order[i]);var b=answers[i]
+		b.text=("✓ " if selected else "")+str(game.current.options[game.order[i]])
+		b.add_theme_stylebox_override("normal",skin(Color("BFD9CE") if selected else Color("E5EFE4"),14))
 func pulse_word():
 	if not is_instance_valid(word_label):return
 	if word_tween and word_tween.is_valid():word_tween.kill()
@@ -337,7 +366,9 @@ func toast(value:String):toast_label.text=value;toast_timer=2.8
 func _process(dt):
 	if OS.has_feature("android"):
 		layout_timer-=dt
-		if layout_timer<=0.:layout_timer=.35;refresh_safe_area()
+		if layout_timer<=0.:
+			layout_timer=.35;refresh_safe_area()
+			if screen=="search" and overlay.visible:fit_modal()
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
 	clock_label.visible=game.exploring and not overlay.visible
