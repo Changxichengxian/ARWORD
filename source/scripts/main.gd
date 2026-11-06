@@ -263,7 +263,7 @@ func play_speech(path:String,slow=false):
 	AudioServer.get_bus_effect(bus,0).pitch_scale=1.0/speed
 	speech.bus="Speech";speech.stream=recording;speech.play()
 func play_fx(kind:String):
-	if not learning.data.sound or not sound_bank.has(kind):return
+	if closing or not learning.data.sound or not sound_bank.has(kind):return
 	var p=effects[sound_index%effects.size()];sound_index+=1;p.stream=sound_bank[kind];p.volume_db=-5;p.pitch_scale=1.0;p.play()
 
 func select_word(index:int):
@@ -455,6 +455,8 @@ func request_exit():
 	closing=true;save_progress()
 	if ambience:ambience.shutdown()
 	if is_instance_valid(speech):speech.stop();speech.stream=null
+	for player in effects:
+		player.stop();player.stream=null
 	await get_tree().process_frame
 	await get_tree().process_frame
 	get_tree().quit()
