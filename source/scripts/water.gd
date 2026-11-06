@@ -43,7 +43,7 @@ func setup(owner_world,ocean:Node3D):
 	var bed_material=StandardMaterial3D.new();bed_material.vertex_color_use_as_albedo=true;bed_material.vertex_color_is_srgb=true;bed_material.roughness=.95;bed_material.cull_mode=BaseMaterial3D.CULL_DISABLED;floor_mesh.material_override=bed_material
 	foam_material=ShaderMaterial.new();foam_material.shader=preload("res://assets/shore_foam.gdshader");foam_material.render_priority=2
 	foam=MeshInstance3D.new();foam.name="ShoreRipples";foam.material_override=foam_material;foam.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;add_child(foam)
-	rebuild()
+	# The world builds the seabed after its initial land is populated.
 
 static func direction_at(column:float,row:float)->Vector3:
 	var theta=(column/COLS-.5)*TAU;var phi=row/ROWS*PI
@@ -81,25 +81,36 @@ func rebuild():
 			# Quantize once; geometry, animal queries and shader see the exact same samples.
 			depth=roundf(depth/MAX_DEPTH*255)/255.0*MAX_DEPTH;map[row*(COLS+1)+col]=depth;image.set_pixel(col,row,Color(depth/MAX_DEPTH,0,0))
 	bed_texture=ImageTexture.create_from_image(image);material.set_shader_parameter("bed_depth",bed_texture);material.set_shader_parameter("berth_normal",berth_normal);material.set_shader_parameter("max_depth",MAX_DEPTH)
-	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# Shared grid vertices avoid recomputing each triangle corner six times.
+	var vertices=PackedVector3Array();var normals=PackedVector3Array();var colors=PackedColorArray();var indices=PackedInt32Array()
+	vertices.resize(map.size());normals.resize(map.size());colors.resize(map.size());indices.resize(COLS*ROWS*6)
+	for row in range(ROWS+1):
+		for col in range(COLS+1):
+			var x=col;var y=row;var n=direction_at(x,y);var depth=map[y*(COLS+1)+x]
+			var tint=Color("DAC592").lerp(Color("429F91"),smoothstep(.12,1.1,depth)).lerp(Color("315C73"),smoothstep(1.0,3.4,depth))
+			var local=smoothstep(.78,.97,n.dot(berth_normal))
+			var shale=Color("718B91").lerp(Color("162C43"),smoothstep(1.2,4.65,depth))
+			shale=shale.lightened(.14*pow(.5+.5*cos(depth*9.+n.z*18.),5.)*smoothstep(.9,2.,depth))
+			tint=tint.lerp(shale,local)
+			var normal=n
+			if local>.05 and y>0 and y<ROWS:
+				var left=posmod(x-1,COLS);var right=(x+1)%COLS
+				var ew=direction_at(right,y)*(BASE_RADIUS-map[y*(COLS+1)+right])-direction_at(left,y)*(BASE_RADIUS-map[y*(COLS+1)+left])
+				var ns=direction_at(x,y+1)*(BASE_RADIUS-map[(y+1)*(COLS+1)+x])-direction_at(x,y-1)*(BASE_RADIUS-map[(y-1)*(COLS+1)+x])
+				normal=ew.cross(ns).normalized()
+				if normal.dot(n)<0:normal=-normal
+			var index=y*(COLS+1)+x
+			vertices[index]=n*(BASE_RADIUS-depth);normals[index]=normal;colors[index]=tint
+	var cursor=0
 	for row in range(ROWS):
 		for col in range(COLS):
-			for offset in [Vector2i(0,0),Vector2i(1,1),Vector2i(1,0),Vector2i(0,0),Vector2i(0,1),Vector2i(1,1)]:
-				var x=col+offset.x;var y=row+offset.y;var n=direction_at(x,y);var depth=map[y*(COLS+1)+x]
-				var tint=Color("DAC592").lerp(Color("429F91"),smoothstep(.12,1.1,depth)).lerp(Color("315C73"),smoothstep(1.0,3.4,depth))
-				var local=smoothstep(.78,.97,n.dot(berth_normal))
-				var shale=Color("718B91").lerp(Color("162C43"),smoothstep(1.2,4.65,depth))
-				shale=shale.lightened(.14*pow(.5+.5*cos(depth*9.+n.z*18.),5.)*smoothstep(.9,2.,depth))
-				tint=tint.lerp(shale,local)
-				var normal=n
-				if local>.05 and y>0 and y<ROWS:
-					var left=posmod(x-1,COLS);var right=(x+1)%COLS
-					var ew=direction_at(right,y)*(BASE_RADIUS-map[y*(COLS+1)+right])-direction_at(left,y)*(BASE_RADIUS-map[y*(COLS+1)+left])
-					var ns=direction_at(x,y+1)*(BASE_RADIUS-map[(y+1)*(COLS+1)+x])-direction_at(x,y-1)*(BASE_RADIUS-map[(y-1)*(COLS+1)+x])
-					normal=ew.cross(ns).normalized()
-					if normal.dot(n)<0:normal=-normal
-				st.set_color(tint);st.set_normal(normal);st.add_vertex(n*(BASE_RADIUS-depth))
-	st.index();floor_mesh.mesh=st.commit();rebuild_foam()
+			var i=row*(COLS+1)+col
+			for index in [i,i+COLS+2,i+1,i,i+COLS+1,i+COLS+2]:
+				indices[cursor]=index;cursor+=1
+	var arrays=[];arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX]=vertices;arrays[Mesh.ARRAY_NORMAL]=normals;arrays[Mesh.ARRAY_COLOR]=colors;arrays[Mesh.ARRAY_INDEX]=indices
+	var mesh=ArrayMesh.new();mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+	floor_mesh.mesh=mesh;rebuild_foam()
 
 func depth_at(normal:Vector3)->float:
 	if map.is_empty():return 0.0

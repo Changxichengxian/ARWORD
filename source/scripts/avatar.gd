@@ -12,6 +12,9 @@ const FACE_MOUTH=.07
 const FACE_HAPPY=.08
 const FACE_RELAX=.18
 const FACE_LOOK=.22
+const PreparedCache=preload("res://scripts/avatar_cache.gd")
+var used_prepared_cache=false
+var expression_paths:Dictionary={}
 var world
 var scene:Node3D
 var skeleton:Skeleton3D
@@ -107,22 +110,33 @@ static func preflight(path:String)->Dictionary:
 	else:author=str(authors)
 	return {"ok":true,"error":"","title":str(meta.get("name",meta.get("title","本地人物"))).left(256),"author":author.left(512),"version":version,"bytes":bytes,"json":parsed,"bones":bones,"vertices":vertices}
 
-func load_file(owner_world,path:String)->Dictionary:
+func load_file(owner_world,path:String,cache_folder:String="")->Dictionary:
 	world=owner_world
-	var result=preflight(path)
-	if not result.ok:return result
-	is_fish=FileAccess.get_sha256(path)==preload("res://scripts/fixed_cast.gd").MODEL_HASH
-	var document=GLTFDocument.new();var state=GLTFState.new()
-	if document.append_from_buffer(result.bytes,"",state)!=OK:return {"ok":false,"error":"原生引擎无法读取这个模型"}
-	scene=document.generate_scene(state)
+	var model_hash=FileAccess.get_sha256(path) if FileAccess.file_exists(path) else ""
+	is_fish=model_hash==preload("res://scripts/fixed_cast.gd").MODEL_HASH
+	if not is_fish:cache_folder=""
+	scene=PreparedCache.read(cache_folder,model_hash)
+	used_prepared_cache=scene!=null
+	var result:Dictionary={};var state:GLTFState;var bone_names:Dictionary={}
+	if used_prepared_cache:
+		result=scene.get_meta("arword_import").duplicate(true)
+		bone_names=result.bone_names;expression_paths=result.expression_paths
+	else:
+		result=preflight(path)
+		if not result.ok:return result
+		var document=GLTFDocument.new();state=GLTFState.new()
+		if document.append_from_buffer(result.bytes,"",state)!=OK:return {"ok":false,"error":"原生引擎无法读取这个模型"}
+		scene=document.generate_scene(state)
+		for name in result.bones:bone_names[name]=str(state.get_nodes()[result.bones[name]].original_name)
 	if scene==null:return {"ok":false,"error":"无法生成模型"}
+	var imported_transform=scene.transform
 	add_child(scene)
 	var skeletons=scene.find_children("*","Skeleton3D",true,false)
 	if skeletons.size()!=1:return {"ok":false,"error":"暂不支持这个模型的骨架结构"}
 	skeleton=skeletons[0]
 	if skeleton.get_bone_count()>256:return {"ok":false,"error":"模型骨骼过多"}
-	for name in result.bones:
-		var source_name=str(state.get_nodes()[result.bones[name]].original_name)
+	for name in bone_names:
+		var source_name=str(bone_names[name])
 		var index=skeleton.find_bone(source_name)
 		if index<0:index=skeleton.find_bone(source_name.replace(":","_").replace("/","_"))
 		if index>=0:humanoid[name]=index;semantics[index]=name
@@ -150,8 +164,17 @@ func load_file(owner_world,path:String)->Dictionary:
 		var direction:Vector3=(global_rest[lower].origin-global_rest[upper].origin).normalized()
 		var target=native_to_game.inverse()*Vector3(-.16 if side=="left" else .16,-1,-.035).normalized()
 		down[side]=Basis(Quaternion(direction,target))
-	prepare_materials();prepare_probes();prepare_blink(result.json,state)
+	if not used_prepared_cache:prepare_materials()
+	prepare_probes();prepare_blink(result.json,state)
 	if foot_probes.is_empty() or support_probes.is_empty():return {"ok":false,"error":"模型缺少可适配的脚部蒙皮"}
+	# Capture the imported rest pose, before the animation driver changes bones.
+	var packed:PackedScene
+	if not used_prepared_cache and not cache_folder.is_empty():
+		scene.set_meta("arword_import",{"title":result.title,"author":result.author,"version":result.version,"vertices":result.vertices,"json":result.json,"bone_names":bone_names,"expression_paths":expression_paths})
+		var placed_transform=scene.transform;scene.transform=imported_transform
+		packed=PackedScene.new()
+		if packed.pack(scene)!=OK:packed=null
+		scene.transform=placed_transform
 	update_pose(true)
 	var extent=0.0
 	for probe in support_probes:
@@ -160,6 +183,7 @@ func load_file(owner_world,path:String)->Dictionary:
 	clearance=maxf(clearance,extent+.035)
 	if clearance>.85:return {"ok":false,"error":"这个人物的尾巴或附件太宽，暂时无法安全通过工地"}
 	info={"ok":true,"error":"","title":result.title,"author":result.author,"version":result.version,"height":HEIGHT,"vertices":result.vertices,"bones":skeleton.get_bone_count()}
+	if packed!=null:PreparedCache.write(cache_folder,model_hash,packed)
 	return info.duplicate()
 
 func prepare_materials():
@@ -246,6 +270,21 @@ func prepare_blink(json:Dictionary,state:GLTFState):
 	# Resolve only known facial expressions once. Clothing morphs (such as TiePen)
 	# and the original model bytes are never changed by the expression driver.
 	blink_bindings.clear();expression_bindings.clear();expression_targets.clear()
+	if state!=null:
+		# GLTF's forward map may reference replaced ImporterMeshInstance nodes.
+		# Resolve from live nodes instead, and persist only relative scene paths.
+		var named={}
+		for mesh in meshes:
+			var mesh_name=str(mesh.name)
+			named[mesh_name]=null if named.has(mesh_name) else mesh
+			var index=state.get_node_index(mesh)
+			if index>=0:expression_paths[str(index)]=scene.get_path_to(mesh)
+		var nodes=state.get_nodes()
+		for index in nodes.size():
+			if expression_paths.has(str(index)):continue
+			var mesh_name=str(nodes[index].original_name).validate_node_name()
+			var node=named.get(mesh_name)
+			if is_instance_valid(node):expression_paths[str(index)]=scene.get_path_to(node)
 	var ext=json.get("extensions",{});var vrm=ext.get("VRMC_vrm",{}) if ext is Dictionary else {}
 	var expressions=vrm.get("expressions",{}) if vrm is Dictionary else {}
 	var preset=expressions.get("preset",{}) if expressions is Dictionary else {}
@@ -260,8 +299,10 @@ func prepare_blink(json:Dictionary,state:GLTFState):
 			for key in ["node","index","weight"]:
 				var value=bind.get(key)
 				if not (value is int or value is float) or not is_finite(float(value)):valid=false;break
-			if not valid or float(bind.node)!=float(int(bind.node)) or float(bind.index)!=float(int(bind.index)) or int(bind.node)<0 or int(bind.node)>=state.get_nodes().size():continue
-			var node=state.get_scene_node(int(bind.node))
+			if not valid or float(bind.node)!=float(int(bind.node)) or float(bind.index)!=float(int(bind.index)) or int(bind.node)<0 or int(bind.node)>=json.get("nodes",[]).size():continue
+			var node_path=expression_paths.get(str(int(bind.node)),NodePath())
+			if node_path.is_empty():continue
+			var node=scene.get_node_or_null(node_path)
 			if not is_instance_valid(node):continue
 			add_expression_binding(name,node,int(bind.index),float(bind.weight))
 	# Older models may only expose blend-shape names. Keep their blink support.

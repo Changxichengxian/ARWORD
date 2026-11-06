@@ -541,6 +541,9 @@ func voice_imported(result:String):
 		learning.data.feiyu_voice=true;save_progress()
 
 func initialize_avatar():
+	# A deferred call still runs before the first draw. Let the real planet/UI appear first.
+	if DisplayServer.get_name()!="headless":await RenderingServer.frame_post_draw
+	if closing or not is_inside_tree():return
 	var directory="user://characters"
 	var legacy="user://avatars/current.vrm"
 	if qa:
@@ -562,7 +565,7 @@ func initialize_avatar():
 
 func apply_fixed_character(id:String,persist:bool)->bool:
 	if cast_store==null or id!="deepseek" or cast_store.model_path.is_empty():return false
-	var result=world.prepare_local_avatar(cast_store.model_path)
+	var result=world.prepare_local_avatar(cast_store.model_path,cast_store.folder)
 	if not result.get("ok",false):return false
 	var candidate:Node3D=result.candidate
 	if persist and not cast_store.remember(id):

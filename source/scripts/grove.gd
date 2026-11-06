@@ -85,9 +85,9 @@ func validate_local_avatar(path:String)->Dictionary:
 	var result=prepare_local_avatar(path)
 	if result.ok:result.candidate.free();result.erase("candidate")
 	return result
-func prepare_local_avatar(path:String)->Dictionary:
+func prepare_local_avatar(path:String,cache_folder:String="")->Dictionary:
 	var candidate=AvatarScript.new();actor.add_child(candidate);candidate.hide()
-	var result=candidate.load_file(self,path)
+	var result=candidate.load_file(self,path,cache_folder)
 	if not result.ok:candidate.free();return result
 	result.candidate=candidate;return result
 func load_local_avatar(path:String)->Dictionary:
@@ -477,6 +477,8 @@ func sync_buildings(animate=true):
 		if not land.has(cell):tile(cell,animate);decorate_cell(cell,animate)
 	if coast_count!=land.size():terrain_geometry()
 	batch_static_decor()
+	# Build once with the actual land, before piers and sea routes query depths.
+	if water and water.land_count!=land.size():water.rebuild()
 	for id in markers:
 		var ready=game.frontier.available(id);var old_ready=markers[id].get_meta("available",ready)
 		markers[id].set_meta("available",ready)
