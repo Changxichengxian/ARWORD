@@ -7,6 +7,7 @@ var sky
 var held_resources:Array=[]
 var arrivals:Array=[]
 var marks:Dictionary={}
+var pending:Array=[]
 
 func mark(label:String):marks[label]=Time.get_ticks_msec()
 
@@ -20,8 +21,10 @@ func start(owner_game):
 func assemble():
 	if DisplayServer.get_name()!="headless":await RenderingServer.frame_post_draw
 	else:await get_tree().process_frame
+	if game.closing:return
 	mark("first_draw")
-	var paths:Array=["res://scripts/grove.gd","res://scripts/cosmos.gd","res://scripts/wildlife.gd","res://scripts/ambience.gd"]
+	pending=["res://scripts/grove.gd","res://scripts/cosmos.gd","res://scripts/wildlife.gd","res://scripts/ambience.gd"]
+	var paths=pending
 	for file in DirAccess.get_files_at("res://assets/models"):
 		var model="res://assets/models/"+str(file).trim_suffix(".import")
 		if model.ends_with(".glb") and model not in paths:paths.append(model)
@@ -111,6 +114,17 @@ func assemble():
 
 func layer_free():
 	if is_instance_valid(sky):sky.get_parent().queue_free();sky=null
+
+func shutdown():
+	# Finish outstanding reads before Godot tears down its resource loaders.
+	# Otherwise a script still parsing on a worker can lose its dependencies.
+	while not pending.is_empty():
+		for i in range(pending.size()-1,-1,-1):
+			var status=ResourceLoader.load_threaded_get_status(pending[i])
+			if status==ResourceLoader.THREAD_LOAD_LOADED:
+				held_resources.append(ResourceLoader.load_threaded_get(pending[i]));pending.remove_at(i)
+			elif status in [ResourceLoader.THREAD_LOAD_FAILED,ResourceLoader.THREAD_LOAD_INVALID_RESOURCE]:pending.remove_at(i)
+		if not pending.is_empty():await get_tree().process_frame
 
 func pull_back(value:float):
 	if game.closing:return

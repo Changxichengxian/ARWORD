@@ -491,6 +491,7 @@ func _notification(what):
 func request_exit():
 	if closing:return
 	closing=true;save_progress()
+	if is_instance_valid(startup):await startup.shutdown()
 	if ambience:ambience.shutdown()
 	if is_instance_valid(speech):speech.stop();speech.stream=null
 	for player in effects:
