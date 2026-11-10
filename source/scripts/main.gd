@@ -121,10 +121,10 @@ func startup_turn()->bool:
 	await get_tree().process_frame
 	while not closing and is_instance_valid(hud) and hud.overlay.visible:await get_tree().process_frame
 	startup_slice=Time.get_ticks_msec()
-	return not closing and is_inside_tree()
+	return not closing and is_inside_tree() and not (is_instance_valid(startup) and startup.failed)
 
 func startup_checkpoint()->bool:
-	if closing:return false
+	if closing or (is_instance_valid(startup) and startup.failed):return false
 	if Time.get_ticks_msec()-startup_slice<4 and not hud.overlay.visible:return true
 	return await startup_turn()
 
@@ -505,6 +505,8 @@ func back():
 	last_back=now;speech.stop()
 	if not scene_ready:
 		if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
+		elif hud.screen in ["book_select","journal","bookmarks"]:show_wordbooks()
+		elif hud.screen in ["voices","updates"]:settings()
 		elif hud.overlay.visible:hide_word_keyboard();hud.close()
 		else:request_exit()
 		return
@@ -521,6 +523,13 @@ func back():
 func settings():
 	if locked:return
 	speech.stop();var box=hud.modal("设置");hud.screen="settings"
+	if not scene_ready:
+		hud.text(box,"星球暂未打开，查词和词书仍可使用" if is_instance_valid(startup) and startup.failed else "星球准备中，查词和词书可先使用",17,IslandHUD.GREEN)
+		if can_update():
+			var update=hud.button(box,"检查更新",open_updates,true);update.name="CheckUpdates"
+		hud.button(box,"英语朗读",voice_settings)
+		hud.ghost(box,"关闭",hud.close)
+		return
 	hud.button(box,"音效 · "+("开" if learning.data.sound else "关"),func():learning.data.sound=not learning.data.sound;save_progress();settings())
 	hud.button(box,"英语朗读 · "+("大肥鱼" if learning.data.feiyu_voice and study_voice.archive!=null else "原声"),voice_settings)
 	var music_row=hud.row(box)
@@ -530,9 +539,14 @@ func settings():
 	hud.button(box,"人物",show_avatar_settings)
 	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),show_developer)
 	var settings_footer=hud.row(box)
-	if Engine.has_singleton("PlanetUpdates"):
-		hud.ghost(settings_footer,"检查更新",func():preload("res://scripts/updater.gd").open(self))
+	if can_update():
+		hud.ghost(settings_footer,"检查更新",open_updates)
 	hud.ghost(settings_footer,"关闭",func():hud.close())
+func can_update()->bool:return Engine.has_singleton("PlanetUpdates")
+
+func open_updates():
+	if Engine.has_singleton("PlanetUpdates"):preload("res://scripts/updater.gd").open(self)
+
 func voice_settings():
 	var box=hud.modal("英语朗读");hud.screen="voices"
 	var installed=study_voice.archive!=null
@@ -571,14 +585,14 @@ func pick_voice():
 	add_child(dialog)
 	dialog.canceled.connect(dialog.queue_free)
 	dialog.file_selected.connect(func(path):
-		var ok=study_voice.install_file(cast_store.folder,path)
+		var ok=study_voice.install_file(character_directory,path)
 		dialog.queue_free()
 		voice_imported("ready" if ok else "error"))
 	dialog.popup_centered_ratio(.8)
 
 func voice_imported(result:String):
 	if result=="cancel":return
-	study_voice.prepare(cast_store.folder)
+	study_voice.prepare(character_directory)
 	if result!="ready" or study_voice.archive==null:
 		hud.toast("声包校验失败，请重新选取")
 		return
@@ -659,8 +673,15 @@ func show_wordbooks():
 	var prefs=hud.row(box)
 	hud.button(prefs,"难度 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();show_wordbooks())
 	hud.button(prefs,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();show_wordbooks())
-	hud.ghost(box,"回忆方式 · "+("听词" if learning.data.listen else "看词"),func():learning.data.listen=not learning.data.listen;save_progress();hud.show_help() if help_visible else hud.show_task();show_wordbooks())
+	hud.ghost(box,"回忆方式 · "+("听词" if learning.data.listen else "看词"),toggle_listen_preference)
 	hud.ghost(box,"关闭",hud.close)
+
+func toggle_listen_preference():
+	learning.data.listen=not learning.data.listen;save_progress()
+	if scene_ready:
+		if help_visible:hud.show_help()
+		else:hud.show_task()
+	show_wordbooks()
 
 func select_book_panel():
 	var box=hud.modal("换词书");hud.screen="book_select"
@@ -671,7 +692,8 @@ func select_book_panel():
 	hud.ghost(box,"返回",show_wordbooks)
 func choose_wordbook(id:String):
 	if locked or not learning.select_book(id):return
-	frontier.refresh_plan();save_progress();speech.stop();hud.close();next_task();hud.sync_goal()
+	frontier.refresh_plan();save_progress();speech.stop();hud.close()
+	if scene_ready:next_task();hud.sync_goal()
 func set_space_parameter(key:String,value:float):
 	if not IslandLearning.SPACE_LIMITS.has(key):return
 	var limits=IslandLearning.SPACE_LIMITS[key];learning.data.space_settings[key]=clampf(value,limits.x,limits.y)
@@ -920,7 +942,7 @@ func bookmarks(page:int):
 func journal():
 	if locked:return
 	journal_short=short_reading
-	show_journal_page(mission)
+	show_journal_page(mission if not mission.is_empty() else curriculum.preview(learning))
 func show_journal_page(entry:Dictionary):
 	journal_entry=entry
 	speech.stop()

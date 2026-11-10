@@ -14,14 +14,21 @@ func snap(label:String):
 	root.get_texture().get_image().save_png(output.path_join(label+".png"))
 func settle():
 	for i in range(3):await process_frame
+func tap(button:Button):
+	await settle()
+	var at=button.get_global_rect().get_center()
+	for down in [true,false]:
+		var event=InputEventMouseButton.new();event.position=at;event.global_position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=down;root.push_input(event,true)
+	await settle()
 func run():
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--visual-out="):output=arg.trim_prefix("--visual-out=")
 	game=load("res://main.tscn").instantiate();game.set_script(load("res://tests/word_details_game.gd"));root.add_child(game)
 	check(game.startup!=null and game.world==null and not game.scene_ready,"search exists before the world is assembled")
-	check(not game.hud.search_button.disabled and game.hud.books_button.disabled and game.hud.settings_button.disabled,"search alone is available during startup")
+	check(not game.hud.search_button.disabled and not game.hud.books_button.disabled and not game.hud.settings_button.disabled,"all three toolbar entries are available during startup")
 	await snap("01-first-stars")
-	game.word_search_query="传统";game.show_word_search();await settle()
+	game.word_search_query="传统";await tap(game.hud.search_button)
+	check(game.hud.screen=="search","real toolbar click opens search before the world is ready")
 	check(game.word_details.search("传统").has("tradition"),"Chinese search finds tradition")
 	check(game.word_details.search("银行").has("bank") and game.word_details.search("足球").has("football"),"Chinese search covers reviewed senses and dictionary meanings")
 	check(game.word_details.search("不存在的测试词义").is_empty() and game.word_details.search("水",6).size()<=6,"Chinese search respects empty matches and result limit")
@@ -36,6 +43,11 @@ func run():
 	game.lookup_return.call();await settle()
 	check(game.word_search_query=="传统" and game.hud.screen=="search","return preserves Chinese query")
 	await snap("03-chinese-results")
+	game.hud.close();await settle()
+	await tap(game.hud.settings_button);check(game.hud.screen=="settings","real settings click works during loading")
+	game.hud.close();await tap(game.hud.books_button);check(game.hud.screen=="wordbooks","real wordbook click works during loading")
+	game.journal();check(game.hud.screen=="journal","reading can open before the first task exists")
+	game.show_wordbooks();game.toggle_listen_preference();game.toggle_listen_preference()
 	game.hud.close();await settle()
 	await snap("04-stars-bright")
 	var deadline=Time.get_ticks_msec()+60000;var captured={};var min_zoom=100.;var max_zoom=0.;var first_visible=0

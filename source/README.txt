@@ -1,11 +1,12 @@
-ARWORD · 0.14.8 竖屏小星球
+ARWORD · 0.14.9 竖屏小星球
 
-快速查词与分段出场（2026-11-10）
-Windows 试玩：outputs/quick-search-preview/Windows/ARWORD.exe。安卓公开构建：outputs/0.14.8/Public/ARWORD-0.14.8.apk（版本代码 36）；上线状态以 GitHub Releases 为准。
-打开先显示黑色星空和醒目的“搜英文 / 中文”，查词无需等待星球、人物和动物全部加载。打开查词面板时，后续较重的场景组装暂停；模型资源在后台读取。中文优先匹配常用释义，再匹配完整词典释义，结果仍进入原有详情并按朗读设置读一次。
-星星由暗到亮，星球与宇宙准备好后镜头快速拉远，大肥鱼从小到大回弹，随后动物错开逐个出现。缺少私人模型时保持人物隐藏，不显示白模；动物正常出现。出场只改变外观，不影响学习、资源、建设与动物路线。
-动物栖息地按小段计算，去掉兔子初始化时的一次重复计算。个人模型缓存沿用 0.14.7 的校验与本机私有目录规则。
-原生验证：tests/startup.gd 使用 --qa-startup 检查真实分段启动、中文查词、自动朗读、出场顺序、最终缩放和窄屏按钮。无界面测试为规避 Godot 4.5 的空渲染器线程问题使用同步资源读取；Windows Vulkan 测试覆盖后台读取。构建和电脑测试不代表实体手机启动时间。
+启动恢复、星空与应用图标（2026-11-10）
+Windows 试玩：outputs/startup-fix-preview/Windows/ARWORD.exe。安卓公开构建：outputs/0.14.9/Public/ARWORD-0.14.9.apk（版本代码 38）；上线状态以 GitHub Releases 为准。
+修复 0.14.8 停在星空、镜头不拉远且顶部按钮无响应的问题。首帧之后逐小段读取资源，避免脚本与模型共享依赖的并行加载。搜索、词书、设置不再等待星球就绪，场景加载失败时仍可查词、换书及检查更新。打开面板时暂停较重的场景组装，关闭后继续；各加载阶段有超时提示。
+开场星星从 105 颗增至 315 颗并调亮；日常宇宙星空的星点出现概率也增为三倍并调亮，沿用原有密度滑条。保留深黑底色。星球就绪后镜头拉远，大肥鱼先回弹出现，动物随后错开逐个出现。
+应用图标换成无脸的圆润小星球，保留小房子和树；顶部搜索、词书和设置图标沿用 0.14.8。图标原图与生成说明在 art-source/app-icon/。
+中文优先匹配常用释义，再匹配完整词典，详情按朗读设置读一次。缺少私人模型时保持人物隐藏，不显示白模；出场不改变学习、资源、建设和动物路线。
+检查入口：tests/startup.gd 使用 --qa-startup 覆盖真实按钮点击、中文查词、朗读、镜头与人物动物出场；tests/startup_recovery.gd 覆盖加载失败后的设置、换书和更新按钮。所有平台使用相同的分段资源读取方式；构建和模拟器检查不代表实体手机启动时间。
 
 启动速度改进（2026-11-06）
 Windows 试玩：outputs/startup-preview/Windows/ARWORD.exe。安卓公开构建：outputs/0.14.7/Public/ARWORD-0.14.7.apk（版本代码 34）。
@@ -106,7 +107,7 @@ scripts/study_voice.gd：可选私人声包的校验、导入与录音读取。
 scripts/hud.gd、icon_button.gd：原生游戏界面和图标。
 assets/vocabulary.json、missions.json、frontier_missions.json：教学内容；改英文语音文字后需重新生成对应录音。
 art-source 与 assets/models 中有 89 对可编辑模型源文件和 GLB。tools/make_voyage_art.py 生成火箭、金矿洞、铸币坊、金矿石和金币。tools/make_rocket_kraken.py 生成火箭岛巨型触手。可在 art-source/rocket_kraken.blend 中编辑四条触手的形态、吸盘和退海动作。
-tools/make_art.py、render_icon.py：Blender 4.4.3 后台运行，生成模型和图标。
+tools/make_art.py：Blender 4.4.3 后台运行，生成模型。render_icon.py 保留旧版图标生成过程，勿运行以覆盖当前 art-source/app-icon/ 图标。
 tools/make_life_art.py：生成鸟、蝴蝶、鱼和鲸的 Blender 源文件与运行模型。
 tools/make_blue_whale.py：单独重建连续长身、宽扁头、细长胸鳍和水平分叉尾的蓝鲸，不重导其他动物；make_life_art.py 的鲸生成也使用它。
 tools/make_deep_sea_art.py：生成新增水生动物、珊瑚、海草、骨架、实体洞窟与巨物。

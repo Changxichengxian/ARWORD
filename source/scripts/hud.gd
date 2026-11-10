@@ -114,7 +114,7 @@ func attach_world():
 	sync_goal()
 
 func set_world_ready(ready:bool):
-	books_button.disabled=not ready;settings_button.disabled=not ready
+	books_button.disabled=false;settings_button.disabled=false
 	clock_label.visible=ready and game.exploring and not overlay.visible
 
 func clear_body():

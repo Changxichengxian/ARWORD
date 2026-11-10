@@ -29,9 +29,9 @@ void fragment() {
 	vec2 view=vec2((UV.x-.5)*aspect,.5-UV.y)*2.0*tan(field_of_view*.5);
 	vec3 ray=normalize(sky_basis*vec3(view,-1.0));
 	vec2 uv=vec2(atan(ray.x,-ray.z)/6.2831853+.5,asin(clamp(ray.y,-1.0,1.0))/3.14159265+.5);
-	float small=stars(uv,1250.0,1.0-.026*star_density,0.0)*.22;
-	float middle=stars(uv+1.73,430.0,1.0-.016*star_density,0.0)*.58;
-	float bright=stars(uv+2.41,145.0,1.0-.008*star_density,.12);
+	float small=stars(uv,1250.0,1.0-.078*star_density,0.0)*.32;
+	float middle=stars(uv+1.73,430.0,1.0-.048*star_density,0.0)*.78;
+	float bright=stars(uv+2.41,145.0,1.0-.024*star_density,.12)*1.2;
 	float twinkle=.93+.07*sin(twinkle_time*.38+uv.x*122.0+uv.y*87.0);
 	vec3 starlight=(.35+star_density*.65)*(vec3(.66,.81,1.0)*(small+middle)+vec3(1.0,.90,.75)*bright*twinkle);
 	vec3 light=vec3(.000008,.000012,.000025)+starlight;

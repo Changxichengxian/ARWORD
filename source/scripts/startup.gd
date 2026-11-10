@@ -1,13 +1,18 @@
 extends Node
 
-# Keep the dictionary usable while the world is being assembled. All scene-tree
-# work stays on the main thread; imported resources are read in the background.
+# Load small pieces on the main thread after the first UI frame. Concurrent
+# script/model loads can share dependencies and stall Android rendering.
 var game
 var sky
 var held_resources:Array=[]
 var arrivals:Array=[]
 var marks:Dictionary={}
 var pending:Array=[]
+var failed=false
+var phase="waiting"
+var phase_started=0
+var phase_active_ms=0
+var last_tick=0
 
 func mark(label:String):marks[label]=Time.get_ticks_msec()
 
@@ -15,6 +20,7 @@ func start(owner_game):
 	game=owner_game
 	var layer=CanvasLayer.new();layer.layer=1;add_child(layer)
 	sky=preload("res://scripts/startup_sky.gd").new();layer.add_child(sky)
+	set_phase("waiting");set_process(true)
 	mark("search_ready")
 	call_deferred("assemble")
 
@@ -23,30 +29,22 @@ func assemble():
 	else:await get_tree().process_frame
 	if game.closing:return
 	mark("first_draw")
-	pending=["res://scripts/grove.gd","res://scripts/cosmos.gd","res://scripts/wildlife.gd","res://scripts/ambience.gd"]
-	var paths=pending
+	set_phase("resources")
+	pending=[]
 	for file in DirAccess.get_files_at("res://assets/models"):
-		var model="res://assets/models/"+str(file).trim_suffix(".import")
-		if model.ends_with(".glb") and model not in paths:paths.append(model)
-	# Godot 4.5 dummy rendering has no thread-safe material storage. The
-	# headless verification path loads on the main thread; native apps use
-	# the background loader exercised by the Vulkan startup test.
-	if DisplayServer.get_name()=="headless":
-		if not await game.startup_turn():return
-		for path in paths:held_resources.append(load(path))
-		paths.clear()
-	else:
-		for path in paths:
-			if ResourceLoader.load_threaded_request(path)!=OK:push_warning("Could not prefetch "+path)
-	while not paths.is_empty():
-		await get_tree().process_frame
-		if game.closing:return
-		for i in range(paths.size()-1,-1,-1):
-			var status=ResourceLoader.load_threaded_get_status(paths[i])
-			if status==ResourceLoader.THREAD_LOAD_LOADED:
-				held_resources.append(ResourceLoader.load_threaded_get(paths[i]));paths.remove_at(i)
-			elif status in [ResourceLoader.THREAD_LOAD_FAILED,ResourceLoader.THREAD_LOAD_INVALID_RESOURCE]:
-				push_error("Startup resource failed: "+paths[i]);game.hud.toast("星球暂时没有打开，仍可查词");return
+		var model="res://assets/models/"+str(file).trim_suffix(".import").trim_suffix(".remap")
+		if model.ends_with(".glb") and model not in pending:pending.append(model)
+	pending.sort()
+	# Models first: script preloads then reuse the already loaded resources.
+	pending.append_array(["res://scripts/grove.gd","res://scripts/cosmos.gd","res://scripts/wildlife.gd","res://scripts/ambience.gd"])
+	while not pending.is_empty():
+		if not await game.startup_checkpoint():return
+		if failed:return
+		var path:String=pending.pop_front()
+		var resource=load(path)
+		if resource==null:fail("星球资源暂时无法读取，可继续查词或检查更新");return
+		held_resources.append(resource)
+	set_phase("world")
 	if not await game.startup_turn():return
 	game.world=load("res://scripts/grove.gd").new()
 	game.world.process_mode=Node.PROCESS_MODE_DISABLED;game.world.hide();game.add_child(game.world)
@@ -57,13 +55,16 @@ func assemble():
 	game.world.setup_actor()
 	if not await game.startup_turn():return
 	game.world.finish_setup();game.setup_camera()
+	set_phase("space")
 	if not await game.startup_turn():return
 	game.cosmos=load("res://scripts/cosmos.gd").new();game.cosmos.name="Cosmos";game.add_child(game.cosmos);game.cosmos.setup(game)
 	if not await game.startup_turn():return
+	set_phase("wildlife")
 	game.world.wildlife=load("res://scripts/wildlife.gd").new();game.world.add_child(game.world.wildlife)
 	game.world.wildlife.process_mode=Node.PROCESS_MODE_DISABLED
 	await game.world.wildlife.setup(game.world,true)
 	if not await game.startup_turn():return
+	set_phase("reveal")
 	prepare_arrivals()
 	game.setup_world_audio();game.hud.attach_world();game.next_task();game.explore(true,false)
 	if game.art_preview:game.world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
@@ -82,7 +83,7 @@ func assemble():
 	await tween.finished
 	if game.closing:return
 	game.scene_ready=true;game.hud.set_world_ready(true);layer_free()
-	mark("world_ready");held_resources.clear()
+	mark("world_ready");held_resources.clear();set_phase("character")
 	if not await game.startup_turn():return
 	await game.initialize_avatar()
 	if game.closing:return
@@ -98,7 +99,7 @@ func assemble():
 		await appear.finished
 		if game.closing or not is_instance_valid(avatar):return
 		avatar.scale=base;avatar.enabled=true;game.world.avatar_appearing=false
-	mark("person_ready")
+	mark("person_ready");set_phase("arrivals")
 	# Only the visual children grow. Route anchors, collision clearances and
 	# species-specific scale animation retain their original transforms.
 	arrivals.sort_custom(func(a,b):return arrival_priority(a)>arrival_priority(b))
@@ -110,21 +111,29 @@ func assemble():
 		var pop=visual.create_tween();pop.tween_property(visual,"scale",Vector3.ONE,.32).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		await get_tree().create_timer(.065).timeout
 	await get_tree().create_timer(.32).timeout
-	mark("animals_ready")
+	mark("animals_ready");set_phase("complete");set_process(false)
 
 func layer_free():
 	if is_instance_valid(sky):sky.get_parent().queue_free();sky=null
 
 func shutdown():
-	# Finish outstanding reads before Godot tears down its resource loaders.
-	# Otherwise a script still parsing on a worker can lose its dependencies.
-	while not pending.is_empty():
-		for i in range(pending.size()-1,-1,-1):
-			var status=ResourceLoader.load_threaded_get_status(pending[i])
-			if status==ResourceLoader.THREAD_LOAD_LOADED:
-				held_resources.append(ResourceLoader.load_threaded_get(pending[i]));pending.remove_at(i)
-			elif status in [ResourceLoader.THREAD_LOAD_FAILED,ResourceLoader.THREAD_LOAD_INVALID_RESOURCE]:pending.remove_at(i)
-		if not pending.is_empty():await get_tree().process_frame
+	pending.clear()
+
+func set_phase(value:String):
+	phase=value;phase_started=Time.get_ticks_msec();phase_active_ms=0;last_tick=phase_started
+
+func _process(_dt):
+	var now=Time.get_ticks_msec()
+	if game.closing or failed or game.scene_ready:last_tick=now;return
+	if not game.hud.overlay.visible:phase_active_ms+=mini(1000,now-last_tick)
+	last_tick=now
+	if phase_active_ms>30000:fail("星球暂时没有打开，可继续查词或检查更新")
+
+func fail(message:String):
+	if failed:return
+	failed=true;pending.clear();mark("failed");game.hud.toast(message)
+	# Keep the lightweight sky and the three usable toolbar entries. Never
+	# replace the user's learning save with an empty or partially loaded world.
 
 func pull_back(value:float):
 	if game.closing:return
