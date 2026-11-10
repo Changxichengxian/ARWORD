@@ -30,7 +30,10 @@ func run():
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--visual-out="):await visual(game,arg.trim_prefix("--visual-out="))
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null;await create_timer(.10).timeout
+	for player in game.effects:player.stop();player.stream=null
 	game.queue_free();await process_frame;await process_frame
+	var drain_until=Time.get_ticks_msec()+250
+	while Time.get_ticks_msec()<drain_until:await process_frame
 	quit(0 if failed==0 else 1)
 func snap(directory:String,name:String):
 	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory.path_join(name+".png"))

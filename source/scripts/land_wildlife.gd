@@ -15,9 +15,9 @@ var land_count=-1
 var navigation_signature=""
 var refresh_wait=0.0
 
-func setup(owner_life):
+func setup(owner_life,initialize=true):
 	life=owner_life;world=life.world
-	refresh_habitat()
+	if initialize:refresh_habitat()
 
 func ground(p:Vector2)->Vector3:
 	return world.ground_point(p) if world.has_method("ground_point") else world.surface(p)
@@ -60,12 +60,13 @@ func safe_route(a:Vector2,b:Vector2,avoid_actor=true)->bool:
 		previous=point
 	return true
 
-func refresh_habitat():
+func refresh_habitat(progressive=false):
 	land_count=world.land.size();homes.clear()
 	if not world.has_method("clear_ground"):return
 	navigation_signature=str(world.get("navigation_signature"))
 	cache_low_props()
 	for cell in world.land:
+		if progressive and not await world.game.startup_checkpoint():return
 		if not world.terrain.kind(cell) in GRASS:continue
 		var center=IslandFrontier.point(cell)
 		# A stationary character can occupy all twelve old sample points while

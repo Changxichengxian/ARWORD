@@ -26,6 +26,9 @@ var screen=""
 var word_tween:Tween
 var clock_label:Label
 var clock_second=-1
+var search_button:Button
+var books_button:Button
+var settings_button:Button
 
 func skin(color:Color,radius=18)->StyleBoxFlat:
 	var s=StyleBoxFlat.new();s.bg_color=color;s.set_corner_radius_all(radius)
@@ -81,12 +84,17 @@ func _ready():
 	safe_frame=Control.new();safe_frame.name="SafeContent";safe_frame.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	add_child(safe_frame);safe_frame.clip_contents=true
 	refresh_safe_area();get_viewport().size_changed.connect(refresh_safe_area)
-	for id in game.world.markers:add_world_progress(id)
 	header=MarginContainer.new();safe_frame.add_child(header);header.anchor_right=1;header.offset_left=22;header.offset_right=-22;header.offset_top=24
-	var top=row(header);var air=Control.new();air.size_flags_horizontal=Control.SIZE_EXPAND_FILL;top.add_child(air)
-	icon(top,"books",game.show_wordbooks,"词书")
-	icon(top,"search",game.show_word_search,"搜索单词")
-	icon(top,"gear",game.settings,"设置")
+	var top=row(header);top.add_theme_constant_override("separation",8)
+	search_button=icon(top,"search",game.show_word_search,"搜索英文或中文")
+	search_button.name="QuickSearch";search_button.caption="搜英文 / 中文";search_button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;search_button.custom_minimum_size=Vector2(156,48)
+	books_button=icon(top,"books",game.show_wordbooks,"词书");settings_button=icon(top,"gear",game.settings,"设置")
+	for button in [search_button,books_button,settings_button]:
+		button.custom_minimum_size.y=48
+		button.add_theme_stylebox_override("normal",skin(Color("E2F3ED") if button==search_button else Color("FFF0D7"),24))
+		button.add_theme_stylebox_override("hover",skin(Color("F0FFF7"),24))
+		button.add_theme_stylebox_override("pressed",skin(Color("BEDDD6"),24))
+
 	toast_label=text(safe_frame,"",16,CREAM);toast_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;toast_label.anchor_left=.08;toast_label.anchor_right=.92;toast_label.offset_top=84;toast_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label=text(safe_frame,"",52,Color(.88,.94,1,.84));clock_label.autowrap_mode=TextServer.AUTOWRAP_OFF;clock_label.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER;clock_label.anchor_left=.5;clock_label.anchor_right=.5;clock_label.anchor_top=.19;clock_label.anchor_bottom=.19;clock_label.offset_left=-150;clock_label.offset_right=150;clock_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	clock_label.add_theme_color_override("font_shadow_color",Color(.01,.025,.05,.75));clock_label.add_theme_constant_override("shadow_offset_x",1);clock_label.add_theme_constant_override("shadow_offset_y",2);clock_label.add_theme_constant_override("shadow_outline_size",3)
@@ -100,6 +108,15 @@ func _ready():
 	body.minimum_size_changed.connect(func():position_card(card_shift),CONNECT_DEFERRED)
 	overlay=ColorRect.new();overlay.color=Color(.02,.08,.12,.66);overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);overlay.mouse_filter=Control.MOUSE_FILTER_STOP;add_child(overlay);overlay.hide()
 	sync_goal()
+func attach_world():
+	for id in game.world.markers:
+		if not world_progress.has(id):add_world_progress(id)
+	sync_goal()
+
+func set_world_ready(ready:bool):
+	books_button.disabled=not ready;settings_button.disabled=not ready
+	clock_label.visible=ready and game.exploring and not overlay.visible
+
 func clear_body():
 	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
 	card_scroll.scroll_vertical=0
@@ -193,6 +210,9 @@ func add_world_progress(id:String):
 	panel.minimum_size_changed.connect(panel.reset_size,CONNECT_DEFERRED)
 func update_world_progress():
 	if not is_instance_valid(card) or not is_instance_valid(overlay):return
+	if not game.scene_ready or not is_instance_valid(game.camera) or not is_instance_valid(game.world):
+		for item in world_progress.values():item.panel.hide()
+		return
 	var camera=game.camera
 	var camera_position=camera.global_position
 	var globe_basis=game.world.globe.global_basis
@@ -371,7 +391,7 @@ func _process(dt):
 			if screen=="search" and overlay.visible:fit_modal()
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
-	clock_label.visible=game.exploring and not overlay.visible
+	clock_label.visible=game.scene_ready and game.exploring and not overlay.visible
 	clock_label.modulate.a=1.0-card.modulate.a if card.visible else 1.0
 	var second=int(Time.get_unix_time_from_system())
 	if clock_label.visible and second!=clock_second:

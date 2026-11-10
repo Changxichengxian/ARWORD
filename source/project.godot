@@ -1,11 +1,13 @@
 config_version=5
 
 [application]
-boot_splash/bg_color=Color(0.027, 0.11, 0.18, 1)
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
+boot_splash/minimum_display_time=0
 boot_splash/image="res://assets/icon-foreground.png"
 boot_splash/fullsize=false
 config/name="ARWORD"
-config/version="0.14.7"
+config/version="0.14.8"
 run/max_fps=60
 config/icon="res://assets/icon.png"
 run/main_scene="res://main.tscn"
@@ -35,7 +37,7 @@ lights_and_shadows/directional_shadow/soft_shadow_filter_quality.mobile=3
 scaling_3d/scale=0.85
 scaling_3d/scale.windows=1.0
 lights_and_shadows/directional_shadow/size.windows=4096
-environment/defaults/default_clear_color=Color(0.49,0.76,0.83,1)
+environment/defaults/default_clear_color=Color(0,0,0,1)
 
 [audio]
 driver/enable_input=false

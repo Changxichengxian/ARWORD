@@ -6,6 +6,8 @@ var full_entries:Dictionary
 var senses:Dictionary={}
 var examples:Dictionary={}
 var keys:Array=[]
+var translation_rows:Array=[]
+var translation_terms:Dictionary={}
 
 func _init(words:Dictionary,lookup_words:Dictionary,lexicon:Dictionary={}):
 	entries=words;dictionary=lookup_words;full_entries=lexicon
@@ -23,11 +25,39 @@ func has_word(value:String)->bool:
 func search(value:String,limit=24)->Array:
 	var query=normalize(value);var exact=[];var prefix=[];var rest=[]
 	if query.is_empty():return []
+	for i in query.length():
+		var code=query.unicode_at(i)
+		if code>=0x3400 and code<=0x9fff or code>=0xf900 and code<=0xfaff or code>=0x20000 and code<=0x3134f:
+			return search_translation(query,limit)
 	for word in keys:
 		if word==query:exact.append(word)
 		elif str(word).begins_with(query):prefix.append(word)
 		elif query.length()>=2 and query in str(word):rest.append(word)
 	return (exact+prefix+rest).slice(0,limit)
+
+func prepare_translation_search():
+	if not translation_rows.is_empty():return
+	for word in keys:
+		var detail=entry(word);var common=normalize(detail.common);var full=normalize(detail.definition)
+		translation_rows.append([word,common,full])
+		var terms=common.replace("；",";").replace("，",";").replace("、",";").replace("\n",";").replace(" · ",";").replace(",",";")
+		for term in terms.split(";",false):
+			term=term.strip_edges()
+			if term.is_empty():continue
+			if not translation_terms.has(term):translation_terms[term]=[]
+			if not translation_terms[term].has(word):translation_terms[term].append(word)
+
+func search_translation(query:String,limit:int)->Array:
+	prepare_translation_search()
+	var exact:Array=translation_terms.get(query,[]).duplicate();var prefix=[];var common=[];var additional=[]
+	var seen={}
+	for word in exact:seen[word]=true
+	for row in translation_rows:
+		if seen.has(row[0]):continue
+		if row[1].begins_with(query):prefix.append(row[0])
+		elif query in row[1]:common.append(row[0])
+		elif query in row[2]:additional.append(row[0])
+	return (exact+prefix+common+additional).slice(0,maxi(0,limit))
 
 func entry(value:String)->Dictionary:
 	var word=normalize(value);var q:Dictionary=entries.get(word,{});var d:Dictionary=dictionary.get(word,{})

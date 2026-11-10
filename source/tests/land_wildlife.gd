@@ -76,5 +76,8 @@ func run():
 	for rabbit in land.rabbits:check(land.grass_safe(rabbit.point,false),"expanded rabbit habitat clears finished building footprints")
 	print("RABBIT_RESULT ",failed," failed; states=",states," moved=",moved)
 	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null
-	game.queue_free();await process_frame;await process_frame;await create_timer(.1).timeout
+	for player in game.effects:player.stop();player.stream=null
+	game.queue_free();await process_frame;await process_frame
+	var drain_until=Time.get_ticks_msec()+250
+	while Time.get_ticks_msec()<drain_until:await process_frame
 	quit.call_deferred(0 if failed==0 else 1)

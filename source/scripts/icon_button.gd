@@ -13,13 +13,18 @@ func _ready():
 
 func _draw():
 	var c=size*.5
-	if not caption.is_empty():c.x=size.x*.29
+	if not caption.is_empty():c.x=26 if kind=="search" else size.x*.29
 	var r=13.0;var col=ink
 	if disabled:col.a=.4
 	match kind:
 		"search":
-			draw_arc(c+Vector2(-3,-3),8,0,TAU,32,col,2.5,true)
-			draw_line(c+Vector2(3,3),c+Vector2(12,12),col,3,true)
+			draw_circle(c+Vector2(-3,-3),9,Color("A8D8CB"))
+			draw_arc(c+Vector2(-3,-3),9,0,TAU,32,col,2.3,true)
+			draw_line(c+Vector2(4,4),c+Vector2(11,11),col,5,true);draw_circle(c+Vector2(11,11),2.5,col)
+			for x in [-6,0]:draw_circle(c+Vector2(x,-3),1.1,col)
+			draw_arc(c+Vector2(-3,-2),2.5,.2,PI-.2,12,col,1.1,true)
+			draw_circle(c+Vector2(-8,0),1.4,Color("E8A59C"));draw_circle(c+Vector2(2,0),1.4,Color("E8A59C"))
+			draw_line(c+Vector2(9,-13),c+Vector2(9,-7),Color("C99140"),1.6,true);draw_line(c+Vector2(6,-10),c+Vector2(12,-10),Color("C99140"),1.6,true)
 		"star":
 			var corners=[];var curve=PackedVector2Array()
 			for i in range(10):
@@ -37,12 +42,14 @@ func _draw():
 			draw_polyline(PackedVector2Array([c+Vector2(-13,-10),c+Vector2(-4,-11),c,c+Vector2(4,-11),c+Vector2(13,-10),c+Vector2(13,11),c+Vector2(4,10),c+Vector2(0,13),c+Vector2(-4,10),c+Vector2(-13,11),c+Vector2(-13,-10)]),col,2,true)
 			draw_line(c+Vector2(0,-8),c+Vector2(0,12),col,2,true)
 		"books":
+			var colors=[Color("99CDBD"),Color("F2C676"),Color("AFC8E0")]
 			for i in range(3):
-				var rect=Rect2(c+Vector2(-12+i*8,-11+(i%2)*3),Vector2(6,23-(i%2)*3));draw_style_box(pad(col),rect)
-				draw_line(rect.position+Vector2(1,5),rect.position+Vector2(5,5),Color("F3C671"),1.5,true)
+				var rect=Rect2(c+Vector2(-13+i*9,-11+(i%2)*3),Vector2(8,23-(i%2)*3));var paint=pad(colors[i]);paint.set_corner_radius_all(3);draw_style_box(paint,rect)
+				draw_line(rect.position+Vector2(2,5),rect.position+Vector2(6,5),col,1.3,true)
+				draw_line(rect.position+Vector2(2,18),rect.position+Vector2(6,18),col,1.1,true)
 		"gear":
-			draw_arc(c,8,0,TAU,24,col,2.5,true);draw_circle(c,3,col)
-			for i in range(8):var v=Vector2.from_angle(i*TAU/8);draw_line(c+v*10,c+v*14,col,3,true)
+			for i in range(6):draw_circle(c+Vector2.from_angle(i*TAU/6)*9,4.2,Color("D8B7D8"))
+			draw_circle(c,10,Color("D8B7D8"));draw_arc(c,6,0,TAU,24,col,2.0,true);draw_circle(c,2,Color("FFF0D7"))
 		"compass":
 			draw_arc(c,13,0,TAU,30,col,2,true);draw_colored_polygon(PackedVector2Array([c+Vector2(4,-9),c+Vector2(1,2),c+Vector2(-4,9),c+Vector2(-1,-2)]),col)
 		"telescope":
@@ -64,7 +71,7 @@ func _draw():
 		"skip":
 			for x in [-8,3]:draw_polyline(PackedVector2Array([c+Vector2(x-4,-9),c+Vector2(x+5,0),c+Vector2(x-4,9)]),col,2.8,true)
 		"close":draw_line(c-Vector2(7,7),c+Vector2(7,7),col,2.5,true);draw_line(c+Vector2(-7,7),c+Vector2(7,-7),col,2.5,true)
-	if not caption.is_empty():draw_string(get_theme_default_font(),Vector2(size.x*.48,size.y*.5+6),caption,HORIZONTAL_ALIGNMENT_LEFT,-1,17,col)
+	if not caption.is_empty():draw_string(get_theme_default_font(),Vector2(48 if kind=="search" else size.x*.48,size.y*.5+6),caption,HORIZONTAL_ALIGNMENT_LEFT,size.x-54 if kind=="search" else -1,17,col)
 
 func pad(color:Color)->StyleBoxFlat:
 	var s=StyleBoxFlat.new();s.bg_color=color;s.set_corner_radius_all(2);return s

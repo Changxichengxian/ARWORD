@@ -12,7 +12,11 @@ var pair_frame=Basis.IDENTITY
 var pair_rotation=Quaternion.IDENTITY
 var mouse_drag=false
 var world_zoom=10.0
-var world:IslandGrove
+var world
+var scene_ready=false
+var startup
+var startup_slice=0
+var character_directory=""
 var hud:IslandHUD
 var camera:Camera3D
 var camera_focus=Vector3(0,10.0,0)
@@ -86,22 +90,52 @@ func _ready():
 	dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://assets/dictionary.json"))
 	word_details=preload("res://scripts/word_details.gd").new(learning.by_id,dictionary,learning.wordbooks.entries)
 	word_details.senses=word_senses.entries
-	world=IslandGrove.new();add_child(world);world.setup(self)
-	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=Vector3(0,24,21);camera.look_at(Vector3(0,10.0,0));camera.current=true
-	cosmos=load("res://scripts/cosmos.gd").new();cosmos.name="Cosmos";add_child(cosmos);cosmos.setup(self)
-	world.wildlife=load("res://scripts/wildlife.gd").new();world.add_child(world.wildlife);world.wildlife.setup(world)
 	speech=AudioStreamPlayer.new();add_child(speech)
+	character_directory=avatar_directory();study_voice.prepare(character_directory)
+	var layer=CanvasLayer.new();layer.layer=10;add_child(layer);hud=IslandHUD.new();hud.game=self;layer.add_child(hud)
+	hud.overlay.visibility_changed.connect(func():if hud.overlay.visible:reset_world_input())
+	hud.set_card_open(false,false);hud.set_world_ready(false)
+	if not qa or "--qa-startup" in OS.get_cmdline_user_args():
+		startup=load("res://scripts/startup.gd").new();add_child(startup);startup.start(self)
+	else:
+		world=load("res://scripts/grove.gd").new();add_child(world);world.setup(self)
+		setup_camera()
+		cosmos=load("res://scripts/cosmos.gd").new();cosmos.name="Cosmos";add_child(cosmos);cosmos.setup(self)
+		world.wildlife=load("res://scripts/wildlife.gd").new();world.add_child(world.wildlife);world.wildlife.setup(world)
+		setup_world_audio();scene_ready=true;hud.attach_world();hud.set_world_ready(true)
+		next_task();explore(true,false)
+		if art_preview:world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
+		call_deferred("initialize_avatar")
+
+func setup_camera():
+	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=HOME_CAMERA;camera.look_at(Vector3(0,10.0,0));camera.current=true
+
+func setup_world_audio():
 	ambience=load("res://scripts/ambience.gd").new();add_child(ambience);ambience.setup(self)
 	for i in range(6):var p=AudioStreamPlayer.new();add_child(p);effects.append(p)
 	for kind in ["chop","stone","land","build","tap","soft"]:
 		var path="res://assets/audio/"+kind+".wav"
 		if ResourceLoader.exists(path):sound_bank[kind]=load(path)
-	var layer=CanvasLayer.new();add_child(layer);hud=IslandHUD.new();hud.game=self;layer.add_child(hud)
-	hud.overlay.visibility_changed.connect(func():if hud.overlay.visible:reset_world_input())
-	next_task()
-	explore(true,false)
-	if art_preview:world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
-	call_deferred("initialize_avatar")
+
+func startup_turn()->bool:
+	await get_tree().process_frame
+	while not closing and is_instance_valid(hud) and hud.overlay.visible:await get_tree().process_frame
+	startup_slice=Time.get_ticks_msec()
+	return not closing and is_inside_tree()
+
+func startup_checkpoint()->bool:
+	if closing:return false
+	if Time.get_ticks_msec()-startup_slice<4 and not hud.overlay.visible:return true
+	return await startup_turn()
+
+func avatar_directory()->String:
+	if not qa:return "user://characters"
+	var scope=str(Time.get_ticks_usec())
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--qa-avatar-scope="):
+			var label=arg.trim_prefix("--qa-avatar-scope=").validate_filename()
+			if label not in ["", ".", ".."]:scope=label
+	return "user://qa-characters/".path_join(scope)
 
 func read_save():
 	if qa:return
@@ -290,9 +324,9 @@ func zoom_tilt(zoom:float)->float:
 
 func apply_framing(focus:Vector3,zoom:float,tilt:float):
 	camera_focus=focus;camera.size=zoom;inspection_tilt=tilt
-	var pivot=focus.lerp(Vector3.UP*IslandGrove.RADIUS,tilt)
+	var pivot=focus.lerp(Vector3.UP*IslandTerrain.RADIUS,tilt)
 	var pitch=deg_to_rad(CLOSE_PITCH)
-	var close_position=Vector3.UP*IslandGrove.RADIUS+Vector3(0,sin(pitch),cos(pitch))*25.
+	var close_position=Vector3.UP*IslandTerrain.RADIUS+Vector3(0,sin(pitch),cos(pitch))*25.
 	camera.position=HOME_CAMERA.lerp(close_position,tilt)
 	camera.look_at(pivot)
 
@@ -349,7 +383,7 @@ func grip_at(midpoint:Vector2,line:Vector2)->Basis:
 	var to_view=camera.global_basis.z.normalized()
 	var ray_offset=camera.project_ray_origin(midpoint)-world.globe.global_position
 	var radial=ray_offset-to_view*ray_offset.dot(to_view)
-	var radius=IslandGrove.RADIUS
+	var radius=IslandTerrain.RADIUS
 	var rr=radial.length_squared()/(radius*radius)
 	# Continue the virtual surface beyond the visible limb. This keeps a pair
 	# partly over the sky well conditioned, even when the globe is very close.
@@ -403,6 +437,7 @@ func captured_world_touch(event)->bool:
 	return true
 
 func _unhandled_input(event):
+	if not scene_ready:return
 	if cosmos and cosmos.observatory_active:
 		observatory_input(event);return
 	if not is_instance_valid(hud) or hud.overlay.visible:return
@@ -431,6 +466,9 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion and mouse_drag:stop_view_transition();drag_distance+=event.relative.length();world.drag(event.relative)
 
 func _input(event):
+	if not scene_ready:
+		if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
+		return
 	# A captured sky gesture must finish even when its release lands on a toolbar button.
 	if cosmos and cosmos.observatory_active and observatory_capture_input(event):
 		get_viewport().set_input_as_handled();return
@@ -464,6 +502,11 @@ func back():
 	var now=Time.get_ticks_msec()
 	if now-last_back<150:return
 	last_back=now;speech.stop()
+	if not scene_ready:
+		if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
+		elif hud.overlay.visible:hide_word_keyboard();hud.close()
+		else:request_exit()
+		return
 	if is_instance_valid(trench_camera):leave_trench();return
 	if cosmos and cosmos.observatory_active:close_observatory();return
 	if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
@@ -546,21 +589,12 @@ func initialize_avatar():
 	# A deferred call still runs before the first draw. Let the real planet/UI appear first.
 	if DisplayServer.get_name()!="headless":await RenderingServer.frame_post_draw
 	if closing or not is_inside_tree():return
-	var directory="user://characters"
-	var legacy="user://avatars/current.vrm"
-	if qa:
-		var scope=str(Time.get_ticks_usec())
-		for arg in OS.get_cmdline_user_args():
-			if arg.begins_with("--qa-avatar-scope="):
-				var label=arg.trim_prefix("--qa-avatar-scope=").validate_filename()
-				if label not in ["", ".", ".."]:scope=label
-		directory="user://qa-characters/".path_join(scope)
-		legacy=""
+	var directory=character_directory
+	var legacy="" if qa else "user://avatars/current.vrm"
 	cast_store=FixedCast.new(directory)
 	if qa and not "--qa-with-cast" in OS.get_cmdline_user_args():
 		fixed_character=""
 		return
-	study_voice.prepare(directory)
 	cast_store.prepare(FixedCast.BUILTIN,legacy)
 	fixed_character=""
 	if cast_store.preferred()=="deepseek":apply_fixed_character("deepseek",false)
@@ -679,7 +713,7 @@ func rewind_building(all_sites:bool):
 	frontier.rewind_building(all_sites);save_progress()
 	stop_view_transition();reset_world_input();speech.stop();hud.close()
 	var old=world
-	world=IslandGrove.new();remove_child(old);old.queue_free()
+	world=load("res://scripts/grove.gd").new();remove_child(old);old.queue_free()
 	add_child(world);world.setup(self)
 	for node in world.get_children():
 		if node is WorldEnvironment:
@@ -940,11 +974,12 @@ func show_word_search():
 	if locked:return
 	speech.stop();var box=hud.modal("搜索单词");hud.screen="search"
 	var line=hud.row(box)
-	var field=LineEdit.new();field.name="WordSearch";field.placeholder_text="输入英文单词";field.text=word_search_query;field.size_flags_horizontal=Control.SIZE_EXPAND_FILL;field.custom_minimum_size=Vector2(0,48);field.expand_to_text_length=false;field.max_length=60;field.virtual_keyboard_type=LineEdit.KEYBOARD_TYPE_DEFAULT;line.add_child(field)
+	var field=LineEdit.new();field.name="WordSearch";field.placeholder_text="输入英文或中文释义";field.text=word_search_query;field.size_flags_horizontal=Control.SIZE_EXPAND_FILL;field.custom_minimum_size=Vector2(0,48);field.expand_to_text_length=false;field.max_length=60;field.virtual_keyboard_type=LineEdit.KEYBOARD_TYPE_DEFAULT;line.add_child(field)
 	field.add_theme_color_override("font_color",IslandHUD.INK);field.add_theme_color_override("font_placeholder_color",Color("70857B"));field.add_theme_stylebox_override("normal",hud.skin(Color("E5EFE4"),12))
 	var results=VBoxContainer.new();results.name="SearchResults";results.add_theme_constant_override("separation",8);box.add_child(results)
 	var submit=func(_value=""):
 		if word_details.has_word(field.text):field.release_focus();hide_word_keyboard();lookup(field.text)
+		elif word_details.search(field.text,2).size()==1:field.release_focus();hide_word_keyboard();lookup(word_details.search(field.text,1)[0])
 		else:hud.toast("请选择下方的单词")
 	hud.icon(line,"search",submit,"查词")
 	field.text_submitted.connect(submit)
@@ -957,9 +992,10 @@ func show_word_search():
 func update_word_search(results:VBoxContainer):
 	for child in results.get_children():results.remove_child(child);child.queue_free()
 	var words=word_details.search(word_search_query)
-	if words.is_empty():hud.text(results,"输入单词，查看释义和例句" if word_search_query.strip_edges().is_empty() else "没有找到，试试单词原形",17,IslandHUD.GREEN)
+	if words.is_empty():hud.text(results,"输入英文或中文，查看释义和例句" if word_search_query.strip_edges().is_empty() else "没有找到，试试单词原形或简短中文释义",17,IslandHUD.GREEN)
 	for word in words:
-		var item=hud.button(results,word,func():hide_word_keyboard();lookup(word),false,44);item.alignment=HORIZONTAL_ALIGNMENT_LEFT;item.clip_text=true
+		var meaning=str(word_details.entry(word).get("common","")).replace("\n","；")
+		var item=hud.button(results,word+"   "+meaning,func():hide_word_keyboard();lookup(word),false,50);item.alignment=HORIZONTAL_ALIGNMENT_LEFT;item.clip_text=true;item.add_theme_font_size_override("font_size",17)
 
 func hide_word_keyboard():
 	if OS.has_feature("android"):DisplayServer.virtual_keyboard_hide()

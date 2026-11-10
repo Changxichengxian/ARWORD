@@ -40,16 +40,17 @@ var depth_sample_directions=PackedVector2Array()
 func _init():
 	for i in range(8):depth_sample_directions.append(Vector2(cos(i*TAU/8),sin(i*TAU/8)))
 
-func setup(owner_world):
+func setup(owner_world,progressive=false):
 	world=owner_world
 	if get_parent()!=world.globe:reparent(world.globe,false)
 	position=Vector3.ZERO;basis=Basis.IDENTITY
 	add_child(tidepool)
 	fish_scenes["jelly"]=preload("res://assets/models/wild_jelly.glb")
 	for type in ["dolphin","seahorse","puffer","squid"]:fish_scenes[type]=load("res://assets/models/wild_"+type+".glb")
-	add_child(land_life);land_life.setup(self)
+	add_child(land_life);land_life.setup(self,false)
 	spray_material=StandardMaterial3D.new();spray_material.albedo_color=Color("D1F3F0");spray_material.roughness=.18
-	refresh_habitats()
+	if progressive:await refresh_habitats(true)
+	else:refresh_habitats()
 
 func sea_direction(p:Vector2)->Vector3:return world.surface(p).normalized()
 func available_depth(p:Vector2)->float:return depth_at(sea_direction(p))
@@ -100,7 +101,7 @@ func clear_of_seabed_props(n:Vector3,extent:float,bottom_depth:float)->bool:
 		if n.distance_to(obstacle.normal)*water_math.BASE_RADIUS<extent+obstacle.radius and bottom_depth>obstacle.depth:return false
 	return true
 
-func refresh_habitats():
+func refresh_habitats(progressive=false):
 	var water=world.get("water")
 	if water and water.has_method("rebuild") and water.get("land_count")!=world.land.size():water.rebuild()
 	land_count=world.land.size();coast.clear();offshore.clear();outer_sea.clear();meadows.clear()
@@ -108,6 +109,7 @@ func refresh_habitats():
 	for cell in world.land:shore_centers.append(sea_direction(IslandFrontier.point(cell)))
 	var steps=[Vector2i(1,0),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1)]
 	for cell in world.land:
+		if progressive and not await world.game.startup_checkpoint():return
 		var center=IslandFrontier.point(cell);var region=world.terrain.kind(cell)
 		if region in ["grove","shore","meadow","wetland","hill"]:meadows.append(center+Vector2(.55,.42))
 		for step in steps:
@@ -123,21 +125,26 @@ func refresh_habitats():
 	if coast.is_empty():coast.assign(offshore)
 	rebuild_seabed_life()
 	tidepool.choose_coast(self)
-	land_life.refresh_habitat()
+	if progressive:await land_life.refresh_habitat(true)
+	else:land_life.refresh_habitat()
 	if tidepool.visible:seabed_obstacles.append({"normal":tidepool.normal,"radius":1.42,"depth":0.})
 	var desired={"bird":mini(4,1+land_count/8),"fish":32 if land_count>=18 else 28,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
 	for kind in desired:
 		var count=0
 		for animal in animals:
 			if animal.kind==kind:count+=1
-		while count<int(desired[kind]):spawn(kind,count);count+=1
+		while count<int(desired[kind]):
+			if progressive and not await world.game.startup_checkpoint():return
+			spawn(kind,count);count+=1
 	broad_homes.clear()
 	for animal in animals:
+		if progressive and not await world.game.startup_checkpoint():return
 		if animal.kind=="fish":configure_fish(animal)
 		elif animal.kind=="whale":configure_whale(animal)
 	# Calves may be added after the orca when a save first expands. Plan the
 	# orca's patrol after both blue-whale lanes are established.
 	for animal in animals:
+		if progressive and not await world.game.startup_checkpoint():return
 		if animal.kind=="orca":configure_whale(animal)
 
 func species(index:int)->String:

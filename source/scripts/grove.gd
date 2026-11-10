@@ -66,6 +66,7 @@ var ferry_tween:Tween
 var ferry_walking=false
 var piers={}
 var sea_routes
+var avatar_appearing=false
 var avatar:Node3D
 var avatar_tool_homes={}
 const Berth=preload("res://scripts/kraken_berth.gd")
@@ -413,6 +414,9 @@ func decorate_cell(cell:Vector2i,animate:bool):
 		for kind in range(2):
 			for i in range(resource_begin[kind],resources[kind].size()):pop(resources[kind][i].visual,.3,resources[kind][i].base)
 func setup(owner_node):
+	setup_base(owner_node);setup_buildings();setup_actor();finish_setup()
+
+func setup_base(owner_node):
 	game=owner_node
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
@@ -425,6 +429,8 @@ func setup(owner_node):
 	for id in IslandFrontier.BUILD_IDS:marker(id)
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
 	marker("rocket")
+
+func setup_buildings():
 	for i in range(3):
 		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),PI)
 		var b=model(["cottage","windmill","garden"][i],a);b.scale=Vector3.ONE*.8;buildings.append(a)
@@ -459,6 +465,8 @@ func setup(owner_node):
 	rocket_lamp=facilities.rocket.find_child("ReadyLamp",true,false)
 	rocket_hatch=facilities.rocket.find_child("Hatch",true,false)
 	fixed_obstacles.append(trader.coin_socket)
+
+func setup_actor():
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
 	make_selection_ring()
 	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
@@ -471,6 +479,8 @@ func setup(owner_node):
 	boat=model("boat",globe);boat.scale=Vector3.ONE*.7
 	ferry=model("boat",globe);ferry.name="WorkingFerry";ferry.scale=Vector3.ONE*.8;ferry.hide()
 	sea_routes=preload("res://scripts/sea_routes.gd").new(self)
+
+func finish_setup():
 	sync_buildings(false);worker=IslandWorker.new(self);worker.settle();prepare_resource(false);recenter();motion_previous=builder.position
 func sync_buildings(animate=true):
 	for cell in game.frontier.cells():
@@ -880,7 +890,7 @@ func _process(dt):
 	var distance=builder.position.distance_to(motion_previous);motion_previous=builder.position
 	if distance<1:travelled+=distance
 	motion_speed=lerpf(motion_speed,distance/maxf(dt,.001) if distance<1 else 0.0,1-exp(-dt*14))
-	if worker:worker.update(dt)
+	if worker and not avatar_appearing:worker.update(dt)
 	animate_voyage(dt)
 	if is_instance_valid(rotor) and game.learning.data.build[1]>=IslandLearning.NEEDS[1]:rotor.rotate_z(dt*.7)
 	for id in machine_rotors:
