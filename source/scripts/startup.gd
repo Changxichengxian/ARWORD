@@ -142,7 +142,9 @@ func layer_free():
 	if is_instance_valid(sky):sky.get_parent().queue_free();sky=null
 
 func shutdown():
-	pending.clear()
+	pending.clear();held_resources.clear();camera_running=false
+	for arrival in growing:arrival.done=true
+	growing.clear();set_process(false)
 
 func set_phase(value:String):
 	mark("phase_"+value)

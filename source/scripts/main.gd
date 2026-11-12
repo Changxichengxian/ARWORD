@@ -122,13 +122,13 @@ func startup_turn()->bool:
 	await get_tree().process_frame
 	while not closing and is_instance_valid(hud) and (hud.overlay.visible or startup_input_busy()):await get_tree().process_frame
 	startup_slice=Time.get_ticks_msec()
-	return not closing and is_inside_tree() and not (is_instance_valid(startup) and startup.failed)
+	return not closing and is_inside_tree() and is_instance_valid(startup) and not startup.failed
 
 func startup_input_busy()->bool:
 	return mouse_drag or not touch_points.is_empty() or Time.get_ticks_msec()-startup_last_input<180
 
 func startup_checkpoint()->bool:
-	if closing or (is_instance_valid(startup) and startup.failed):return false
+	if closing or not is_instance_valid(startup) or startup.failed:return false
 	if Time.get_ticks_msec()-startup_slice<2 and not hud.overlay.visible and not startup_input_busy():return true
 	return await startup_turn()
 
@@ -742,6 +742,8 @@ func rewind_building(all_sites:bool):
 	if locked or not learning.data.dev_skip:return
 	frontier.rewind_building(all_sites);save_progress()
 	stop_view_transition();reset_world_input();speech.stop();hud.close()
+	# The old startup coroutine must not add its animals to the replacement world.
+	if is_instance_valid(startup):startup.shutdown();startup.queue_free();startup=null
 	var old=world
 	world=load("res://scripts/grove.gd").new();remove_child(old);old.queue_free()
 	add_child(world);world.setup(self)
@@ -750,6 +752,7 @@ func rewind_building(all_sites:bool):
 			node.environment.background_mode=Environment.BG_CANVAS;node.environment.background_canvas_max_layer=-10
 	world.wildlife=load("res://scripts/wildlife.gd").new();world.add_child(world.wildlife);world.wildlife.setup(world)
 	if fixed_character=="deepseek":apply_fixed_character("deepseek",false)
+	else:call_deferred("initialize_avatar")
 	world_zoom=10;next_task();explore(true,false);hud.sync_goal()
 
 func fast_forward(everything=false):
