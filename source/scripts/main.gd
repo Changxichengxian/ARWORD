@@ -751,8 +751,7 @@ func rewind_building(all_sites:bool):
 		if node is WorldEnvironment:
 			node.environment.background_mode=Environment.BG_CANVAS;node.environment.background_canvas_max_layer=-10
 	world.wildlife=load("res://scripts/wildlife.gd").new();world.add_child(world.wildlife);world.wildlife.setup(world)
-	if fixed_character=="deepseek":apply_fixed_character("deepseek",false)
-	else:call_deferred("initialize_avatar")
+	if not apply_fixed_character("deepseek",false):call_deferred("initialize_avatar")
 	world_zoom=10;next_task();explore(true,false);hud.sync_goal()
 
 func fast_forward(everything=false):

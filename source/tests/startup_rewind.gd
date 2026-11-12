@@ -9,6 +9,8 @@ func run():
 	var deadline=Time.get_ticks_msec()+15000
 	while Time.get_ticks_msec()<deadline and is_instance_valid(game.startup):await process_frame
 	for i in range(20):await process_frame
+	if "--qa-with-cast" in OS.get_cmdline_user_args():
+		while not is_instance_valid(game.world.avatar) and Time.get_ticks_msec()<deadline:await process_frame
 	var count=0
 	for child in game.world.globe.get_children():
 		if child is IslandWildlife:count+=1
