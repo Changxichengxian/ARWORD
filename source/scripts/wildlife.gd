@@ -108,7 +108,7 @@ func refresh_habitats(progressive=false):
 	shore_centers.clear()
 	for cell in world.land:shore_centers.append(sea_direction(IslandFrontier.point(cell)))
 	var steps=[Vector2i(1,0),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1)]
-	for cell in world.land:
+	for cell in world.land.keys():
 		if progressive and not await world.game.startup_checkpoint():return
 		var center=IslandFrontier.point(cell);var region=world.terrain.kind(cell)
 		if region in ["grove","shore","meadow","wetland","hill"]:meadows.append(center+Vector2(.55,.42))
@@ -123,7 +123,8 @@ func refresh_habitats(progressive=false):
 			if deep_sea(normal,1.2,1.55):outer_sea.append(normal)
 	if meadows.is_empty():meadows.append(IslandFrontier.point(world.land.keys()[0]) if not world.land.is_empty() else Vector2.ZERO)
 	if coast.is_empty():coast.assign(offshore)
-	rebuild_seabed_life()
+	if progressive:await rebuild_seabed_life(true)
+	else:rebuild_seabed_life()
 	tidepool.choose_coast(self)
 	if progressive:await land_life.refresh_habitat(true)
 	else:land_life.refresh_habitat()
@@ -139,13 +140,19 @@ func refresh_habitats(progressive=false):
 	broad_homes.clear()
 	for animal in animals:
 		if progressive and not await world.game.startup_checkpoint():return
-		if animal.kind=="fish":configure_fish(animal)
-		elif animal.kind=="whale":configure_whale(animal)
+		if animal.kind=="fish":
+			if progressive:await configure_fish(animal,true)
+			else:configure_fish(animal)
+		elif animal.kind=="whale":
+			if progressive:await configure_whale(animal,true)
+			else:configure_whale(animal)
 	# Calves may be added after the orca when a save first expands. Plan the
 	# orca's patrol after both blue-whale lanes are established.
 	for animal in animals:
 		if progressive and not await world.game.startup_checkpoint():return
-		if animal.kind=="orca":configure_whale(animal)
+		if animal.kind=="orca":
+			if progressive:await configure_whale(animal,true)
+			else:configure_whale(animal)
 
 func species(index:int)->String:
 	if index<4:return "gold"
@@ -317,13 +324,14 @@ func animate_fish(animal:Dictionary,t:float):
 		if animal.fin_right:animal.fin_right.rotation.z=.12+.12*sin(beat*.65+.3)
 		animal.state="swim"
 
-func configure_fish(animal:Dictionary):
+func configure_fish(animal:Dictionary,progressive=false):
 	var broad=animal.species in ["ray","turtle","dolphin"];var pool=outer_sea if animal.species in ["ray","dolphin"] and not outer_sea.is_empty() else offshore if broad or animal.species in ["silver","squid","seahorse"] else coast
 	if pool.is_empty():pool=coast if not coast.is_empty() else offshore
 	animal.route_valid=false
 	if pool.is_empty():return
 	var extent=float(BODY_RADIUS[animal.species]);var min_depth=maxf(1.60 if animal.species=="dolphin" else 1.45 if animal.species=="ray" else .95 if broad else .62,float(BODY_HEIGHT[animal.species])*2+.35)
 	for attempt in range(pool.size()):
+		if progressive and not await world.game.startup_checkpoint():return
 		var normal:Vector3=pool[(int(animal.index/3)*5+attempt)%pool.size()]
 		var crowded=false
 		if broad:
@@ -350,7 +358,7 @@ func sea_candidates()->Array:
 	for i in range(96):
 		var y=1.0-(i+.5)/48.0;var a=i*2.39996323;var r=sqrt(maxf(0,1-y*y));candidates.append(Vector3(cos(a)*r,y,sin(a)*r))
 	return candidates
-func configure_whale(animal:Dictionary):
+func configure_whale(animal:Dictionary,progressive=false):
 	animal.route_valid=false
 	var candidates=sea_candidates()
 	if animal.index==1:candidates=candidates.slice(2)+candidates.slice(0,2)
@@ -360,6 +368,7 @@ func configure_whale(animal:Dictionary):
 	var margin=WHALE_HALF_LENGTH*float(animal.scale)+.32;var minimum=2.85 if animal.index==0 else 1.8
 	if animal.kind=="orca":margin=3.24;minimum=2.7
 	for home in candidates:
+		if progressive and not await world.game.startup_checkpoint():return
 		animal.route_center=home
 		for radius in [3.6,2.4,1.4,.7]:
 			animal.radius=radius;var safe=true
@@ -424,11 +433,12 @@ func orca_position(animal:Dictionary,t:float)->Vector3:
 	animal.state="surface" if surface_pass>.8 else "swim"
 	return water_point_normal(n,animal.depth)
 
-func rebuild_seabed_life():
+func rebuild_seabed_life(progressive=false):
 	if scenery:scenery.queue_free()
 	scenery=Node3D.new();scenery.name="UnderwaterDiscoveries";add_child(scenery);grass.clear();cave.clear();seabed_obstacles.clear()
 	var chosen=[]
 	for i in range(offshore.size()):
+		if progressive and not await world.game.startup_checkpoint():return
 		var n:Vector3=offshore[(i*7)%offshore.size()]
 		if not deep_sea(n,.65,1.45):continue
 		var crowded=false
@@ -444,6 +454,7 @@ func rebuild_seabed_life():
 			if deep_sea(direction,.3,.95):grass.append({"node":place_bed_model(grass_scene,direction,.75,i*.7+j),"phase":i+j*2.0})
 		if chosen.size()>=mini(9,3+land_count/7):break
 	for n in sea_candidates():
+		if progressive and not await world.game.startup_checkpoint():return
 		if not deep_sea(n,3.2,2.85):continue
 		var base=Node3D.new();scenery.add_child(base);base.position=n*(world.water.floor_radius(n)+.08)
 		# The ordinary globe recentering rotation also brings the entrance toward

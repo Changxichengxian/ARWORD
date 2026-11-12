@@ -64,8 +64,9 @@ func refresh_habitat(progressive=false):
 	land_count=world.land.size();homes.clear()
 	if not world.has_method("clear_ground"):return
 	navigation_signature=str(world.get("navigation_signature"))
-	cache_low_props()
-	for cell in world.land:
+	if progressive:await cache_low_props(true)
+	else:cache_low_props()
+	for cell in world.land.keys():
 		if progressive and not await world.game.startup_checkpoint():return
 		if not world.terrain.kind(cell) in GRASS:continue
 		var center=IslandFrontier.point(cell)
@@ -73,6 +74,7 @@ func refresh_habitat(progressive=false):
 		# safe grass remains between them. Search more of the same real ground.
 		for radius in [.24,.48,.82,1.08]:
 			for i in range(24):
+				if progressive and i%6==0 and not await world.game.startup_checkpoint():return
 				var p=center+Vector2.from_angle(i*TAU/24+.35)*radius
 				if grass_safe(p):
 					if world.terrain.kind(cell)=="meadow":homes.push_front(p)
@@ -95,7 +97,7 @@ func refresh_habitat(progressive=false):
 		if not p.is_finite():break
 		spawn(p,rabbits.size())
 
-func cache_low_props():
+func cache_low_props(progressive=false):
 	# Navigation reserves buildings; rabbits additionally clear tree trunks,
 	# rocks and low garden scenery, including decor that is batched for drawing.
 	low_props.clear()
@@ -107,6 +109,7 @@ func cache_low_props():
 	if not groups is Dictionary or not world.has_method("stable_point"):return
 	for group in groups.values():
 		for part in group.parts:
+			if progressive and not await world.game.startup_checkpoint():return
 			if not is_instance_valid(part) or not part.mesh:continue
 			var bounds=Rect2();var any=false
 			for surface in part.mesh.get_surface_count():

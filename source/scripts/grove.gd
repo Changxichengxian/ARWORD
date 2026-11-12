@@ -418,7 +418,7 @@ func setup(owner_node):
 
 func setup_base(owner_node):
 	game=owner_node
-	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color("173D52");e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
+	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color.BLACK;e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
 	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_split_1=.53;sun.directional_shadow_max_distance=49;sun.shadow_blur=1.35;sun.shadow_bias=.022;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
@@ -430,8 +430,9 @@ func setup_base(owner_node):
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
 	marker("rocket")
 
-func setup_buildings():
+func setup_buildings(progressive=false):
 	for i in range(3):
+		if progressive and not await game.startup_checkpoint():return
 		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),PI)
 		var b=model(["cottage","windmill","garden"][i],a);b.scale=Vector3.ONE*.8;buildings.append(a)
 		if i==1:rotor=b.find_child("Rotor",true,false)
@@ -441,6 +442,7 @@ func setup_buildings():
 			var added=model(ADDITIONS[i][j],point);added.scale=Vector3.ONE*.64;added.visible=false;extra.append(added)
 		additions.append(extra)
 	for id in FACILITY_MODELS:
+		if progressive and not await game.startup_checkpoint():return
 		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(id),PI)
 		var n=model(FACILITY_MODELS[id],a);n.scale=Vector3.ONE*(.62 if id=="mountain" else .85 if id=="shipyard" else .72)
 		facilities[id]=a
@@ -449,6 +451,7 @@ func setup_buildings():
 			var moving=a.find_child(part,true,false)
 			if moving:machine_rotors[id]=moving
 	for pair in [["goldmine","gold_mine"],["smelter","gold_mint"],["rocket","rocket"]]:
+		if progressive and not await game.startup_checkpoint():return
 		var id:String=pair[0]
 		var anchor=Node3D.new()
 		globe.add_child(anchor)

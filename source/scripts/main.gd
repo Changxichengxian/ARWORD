@@ -14,6 +14,7 @@ var mouse_drag=false
 var world_zoom=10.0
 var world
 var scene_ready=false
+var startup_last_input=-1000
 var startup
 var startup_slice=0
 var character_directory=""
@@ -119,13 +120,16 @@ func setup_world_audio():
 
 func startup_turn()->bool:
 	await get_tree().process_frame
-	while not closing and is_instance_valid(hud) and hud.overlay.visible:await get_tree().process_frame
+	while not closing and is_instance_valid(hud) and (hud.overlay.visible or startup_input_busy()):await get_tree().process_frame
 	startup_slice=Time.get_ticks_msec()
 	return not closing and is_inside_tree() and not (is_instance_valid(startup) and startup.failed)
 
+func startup_input_busy()->bool:
+	return mouse_drag or not touch_points.is_empty() or Time.get_ticks_msec()-startup_last_input<180
+
 func startup_checkpoint()->bool:
 	if closing or (is_instance_valid(startup) and startup.failed):return false
-	if Time.get_ticks_msec()-startup_slice<4 and not hud.overlay.visible:return true
+	if Time.get_ticks_msec()-startup_slice<2 and not hud.overlay.visible and not startup_input_busy():return true
 	return await startup_turn()
 
 func avatar_directory()->String:
@@ -343,6 +347,7 @@ func frame_view(focus:Vector3,zoom:float,animate=true):
 	camera_tween=create_tween();camera_tween.tween_method(func(t):
 		apply_framing(from_focus.lerp(focus,t),lerpf(from_zoom,zoom,t),lerpf(from_tilt,tilt,t)),0.0,1.0,.42).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 func stop_view_transition():
+	if is_instance_valid(startup):startup.cancel_camera()
 	if camera_tween and camera_tween.is_valid():camera_tween.kill()
 func explore(wide=false,animate=true):
 	if exploring and not wide and not hud.card_open:return
@@ -466,6 +471,7 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion and mouse_drag:stop_view_transition();drag_distance+=event.relative.length();world.drag(event.relative)
 
 func _input(event):
+	if event is InputEventScreenTouch or event is InputEventScreenDrag or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT) or (event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_LEFT):startup_last_input=Time.get_ticks_msec()
 	if not scene_ready:
 		if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
 		return
@@ -603,6 +609,7 @@ func voice_imported(result:String):
 func initialize_avatar():
 	# A deferred call still runs before the first draw. Let the real planet/UI appear first.
 	if DisplayServer.get_name()!="headless":await RenderingServer.frame_post_draw
+	if is_instance_valid(startup) and not await startup_turn():return
 	if closing or not is_inside_tree():return
 	var directory=character_directory
 	var legacy="" if qa else "user://avatars/current.vrm"
