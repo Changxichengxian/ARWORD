@@ -26,6 +26,7 @@ func run():
 	check(not game.hud.card.visible and game.camera.size<=near_zoom*1.15,"the card finishes sliding out and the camera pulls back only slightly")
 	await create_timer(1.5).timeout
 	check(not game.hud.card.visible,"a pending next task cannot reopen a dismissed card")
+	game.learning.data.practice_modes.read=true
 	game.select_site(game.frontier.data.active);game.skip_learning()
 	await create_timer(1.5).timeout
 	check(game.mode=="read","developer privilege can reach contextual work without answering vocabulary")

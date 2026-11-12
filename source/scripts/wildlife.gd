@@ -8,13 +8,15 @@ var clock=0.0
 var land_count=-1
 var coast:Array=[]
 var offshore:Array=[]
-var outer_sea:Array=[]
+var fish_homes:Dictionary={}
+var fish_regions:Array[int]=[]
+var used_fish_homes:Array=[]
+var trench_normal=Vector3.DOWN
 var meadows:Array=[]
 var water_effects:Array=[]
 var scenery:Node3D
 var grass:Array=[]
 var cave:Dictionary={}
-var broad_homes:Array=[]
 var seabed_obstacles:Array=[]
 var bird_scene=preload("res://assets/models/wild_bird.glb")
 var butterfly_scene=preload("res://assets/models/wild_butterfly.glb")
@@ -29,10 +31,12 @@ var relic_scene=preload("res://assets/models/sea_relic.glb")
 var cave_scene=preload("res://assets/models/sea_cave.glb")
 var water_math=preload("res://scripts/water.gd")
 var spray_material:StandardMaterial3D
-const SPECIES=["gold","silver","reef","ray","turtle","jelly","dolphin","seahorse","puffer","squid"]
-const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66,"jelly":.81,"dolphin":.65,"seahorse":.60,"puffer":.70,"squid":.65}
-const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22,"jelly":.32,"dolphin":.40,"seahorse":.34,"puffer":.22,"squid":.25}
-const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65,"jelly":.26,"dolphin":.95,"seahorse":.35,"puffer":.38,"squid":.72}
+const SCALES={"gold":.53,"silver":.48,"reef":.52,"ray":.70,"turtle":.66,"jelly":.81,"dolphin":.65,"seahorse":.60,"puffer":.70,"squid":.65,"octopus":.92,"hammerhead":.86,"sunfish":.76}
+const BODY_HEIGHT={"gold":.17,"silver":.14,"reef":.29,"ray":.15,"turtle":.22,"jelly":.32,"dolphin":.40,"seahorse":.34,"puffer":.22,"squid":.25,"octopus":.38,"hammerhead":.40,"sunfish":.53}
+const BODY_RADIUS={"gold":.36,"silver":.44,"reef":.37,"ray":1.32,"turtle":.65,"jelly":.26,"dolphin":.95,"seahorse":.35,"puffer":.38,"squid":.72,"octopus":.67,"hammerhead":1.12,"sunfish":.48}
+const COASTAL=["gold","reef","turtle","seahorse","puffer","octopus"]
+const OPEN_WATER=["ray","dolphin","hammerhead","sunfish"]
+const TRENCH_EDGE=.79
 const WHALE_RATE=.085
 const WHALE_HALF_LENGTH=2.31
 var depth_sample_directions=PackedVector2Array()
@@ -46,7 +50,9 @@ func setup(owner_world,progressive=false):
 	position=Vector3.ZERO;basis=Basis.IDENTITY
 	add_child(tidepool)
 	fish_scenes["jelly"]=preload("res://assets/models/wild_jelly.glb")
-	for type in ["dolphin","seahorse","puffer","squid"]:fish_scenes[type]=load("res://assets/models/wild_"+type+".glb")
+	for type in ["dolphin","seahorse","puffer","squid","octopus","hammerhead","sunfish"]:
+		if progressive and not await world.game.startup_checkpoint():return
+		fish_scenes[type]=load("res://assets/models/wild_"+type+".glb")
 	add_child(land_life);land_life.setup(self,false)
 	spray_material=StandardMaterial3D.new();spray_material.albedo_color=Color("D1F3F0");spray_material.roughness=.18
 	if progressive:await refresh_habitats(true)
@@ -95,6 +101,8 @@ func fish_depth(species_name:String)->float:
 	if species_name=="seahorse":return .68
 	if species_name=="puffer":return .57
 	if species_name=="squid":return .85
+	if species_name=="jelly":return .83
+	if species_name=="hammerhead" or species_name=="sunfish":return .78
 	return 1.08 if species_name=="ray" else .48 if species_name=="turtle" else .68 if species_name=="silver" else .46
 func clear_of_seabed_props(n:Vector3,extent:float,bottom_depth:float)->bool:
 	for obstacle in seabed_obstacles:
@@ -104,13 +112,19 @@ func clear_of_seabed_props(n:Vector3,extent:float,bottom_depth:float)->bool:
 func refresh_habitats(progressive=false):
 	var water=world.get("water")
 	if water and water.has_method("rebuild") and water.get("land_count")!=world.land.size():water.rebuild()
-	land_count=world.land.size();coast.clear();offshore.clear();outer_sea.clear();meadows.clear()
+	land_count=world.land.size();coast.clear();offshore.clear();meadows.clear()
+	fish_homes.clear();fish_regions.assign([0])
+	trench_normal=sea_direction(IslandFrontier.point(IslandFrontier.ROCKET_CELLS[0]))
+	for normal in sea_candidates():add_fish_home(normal)
 	shore_centers.clear()
 	for cell in world.land:shore_centers.append(sea_direction(IslandFrontier.point(cell)))
 	var steps=[Vector2i(1,0),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1)]
 	for cell in world.land.keys():
 		if progressive and not await world.game.startup_checkpoint():return
 		var center=IslandFrontier.point(cell);var region=world.terrain.kind(cell)
+		var chart:int=world.terrain.chart_at(center)
+		var chart_basis:Basis=world.terrain.chart_basis(chart)
+		if region!="rocket" and not fish_regions.has(chart):fish_regions.append(chart)
 		if region in ["grove","shore","meadow","wetland","hill"]:meadows.append(center+Vector2(.55,.42))
 		for step in steps:
 			if world.land.has(cell+step):continue
@@ -119,8 +133,9 @@ func refresh_habitats(progressive=false):
 			if deep_sea(normal,.35,.68):coast.append(normal)
 			normal=sea_direction(center+direction*IslandFrontier.HEX*3.25)
 			if deep_sea(normal,.7,1.05):offshore.append(normal)
-			normal=sea_direction(center+direction*IslandFrontier.HEX*4.6)
-			if deep_sea(normal,1.2,1.55):outer_sea.append(normal)
+			# Keep samples on this island's chart until they are on the sphere.
+			for distance in [2.4,3.15,4.0,4.9,6.0,7.1]:
+				add_fish_home(chart_basis*world.terrain.chart_direction(center+direction*distance,chart))
 	if meadows.is_empty():meadows.append(IslandFrontier.point(world.land.keys()[0]) if not world.land.is_empty() else Vector2.ZERO)
 	if coast.is_empty():coast.assign(offshore)
 	if progressive:await rebuild_seabed_life(true)
@@ -129,7 +144,7 @@ func refresh_habitats(progressive=false):
 	if progressive:await land_life.refresh_habitat(true)
 	else:land_life.refresh_habitat()
 	if tidepool.visible:seabed_obstacles.append({"normal":tidepool.normal,"radius":1.42,"depth":0.})
-	var desired={"bird":mini(4,1+land_count/8),"fish":32 if land_count>=18 else 28,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
+	var desired={"bird":mini(4,1+land_count/8),"fish":38 if land_count>=18 else 34,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
 	for kind in desired:
 		var count=0
 		for animal in animals:
@@ -137,7 +152,7 @@ func refresh_habitats(progressive=false):
 		while count<int(desired[kind]):
 			if progressive and not await world.game.startup_checkpoint():return
 			spawn(kind,count);count+=1
-	broad_homes.clear()
+	used_fish_homes.clear()
 	for animal in animals:
 		if progressive and not await world.game.startup_checkpoint():return
 		if animal.kind=="fish":
@@ -162,7 +177,8 @@ func species(index:int)->String:
 	if index<18:return "turtle"
 	if index<20:return "jelly"
 	if index<28:return ["dolphin","seahorse","puffer","squid"][int((index-20)/2)]
-	return "silver" if index<30 else "reef"
+	if index<34:return ["octopus","hammerhead","sunfish"][int((index-28)/2)]
+	return "silver" if index<36 else "reef"
 func spawn(kind:String,index:int):
 	var anchor=Node3D.new();add_child(anchor)
 	var type=species(index) if kind=="fish" else kind
@@ -179,7 +195,7 @@ func spawn(kind:String,index:int):
 func bind_joints(animal:Dictionary):
 	# Cache articulated parts once, including optional parts of older models.
 	var model:Node3D=animal.model
-	var flippers=animal.species in ["ray","turtle","whale","orca","dolphin"]
+	var flippers=animal.species in ["ray","turtle","whale","orca","dolphin","hammerhead"]
 	var names={"left":"FlipperL" if flippers else "WingL","right":"FlipperR" if flippers else "WingR","tip_left":"FlipperTipL" if flippers else "WingTipL","tip_right":"FlipperTipR" if flippers else "WingTipR","hind_left":"HindL","hind_right":"HindR","fin_left":"FinL","fin_right":"FinR","head":"Head","tail":"Tail","body":"Body"}
 	for key in names:animal[key]=model.find_child(names[key],true,false)
 	animal.hind_wing_left=model.find_child("HindWingL",true,false)
@@ -187,11 +203,15 @@ func bind_joints(animal:Dictionary):
 	animal.fringe=model.find_child("Fringe",true,false)
 	animal.fluke=model.find_child("Fluke",true,false)
 	animal.arms=[];animal.arm_tips=[]
-	if animal.species=="squid":
+	if animal.species in ["squid","octopus"]:
 		for i in 8:
 			animal.arms.append(model.find_child("Arm"+str(i),true,false))
 			animal.arm_tips.append(model.find_child("ArmTip"+str(i),true,false))
+	if animal.species=="squid":
 		animal.tentacle_left=model.find_child("TentacleL",true,false);animal.tentacle_right=model.find_child("TentacleR",true,false)
+	if animal.species=="sunfish":
+		animal.dorsal=model.find_child("Dorsal",true,false)
+		animal.anal=model.find_child("Anal",true,false)
 	animal.reaction=0.0
 	animal.travel_phase=float(animal.get("phase",0.))*.30
 	animal.motion_weight=1.0
@@ -237,7 +257,36 @@ func animate_fish(animal:Dictionary,t:float):
 	var alert=smoothstep(0.,1.5,animal.startle)
 	var type:String=animal.species
 	animal.model.rotation=Vector3(0.,0.,sin(t*.65)*.035)
-	if type=="dolphin":
+	if type=="octopus":
+		var beat=t*2.1
+		var pulse=pow(maxf(0.,sin(beat)),2.)
+		animal.body.scale=Vector3(1.-.10*pulse,1.+.055*pulse,1.-.085*pulse)
+		animal.model.rotation.x=.055*sin(beat-.55)
+		for i in animal.arms.size():
+			var wave=beat-i*.67
+			animal.arms[i].rotation=Vector3(.16*sin(wave)+.08*alert,.09*cos(wave),.06*sin(wave*.5))
+			animal.arm_tips[i].rotation.x=.20+.25*sin(wave-.8)+.22*alert
+		animal.state="push" if pulse>.35 else "drift"
+	elif type=="hammerhead":
+		var beat=t*3.2
+		animal.tail.rotation.y=.26*sin(beat)
+		animal.fluke.rotation.y=.17*sin(beat-.72)
+		animal.left.rotation.z=-.12+.07*sin(t*.83)
+		animal.right.rotation.z=.12+.07*sin(t*.83)
+		animal.model.rotation.y=-.035*sin(beat-.4)
+		animal.model.rotation.z=.09*sin(t*.57)
+		animal.state="cruise"
+	elif type=="sunfish":
+		var beat=t*2.7
+		var effort=.62+.38*sin(t*.46)
+		animal.dorsal.rotation.z=.34*sin(beat)*effort
+		animal.anal.rotation.z=-.35*sin(beat-.35)*effort
+		animal.tail.rotation.y=.10*sin(beat-.5)
+		animal.fin_left.rotation.z=-.11-.10*sin(beat*1.4)
+		animal.fin_right.rotation.z=.11+.10*sin(beat*1.4+.35)
+		animal.model.rotation.z=.11*sin(t*.56)
+		animal.state="scull" if effort>.55 else "glide"
+	elif type=="dolphin":
 		var beat=t*3.0
 		animal.tail.rotation.x=.22*sin(beat)
 		if animal.fluke:animal.fluke.rotation.x=.18*sin(beat-.65)
@@ -324,29 +373,73 @@ func animate_fish(animal:Dictionary,t:float):
 		if animal.fin_right:animal.fin_right.rotation.z=.12+.12*sin(beat*.65+.3)
 		animal.state="swim"
 
+func add_fish_home(normal:Vector3):
+	var key=normal.snapped(Vector3.ONE*.032)
+	if fish_homes.has(key):return
+	var depth=depth_at(normal)
+	if depth>=.64:fish_homes[key]={"normal":normal,"depth":depth}
+
+func fish_route_clear(normal:Vector3,radius:float,extent:float,min_depth:float,bottom:float,stay_out_of_trench:bool,near_floor:bool)->bool:
+	for i in 24:
+		var phase=i*TAU/24
+		var n=offset_direction(normal,Vector2(sin(phase),cos(phase)*.65)*radius)
+		if stay_out_of_trench and n.dot(trench_normal)>TRENCH_EDGE:return false
+		if not outside_land(n,extent) or not clear_of_cave(n,extent):return false
+		var bed=body_depth_normal(n,extent)
+		if bed<min_depth:return false
+		var lower_edge=bed-.12 if near_floor else bottom
+		if not clear_of_seabed_props(n,extent,lower_edge):return false
+	return true
+
 func configure_fish(animal:Dictionary,progressive=false):
-	var broad=animal.species in ["ray","turtle","dolphin"];var pool=outer_sea if animal.species in ["ray","dolphin"] and not outer_sea.is_empty() else offshore if broad or animal.species in ["silver","squid","seahorse"] else coast
-	if pool.is_empty():pool=coast if not coast.is_empty() else offshore
-	animal.route_valid=false
-	if pool.is_empty():return
-	var extent=float(BODY_RADIUS[animal.species]);var min_depth=maxf(1.60 if animal.species=="dolphin" else 1.45 if animal.species=="ray" else .95 if broad else .62,float(BODY_HEIGHT[animal.species])*2+.35)
-	for attempt in range(pool.size()):
-		if progressive and not await world.game.startup_checkpoint():return
-		var normal:Vector3=pool[(int(animal.index/3)*5+attempt)%pool.size()]
+	var type:String=animal.species
+	var index:int=animal.index
+	var pelagic=type in OPEN_WATER
+	var coastal=type in COASTAL
+	var near_floor=type=="octopus"
+	var trench_resident=index in [9,27]
+	var region=0
+	if fish_regions.size()>1 and index%3==1:
+		region=fish_regions[1+int(index/3)%(fish_regions.size()-1)]
+	var preferred_distance=8.5 if pelagic else 4.5 if coastal else 6.4
+	var target=offset_direction(IslandTerrain.CHART_NORMALS[region].normalized(),Vector2.from_angle(index*2.39996323)*preferred_distance)
+	if pelagic and index%2==1:
+		target=offset_direction(Vector3.DOWN,Vector2.from_angle(index*2.39996323)*10.1)
+	if trench_resident:
+		target=offset_direction(trench_normal,Vector2.from_angle(index*2.39996323)*5.2)
+	var extent=float(BODY_RADIUS[type])
+	var height=float(BODY_HEIGHT[type])
+	var min_depth=maxf(1.50 if pelagic else .63,height*2+.35)
+	var preferred_depth=maxf(min_depth+.28,2.45 if pelagic else 1.12 if coastal else 1.62)
+	var choices=[]
+	for candidate in fish_homes.values():
+		var normal:Vector3=candidate.normal
+		if candidate.depth<min_depth or (not trench_resident and normal.dot(trench_normal)>TRENCH_EDGE):continue
+		var spacing_cost=0.
 		var crowded=false
-		if broad:
-			for other in broad_homes:
-				if normal.distance_to(other)*water_math.BASE_RADIUS<3.0:crowded=true;break
+		for other in used_fish_homes:
+			var separation=normal.distance_to(other.normal)*water_math.BASE_RADIUS
+			if separation<.65+extent+other.extent:
+				crowded=true;break
+			spacing_cost+=pow(maxf(0.,2.8+extent*.45-separation),2)*.65
 		if crowded:continue
-		for radius in [1.35,.85,.45,.18]:
-			var safe=true
-			for i in range(24):
-				var n=offset_direction(normal,Vector2(sin(i*TAU/24),cos(i*TAU/24)*.65)*radius)
-				if not deep_sea(n,extent,min_depth) or not clear_of_cave(n,extent) or not clear_of_seabed_props(n,extent,fish_depth(animal.species)+float(BODY_HEIGHT[animal.species])+.08):safe=false;break
-			if safe:
-				animal.normal=normal;animal.radius=radius;animal.route_valid=true
-				if broad:broad_homes.append(normal)
-				return
+		var distance=normal.distance_to(target)*water_math.BASE_RADIUS
+		var score=distance*.8+absf(candidate.depth-preferred_depth)*2.9+spacing_cost
+		if coastal:score+=maxf(0.,candidate.depth-1.7)*2.4
+		if animal.route_valid and normal==animal.normal:score-=1.2
+		choices.append({"normal":normal,"score":score})
+	choices.sort_custom(func(a,b):return a.score<b.score)
+	var radii=[2.35,1.55,.92,.43] if pelagic else [.80,.52,.30,.18] if near_floor else [1.28,.85,.48,.22]
+	var bottom=fish_depth(type)+height+.12
+	animal.route_valid=false
+	for candidate in choices:
+		if progressive and not await world.game.startup_checkpoint():return
+		for radius in radii:
+			if not fish_route_clear(candidate.normal,radius,extent,min_depth,bottom,not trench_resident,near_floor):continue
+			if animal.normal!=candidate.normal:animal.last=Vector3.ZERO
+			animal.normal=candidate.normal;animal.radius=radius;animal.route_valid=true
+			used_fish_homes.append({"normal":candidate.normal,"extent":extent})
+			return
 
 func water_point(p:Vector2,depth=.28)->Vector3:return water_point_normal(sea_direction(p),depth)
 func water_point_normal(normal:Vector3,depth:float)->Vector3:
@@ -508,6 +601,8 @@ func _process(dt):
 		animal.phase+=dt*(1.+.8*animal.reaction if animal.kind!="whale" else 1.)
 		var t=animal.phase;var pos:Vector3
 		if animal.kind=="fish":
+			if not animal.route_valid:
+				animal.anchor.hide();continue
 			var broad=animal.species in ["ray","turtle"];var rate=.25 if broad else .48
 			var weight=.34+.66*(.5+.5*sin(t*.65+animal.index))
 			if animal.species=="jelly":rate=.16;weight=.7+.3*pow(maxf(0.,sin(t*2.+.4)),2.)
@@ -515,11 +610,16 @@ func _process(dt):
 			elif animal.species=="seahorse":rate=.10;weight=.25+.55*(.5+.5*sin(t*.5))
 			elif animal.species=="puffer":rate=.23
 			elif animal.species=="squid":rate=.38;weight=.32+.85*pow(maxf(0.,sin(t*2.4)),3.)
+			elif animal.species=="octopus":rate=.22;weight=.24+.95*pow(maxf(0.,sin(t*2.1)),2.)
+			elif animal.species=="hammerhead":rate=.32;weight=.84+.16*sin(t*.58)
+			elif animal.species=="sunfish":rate=.19;weight=.57+.35*sin(t*.46)
 			animal.motion_weight=lerpf(weight,1.3,animal.reaction)
 			animal.travel_phase+=dt*rate*animal.motion_weight
 			var n=offset_direction(animal.normal,Vector2(sin(animal.travel_phase),cos(animal.travel_phase)*.65)*animal.radius)
 			var bed=body_depth_normal(n,float(BODY_RADIUS[animal.species]));var height=float(BODY_HEIGHT[animal.species])
 			var depth=fish_depth(animal.species)+sin(t*.75)*.045
+			if animal.species=="octopus":
+				depth=bed-height-.18-.13*pow(maxf(0.,sin(t*2.1)),2.)
 			if animal.species=="jelly":
 				var beat=sin(t*2.+.4)
 				depth=.72-.11*beat
@@ -584,7 +684,9 @@ func handle_tap(screen_pos:Vector2)->bool:
 	elif nearest.kind=="orca":nearest.action_offset=4.-fposmod(nearest.phase,26.)
 	elif nearest.kind=="fish":
 		if nearest.species=="dolphin" and nearest.state=="swim":nearest.action_offset=3.-fposmod(nearest.phase,24.)
-		for animal in animals:
-			if animal.kind=="fish" and animal.species==nearest.species:animal.startle=2.4
+		nearest.startle=2.4
+		if nearest.species in ["gold","silver","reef"]:
+			for animal in animals:
+				if animal.species==nearest.species and animal.last.distance_to(nearest.last)<2.0:animal.startle=2.4
 	else:nearest.startle=2.4
 	return true

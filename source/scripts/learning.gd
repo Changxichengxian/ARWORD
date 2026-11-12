@@ -4,6 +4,7 @@ class_name IslandLearning
 const NEEDS=[8,12,16]
 const EXTRA=36
 const MODES=["word","word","read","word","listen","sentence"]
+const CONTEXT_MODES=["read","listen","sentence"]
 const PROJECTS=["木屋","风车","花园"]
 const DEFAULT_BLACK_HOLE=true
 const SPACE_DEFAULTS={"nebula":1.45,"color":1.3,"band":1.15,"stars":1.1,"drift":1.0}
@@ -23,6 +24,7 @@ func _init():
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
 	data["lesson_schedule"]={}
 	data["word_turn"]=0
+	data["practice_modes"]={}
 	data["black_hole"]=DEFAULT_BLACK_HOLE
 	data["sky_default_version"]=1
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
@@ -75,6 +77,11 @@ func accept_save(candidate)->bool:
 	if not candidate.has("sky_default_version"):data.black_hole=DEFAULT_BLACK_HOLE
 	for k in ["active","actions","band","success_run","miss_run","dev_steps","word_turn"]:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))
+	var preferences=candidate.get("practice_modes",{})
+	data.practice_modes={}
+	if preferences is Dictionary:
+		for mode in CONTEXT_MODES:
+			if preferences.get(mode) is bool and preferences[mode]:data.practice_modes[mode]=true
 	for i in range(3):data.build[i]=clampi(int(candidate.build[i]),0,NEEDS[i])
 	data.active=clampi(data.active,0,2);data.band=clampi(data.band,0,3)
 	for key in ["development","work_turns"]:
@@ -102,17 +109,20 @@ func accept_save(candidate)->bool:
 	refresh_book()
 	return true
 
-func next_word(now:float,focus:Array=[])->Dictionary:
+func next_word(now:float,focus:Array=[],allow_early_spot_check=false)->Dictionary:
 	if by_id.has(data.help_pending) and (data.book_id.is_empty() or wordbooks.contains(data.book_id,data.help_pending)):return by_id[data.help_pending]
 	var due:Dictionary={};var due_time=INF
 	var fresh=[];var other:Dictionary={};var other_gap=INF
 	var queued={};var first_turn=INF
+	var waiting={};var waiting_turn=INF
 	for q in active_bank:
 		var s=data.words.get(q.id,{})
 		if s.get("mastered",false):continue
 		if s.has("review_at"):
 			var at=int(s.review_at)
-			if s.has("spot_hits") and at>data.word_turn:continue
+			if s.has("spot_hits") and at>data.word_turn:
+				if allow_early_spot_check and at<waiting_turn:waiting=q;waiting_turn=at
+				continue
 			if at<first_turn:queued=q;first_turn=at
 		elif not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):
 			var at=float(s.get("due",0))
@@ -148,6 +158,7 @@ func next_word(now:float,focus:Array=[])->Dictionary:
 			if earliest.is_empty() or at<earliest_time:earliest=q;earliest_time=at
 			if not recent.has(q.id) and (varied.is_empty() or at<varied_time):varied=q;varied_time=at
 		result=varied if not varied.is_empty() else earliest
+		if result.is_empty():result=waiting
 		if result.is_empty():return {}
 	recent.append(result.id)
 	if recent.size()>8:recent.pop_front()
@@ -222,7 +233,12 @@ func finish_context(mode:String,id:String,assisted:bool,advance_build=true)->Dic
 	data.contexts[key]=old
 	return advance() if advance_build else {}
 
-func mode()->String:return MODES[int(data.work_turns[data.active])%MODES.size()]
+func context_modes()->Array:
+	return CONTEXT_MODES.filter(func(mode):return data.practice_modes.get(mode,false))
+func practice_at(turn:int)->String:
+	var cycle=MODES.filter(func(mode):return mode=="word" or data.practice_modes.get(mode,false))
+	return cycle[turn%cycle.size()]
+func mode()->String:return practice_at(int(data.work_turns[data.active]))
 func note_index()->int:return int(data.active)*4+(int(data.work_turns[data.active])/6)%4
 func stage(site:int)->int:
 	if int(data.build[site])<NEEDS[site]:return 0

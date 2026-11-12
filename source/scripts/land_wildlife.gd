@@ -6,6 +6,7 @@ const RABBIT=preload("res://assets/models/wild_rabbit.glb")
 const SIZE=.66
 const CLEARANCE=.29
 const GRASS=["grove","meadow","sunreach","hill"]
+const JOINT_NAMES=["Body","Head","EarL","EarR","EyeL","EyeR","Nose","ForeL","ForeR","ForePawL","ForePawR","HindL","HindR","HindPawL","HindPawR","Tail"]
 var life
 var world
 var rabbits:Array=[]
@@ -142,7 +143,7 @@ func spawn(p:Vector2,index:int):
 	var anchor=Node3D.new();add_child(anchor)
 	var model=RABBIT.instantiate();anchor.add_child(model);model.scale=Vector3.ONE*SIZE
 	var joints={}
-	for name in ["Body","Head","EarL","EarR","ForeL","ForeR","ForePawL","ForePawR","HindL","HindR","HindPawL","HindPawR","Tail"]:
+	for name in JOINT_NAMES:
 		joints[name]=model.find_child(name,true,false)
 	var rabbit={"index":index,"anchor":anchor,"model":model,"joints":joints,"point":p,"home":p,"from":p,"to":p,"heading":world.terrain.surface_basis(p)*Vector3.FORWARD,"state":"sniff","elapsed":0.,"duration":2.6+index,"cycle":index,"hops_left":0,"fade":0.,"route_check":0.,"look":Vector3.ZERO}
 	rabbits.append(rabbit);place_rabbit(rabbit,0.)
@@ -225,11 +226,18 @@ func animate(t:float,dt:float):
 
 func pose(rabbit:Dictionary,t:float,phase:float):
 	var j:Dictionary=rabbit.joints
-	for part in j.values():part.rotation=Vector3.ZERO
+	for name in j:
+		if not name.begins_with("Eye"):j[name].rotation=Vector3.ZERO
 	rabbit.model.scale=Vector3.ONE*SIZE*maxf(.001,smoothstep(0.,1.,rabbit.fade))
 	j.Body.scale=Vector3(1.,1.+.013*sin(t*2.2),1.)
-	j.EarL.rotation=Vector3(.05*sin(t*1.2),.05,-.10-.06*sin(t*.63))
-	j.EarR.rotation=Vector3(.04*sin(t*1.4+.8),-.04,.10+.08*sin(t*.77))
+	var blink_time=fposmod(t+.7,4.65+.35*rabbit.index)
+	var blink=smoothstep(0.,.065,blink_time)*(1.-smoothstep(.082,.19,blink_time))
+	var sniff=.5+.5*sin(t*14.)
+	j.EyeL.scale.y=1.-.88*blink
+	j.EyeR.scale.y=j.EyeL.scale.y
+	j.Nose.scale=Vector3(1.,1.+.05*sniff,1.+.085*sniff)
+	j.EarL.rotation=Vector3(.05*sin(t*1.2),.05,-.10-.055*sin(t*.63))
+	j.EarR.rotation=Vector3(.10+.05*sin(t*1.4+.8),-.08,.22+.075*sin(t*.77))
 	j.Tail.rotation.x=.10*sin(t*1.5)
 	if rabbit.state=="hop":
 		var flight=clampf((phase-.16)/.66,0.,1.);var tuck=sin(flight*PI)
@@ -240,23 +248,27 @@ func pose(rabbit:Dictionary,t:float,phase:float):
 			j["ForePaw"+side].rotation.x=.34*tuck
 			j["Hind"+side].rotation.x=.40*sin(flight*TAU)-.22*tuck
 			j["HindPaw"+side].rotation.x=-.22*sin(flight*TAU)+.25*tuck
-		j.EarL.rotation.x=.18*tuck;j.EarR.rotation.x=.22*tuck
-		var crouch=sin(clampf(phase/.16,0.,1.)*PI)*.06 if phase<.16 else sin(clampf((phase-.82)/.18,0.,1.)*PI)*.035 if phase>.82 else 0.
-		j.Body.scale.y=1.-crouch
+		var ear_follow=sin(clampf((phase-.10)/.85,0.,1.)*TAU)
+		j.EarL.rotation.x=.22*ear_follow;j.EarR.rotation.x=.10+.30*ear_follow
+		var crouch=sin(clampf(phase/.16,0.,1.)*PI)*.11 if phase<.16 else sin(clampf((phase-.82)/.18,0.,1.)*PI)*.08 if phase>.82 else 0.
+		j.Body.scale=Vector3(1.+crouch*.42,1.-crouch,1.+crouch*.22)
 	elif rabbit.state=="sniff":
-		j.Head.rotation.x=.17+.07*sin(t*5.2);j.Head.rotation.y=.18*sin(t*.9)
-		j.EarL.rotation.x=.12;j.EarR.rotation.x=.07
+		j.Head.rotation.x=.13+.08*sin(t*4.5);j.Head.rotation.y=.22*sin(t*.9)
+		j.EarL.rotation.x=.12+.05*sin(t*4.5-.4);j.EarR.rotation.x=.20
 	elif rabbit.state=="groom":
 		var weight=smoothstep(0.,.4,rabbit.elapsed)*(1.-smoothstep(rabbit.duration-.4,rabbit.duration,rabbit.elapsed))
 		j.Head.rotation.x=(.15+.07*sin(t*7.))*weight
-		j.ForeL.rotation.x=(2.0+.12*sin(t*7.))*weight
-		j.ForeR.rotation.x=(2.0+.12*sin(t*7.+.35))*weight
+		j.ForeL.rotation.x=(1.96+.28*sin(t*7.))*weight
+		j.ForeR.rotation.x=(1.96+.28*sin(t*7.+1.1))*weight
 		j.ForePawL.rotation.x=.25*weight;j.ForePawR.rotation.x=.25*weight
 	elif rabbit.state=="sit":
 		j.Head.rotation.y=.22*sin(t*.7);j.Head.rotation.x=-.08
-		j.EarL.rotation.z=-.24+.13*sin(t*.5);j.EarR.rotation.z=.11
+		j.Head.rotation.z=.105*sin(t*.85)
+		j.EarL.rotation.z=-.22+.12*sin(t*.5);j.EarR.rotation.z=.25
 	elif rabbit.state=="alert":
-		j.Head.rotation.x=-.13;j.EarL.rotation.z=-.015;j.EarR.rotation.z=.015
+		var lift=smoothstep(0.,.16,rabbit.elapsed)
+		j.Head.rotation=Vector3(-.18*lift,0.,.11*lift)
+		j.EarL.rotation.z=-.10+.085*lift;j.EarR.rotation.z=.22-.16*lift
 
 func place_rabbit(rabbit:Dictionary,lift:float):
 	var p:Vector2=rabbit.point

@@ -1,4 +1,9 @@
-ARWORD · 0.14.10 竖屏小星球
+ARWORD · 0.14.11 竖屏小星球
+
+海洋动物与可选练习（2026-11-13）
+Windows 试玩位于 outputs/0.14.11/Windows/ARWORD.exe。安卓公开构建目标为 outputs/0.14.11/Public/ARWORD-0.14.11.apk（版本代码 42）。
+开局有 34 只中小型水生动物，全部扩建后有 38 只。路线沿主岛、各群岛、岛外和外海分布，海沟留少量个体。章鱼贴近海床收拢腕足再划开，锤头鲨用尾鳍摆动巡游，翻车鱼用背鳍和臀鳍划水。兔子重做脸、耳朵和四爪，增加眨眼、嗅闻和落地后的耳朵回弹。对应 Blender 源文件保存在 art-source/，生成入口为 tools/make_rabbit.py 与 tools/make_ocean_neighbors.py。
+默认只背单词。「词书 → 练习内容」可分别开启阅读、听力和组句。练习选择随存档保存，旧档没有这一项时采用新默认值。观星台也可凭单词工作累计解锁，单词与句子练习的统计各自保存。
 
 更早看到星球、拖动优先与清楚回弹（2026-11-13）
 Windows 试玩：outputs/startup-flow-preview/Windows/ARWORD.exe。安卓公开构建：outputs/0.14.10/Public/ARWORD-0.14.10.apk（版本代码 40）；上线状态以 GitHub Releases 为准。
@@ -112,7 +117,7 @@ scripts/ambience.gd：背景音乐、语音时压低音乐和退出释放。
 scripts/study_voice.gd：可选私人声包的校验、导入与录音读取。
 scripts/hud.gd、icon_button.gd：原生游戏界面和图标。
 assets/vocabulary.json、missions.json、frontier_missions.json：教学内容；改英文语音文字后需重新生成对应录音。
-art-source 与 assets/models 中有 89 对可编辑模型源文件和 GLB。tools/make_voyage_art.py 生成火箭、金矿洞、铸币坊、金矿石和金币。tools/make_rocket_kraken.py 生成火箭岛巨型触手。可在 art-source/rocket_kraken.blend 中编辑四条触手的形态、吸盘和退海动作。
+art-source 与 assets/models 中有 92 对可编辑模型源文件和 GLB。tools/make_voyage_art.py 生成火箭、金矿洞、铸币坊、金矿石和金币。tools/make_rocket_kraken.py 生成火箭岛巨型触手。可在 art-source/rocket_kraken.blend 中编辑四条触手的形态、吸盘和退海动作。
 tools/make_art.py：Blender 4.4.3 后台运行，生成模型。render_icon.py 保留旧版图标生成过程，勿运行以覆盖当前 art-source/app-icon/ 图标。
 tools/make_life_art.py：生成鸟、蝴蝶、鱼和鲸的 Blender 源文件与运行模型。
 tools/make_blue_whale.py：单独重建连续长身、宽扁头、细长胸鳍和水平分叉尾的蓝鲸，不重导其他动物；make_life_art.py 的鲸生成也使用它。

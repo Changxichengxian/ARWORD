@@ -66,7 +66,7 @@ func run():
 		if animal.kind=="fish" and animal.anchor.visible:species[animal.species]=true
 		if animal.kind=="whale" and animal.index==0:adult=animal
 	print("VISIBLE_AQUATIC_SPECIES ",species.keys())
-	check(species.size()==10 and species.has("dolphin") and species.has("seahorse") and species.has("puffer") and species.has("squid"),"all ten aquatic species have visible safe routes on the initial island")
+	check(species.size()==13 and species.has("octopus") and species.has("hammerhead") and species.has("sunfish"),"all thirteen aquatic species have visible safe routes on the initial island")
 	check(adult.scale>1.5 and adult.route_valid,"the adult whale uses the enlarged body and a checked deep-water route")
 	check(not life.cave.is_empty() and life.deep_sea(life.cave.normal,3.2,2.85),"a real hollow cave is placed in water deep enough for its entire shell")
 	check(not life.cave.has("watcher") and life.preview_event("cave").is_equal_approx(life.cave.normal),"the camera can revisit the hollow cave after its inhabitant takes up trading")

@@ -40,7 +40,7 @@ func run():
 	for animal in life.animals:
 		if animal.kind=="fish" and not types.has(animal.species):
 			types[animal.species]=true;sampled.append({"animal":animal,"geometry":vertices(animal.model)})
-	check(types.size()==10 and types.has("dolphin") and types.has("seahorse") and types.has("puffer") and types.has("squid"),"four new distinct aquatic animals join the six existing species")
+	check(types.size()==13 and types.has("octopus") and types.has("hammerhead") and types.has("sunfish"),"octopus, hammerhead and sunfish join the existing aquatic animals")
 	var bird={};var turtle={}
 	for animal in life.animals:
 		if animal.kind=="bird":bird=animal
@@ -55,6 +55,18 @@ func run():
 			for chapter in IslandFrontier.CHAPTERS:
 				for cell in chapter.cells:world.land[cell]=true
 			world.water.rebuild();life.refresh_habitats()
+		var valid=0;var trench=0;var main_shore=0;var quadrants={}
+		for animal in life.animals:
+			if animal.kind!="fish" or not animal.route_valid:continue
+			valid+=1
+			var n:Vector3=animal.normal
+			if n.dot(life.trench_normal)>IslandWildlife.TRENCH_EDGE:trench+=1
+			if n.y>(.45 if expanded else .68):
+				main_shore+=1
+				quadrants[int(fposmod(atan2(n.z,n.x),TAU)/(PI*.5))]=true
+		print("FISH_HABITATS expanded=",expanded," valid=",valid," main=",main_shore," trench=",trench," quadrants=",quadrants.keys())
+		check(valid==(38 if expanded else 34),"all fish have safe routes")
+		check(main_shore>=8 and quadrants.size()>=3 and trench<=2,"main shore has several populated directions and the trench has at most two residents")
 		for step in 60:
 			world.time+=.53;life._process(.53)
 			bird_states[bird.state]=true;turtle_states[turtle.state]=true

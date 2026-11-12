@@ -1,60 +1,88 @@
-"""Original low-poly meadow rabbit, with separate ears and articulated paws."""
-import bpy, sys, math
+"""Low-poly meadow rabbit. The wide head, haunches and short paws read at game scale."""
+import math
+import sys
 from pathlib import Path
-from mathutils import Vector
-sys.path.insert(0,str(Path(__file__).resolve().parent))
-from wildlife_mesh import clean, material, node, ico, mesh, export
 
-fur=material('warm oat fur','CBB493')
-light=material('ivory cheeks and belly','EEE5D3')
-inner=material('muted pink inner ear','CC9E95')
-dark=material('deep brown eyes','323035')
-nose=material('small rose nose','A57B76')
-white=material('eye glint','FFF8E7')
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from wildlife_mesh import clean, export, ico, material, mesh, node
 
-def lobe(name, outline, thickness, mat, parent):
-    n=len(outline);v=[tuple(p) for p in outline]
-    v += [(p[0],p[1]-thickness,p[2]) for p in outline]
-    faces=[tuple(range(n)),tuple(reversed(range(n,2*n)))]
-    faces += [(i,(i+1)%n,(i+1)%n+n,i+n) for i in range(n)]
-    return mesh(name,v,faces,mat,parent)
+fur = material('warm cinnamon fur', 'CBA990')
+light = material('cream muzzle and paws', 'F6E8D1')
+inner = material('dusty rose ear interior', 'DFABAC')
+dark = material('espresso eyes', '302934')
+nose_color = material('rose nose', 'AB6D76')
+white = material('ivory eye glint', 'FFF9EE')
 
-clean();root=node('Rabbit');body=node('Body',root,(0,-.035,.28))
-ico('pear shaped torso',(0,0,0),(.165,.25,.195),fur,body,2)
-# Belly is coloured on the same torso, with no intersecting surface layer.
-torso=next(o for o in body.children if o.type=='MESH')
+
+def ear_skin(parent, lean):
+    rings = [
+        (0, 0, .032, .021), (.055, .002, .055, .024),
+        (.134, .006, .060, .025), (.204, .020, .052, .022),
+        (.253, .033, .034, .017), (.273, .040, .013, .009),
+    ]
+    sides = 12
+    vertices = [
+        (lean * x + width * math.cos(j * math.tau / sides),
+         .015 * math.sin(z * 8) + depth * math.sin(j * math.tau / sides), z)
+        for z, x, width, depth in rings for j in range(sides)
+    ]
+    faces = [tuple(reversed(range(sides)))]
+    for i in range(len(rings) - 1):
+        for j in range(sides):
+            k = (j + 1) % sides
+            faces.append((i*sides+j, i*sides+k, (i+1)*sides+k, (i+1)*sides+j))
+    faces.append(tuple(range(len(vertices)-sides, len(vertices))))
+    ear = mesh('rounded ear with rose inset', vertices, faces, fur, parent)
+    ear.data.materials.append(inner)
+    for i in range(1, 4):
+        for j in range(1 if i == 2 else 2, 5 if i == 2 else 4):
+            ear.data.polygons[1 + i*sides + j].material_index = 1
+
+
+clean()
+root = node('Rabbit')
+body = node('Body', root, (0, -.065, .253))
+torso = ico('low pear-shaped torso', (0, 0, 0), (.192, .226, .185), fur, body, 2)
 torso.data.materials.append(light)
 for face in torso.data.polygons:
-    if face.center.z<-.45:face.material_index=1
-head=node('Head',body,(0,.225,.145))
-ico('round head',(0,.02,0),(.139,.145,.135),fur,head,2)
-ico('left soft cheek',(-.044,.118,-.039),(.065,.074,.056),light,head,2)
-ico('right soft cheek',(.044,.118,-.039),(.065,.074,.056),light,head,2)
-ico('nose',(0,.183,-.021),(.022,.013,.016),nose,head,1)
-for s in [-1,1]:
-    ico('bright dark eye',(s*.110,.077,.031),(.021,.024,.025),dark,head,2)
-    ico('eye glint',(s*.122,.087,.041),(.006,.006,.007),white,head,1)
-ears=[]
-for side,s in [('L',-1),('R',1)]:
-    ear=node('Ear'+side,head,(s*.064,-.012,.091));ears.append(ear)
-    # Broad base, long soft taper; all tips have thickness and rounded facets.
-    lobe('long tapered ear',[(s*-.034,.014,0),(s*-.041,.018,.17),
-                            (s*-.009,.014,.345),(s*.023,.012,.385),
-                            (s*.049,.012,.34),(s*.066,.014,.17),(s*.036,.012,0)],.025,fur,ear)
-    lobe('pink ear interior',[(s*-.013,.020,.055),(s*-.019,.023,.17),
-                             (s*.012,.020,.322),(s*.024,.019,.343),
-                             (s*.037,.020,.31),(s*.042,.021,.17),(s*.018,.020,.055)],.004,inner,ear)
-limbs=[]
-for side,s in [('L',-1),('R',1)]:
-    fore=node('Fore'+side,root,(s*.105,.125,.265));limbs.append(fore)
-    ico('foreleg',(0,0,-.105),(.050,.058,.13),fur,fore,2)
-    paw=node('ForePaw'+side,fore,(0,.025,-.208));limbs.append(paw)
-    ico('front paw',(0,.035,-.015),(.057,.10,.04),light,paw,2)
-    hind=node('Hind'+side,root,(s*.135,-.19,.24));limbs.append(hind)
-    ico('round haunch',(s*.022,.015,-.025),(.105,.135,.145),fur,hind,2)
-    foot=node('HindPaw'+side,hind,(s*.012,.045,-.185));limbs.append(foot)
-    ico('long hind foot',(0,.045,-.014),(.073,.14,.04),light,foot,2)
-tail=node('Tail',body,(0,-.247,-.014))
-ico('small cotton tail',(0,-.026,.015),(.072,.073,.074),light,tail,2)
-export('wild_rabbit',[body,head,*ears,*limbs,tail])
-print('RABBIT_READY: body, head, ears, four limbs, four paws, tail')
+    if face.center.y > .45 and face.center.z < -.18:
+        face.material_index = 1
+
+head = node('Head', body, (0, .156, .147))
+ico('wide round head', (0, .022, .008), (.198, .169, .165), fur, head, 3)
+for s in [-1, 1]:
+    ico('soft cream muzzle', (s*.055, .144, -.035), (.069, .056, .050), light, head, 2)
+nose = node('Nose', head, (0, .192, -.017))
+ico('little rose nose', (0, 0, 0), (.025, .012, .017), nose_color, nose, 2)
+
+parts = [body, head, nose]
+for side, s in [('L', -1), ('R', 1)]:
+    eye = node('Eye'+side, head, (s*.110, .152, .041))
+    eye.rotation_euler.z = -s*.48
+    ico('large dark eye', (0, 0, 0), (.033, .012, .041), dark, eye, 2)
+    ico('eye glint', (-.007, .011, .015), (.010, .003, .010), white, eye, 2)
+    ear = node('Ear'+side, head, (s*.079, -.012, .112))
+    ear_skin(ear, s)
+    ear.scale.z = 1.03 if side == 'L' else .94
+
+    fore = node('Fore'+side, root, (s*.092, .108, .191))
+    ico('short foreleg', (0, -.008, -.065), (.065, .063, .110), fur, fore, 2)
+    paw = node('ForePaw'+side, fore, (0, .021, -.137))
+    front_toes = ico('rounded front paw', (0, .027, -.010), (.061, .080, .044), fur, paw, 2)
+    front_toes.data.materials.append(light)
+    for face in front_toes.data.polygons:
+        if face.center.y > .04 or face.center.z < -.26:
+            face.material_index = 1
+    hind = node('Hind'+side, root, (s*.118, -.178, .212))
+    ico('round haunch', (s*.010, .012, -.018), (.107, .143, .145), fur, hind, 2)
+    foot = node('HindPaw'+side, hind, (s*.012, .040, -.154))
+    hind_toes = ico('tucked hind paw', (0, .052, -.013), (.071, .105, .045), fur, foot, 2)
+    hind_toes.data.materials.append(light)
+    for face in hind_toes.data.polygons:
+        if face.center.y > .10 or face.center.z < -.27:
+            face.material_index = 1
+    parts.extend([eye, ear, fore, paw, hind, foot])
+
+tail = node('Tail', body, (0, -.217, .015))
+ico('cream cotton tail', (0, -.031, .022), (.086, .082, .088), light, tail, 2)
+export('wild_rabbit', [*parts, tail])

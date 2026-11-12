@@ -251,6 +251,12 @@ func show_task():
 		"sentence":show_sentence()
 func show_word():
 	var q=game.current
+	if q.is_empty():
+		layout_card(205)
+		task_heading("单词")
+		text(body,"本书的单词已学会",22).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		button(body,"换词书",game.select_book_panel,true)
+		return
 	var intro=game.introducing()
 	var multi=game.word_senses.is_multi(q)
 	if intro:

@@ -163,15 +163,17 @@ func next_task():
 	mode=frontier.mode();locked=false;help_visible=false;sentence_hint="";word_selected=[]
 	context_between_words=false
 	if mode=="word":
-		current=learning.next_word(Time.get_unix_time_from_system())
+		var extra_modes=learning.context_modes()
+		current=learning.next_word(Time.get_unix_time_from_system(),[],extra_modes.is_empty())
 		if not current.is_empty():current=word_senses.prepare(current)
-		context_between_words=current.is_empty()
-		if context_between_words:mode=["read","listen","sentence"][int(learning.data.word_turn)%3]
+		context_between_words=current.is_empty() and not extra_modes.is_empty()
+		if context_between_words:mode=extra_modes[int(learning.data.word_turn)%extra_modes.size()]
 	mission=curriculum.preview(learning) if mode=="word" else curriculum.next(learning,mode)
 	context_assisted=learning.data.context_help.get(context_key(),false)
 	short_reading=curriculum.short_first(learning,mission)
 	if mode=="word":
-		helped=learning.data.help_pending==current.id;order=range(current.options.size())
+		helped=not current.is_empty() and learning.data.help_pending==current.id
+		order=range(current.get("options",[]).size())
 	else:
 		current={};order=[0,1,2]
 		if mode=="sentence":
@@ -206,7 +208,7 @@ func introduce_word(id:String,already_known=false):
 
 func answer(index:int):
 	if locked or help_visible or hud.overlay.visible or exploring or introducing():return
-	if mode=="word" and word_senses.is_multi(current):return
+	if mode=="word" and (current.is_empty() or word_senses.is_multi(current)):return
 	var correct=int(current.correct) if mode=="word" else int(mission.correct if mode=="read" else mission.cue_correct)
 	if index!=correct:
 		if mode=="word":reveal()
@@ -511,7 +513,7 @@ func back():
 	last_back=now;speech.stop()
 	if not scene_ready:
 		if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
-		elif hud.screen in ["book_select","journal","bookmarks"]:show_wordbooks()
+		elif hud.screen in ["book_select","practice_modes","journal","bookmarks"]:show_wordbooks()
 		elif hud.screen in ["voices","updates"]:settings()
 		elif hud.overlay.visible:hide_word_keyboard();hud.close()
 		else:request_exit()
@@ -520,7 +522,7 @@ func back():
 	if cosmos and cosmos.observatory_active:close_observatory();return
 	if hud.screen=="lookup" and lookup_return.is_valid():lookup_return.call()
 	elif hud.screen=="translation" and not journal_entry.is_empty():show_journal_page(journal_entry)
-	elif hud.screen in ["book_select","journal","bookmarks"]:show_wordbooks()
+	elif hud.screen in ["book_select","practice_modes","journal","bookmarks"]:show_wordbooks()
 	elif hud.screen=="voices":settings()
 	elif hud.overlay.visible:hide_word_keyboard();hud.close()
 	elif not exploring:explore()
@@ -681,7 +683,27 @@ func show_wordbooks():
 	hud.button(prefs,"难度 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();show_wordbooks())
 	hud.button(prefs,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();show_wordbooks())
 	hud.ghost(box,"回忆方式 · "+("听词" if learning.data.listen else "看词"),toggle_listen_preference)
+	var practice_count=learning.context_modes().size()
+	var contents="只背单词" if practice_count==0 else "单词 + %d 项" % practice_count
+	hud.button(box,"练习内容 · "+contents,show_practice_modes)
 	hud.ghost(box,"关闭",hud.close)
+
+func show_practice_modes():
+	var box=hud.modal("练习内容");hud.screen="practice_modes"
+	hud.text(box,"单词始终开启",17,IslandHUD.GREEN)
+	for item in [["read","阅读"],["listen","听力"],["sentence","组句"]]:
+		var enabled=learning.data.practice_modes.get(item[0],false)
+		hud.button(box,item[1]+" · "+("开" if enabled else "关"),toggle_practice_mode.bind(item[0]),enabled)
+	hud.ghost(box,"返回",show_wordbooks)
+
+func toggle_practice_mode(kind:String):
+	if locked or not kind in IslandLearning.CONTEXT_MODES:return
+	var enabled=not learning.data.practice_modes.get(kind,false)
+	learning.data.practice_modes[kind]=enabled
+	frontier.refresh_plan()
+	if scene_ready and ((not enabled and mode==kind) or (enabled and mode=="word" and current.is_empty())):
+		speech.stop();next_task()
+	save_progress();show_practice_modes()
 
 func toggle_listen_preference():
 	learning.data.listen=not learning.data.listen;save_progress()

@@ -23,6 +23,24 @@ func run():
 		quit(2)
 		return
 	game=load("res://main.tscn").instantiate();root.add_child(game);await settle();game.resume_collect()
+	check(game.mode=="word" and game.learning.context_modes().is_empty(),"normal first task is vocabulary-only")
+	var previous_records=JSON.stringify([game.learning.data.practice,game.learning.data.contexts,game.learning.data.words])
+	game.show_wordbooks();game.show_practice_modes()
+	game.toggle_practice_mode("listen")
+	check(game.hud.screen=="practice_modes" and game.learning.context_modes()==["listen"],"wordbook practice menu enables listening independently")
+	var saved_preferences=IslandLearning.new();saved_preferences.accept_save(JSON.parse_string(JSON.stringify(game.learning.data)))
+	check(saved_preferences.context_modes()==["listen"],"optional exercise selection survives saving and loading")
+	game.frontier.data.turns[game.frontier.data.active]=3;game.next_task()
+	check(game.mode=="listen","enabled listening is scheduled during construction")
+	game.toggle_practice_mode("listen")
+	check(game.mode=="word" and JSON.stringify([game.learning.data.practice,game.learning.data.contexts,game.learning.data.words])==previous_records,"turning off an active exercise returns to words without changing learning records")
+	game.frontier.data.turns[game.frontier.data.active]=0
+	game.hud.close()
+	var active_bank=game.learning.active_bank
+	game.learning.active_bank=[];game.next_task()
+	check(game.mode=="word" and game.current.is_empty() and game.hud.answers.is_empty(),"finished vocabulary book shows the change-book card without adding disabled exercises")
+	game.learning.active_bank=active_bank;game.next_task()
+	game.learning.data.practice_modes={"read":true,"listen":true,"sentence":true}
 	check(game.qa,"save isolation")
 	check(ProjectSettings.get_setting("display/window/handheld/orientation")==1,"portrait app orientation")
 	check(game.learning.bank.size()==96 and game.curriculum.pool.size()==34,"96 curated words and 34 readings accessible at every site")
@@ -52,7 +70,11 @@ func run():
 	var actual=[]
 	n=IslandLearning.new()
 	for i in range(6):actual.append(n.mode());n.advance()
-	check(actual==["word","word","read","word","listen","sentence"],"reading listening and sentence work occur in the main loop")
+	check(actual==["word","word","word","word","word","word"],"new saves default to vocabulary only")
+	n.data.practice_modes={"read":true,"listen":true,"sentence":true}
+	actual.clear()
+	for i in range(6):actual.append(n.mode());n.advance()
+	check(actual==IslandLearning.MODES,"reading, listening and sentence work occur in the main loop when enabled")
 	n=IslandLearning.new()
 	for site in range(3):
 		n.select_site(site)
@@ -62,17 +84,22 @@ func run():
 	var old={"version":4,"build":[8,12,16],"active":2,"actions":36,"band":2,"words":m.data.words,"flags":{"water":true},"bookmarks":{"retain":true}}
 	var restored=IslandLearning.new()
 	check(restored.accept_save(JSON.parse_string(JSON.stringify(old))) and restored.data.build==[8,12,16] and restored.data.development==[0,0,0] and restored.data.words.retain.strength==m.data.words.retain.strength and restored.data.bookmarks.retain,"0.4 save preserves buildings words and bookmarks with new optional progress")
+	check(restored.context_modes().is_empty(),"older saves default to vocabulary-only practice")
 	check(not restored.accept_save({"version":4,"build":["bad",0,0]}),"malformed save is rejected")
+	var last_word=IslandLearning.new()
+	last_word.active_bank=[last_word.by_id.retain];last_word.introduce("retain",true)
+	check(last_word.next_word(1000).is_empty() and last_word.next_word(1000,[],true).id=="retain","word-only mode can run the last queued spot check without forcing a sentence exercise")
 	var f=IslandFrontier.new(IslandLearning.new())
 	check(f.cells().size()==6 and f.available("grove") and f.available("quarry") and not f.available("sawmill"),"small starting shore and distant rocket berth have two expansion choices")
 	f.advance();check(f.cells().size()==6,"one recall shows progress without adding an entire biome")
 	f.advance();check(f.cells().size()==7,"two work actions create a visible new land tile")
-	f.learning.data.harvested=[100,100];f.learning.data.practice.read=100
+	f.learning.data.harvested=[100,100]
 	for c in IslandFrontier.CHAPTERS:
 		check(f.available(c.id),"expansion dependencies can be reached: "+c.id)
 		f.choose(c.id)
 		for i in range(c.need):f.advance()
 	check(f.cells().size()==57 and f.finished_count()==17,"seventeen bounded chapters and the rocket berth comprise 57 tiles")
+	check(f.learning.data.practice.read==0 and f.learning.data.practice.listen==0,"word practice alone can unlock the observatory without fabricating context scores")
 	var fixed=f.cells().size();f.advance();check(f.cells().size()==fixed,"completed land never creates endless new requirements")
 	var retained=IslandLearning.new();retained.accept_save(JSON.parse_string(JSON.stringify(f.learning.data)));var ff=IslandFrontier.new(retained)
 	check(ff.cells().size()==57 and ff.data.active==f.data.active,"expanded land and selected worksite survive save reload")

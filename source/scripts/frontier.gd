@@ -120,7 +120,10 @@ func available(id:String)->bool:
 func gate_count(gate:String)->int:
 	if gate=="wood":return int(learning.data.harvested[0])
 	if gate=="stone":return int(learning.data.harvested[1])
-	return int(learning.data.practice.read)+int(learning.data.practice.listen)+int(learning.data.dev_context.read)+int(learning.data.dev_context.listen)
+	var context_work=int(learning.data.practice.read)+int(learning.data.practice.listen)+int(learning.data.dev_context.read)+int(learning.data.dev_context.listen)
+	var word_work=int(learning.data.harvested[0])+int(learning.data.harvested[1])
+	# Either route can qualify. Changing the practice mix never relocks earned access.
+	return maxi(context_work,word_work/2)
 func previewable(id:String)->bool:
 	if available(id):return true
 	var c=chapter(id)
@@ -131,7 +134,7 @@ func previewable(id:String)->bool:
 func unlock_hint(id:String)->String:
 	var c=chapter(id)
 	if not c.has("gate"):return ""
-	var label={"wood":"木料采集","stone":"石料采集","explore":"阅读与听力"}[c.gate]
+	var label={"wood":"木料采集","stone":"石料采集","explore":"学习积累"}[c.gate]
 	return str(label)+" "+str(gate_count(c.gate))+" / "+str(c.threshold)+" · "+str(c.title)
 func site(id:String)->int:return BUILD_IDS.find(id) if id in BUILD_IDS else int(chapter(id).get("site",0))
 func target(id:String)->Vector2:
@@ -150,7 +153,7 @@ func title(id:String)->String:
 	if id in BUILD_IDS:
 		var i=site(id);return IslandLearning.STEPS[i][learning.stage(i)] if not done(id) else IslandLearning.PROJECTS[i]+" · 自由照料"
 	return str(chapter(id).title)
-func mode()->String:return IslandLearning.MODES[int(data.turns.get(data.active,0))%6]
+func mode()->String:return learning.practice_at(int(data.turns.get(data.active,0)))
 func choose(id:String)->bool:
 	if id=="rocket" or not available(id):return false
 	data.active=id;learning.select_site(site(id));return true
@@ -172,15 +175,15 @@ func finished_units()->int:
 	return total
 func refresh_plan():
 	var plan=learning.data.study_plan;var capacity=content_units();var book=str(learning.data.book_id)
+	var context_count=learning.context_modes().size()
 	var saved_capacity=plan.get("capacity",0);var saved_quota=plan.get("quota",0)
 	var valid=(saved_capacity is int or saved_capacity is float) and (saved_quota is int or saved_quota is float)
 	valid=valid and is_finite(float(saved_capacity)) and is_finite(float(saved_quota)) and float(saved_quota)>=1 and float(saved_quota)<=48
-	if not valid or plan.get("book","")!=book or int(saved_capacity)!=capacity:
+	if not valid or plan.get("book","")!=book or int(saved_capacity)!=capacity or plan.get("context_count",3)!=context_count:
 		var remaining=maxi(1,capacity-finished_units());var words=learning.book_remaining()
-		# Three of six recurring tasks are words; approximate book coverage without
-		# demanding hundreds of repetitions for the last unfinished structure.
-		var quota=clampi(int(ceil(float(words)*2.0/remaining)),1,48) if not book.is_empty() else 1
-		learning.data.study_plan={"book":book,"capacity":capacity,"quota":quota,"planned_words":words,"planned_steps":remaining}
+		# Keep roughly the same word coverage as optional exercises are enabled.
+		var quota=clampi(ceili(float(words)*(3+context_count)/(3.0*remaining)),1,48) if not book.is_empty() else 1
+		learning.data.study_plan={"book":book,"capacity":capacity,"quota":quota,"planned_words":words,"planned_steps":remaining,"context_count":context_count}
 	else:learning.data.study_plan.quota=int(saved_quota)
 func study_quota(id:String="")->int:
 	refresh_plan()

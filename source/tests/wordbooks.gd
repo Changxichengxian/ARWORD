@@ -34,6 +34,7 @@ func run():
 	restored.record(specific,false,2000,false)
 	check(restored.data.words[specific].correct==0 and restored.data.words[specific].helped==1,"book switching cannot turn a hinted answer into independent recall")
 	var frontier=IslandFrontier.new(learning)
+	learning.data.practice_modes={"read":true,"listen":true,"sentence":true}
 	var cadence=[]
 	for n in range(6):cadence.append(frontier.mode());frontier.study_advance()
 	check(cadence==IslandLearning.MODES and frontier.data.progress.grove==3,"partial construction keeps reading listening and sentence cadence")

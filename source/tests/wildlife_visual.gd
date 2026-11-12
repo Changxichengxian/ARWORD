@@ -8,7 +8,8 @@ const ITEMS=[
 	["bird","wild_bird",2.0],["turtle","wild_turtle",1.7],["ray","wild_ray",2.6],
 	["gold","wild_fish",1.1],["silver","wild_silver_fish",1.3],["reef","wild_reef_fish",1.3],
 	["butterfly","wild_butterfly",.95],["whale","wild_whale",5.6],["orca","wild_orca",4.7],["jelly","wild_jelly",1.35],
-	["dolphin","wild_dolphin",2.8],["seahorse","wild_seahorse",1.3],["puffer","wild_puffer",1.2],["squid","wild_squid",1.8],["tidepool","",2.9]]
+	["dolphin","wild_dolphin",2.8],["seahorse","wild_seahorse",1.3],["puffer","wild_puffer",1.2],["squid","wild_squid",1.8],
+	["octopus","wild_octopus",1.2],["hammerhead","wild_hammerhead",1.7],["sunfish","wild_sunfish",1.4],["rabbit","wild_rabbit",.9],["tidepool","",2.9]]
 
 func _initialize():
 	if not "--qa" in OS.get_cmdline_user_args():quit(2);return
@@ -21,6 +22,13 @@ func pose(animal:Dictionary,t:float):
 		animal.model.notice("seal" if t>6. else "crab");animal.model.animate(t,0.)
 	elif animal.species=="bird":animator.animate_bird(animal,t)
 	elif animal.species=="butterfly":animator.animate_butterfly(animal,t)
+	elif animal.species=="rabbit":
+		var joints={}
+		for name in animator.land_life.JOINT_NAMES:
+			joints[name]=animal.model.find_child(name,true,false)
+		animator.land_life.pose({"model":animal.model,"joints":joints,"index":0,"fade":1.,"state":"sit","elapsed":1.},t,0.)
+		animal.model.scale=Vector3.ONE
+		animal.model.position.y=-.32
 	elif animal.species in ["whale","orca"]:
 		var orca=animal.species=="orca"
 		animal.tail.rotation.x=sin(t*(1.75 if orca else .92))*(.22 if orca else .15)
