@@ -14,7 +14,7 @@ var phase="waiting"
 var phase_started=0
 var phase_active_ms=0
 var last_tick=0
-const CAMERA_SECONDS=.72
+const CAMERA_SECONDS=1.65
 var camera_elapsed=0.0
 var camera_running=false
 
@@ -184,6 +184,9 @@ func pull_back(value:float):
 	game.camera.look_at(game.camera_focus);game.world_zoom=game.camera.size
 	if is_instance_valid(game.cosmos):
 		game.cosmos.space_camera.position=game.cosmos.CENTER*(.28*(1.-value))
+		# A small intentional parallax makes the distant stars participate in
+		# the pullback, even though their physical distance would hide it.
+		game.cosmos.opening_pullback=value
 		game.cosmos.update_sky_camera()
 	if is_instance_valid(sky):sky.pullback=value;sky.reveal=smoothstep(.02,.42,value)
 

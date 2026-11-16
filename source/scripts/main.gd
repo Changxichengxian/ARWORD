@@ -256,7 +256,7 @@ func complete_action(result:Dictionary,learned=true):
 		hud.toast("词书首轮完成 · 火箭舱门已开启")
 	elif result.complete:
 		var id=str(frontier.data.active)
-		hud.toast("船已备好 · 可以去远方的群岛" if id=="shipyard" else "点望远镜，看看远处的星云" if id=="mountain" else frontier.facility_title(id)+"做好了")
+		hud.toast("船已备好 · 可以去远方的群岛" if id=="shipyard" else "点天空中的天体，可以近看" if id=="mountain" else frontier.facility_title(id)+"做好了")
 	var duration=1.35 if result.complete else 1.15
 	get_tree().create_timer(duration).timeout.connect(func():
 		if is_inside_tree():next_task()
@@ -690,11 +690,24 @@ func show_wordbooks():
 
 func show_practice_modes():
 	var box=hud.modal("练习内容");hud.screen="practice_modes"
+	var count=learning.context_modes().size()
+	hud.button(box,"只背单词",set_practice_mix.bind(false),count==0)
+	hud.button(box,"单词 + 阅读、听力、组句",set_practice_mix.bind(true),count==3)
 	hud.text(box,"单词始终开启",17,IslandHUD.GREEN)
 	for item in [["read","阅读"],["listen","听力"],["sentence","组句"]]:
 		var enabled=learning.data.practice_modes.get(item[0],false)
 		hud.button(box,item[1]+" · "+("开" if enabled else "关"),toggle_practice_mode.bind(item[0]),enabled)
 	hud.ghost(box,"返回",show_wordbooks)
+
+func set_practice_mix(comprehensive:bool):
+	if locked:return
+	learning.data.practice_modes={}
+	if comprehensive:
+		for kind in IslandLearning.CONTEXT_MODES:learning.data.practice_modes[kind]=true
+	frontier.refresh_plan()
+	if scene_ready and (not comprehensive and mode!="word" or comprehensive and mode=="word" and current.is_empty()):
+		speech.stop();next_task()
+	save_progress();show_practice_modes()
 
 func toggle_practice_mode(kind:String):
 	if locked or not kind in IslandLearning.CONTEXT_MODES:return
@@ -888,15 +901,12 @@ func preview_nature(kind:String):
 	var zoom={"whale":16.0,"orca":8.2,"tidepool":3.6,"cave":12.0,"rabbit":4.5,"turtle":4.8,"dolphin":6.0,"seahorse":4.2,"puffer":4.2,"squid":4.8}
 	var height=11.7 if kind=="rabbit" else 11.5 if kind=="tidepool" else 10.7 if kind in ["turtle","dolphin","seahorse","puffer","squid"] else 9.6
 	frame_view(Vector3(0,height,0),zoom.get(kind,8.0))
-func open_observatory(primary=false):
-	if cosmos.observatory_active:return
-	if primary and not learning.data.black_hole:return
-	if not primary and not frontier.done("mountain"):return
-	speech.stop();hud.close();explore(false);reset_world_input()
-	if not primary:
-		world.work_point=frontier.target("mountain");world.walk_to(world.work_stance(0))
-	if not cosmos.enter_observatory(0):return
-	cosmos.primary_close=primary;cosmos.update_observation_quality()
+func open_observatory(primary=false,index:int=0,body_index:int=-1):
+	if not is_instance_valid(cosmos) or cosmos.observatory_active:return
+	if not frontier.done("mountain"):return
+	if not cosmos.valid_observation(index,body_index):return
+	stop_view_transition();speech.stop();hud.close();explore(false);reset_world_input()
+	if not cosmos.enter_observatory(index,primary,body_index):return
 	reset_observatory_input();observatory_hud_visible=hud.visible;hud.hide()
 	observatory_layer=CanvasLayer.new();observatory_layer.layer=5;add_child(observatory_layer)
 	var root=Control.new();root.mouse_filter=Control.MOUSE_FILTER_IGNORE;observatory_layer.add_child(root)
@@ -906,11 +916,6 @@ func open_observatory(primary=false):
 	var bar=HBoxContainer.new();margin.add_child(bar);bar.add_theme_constant_override("separation",8)
 	var back_button=hud.icon(bar,"close",close_observatory,"返回星球");back_button.custom_minimum_size=Vector2(44,44)
 	margin.add_theme_constant_override("margin_top",roundi(hud.header.offset_top))
-	if primary:return
-	var options=cosmos.observation_targets()
-	for i in range(options.size()):
-		var button=hud.button(bar,str(options[i].title),select_observation.bind(i),false,44)
-		button.add_theme_font_override("font",font);button.add_theme_font_size_override("font_size",14)
 func layout_observation_ui(rect:Rect2):
 	if is_instance_valid(observatory_layer) and observatory_layer.get_child_count()>0:
 		var controls=observatory_layer.get_child(0)

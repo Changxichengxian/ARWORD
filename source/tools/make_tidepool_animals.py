@@ -103,31 +103,35 @@ def orca():
 
 def seal():
     clean();root=node('HarborSeal');body=node('Body',root)
-    torso=loft('Resting spindle',[(-.76,.08,.08,.11),(-.55,.18,.15,.16),(-.30,.29,.23,.23),
-            (.02,.33,.29,.29),(.22,.28,.245,.285),(.33,.20,.19,.30)],body,[pewter,cream])
+    coat=material('Soft silver blue coat','9AAEB8')
+    belly=material('Pearl belly and muzzle','E0E6DF')
+    spots=material('Muted back freckles','7B939F')
+    torso=loft('Rounded tapered body',[(-.85,.065,.07,.10),(-.65,.15,.13,.145),(-.43,.28,.22,.235),
+            (-.16,.35,.285,.285),(.10,.36,.29,.30),(.30,.29,.25,.32),(.44,.21,.19,.34)],body,[coat,belly],28)
     # Mottling is painted into the coat instead of separate floating bumps.
-    torso.data.materials.append(slate)
+    torso.data.materials.append(spots)
     for face in torso.data.polygons:
-        if face.center.z>.34 and int((face.center.y+.9)*37+abs(face.center.x)*61)%7==0:face.material_index=2
-    chest=node('Chest',body,(0,.16,.22))
-    loft('Flexible shoulder',[(-.11,.27,.21,.055),(.035,.27,.23,.075),(.17,.205,.18,.12),(.27,.14,.13,.14)],chest,[pewter,cream])
-    head=node('Head',chest,(0,.20,.12))
-    ico('Round head',(0,.12,.12),(.23,.23,.21),pewter,head,3)
+        if face.center.z>.38 and face.center.y<.13 and int((face.center.y+.9)*37+abs(face.center.x)*61)%11==0:face.material_index=2
+    chest=node('Chest',body,(0,.25,.27))
+    loft('Soft shoulder',[(-.10,.27,.20,.025),(.06,.255,.21,.065),(.18,.20,.17,.10)],chest,[coat,belly],28)
+    head=node('Head',chest,(0,.16,.12))
+    ico('Rounded head',(0,.10,.10),(.265,.255,.235),coat,head,3)
     for s in [-1,1]:
-        ico('Whisker pad',(s*.078,.294,.075),(.115,.085,.085),cream,head,2)
-        ico('Dark eye',(s*.155,.246,.177),(.041,.036,.044),ink,head,2)
-        ico('Catch light',(s*.165,.269,.196),(.012,.012,.014),milk,head,1)
+        ico('Soft muzzle',(s*.070,.305,.035),(.102,.068,.074),belly,head,3)
+        ico('Dark eye',(s*.169,.268,.147),(.038,.028,.042),ink,head,3)
+        ico('Catch light',(s*.163,.290,.165),(.011,.009,.012),milk,head,2)
         for j in range(3):
-            rod('Whisker',(s*.115,.341,.06+j*.023),(s*(.24+j*.014),.36-j*.02,.038+j*.027),.008,cream,head)
-    ico('Button nose',(0,.352,.115),(.075,.042,.037),ink,head,2)
+            rod('Fine whisker',(s*.112,.353,.026+j*.018),(s*(.24+j*.020),.355-j*.016,.003+j*.027),.004,belly,head)
+    ico('Small button nose',(0,.369,.075),(.048,.025,.029),ink,head,3)
+    rod('Short mouth',(0,.365,.054),(0,.37,.018),.005,ink,head)
     fins=[]
     for s,label in [(-1,'L'),(1,'R')]:
-        fin=node('Flipper'+label,chest,(s*.23,.05,-.09));fins.append(fin)
+        fin=node('Flipper'+label,chest,(s*.19,-.015,-.08));fins.append(fin)
         blade('Fore flipper',[(0,.07,0),(s*.15,.08,-.04),(s*.28,-.04,-.09),
-              (s*.27,-.18,-.106),(s*.19,-.20,-.09),(0,-.09,0)],(0,0,.027),pewter,fin)
-        hind=node('Hind'+label,body,(s*.075,-.67,.075));fins.append(hind)
+              (s*.27,-.18,-.106),(s*.19,-.20,-.09),(0,-.09,0)],(0,0,.027),coat,fin)
+        hind=node('Hind'+label,body,(s*.065,-.79,.075));fins.append(hind)
         blade('Webbed hind flipper',[(0,.06,0),(s*.08,.015,.005),(s*.13,-.20,-.012),
-              (s*.09,-.29,-.01),(s*.035,-.26,0),(-s*.025,-.23,0),(-s*.045,-.06,0)],(0,0,.035),pewter,hind)
+              (s*.09,-.29,-.01),(s*.035,-.26,0),(-s*.025,-.23,0),(-s*.045,-.06,0)],(0,0,.035),coat,hind)
     export('wild_seal',[body,chest,head,*fins])
 
 

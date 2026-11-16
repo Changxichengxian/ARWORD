@@ -236,7 +236,6 @@ func update_world_progress():
 
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
-	if game.frontier.data.active=="mountain" and game.frontier.done("mountain"):icon(r,"telescope",game.open_observatory,"观测星云")
 	if game.frontier.data.active in ["goldmine","smelter"]:
 		ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")

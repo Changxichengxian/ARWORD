@@ -32,6 +32,7 @@ func run():
 		g.show_rocket();await settle();check(bounds.encloses(h.active_panel.get_global_rect()),"bottom-aligned berth panel fits")
 		g.enter_trench();await settle();check(bounds.encloses(h.active_panel.get_global_rect()),"dive return control fits")
 		g.leave_trench();h.close()
+	g.frontier.data.progress.mountain=g.frontier.chapter("mountain").need
 	g.learning.data.black_hole=true;g.cosmos.set_black_hole(true);g.open_observatory(true)
 	await settle();var close=g.observatory_layer.find_children("*","BaseButton",true,false)[0]
 	check(h.safe_rect.encloses(close.get_global_rect()),"fullscreen observation respects safe content bounds")

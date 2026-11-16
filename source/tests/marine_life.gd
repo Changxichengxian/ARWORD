@@ -38,7 +38,7 @@ func inspect_routes(life):
 				var p=life.to_local(part.to_global(box.get_endpoint(i)));var n=p.normalized()
 				if p.length()<game.world.water.floor_radius(n)-.02 or not life.outside_land(n,0.):safe=false
 	check(safe and surfaces and dives,"orca clears all land and seabed through dives and surface passes")
-	check(life.tidepool.visible and life.outside_land(life.tidepool.normal,1.4),"occupied tidal ledge has clear water around it")
+	check(life.tidepool.visible and not life.tidepool.homes.is_empty() and life.tidepool.find_child("IntertidalLedge",true,false)==null,"coastal animals use real shores without an extra island")
 
 func run():
 	game=load("res://main.tscn").instantiate();root.add_child(game);await create_timer(.6).timeout

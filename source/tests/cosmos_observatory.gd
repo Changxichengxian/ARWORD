@@ -26,6 +26,7 @@ func run():
 	DisplayServer.window_set_position(Vector2i(DisplayServer.screen_get_usable_rect().end.x-100,60))
 	await create_timer(1.0).timeout
 	cosmos=game.get_node("Cosmos");cosmos.set_process(false);cosmos.apply_settings({});cosmos.set_sky_seed(103);cosmos.advance(0)
+	game.frontier.data.progress.mountain=game.frontier.chapter("mountain").need
 	var seed=cosmos.sky_seed;var settings=cosmos.settings.duplicate();var saved=JSON.stringify(game.learning.data)
 	var overview=await picture("daily-background");await picture("daily-overview",true)
 	var dark=0;var sampled=0

@@ -25,13 +25,15 @@ var clock=0.0
 var nebula_clock=0.0
 var sky_seed=0
 var settings=DEFAULT_SETTINGS.duplicate()
-var focus_index=-1
-var focus_time=0.0
 var base_fov=44.0
+var opening_pullback=1.0
+var overview_transform=Transform3D.IDENTITY
+var overview_fov=44.0
 var shooting_star:MeshInstance3D
 var meteor_clock=0.0
 var observatory_active=false
 var primary_close=false
+var observation_body=-1
 var observation_index=0
 var observation_yaw=0.0
 var observation_pitch=0.0
@@ -134,7 +136,7 @@ func arrange_cloud_regions():
 	var random=RandomNumberGenerator.new();random.seed=sky_seed
 	for i in range(cloud_regions.size()):
 		var region=cloud_regions[i];var depth=[118.0,148.0,172.0][i]
-		var center=Vector3([-15.0,22.0,-1.0][i]+random.randf_range(-5,5),[30.0,39.0,59.0][i]+random.randf_range(-4,4),-depth)
+		var center=Vector3([-18.0,22.0,3.0][i]+random.randf_range(-5,5),[22.0,30.0,47.0][i]+random.randf_range(-4,4),-depth)
 		var radius=Vector3(random.randf_range(7.2,9.1),random.randf_range(5.2,7.2),random.randf_range(5.9,7.8));var angle=random.randf_range(-.48,.48)
 		var orientation=Basis(Vector3.FORWARD,angle)*Basis(Vector3.RIGHT,random.randf_range(-.18,.18))
 		region.center=center;region.radii=radius;region.node.position=center;region.node.rotation.z=-angle
@@ -153,16 +155,23 @@ func arrange_cloud_regions():
 	apply_settings(settings.duplicate())
 func observation_targets()->Array:return OBSERVATIONS.duplicate(true)
 func observations()->Array:return observation_targets()
-func enter_observatory(index:int=0)->bool:
-	if not is_instance_valid(space_camera) or index<0 or index>=cloud_regions.size():return false
+func valid_observation(index:int,body_index:int=-1)->bool:
+	return index>=0 and index<cloud_regions.size() and body_index>=-1 and body_index<bodies.size()
+func enter_observatory(index:int=0,primary:bool=false,body_index:int=-1)->bool:
+	if not game.frontier.done("mountain") or not is_instance_valid(space_camera) or not valid_observation(index,body_index):return false
+	if not observatory_active:
+		overview_transform=space_camera.transform;overview_fov=space_camera.fov
 	observatory_active=true;canvas.layer=4
-	return select_observation_target(index)
+	select_observation_target(index)
+	primary_close=primary;observation_body=body_index
+	update_observation_quality();return true
 func leave_observatory():
-	observatory_active=false;primary_close=false;observation_blend=0.0;canvas.layer=-10
-	space_camera.position=Vector3.ZERO;space_camera.rotation=Vector3.ZERO;space_camera.fov=base_fov
+	observatory_active=false;primary_close=false;observation_body=-1;observation_blend=0.0;canvas.layer=-10
+	space_camera.transform=overview_transform;space_camera.fov=overview_fov
 	update_observation_quality();update_sky_camera()
 func select_observation_target(index:int)->bool:
 	if index<0 or index>=cloud_regions.size():return false
+	primary_close=false;observation_body=-1
 	observation_index=index;observation_yaw=0.0;observation_pitch=0.0;observation_zoom=1.0;observation_blend=0.0
 	observation_roll=0.0
 	update_observation_quality();return true
@@ -174,30 +183,36 @@ func rotate_observation(delta:Vector2):
 func zoom_observation(factor:float):
 	if observatory_active and is_finite(factor):observation_zoom=clampf(observation_zoom*factor,.68 if primary_close else .53,2.5 if primary_close else 1.72)
 func update_observation_quality():
-	var close_disk=observatory_active and primary_close
+	var close_disk=observatory_active and primary_close and black_hole.visible
 	space_environment.glow_enabled=close_disk
 	black_hole.material_override.set_shader_parameter("close_view",close_disk)
 	for body in bodies:body.orbit.visible=not primary_close
 	for i in range(cloud_regions.size()):
-		var detailed=observatory_active and not primary_close and i==observation_index
+		var detailed=observatory_active and not primary_close and observation_body<0 and i==observation_index
 		cloud_regions[i].lights.visible=detailed and settings.stars>0
 		cloud_regions[i].material.set_shader_parameter("ray_steps",(24 if OS.has_feature("android") else 36) if detailed else (8 if OS.has_feature("android") else 12))
 		cloud_regions[i].material.set_shader_parameter("detail_view",1.0 if detailed else 0.0)
 func update_sky_camera():
 	if not is_instance_valid(space_camera):return
 	star_material.set_shader_parameter("sky_basis",space_camera.global_basis)
-	star_material.set_shader_parameter("field_of_view",deg_to_rad(space_camera.fov))
+	var parallax=lerpf(.76,1.,opening_pullback) if not observatory_active else 1.
+	star_material.set_shader_parameter("field_of_view",deg_to_rad(space_camera.fov)*parallax)
 func advance_observation(dt:float):
 	if observatory_active:
 		observation_blend=minf(1,observation_blend+dt*1.35)
 		var region=cloud_regions[observation_index];var distance=region.radii.x*3.35*observation_zoom
 		var target=region.node.position
-		if primary_close:target=CENTER;distance=maxf(12.6,18.8*observation_zoom)
+		if primary_close:
+			target=CENTER;distance=maxf(12.6,18.8*observation_zoom) if black_hole.visible else 9.*observation_zoom
+		elif observation_body>=0:
+			var body=bodies[observation_body]
+			target=body.orbit.position
+			distance=body.size*(9.5 if body.id=="ring" else 6.5)*observation_zoom
 		var toward_camera=(-target).normalized()
 		var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
 		space_camera.position=space_camera.position.lerp(target+offset,1-exp(-dt*5.5))
 		var framing=Vector3.ZERO
-		if primary_close:
+		if primary_close and black_hole.visible:
 			var across=Vector3.UP.cross(offset.normalized()).normalized()
 			framing=-across*.56*observation_zoom
 		space_camera.look_at(target+framing);space_camera.fov=base_fov
@@ -271,16 +286,12 @@ func advance(dt:float):
 	var shooting=fposmod(meteor_clock+17.0,39.0);shooting_star.visible=shooting<1.8
 	if shooting_star.visible:
 		shooting_star.position=Vector3(14-shooting*13,18-shooting*7,-48);shooting_star.rotation.z=.49;shooting_star.material_override.albedo_color.a=sin(shooting/1.8*PI)*.48
-	if focus_time>0:
-		focus_time=maxf(0,focus_time-dt)
-		# A small acknowledgement pulse preserves the complete planet and clock composition.
-		var body=bodies[focus_index];body.axis.scale=Vector3.ONE*(1.0+sin((1.0-focus_time/1.5)*PI)*.12)
-		if focus_time<=0:body.axis.scale=Vector3.ONE;focus_index=-1
 	advance_observation(dt)
 var sky_frame_time=0.
 func _process(dt):
 	if not is_instance_valid(viewport):return
-	if OS.has_feature("android") and not observatory_active:
+	var opening=is_instance_valid(game.startup) and game.startup.camera_running
+	if OS.has_feature("android") and not observatory_active and not opening:
 		sky_frame_time+=dt
 		if sky_frame_time<.05:return
 		dt=sky_frame_time;sky_frame_time=0.
@@ -293,15 +304,36 @@ func screen_position(index:int)->Vector2:
 	return position*get_viewport().get_visible_rect().size/Vector2(viewport.size)
 func handle_tap(screen_pos:Vector2)->bool:
 	if observatory_active:return false
-	# Only touches clearly above the close island are eligible, so distant planets cannot steal worksite taps.
-	if screen_pos.y>get_viewport().get_visible_rect().size.y*.30:return false
-	if black_hole.visible:
-		var factor=get_viewport().get_visible_rect().size/Vector2(viewport.size)
-		var center=space_camera.unproject_position(CENTER)*factor
-		var radius=(space_camera.unproject_position(CENTER+space_camera.global_basis.x*2.6)*factor).distance_to(center)
-		if screen_pos.distance_to(center)<radius:game.open_observatory(true);return true
+	# Match the visible sky instead of an arbitrary top-of-screen band. The
+	# foreground globe always wins, including sea and unbuilt land.
+	var origin=game.camera.project_ray_origin(screen_pos)
+	var ray=game.camera.project_ray_normal(screen_pos)
+	var offset=origin-game.world.globe.global_position
+	var along=offset.dot(ray)
+	if along<0 and offset.length_squared()-along*along<=game.world.RADIUS*game.world.RADIUS:return false
+	# Small foreground bodies take priority over the much wider nebulae.
 	for i in range(bodies.size()):
-		if screen_position(i).distance_to(screen_pos)<28:
-			if focus_index>=0:bodies[focus_index].axis.scale=Vector3.ONE
-			focus_index=i;focus_time=1.5;return true
+		var body=bodies[i]
+		if target_hit(screen_pos,body.orbit.position,body.size*(2.32 if body.id=="ring" else 1.)):
+			if observation_unlocked():game.open_observatory(false,0,i)
+			return true
+	if target_hit(screen_pos,CENTER,2.6 if black_hole.visible else 1.5):
+		if observation_unlocked():game.open_observatory(true)
+		return true
+	for i in range(cloud_regions.size()):
+		var region=cloud_regions[i]
+		if target_hit(screen_pos,region.node.position,region.radii.x*.65):
+			if observation_unlocked():game.open_observatory(false,i)
+			return true
+	return false
+func target_hit(screen_pos:Vector2,point:Vector3,radius:float)->bool:
+	if space_camera.is_position_behind(point):return false
+	var factor=get_viewport().get_visible_rect().size/Vector2(viewport.size)
+	var center=space_camera.unproject_position(point)*factor
+	if not get_viewport().get_visible_rect().has_point(center):return false
+	var edge=space_camera.unproject_position(point+space_camera.global_basis.x*radius)*factor
+	return screen_pos.distance_to(center)<=maxf(24.,edge.distance_to(center))
+func observation_unlocked()->bool:
+	if game.frontier.done("mountain"):return true
+	game.hud.toast("建成云杉观星台后，可以近看天体")
 	return false

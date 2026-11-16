@@ -17,7 +17,7 @@ const CHAPTERS=[
 	{"id":"hill","title":"向风的小丘","need":6,"requires":["quarry"],"cells":[Vector2i(1,1),Vector2i(1,2),Vector2i(1,3)],"point":Vector2i(1,2),"site":1,"note":3},
 	{"id":"wetland","title":"芦苇浅湾","need":8,"requires":["meadow"],"cells":[Vector2i(-2,2),Vector2i(-3,2),Vector2i(-3,3)],"point":Vector2i(-3,2),"site":0,"note":3,"gate":"wood","threshold":8},
 	{"id":"plateau","title":"石脊高原","need":10,"requires":["quarry"],"cells":[Vector2i(3,-2),Vector2i(4,-2),Vector2i(4,-1)],"point":Vector2i(4,-2),"site":1,"note":0,"gate":"stone","threshold":10},
-	{"id":"mountain","title":"云杉观星台","need":12,"requires":["plateau","hill","crystal"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0,"gate":"explore","threshold":12},
+	{"id":"mountain","title":"云杉观星台","need":12,"requires":["plateau","hill","crystal"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0},
 	{"id":"shipyard","title":"弯月船坞","need":12,"requires":["sawmill","kiln","wetland","plateau"],"cells":[Vector2i(-3,0),Vector2i(-3,1),Vector2i(-4,1)],"point":Vector2i(-3,1),"site":0,"note":5},
 	{"id":"sunreach","title":"椰风群岛","need":10,"requires":["shipyard"],"cells":[Vector2i(20,0),Vector2i(21,0),Vector2i(20,1)],"point":Vector2i(20,0),"site":0,"note":6},
 	{"id":"coral","title":"潮光玻璃坊","need":12,"requires":["sunreach","crystal"],"cells":[Vector2i(19,1),Vector2i(19,2),Vector2i(20,2)],"point":Vector2i(19,1),"site":1,"note":7},
@@ -120,10 +120,7 @@ func available(id:String)->bool:
 func gate_count(gate:String)->int:
 	if gate=="wood":return int(learning.data.harvested[0])
 	if gate=="stone":return int(learning.data.harvested[1])
-	var context_work=int(learning.data.practice.read)+int(learning.data.practice.listen)+int(learning.data.dev_context.read)+int(learning.data.dev_context.listen)
-	var word_work=int(learning.data.harvested[0])+int(learning.data.harvested[1])
-	# Either route can qualify. Changing the practice mix never relocks earned access.
-	return maxi(context_work,word_work/2)
+	return 0
 func previewable(id:String)->bool:
 	if available(id):return true
 	var c=chapter(id)
@@ -134,7 +131,7 @@ func previewable(id:String)->bool:
 func unlock_hint(id:String)->String:
 	var c=chapter(id)
 	if not c.has("gate"):return ""
-	var label={"wood":"木料采集","stone":"石料采集","explore":"学习积累"}[c.gate]
+	var label={"wood":"木料采集","stone":"石料采集"}[c.gate]
 	return str(label)+" "+str(gate_count(c.gate))+" / "+str(c.threshold)+" · "+str(c.title)
 func site(id:String)->int:return BUILD_IDS.find(id) if id in BUILD_IDS else int(chapter(id).get("site",0))
 func target(id:String)->Vector2:

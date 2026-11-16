@@ -1,6 +1,5 @@
 extends Node3D
 
-const LEDGE=preload("res://assets/models/tidal_ledge.glb")
 const CRAB=preload("res://assets/models/wild_crab.glb")
 const SEAL=preload("res://assets/models/wild_seal.glb")
 var crab:Node3D
@@ -30,8 +29,14 @@ var crab_state="walk"
 var seal_state="look"
 var normal=Vector3.ZERO
 
+# The container stays at the globe origin; each resident chooses its own coast.
+var homes:Array=[]
+var seal_mover:Dictionary={}
+var navigation
+var random=RandomNumberGenerator.new()
+var ground_support_cache={}
+
 func _ready():
-	add_child(LEDGE.instantiate())
 	crab=CRAB.instantiate();add_child(crab);crab.scale=Vector3.ONE*.69
 	seal=SEAL.instantiate();add_child(seal);seal.scale=Vector3.ONE*.77
 	seal.position=Vector3(.14,0,.23);seal.rotation.y=PI*.5
@@ -63,6 +68,8 @@ func _ready():
 		var extra=CRAB.instantiate();add_child(extra);extra.scale=Vector3.ONE*(.50 if i==1 else .53)
 		crabs.append(make_crab_entry(extra,i,.50 if i==1 else .53))
 
+	seal_mover=make_mover(seal,3,.77)
+
 func make_crab_entry(model:Node3D,index:int,size:float)->Dictionary:
 	var articulated=[]
 	for side in ["L","R"]:
@@ -72,188 +79,298 @@ func make_crab_entry(model:Node3D,index:int,size:float)->Dictionary:
 			articulated.append({"node":joint,"knee":knee,"toe":toe,"upper":knee.position,"lower":toe.position,"rest":joint.position+knee.position+toe.position,"phase":float(i%2)*.5+(.5 if side=="R" else 0.)})
 	return {"model":model,"index":index,"size":size,"legs":articulated,"left":model.find_child("ClawL",true,false),"right":model.find_child("ClawR",true,false),"finger_left":model.find_child("PincerL",true,false),"finger_right":model.find_child("PincerR",true,false),"gait":0.,"last":Vector3.ZERO,"state":"rest","surface":"rock","route_valid":false,"panic":0.,"reaction":0.}
 
-const RIM=[Vector2(-1.37,.22),Vector2(-1.1,.61),Vector2(-.42,.76),Vector2(.38,.70),Vector2(1.04,.49),Vector2(1.31,.14),Vector2(1.24,-.34),Vector2(.79,-.61),Vector2(.12,-.75),Vector2(-.75,-.68),Vector2(-1.23,-.40)]
-func rim_radius(direction:Vector2)->float:
-	var radius=INF
-	for i in RIM.size():
-		var a:Vector2=RIM[i];var edge:Vector2=RIM[(i+1)%RIM.size()]-a
-		var denominator=direction.cross(edge)
-		if absf(denominator)<.00001:continue
-		var distance=a.cross(edge)/denominator;var amount=a.cross(direction)/denominator
-		if distance>0. and amount>=0. and amount<=1.:radius=minf(radius,distance)
-	return radius
-
-func floor_point(point:Vector3)->Vector3:
-	# Solve height while keeping this shelf's horizontal coordinates. A plain
-	# radial projection would pull a descending crab through the tapered rock.
-	var p=point
-	var up=basis.y.normalized()
-	for i in 5:
-		var globe_point:Vector3=transform*p;var n=globe_point.normalized()
-		var gap=globe_point.length()-habitat.world.water.floor_radius(n)-.025
-		if absf(gap)<.0001:break
-		p.y-=gap/maxf(.3,up.dot(n))
-	return p
-
-func floor_up(point:Vector3)->Vector3:
-	var dx=floor_point(point+Vector3(.12,0,0))-floor_point(point-Vector3(.12,0,0))
-	var dz=floor_point(point+Vector3(0,0,.12))-floor_point(point-Vector3(0,0,.12))
-	return dz.cross(dx).normalized()
-
-func configure_crabs():
-	for entry in crabs:
-		entry.route_valid=false
-		for offset in [0.,.10,-.10,.20,-.20]:
-			var angle=[-2.60,-1.57,-.55][entry.index]+offset
-			var direction=Vector3(cos(angle),0.,sin(angle));var radius=rim_radius(Vector2(direction.x,direction.z))
-			var okay=true
-			for step in 9:
-				var p=direction*(radius*1.07+.4+step*.055)
-				var globe_point:Vector3=habitat.to_local(to_global(p));var n=globe_point.normalized()
-				if not habitat.outside_land(n,.34) or habitat.depth_at(n)<.65 or not habitat.clear_of_cave(n,.4):okay=false;break
-				for obstacle in habitat.seabed_obstacles:
-					if obstacle.normal.distance_to(normal)<.001:continue
-					if n.distance_to(obstacle.normal)*IslandWater.BASE_RADIUS<obstacle.radius+.38:okay=false;break
-			if okay:
-				entry.direction=direction;entry.radius=radius;entry.route_valid=true
-				var bottom=floor_point(direction*(radius*1.03+.45))
-				for i in 3:
-					var wall_scale=lerpf(1.07,.78,clampf((-bottom.y-.25)/5.25,0.,1.))
-					bottom=floor_point(direction*(radius*wall_scale+.45))
-				entry.bottom=bottom;entry.bed_up=floor_up(bottom);entry.outer_up=floor_up(bottom+direction*.36);break
-		# Each crab remains visible on its own patch if surrounding water is
-		# temporarily blocked after expansion. No unsafe seabed route is used.
-		if not entry.route_valid:
-			entry.direction=Vector3(cos([-2.6,-1.57,-.55][entry.index]),0.,sin([-2.6,-1.57,-.55][entry.index]));entry.radius=rim_radius(Vector2(entry.direction.x,entry.direction.z))
+func make_mover(model:Node3D,index:int,size:float)->Dictionary:
+	var contacts=[]
+	for part in model.find_children("*","MeshInstance3D",true,false):
+		for surface in part.mesh.get_surface_count():
+			var points=part.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]
+			for i in range(0,points.size(),maxi(1,points.size()/32)):
+				contacts.append({"node":part,"point":points[i]})
+	return {"model":model,"index":index,"size":size,"contacts":contacts,"route":[],"ups":[],"surfaces":[],"segment":0,"distance":0.,"phase":"forage","wait":6.+index*2.,"home":{},"point":Vector3.ZERO,"up":Vector3.UP,"heading":Vector3.FORWARD,"moving":false,"surface":"seabed","gait":0.,"reaction":0.,"panic":0.,"last":Vector3.ZERO}
 
 func choose_coast(life):
-	habitat=life
-	if normal!=Vector3.ZERO and life.outside_land(normal,1.40):configure_crabs();return
-	hide();normal=Vector3.ZERO
-	for n in life.coast+life.offshore:
-		if n.dot(Vector3.DOWN)>.45 or not life.outside_land(n,1.40) or not life.clear_of_cave(n,1.40):continue
-		normal=n;position=n*(IslandWater.BASE_RADIUS+.155)
-		basis=life.frame_at(position,life.tangent_axes(n)[1]);show();configure_crabs();return
+	habitat=life;position=Vector3.ZERO;basis=Basis.IDENTITY
+	if navigation==null:
+		navigation=preload("res://scripts/shore_routes.gd").new(life);random.randomize()
+	navigation.land_count=-1;homes.clear();ground_support_cache.clear()
+	var world=life.world
+	var steps=[Vector2i(1,0),Vector2i(0,1),Vector2i(-1,1),Vector2i(-1,0),Vector2i(0,-1),Vector2i(1,-1)]
+	for cell in world.land:
+		if world.terrain.kind(cell)=="rocket":continue
+		var center=IslandFrontier.point(cell)
+		for step in steps:
+			if world.land.has(cell+step):continue
+			var out=(IslandFrontier.point(cell+step)-center).normalized()
+			for shift in [0.,-.30,.30]:
+				var edge_center=center+Vector2(-out.y,out.x)*shift
+				var dry=edge_center+out*.82
+				if not world.clear_ground(dry,.34,false):continue
+				var ground:Vector3=world.ground_point(dry)
+				if ground.length()>12.65:continue
+				var safe=true
+				for group in world.resources:
+					for resource in group:
+						if resource.p.distance_to(dry)<.56:safe=false
+				for prop in life.land_life.low_props:
+					if minf(prop.center.distance_to(dry),prop.center.distance_to(dry-out*.35))<prop.radius+.06:safe=false
+				if not safe:continue
+				var edge=edge_center+out*(IslandFrontier.HEX*.866-.04)
+				if not world.clear_segment(dry,edge_center+out*.88,.12,false):continue
+				var sea=life.sea_direction(edge_center+out*3.1)
+				if not navigation.clear_arc(sea,sea):continue
+				var top:Vector3=world.ground_point(edge)
+				var lip=life.sea_direction(edge_center+out*(IslandFrontier.HEX*.866+.40))
+				var outward=(lip-top.normalized()).slide(top.normalized()).normalized()
+				var floor=seabed_point(lip)
+				var shore=[ground+ground.normalized()*.035,top+top.normalized()*.04,lip*(top.length()+.04),floor,seabed_point(sea)]
+				var ups=[ground.normalized(),top.normalized(),(lip+outward).normalized(),floor.normalized(),sea]
+				# Check the wet approach against rocks and the cave, too.
+				for i in range(13):
+					var n=lip.slerp(sea,float(i)/12.)
+					if not life.clear_of_cave(n,.72) or not life.clear_of_seabed_props(n,.55,IslandWater.MAX_DEPTH):safe=false;break
+				if safe:homes.append({"cell":cell,"chart":world.terrain.chart_at(center),"dry":dry,"sea":sea,"shore":shore,"ups":ups})
+	show()
+	var residents=crabs+[seal_mover]
+	for entry in residents:
+		if not entry.has("route"):
+			var mover=make_mover(entry.model,entry.index,entry.size)
+			for key in mover:entry[key]=mover[key]
+		if entry.point==Vector3.ZERO and not homes.is_empty():
+			entry.home=homes[(entry.index*maxi(1,homes.size()/residents.size()))%homes.size()]
+			var n:Vector3=entry.home.sea
+			for attempt in range(24):
+				var candidate=life.offset_direction(n,Vector2.from_angle(attempt*2.4)*(.8+.4*(attempt/8)))
+				if not navigation.clear_arc(candidate,candidate):continue
+				var separated=true
+				for other in residents:
+					if other!=entry and other.get("point",Vector3.ZERO)!=Vector3.ZERO and other.point.distance_to(seabed_point(candidate))<1.0:separated=false
+				if separated:n=candidate;break
+			entry.point=seabed_point(n);entry.up=n
+		elif entry.point!=Vector3.ZERO:
+			# Replan unfinished water travel after land changes; retain position.
+			entry.route=[];entry.phase="forage";entry.wait=.5
+			recover_coast(entry)
+		entry.model.visible=entry.point!=Vector3.ZERO
+		if entry.model.visible:place_mover(entry,0.)
+	normal=seal_mover.point.normalized() if seal_mover.point!=Vector3.ZERO else Vector3.UP
 
-func envelope(t:float,start:float,rise:float,hold:float,end:float)->float:
-	return smoothstep(start,rise,t)*(1.-smoothstep(hold,end,t))
+func seabed_point(n:Vector3)->Vector3:
+	return n.normalized()*(habitat.world.water.floor_radius(n.normalized())+.045)
+
+func recover_coast(entry:Dictionary):
+	var world=habitat.world;var n:Vector3=entry.point.normalized()
+	if navigation.clear_arc(n,n):return
+	var coordinate=world.terrain.coordinates(n)
+	if world.on_land(coordinate):
+		entry.point=world.ground_point(coordinate)+n*.045;entry.up=n
+		var nearby=homes.duplicate()
+		nearby.sort_custom(func(a,b):return a.dry.distance_squared_to(coordinate)<b.dry.distance_squared_to(coordinate))
+		for home in nearby:
+			if world.terrain.chart_at(coordinate)!=home.chart:continue
+			var walk=world.walking_route(coordinate,home.dry)
+			if walk.is_empty():continue
+			var points=[entry.point];var ups=[n];var surfaces=[]
+			for point in walk:
+				var ground:Vector3=world.ground_point(point);points.append(ground+ground.normalized()*.045);ups.append(ground.normalized());surfaces.append("land")
+			for i in range(home.shore.size()):points.append(home.shore[i]);ups.append(home.ups[i]);surfaces.append("shore" if i<4 else "seabed")
+			entry.home=home;set_route(entry,points,ups,surfaces);entry.phase="depart";return
+	else:
+		for attempt in range(48):
+			var end=habitat.offset_direction(n,Vector2.from_angle(attempt*2.399)*(.8+.4*(attempt/12)))
+			if not navigation.clear_arc(end,end):continue
+			var points=[entry.point];var ups=[n];var surfaces=[];var safe=true
+			for i in range(1,17):
+				var probe=n.slerp(end,float(i)/16.)
+				if world.on_land(world.terrain.coordinates(probe)):safe=false;break
+				points.append(seabed_point(probe));ups.append(probe);surfaces.append("seabed")
+			if safe:set_route(entry,points,ups,surfaces);entry.phase="depart";return
+
+func shore_occupied(home:Dictionary,entry:Dictionary)->bool:
+	for other in crabs+[seal_mover]:
+		if other==entry or other.home.is_empty():continue
+		if other.phase in ["travel","rest","depart"] and other.home.dry.distance_to(home.dry)<1.2:return true
+	return false
+
+func set_route(entry:Dictionary,points:Array,ups:Array,surfaces:Array):
+	entry.route=points;entry.ups=ups;entry.surfaces=surfaces;entry.segment=0;entry.distance=0.
+
+func leave_shore(entry:Dictionary):
+	set_route(entry,entry.home.shore.duplicate(),entry.home.ups.duplicate(),["shore","shore","shore","seabed"])
+	entry.phase="depart"
+
+func visit_shore(entry:Dictionary)->bool:
+	if homes.is_empty():return false
+	if homes.size()<4:
+		for other in crabs+[seal_mover]:
+			if other!=entry and other.phase in ["forage","roam"] and other.get("queue_time",0.)>entry.get("queue_time",0.)+.01:return false
+	navigation.rebuild()
+	var start=entry.point.normalized();var choices=homes.duplicate()
+	var other_chart=entry.home.get("chart",-1)
+	# Give newly opened islands a turn, while allowing every usable shore.
+	var seed=random.randi()
+	choices.sort_custom(func(a,b):
+		var av=(0. if a.chart!=other_chart else 2.)+float(posmod(hash(a.dry)^seed,1000))/1000.
+		var bv=(0. if b.chart!=other_chart else 2.)+float(posmod(hash(b.dry)^seed,1000))/1000.
+		return av<bv)
+	for home in choices.slice(0,12):
+		if shore_occupied(home,entry):continue
+		var route=navigation.sea_path(start,home.sea)
+		if route.is_empty():continue
+		var points=[entry.point];var ups=[entry.up];var surfaces=[]
+		for i in range(1,route.size()):
+			var count=maxi(1,ceili(route[i-1].angle_to(route[i])*IslandWater.BASE_RADIUS/.20))
+			for step in range(1,count+1):
+				var n:Vector3=route[i-1].slerp(route[i],float(step)/count).normalized()
+				points.append(seabed_point(n));ups.append(n);surfaces.append("seabed")
+		for i in range(home.shore.size()-2,-1,-1):
+			points.append(home.shore[i]);ups.append(home.ups[i]);surfaces.append("shore" if i<3 else "seabed")
+		entry.home=home;set_route(entry,points,ups,surfaces);entry.phase="travel";entry.queue_time=0.
+		return true
+	return false
+
+func advance_mover(entry:Dictionary,dt:float):
+	entry.moving=false
+	if entry.point==Vector3.ZERO:return
+	if entry.phase=="rest" and entry.index==3:
+		entry.heading=entry.up.cross(entry.home.shore[1]-entry.home.shore[0]).normalized()
+	if entry.phase in ["forage","roam"]:entry.queue_time=entry.get("queue_time",0.)+dt
+	if entry.route.is_empty():
+		entry.wait-=dt
+		if entry.wait<=0.:
+			if entry.phase=="rest":leave_shore(entry)
+			elif not visit_shore(entry):
+				entry.wait=5.
+				var n:Vector3=entry.point.normalized()
+				var end=habitat.offset_direction(n,Vector2.from_angle(random.randf()*TAU)*.6)
+				if navigation.clear_arc(n,end):
+					set_route(entry,[entry.point,seabed_point(end)],[n,end],["seabed"]);entry.phase="roam"
+	else:
+		var speed=.33 if entry.index==3 else .16
+		if entry.surface=="shore":speed*=.65
+		entry.distance+=dt*speed*(1.+entry.panic*.55)
+		while entry.segment<entry.route.size()-1:
+			var a:Vector3=entry.route[entry.segment];var b:Vector3=entry.route[entry.segment+1]
+			var length=a.distance_to(b)
+			if entry.distance<length and length>.0001:
+				var amount=entry.distance/length
+				entry.point=a.lerp(b,amount);entry.up=entry.ups[entry.segment].slerp(entry.ups[entry.segment+1],amount).normalized()
+				entry.surface=entry.surfaces[entry.segment]
+				if entry.surface=="seabed":
+					entry.point=seabed_point(entry.point.normalized());entry.up=seabed_up(entry.point.normalized())
+				entry.heading=(b-a).normalized();entry.moving=true;break
+			entry.distance-=length;entry.segment+=1;entry.point=b
+		if entry.segment>=entry.route.size()-1:
+			entry.up=entry.ups[-1];entry.route=[]
+			entry.phase="forage" if entry.phase in ["depart","roam"] else "rest"
+			entry.surface="seabed" if entry.phase=="forage" else "land"
+			entry.wait=random.randf_range(8.,18.)
+	place_mover(entry,dt)
+
+func place_mover(entry:Dictionary,dt:float):
+	if entry.surface=="seabed":entry.up=seabed_up(entry.point.normalized())
+	elif entry.surface=="land":entry.up=land_up(entry.point)
+	var point:Vector3=entry.point;var up:Vector3=entry.up
+	var forward:Vector3=entry.heading.slide(up).normalized()
+	if forward.length_squared()<.1:forward=habitat.tangent_axes(up)[0]
+	var frame=habitat.frame_at(up,forward)
+	# Crabs travel sideways; seals face their route.
+	if entry.index!=3:frame=frame.rotated(up,PI*.5)
+	var previous:Vector3=entry.last
+	if previous!=Vector3.ZERO:entry.gait+=previous.distance_to(point)/(.18*entry.size)
+	entry.last=point
+	entry.model.position=point+point.normalized()*entry.get("support_lift",0.)
+	var rotation=frame.get_rotation_quaternion()
+	entry.model.quaternion=entry.model.quaternion.slerp(rotation,1.-exp(-dt*7.)) if dt>0 else rotation
+	entry.model.scale=Vector3.ONE*entry.size
+
+func seabed_up(n:Vector3)->Vector3:
+	var a=seabed_point(habitat.offset_direction(n,Vector2(.12,0)))-seabed_point(habitat.offset_direction(n,Vector2(-.12,0)))
+	var b=seabed_point(habitat.offset_direction(n,Vector2(0,.12)))-seabed_point(habitat.offset_direction(n,Vector2(0,-.12)))
+	var up=a.cross(b).normalized()
+	return up if up.dot(n)>0 else -up
+
+func land_up(point:Vector3)->Vector3:
+	var world=habitat.world;var p=world.terrain.coordinates(point)
+	var a=world.ground_point(p+Vector2(.12,0))-world.ground_point(p-Vector2(.12,0))
+	var b=world.ground_point(p+Vector2(0,.12))-world.ground_point(p-Vector2(0,.12))
+	var up=a.cross(b).normalized()
+	return up if up.dot(point)>0 else -up
 
 func animate(t:float,dt:float):
 	if not visible:return
-	attention=maxf(0,attention-dt);scuttle=maxf(0,scuttle-dt)
-	attention_blend=lerpf(attention_blend,smoothstep(0.,.8,attention),1.-exp(-dt*8.))
-	panic=lerpf(panic,smoothstep(0.,.8,scuttle),1.-exp(-dt*9.))
+	attention=maxf(0,attention-dt);attention_blend=lerpf(attention_blend,smoothstep(0.,.8,attention),1.-exp(-dt*8.))
+	if habitat:
+		advance_mover(seal_mover,dt)
+		for entry in crabs:
+			entry.reaction=maxf(0.,entry.reaction-dt);entry.panic=lerpf(entry.panic,smoothstep(0.,.65,entry.reaction),1.-exp(-dt*9.))
+			advance_mover(entry,dt)
+			normal=seal_mover.point.normalized()
 	animate_seal(t)
 	for entry in crabs:animate_crab(entry,t,dt)
+	if habitat:
+		for entry in crabs+[seal_mover]:support_surface(entry,dt)
+
+func support_surface(entry:Dictionary,dt:float):
+	if entry.point==Vector3.ZERO:return
+	entry.support_wait=entry.get("support_wait",0.)-dt
+	if entry.support_wait>0. and entry.get("support_surface","")==entry.surface:return
+	entry.support_wait=.05;entry.support_surface=entry.surface
+	var lift=0.
+	# Fit the actual posed fins, belly and feet to curved basin floors. The
+	# movement path itself remains continuous; only ground support is lifted.
+	var old:float=entry.get("support_lift",0.)
+	if entry.surface in ["seabed","land"]:
+		for contact in entry.contacts:
+			var p=to_local(contact.node.to_global(contact.point))-entry.point.normalized()*old
+			var height=habitat.world.water.floor_radius(p.normalized())
+			if entry.surface=="land":
+				var coordinate=habitat.world.terrain.coordinates(p)
+				if habitat.world.on_land(coordinate):
+					var key=Vector2i(roundi(coordinate.x*40.),roundi(coordinate.y*40.))
+					if not ground_support_cache.has(key):ground_support_cache[key]=habitat.world.ground_point(coordinate).length()
+					height=ground_support_cache[key]
+			lift=maxf(lift,height+.022-p.length())
+	lift=maxf(lift,lerpf(old,lift,1.-exp(-maxf(dt,.05)*7.)))
+	entry.support_lift=lift
+	entry.model.position=entry.point+entry.point.normalized()*lift
 
 func animate_seal(t:float):
-	var phase=fposmod(t,28.)
-	# Two short belly-driven pushes, a stretch and a sunning roll, then a
-	# return to the original spot. The crab owns the separate seaward lane.
-	var outbound=smoothstep(4.,5.3,phase)*.10+smoothstep(6.,7.3,phase)*.10
-	var inbound=smoothstep(21.,22.3,phase)*.10+smoothstep(23.,24.3,phase)*.10
-	var push=envelope(phase,4.,4.5,4.8,5.5)+envelope(phase,6.,6.5,6.8,7.5)+envelope(phase,21.,21.5,21.8,22.5)+envelope(phase,23.,23.5,23.8,24.5)
-	var stretch=envelope(phase,8.,9.2,10.2,12.)
-	var roll=envelope(phase,12.,13.8,16.,18.5)
-	var settle=envelope(phase,18.5,19.3,20.,21.)
-	seal_state="scoot" if push>.08 else "stretch" if stretch>.08 else "sunbathe" if roll>.08 else "settle" if settle>.08 else "look"
-	var side_roll=.48*roll
-	seal.rotation=Vector3(0.,PI*.5,side_roll)
-	body.scale=Vector3(1.+.025*push,1.+.014*sin(t*1.8),1.-.045*push)
-	chest.rotation.x=.03+.19*stretch+.09*push+.055*attention_blend
-	head.rotation.x=-.05+.12*stretch-.08*push+.06*sin(t*.9)-.25*attention_blend
-	head.rotation.y=.27*sin(t*.48)+.24*attention_blend
-	head.rotation.z=-.13*roll
-	flipper.rotation=Vector3(.08*push,.12*stretch,-.04-.23*push-.18*stretch-side_roll*1.35)
-	other_flipper.rotation=Vector3(.08*push,-.12*stretch,.04+.23*push+.18*stretch+.20*roll*sin(t*2.3))
-	hind_left.rotation=Vector3(.10*push+.07*stretch,.12*stretch,-.10*push-.16*roll)
-	hind_right.rotation=Vector3(.10*push+.07*stretch,-.12*stretch,.10*push+.16*roll)
-	seal.position.x=.14-outbound+inbound;seal.position.z=.23
-	var bottom=INF
-	for point in belly_points:bottom=minf(bottom,(seal.basis*(body.transform*point)).y)
-	seal.position.y=-bottom+.002
-
-func crab_route(entry:Dictionary,phase:float)->Dictionary:
-	var out:Vector3=entry.direction;var radius:float=entry.radius
-	var top=out*(radius*.58);top.y=.006
-	var edge=out*(radius*.94);edge.y=.006
-	if not entry.route_valid:return {"point":top,"up":Vector3.UP,"axis":out,"state":"feed","surface":"rock"}
-	var bottom:Vector3=entry.bottom
-	var p=top;var up=Vector3.UP;var axis=out;var state="walk";var surface="rock"
-	if phase<3.:p=top.lerp(edge,smoothstep(0.,3.,phase))
-	elif phase<5.5 or (phase>=13. and phase<15.5):
-		var descending=phase<5.5
-		var u=smoothstep(3.,5.5,phase) if descending else 1.-smoothstep(13.,15.5,phase)
-		var y=lerpf(.006,bottom.y,u)
-		var wall_scale=lerpf(.94,1.07,clampf(-y/.25,0.,1.)) if y>-.25 else lerpf(1.07,.78,clampf((-y-.25)/5.25,0.,1.))
-		var foot_clearance=.12*sin(u*PI)+.45*smoothstep(.68,1.,u)
-		p=out*(radius*wall_scale+foot_clearance);p.y=y+.075*envelope(u,0.,.015,.065,.20)
-		var wall_turn=smoothstep(0.,.22,u)*(1.-smoothstep(.7,1.,u))
-		up=Vector3.UP.lerp(out,wall_turn).normalized()
-		axis=out.lerp(Vector3.DOWN,wall_turn).normalized()
-		if u>.7:up=up.lerp(entry.bed_up,smoothstep(.7,1.,u)).normalized()
-		p+=up*.04*sin(u*PI)
-		state="descend" if descending else "climb";surface="wall"
-	elif phase<13.:
-		var distance=.36*smoothstep(5.5,8.,phase)*(1.-smoothstep(10.,13.,phase))
-		p=floor_point(bottom+out*distance);up=entry.bed_up.lerp(entry.outer_up,distance/.36).normalized();axis=out
-		state="forage" if phase>=8. and phase<10. else "seabed_walk";surface="seabed"
-	elif phase<18.:p=edge.lerp(top,smoothstep(15.5,18.,phase))
-	else:state="feed" if phase<21. else "display"
-	return {"point":p,"up":up,"axis":axis,"state":state,"surface":surface}
+	var swimming=habitat and seal_mover.surface=="seabed"
+	var moving=habitat and seal_mover.moving
+	var phase=fposmod(t,20.)
+	var stretch=smoothstep(2.,3.5,phase)*(1.-smoothstep(5.,7.,phase)) if not moving else 0.
+	var roll=.22*smoothstep(9.,11.,phase)*(1.-smoothstep(14.,16.,phase)) if not swimming and not moving else 0.
+	seal_state="swim" if swimming and moving else "forage" if swimming else "scoot" if moving else "stretch" if stretch>.1 else "sunbathe" if roll>.05 else "look"
+	var stroke=sin(t*(4. if swimming else 6.)) if moving else 0.
+	body.scale=Vector3(1.+.018*stroke,1.+.012*sin(t*1.8),1.-.025*stroke)
+	body.rotation.z=roll
+	chest.rotation.x=.12*stretch+.055*attention_blend+.045*stroke
+	head.rotation.x=.04*sin(t*.9)-.23*attention_blend+.10*stretch
+	head.rotation.y=.22*sin(t*.48)+.20*attention_blend
+	flipper.rotation=Vector3(.08*stroke,.13*stroke,-.10-.22*stretch-.18*stroke)
+	other_flipper.rotation=Vector3(-.08*stroke,-.13*stroke,.10+.22*stretch+.18*stroke)
+	hind_left.rotation=Vector3(0.,.30*stroke,-.09-.10*stroke)
+	hind_right.rotation=Vector3(0.,.30*stroke,.09+.10*stroke)
+	if not habitat:
+		seal.position=Vector3(.14,.04,.23);seal.rotation.y=PI*.5
 
 func animate_crab(entry:Dictionary,t:float,dt:float):
-	var model:Node3D=entry.model;var size:float=entry.size
-	entry.reaction=maxf(0.,entry.reaction-dt)
-	entry.panic=lerpf(entry.panic,smoothstep(0.,.65,entry.reaction),1.-exp(-dt*9.))
-	entry.motion_time=entry.get("motion_time",t-dt)+dt*(1.+entry.panic*.65)
-	var phase=fposmod(entry.motion_time+float(entry.index)*8.-.65*entry.panic,24.)
-	var route=crab_route(entry,phase) if habitat else {"point":Vector3(-.60+entry.index*.60,.006,-.38),"up":Vector3.UP,"axis":Vector3.RIGHT,"state":"display" if fposmod(t,6.)>3. else "feed","surface":"rock"}
-	var point:Vector3=route.point
-	var up:Vector3=route.up;var axis:Vector3=route.axis.slide(up).normalized()
-	var frame=Basis(axis,up,axis.cross(up).normalized()).orthonormalized()
-	# A startled crab shortens its body, tucks the feeding claw and takes
-	# rapid small steps on the same checked surface instead of jumping away.
-	var movement=point-entry.last;var speed=movement.length()/maxf(dt,.001) if entry.last!=Vector3.ZERO else 0.
-	if entry.last!=Vector3.ZERO:entry.gait+=movement.length()/(size*.20)
-	entry.last=point;entry.state="retreat" if entry.panic>.2 else route.state;entry.surface=route.surface
-	model.position=point;model.basis=frame.scaled(Vector3.ONE*size)
-	var forward=1. if movement.dot(axis)>=0. else -1.
-	var moving=minf(1.,speed*4.)
-	entry.feed=lerpf(entry.get("feed",0.),1. if entry.state in ["feed","forage"] else 0.,1.-exp(-dt*7.))
-	entry.display=lerpf(entry.get("display",0.),1. if entry.state=="display" else 0.,1.-exp(-dt*7.))
-	var near_wall=entry.surface!="rock" and Vector2(point.x,point.z).length()<float(entry.get("radius",1.))*1.07+.65
-	entry.wall=lerpf(entry.get("wall",0.),1. if entry.surface=="wall" or near_wall else 0.,1.-exp(-dt*10.))
-	var feed:float=entry.feed;var display:float=entry.display
+	var model:Node3D=entry.model
+	if not habitat:model.position=Vector3(-.60+entry.index*.60,.006,-.38)
+	var moving=entry.get("moving",false)
+	entry.state="retreat" if entry.panic>.2 else "seabed_walk" if moving and entry.surface=="seabed" else "climb" if moving else "forage" if entry.surface=="seabed" else "feed"
+	var feed=0. if moving else 1.
 	for leg in entry.legs:
 		var cycle=fposmod(entry.gait+leg.phase,1.)
-		var sweep=.065-.13*cycle/.65 if cycle<.65 else -.065+.13*smoothstep(.65,1.,cycle)
-		var lift=0. if cycle<.65 else .045*sin((cycle-.65)/.35*PI)*moving
-		var foot:Vector3=leg.rest;foot.x+=sweep*forward;foot.y=.018+lift
-		var contact=model.transform*foot
-		if entry.surface=="wall" or entry.surface=="seabed":
-			contact=rock_contact(contact)
-			var bed=floor_point(contact)
-			contact.y=maxf(contact.y,bed.y+.012)
-		place_leg(leg,model.transform.affine_inverse()*contact)
-	entry.left.rotation=Vector3(.15*feed,0.,-.14-.72*display-.28*entry.panic-.19*feed*(.5+.5*sin(t*5.)))
+		var sweep=(.065-.13*cycle/.65 if cycle<.65 else -.065+.13*smoothstep(.65,1.,cycle)) if moving else 0.
+		var lift=.045*sin((cycle-.65)/.35*PI) if moving and cycle>.65 else 0.
+		var foot:Vector3=leg.rest;foot.x+=sweep;foot.y=.018+lift
+		place_leg(leg,foot)
+	entry.left.rotation=Vector3(.15*feed,0.,-.14-.28*entry.panic-.19*feed*(.5+.5*sin(t*5.)))
 	entry.right.rotation=Vector3(.12*feed,0.,.08+.24*feed*(.5+.5*sin(t*5.+1.2))+.18*entry.panic)
-	entry.left.rotation.z=lerpf(entry.left.rotation.z,-.88,entry.wall);entry.right.rotation.z=lerpf(entry.right.rotation.z,.64,entry.wall)
-	entry.finger_left.rotation.z=.22+.30*display+.28*feed*(.5+.5*sin(t*8.))
+	entry.finger_left.rotation.z=.22+.28*feed*(.5+.5*sin(t*8.))
 	entry.finger_right.rotation.z=-.18-.32*feed*(.5+.5*sin(t*8.+1.4))
 	if entry.index==0:crab_state=entry.state
-
-func rock_contact(point:Vector3)->Vector3:
-	if point.y>=.014 or point.y< -5.5:return point
-	var horizontal=Vector2(point.x,point.z)
-	var width=lerpf(.94,1.07,clampf(-point.y/.25,0.,1.)) if point.y>-.25 else lerpf(1.07,.78,clampf((-point.y-.25)/5.25,0.,1.))
-	var radius=rim_radius(horizontal.normalized())*width+.055
-	var penetration=radius-horizontal.length()
-	if penetration<=0.:return point
-	if point.y>-.25 and -point.y<penetration:point.y=.014
-	else:
-		horizontal=horizontal.normalized()*radius;point.x=horizontal.x;point.z=horizontal.y
-	return point
 
 func place_leg(leg:Dictionary,target:Vector3):
 	var hip:Vector3=leg.node.position;var delta=target-hip
@@ -277,21 +394,11 @@ func handle_tap(screen_pos:Vector2,camera:Camera3D)->bool:
 	var targets=[{"node":seal,"entry":{}}]
 	for entry in crabs:targets.append({"node":entry.model,"entry":entry})
 	for target in targets:
+		if not target.node.is_visible_in_tree():continue
 		var point:Vector3=target.node.global_position
 		if camera.is_position_behind(point) or camera.unproject_position(point).distance_to(screen_pos)>24.:continue
-		var n=(habitat.global_basis*habitat.to_local(point).normalized()).normalized() if habitat else global_basis.y
+		var n=(habitat.global_basis*target.node.position.normalized()).normalized() if habitat else global_basis.y
 		if n.dot((camera.global_position-point).normalized())<.10:continue
-		# The solid shelf blocks clicks on crabs hidden behind its column.
-		var ray_start=to_local(camera.global_position);var ray_end=to_local(point)
-		var blocked=false
-		for i in range(1,24):
-			var probe=ray_start.lerp(ray_end,float(i)/24.)
-			if probe.y>=-.02 or probe.y< -5.5:continue
-			var horizontal=Vector2(probe.x,probe.z)
-			var radius=rim_radius(horizontal.normalized())
-			var width=lerpf(.94,1.07,clampf(-probe.y/.25,0.,1.)) if probe.y>-.25 else lerpf(1.07,.78,clampf((-probe.y-.25)/5.25,0.,1.))
-			if horizontal.length()<radius*width:blocked=true;break
-		if blocked:continue
 		if target.entry.is_empty():notice("seal")
 		else:target.entry.reaction=2.2
 		return true

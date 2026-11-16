@@ -140,10 +140,9 @@ func refresh_habitats(progressive=false):
 	if coast.is_empty():coast.assign(offshore)
 	if progressive:await rebuild_seabed_life(true)
 	else:rebuild_seabed_life()
-	tidepool.choose_coast(self)
 	if progressive:await land_life.refresh_habitat(true)
 	else:land_life.refresh_habitat()
-	if tidepool.visible:seabed_obstacles.append({"normal":tidepool.normal,"radius":1.42,"depth":0.})
+	tidepool.choose_coast(self)
 	var desired={"bird":mini(4,1+land_count/8),"fish":38 if land_count>=18 else 34,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
 	for kind in desired:
 		var count=0
@@ -474,7 +473,6 @@ func configure_whale(animal:Dictionary,progressive=false):
 			for i in range(32):
 				var normal=whale_direction(animal,i*TAU/32/WHALE_RATE)
 				if not deep_sea(normal,margin,minimum) or not clear_of_cave(normal,margin):safe=false;break
-				if tidepool.visible and normal.distance_to(tidepool.normal)*water_math.BASE_RADIUS<margin+1.5:safe=false;break
 			if safe:animal.route_valid=true;return
 
 func frame_at(point:Vector3,forward:Vector3)->Basis:

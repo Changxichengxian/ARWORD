@@ -31,6 +31,9 @@ func run():
 	var reloaded=IslandLearning.new();reloaded.accept_save(JSON.parse_string(JSON.stringify(game.learning.data)))
 	check(reloaded.data.black_hole,"central body preference survives save decoding")
 	await create_timer(.3).timeout;await capture("black-hole")
+	game.open_observatory(true)
+	check(not game.cosmos.observatory_active,"black hole stays locked until the observatory is built")
+	game.frontier.data.progress.mountain=game.frontier.chapter("mountain").need
 	game.open_observatory(true);await create_timer(1.15).timeout
 	await capture("black-hole-close")
 	check(game.cosmos.primary_close and game.cosmos.observatory_active,"the central body has an unobstructed inspection view")

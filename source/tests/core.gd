@@ -90,6 +90,11 @@ func run():
 	last_word.active_bank=[last_word.by_id.retain];last_word.introduce("retain",true)
 	check(last_word.next_word(1000).is_empty() and last_word.next_word(1000,[],true).id=="retain","word-only mode can run the last queued spot check without forcing a sentence exercise")
 	var f=IslandFrontier.new(IslandLearning.new())
+	var mountain=IslandFrontier.new(IslandLearning.new())
+	for id in ["plateau","hill","crystal"]:mountain.data.progress[id]=mountain.chapter(id).need
+	check(mountain.available("mountain") and mountain.unlock_hint("mountain").is_empty(),"observatory needs its construction dependencies without a reading or vocabulary count gate")
+	mountain.learning.data.practice_modes={"sentence":true}
+	check(mountain.available("mountain"),"changing practice preferences keeps the observatory available")
 	check(f.cells().size()==6 and f.available("grove") and f.available("quarry") and not f.available("sawmill"),"small starting shore and distant rocket berth have two expansion choices")
 	f.advance();check(f.cells().size()==6,"one recall shows progress without adding an entire biome")
 	f.advance();check(f.cells().size()==7,"two work actions create a visible new land tile")
@@ -163,7 +168,11 @@ func run():
 	for limb in ["ArmL","ArmR","LegL","LegR"]:
 		if not is_instance_valid(world.limbs.get(limb)):limbs_ok=false
 	check(limbs_ok,"simple hero has four independent animated limb pivots")
-	world.swing=.6;await create_timer(.12).timeout
+	# Put the driver into an actual stationary harvesting stroke. The old
+	# swing flag did not start work and could sample an unrelated resting pose.
+	if world.move_tween and world.move_tween.is_valid():world.move_tween.kill()
+	world.worker.work_left=6.;world.worker.waking=0.;world.worker.phase=0;world.worker.stroke_time=.7;world.worker.transport_suspended=false
+	world.worker.update(.12)
 	check(abs(world.limbs.ArmR.rotation.x)>.05,"harvesting animates the hero arm")
 	var test_node=Node3D.new();world.add_child(test_node);world.pop(test_node);await create_timer(.32).timeout
 	check(test_node.scale.x>1.0,"appearance animation overshoots for springiness")
