@@ -75,6 +75,8 @@ func run():
 		game.submit_word_answers()
 		check(game.review_feedback=="next" and game.current.option_words.size()==6 and not game.current.option_words.has(""),"reviewed multi-sense choices also reveal all six words: "+id)
 	game.continue_word_feedback();game.locked=false;game.review_feedback=""
+	set_word("tradition","audio");game.answer(game.current.correct);game.explore()
+	check(game.review_feedback.is_empty() and not game.locked,"closing a result releases it so another site can be chosen")
 	game.explore(true,false);game.set_user_zoom(3.2)
 	var zoom=game.camera.size;var tilt=game.inspection_tilt
 	var angle=rad_to_deg(asin((game.camera.position-Vector3.UP*IslandTerrain.RADIUS).normalized().y))

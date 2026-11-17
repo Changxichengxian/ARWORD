@@ -416,6 +416,7 @@ func stop_view_transition():
 	if camera_tween and camera_tween.is_valid():camera_tween.kill()
 func explore(wide=false,animate=true):
 	if exploring and not wide and not hud.card_open:return
+	if not review_feedback.is_empty():continue_word_feedback()
 	if wide:user_zoomed=false
 	exploring=true;hud.set_card_open(false,animate);hud.sites.hide();speech.stop()
 	frame_view(Vector3(0,4.2,0) if wide else Vector3(0,8.8,0),25.5 if wide else camera.size if user_zoomed else minf(29,world_zoom*1.12),animate)
