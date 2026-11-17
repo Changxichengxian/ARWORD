@@ -72,7 +72,8 @@ func run():
 		await process_frame
 		if game.startup.marks.has("world_reveal") and not captured.has("first_planet"):
 			captured.first_planet=true
-			check(not is_instance_valid(game.startup.sky) and game.world.visible and game.world.wildlife==null and game.world.avatar==null,"planet is visible before space, character and animal preparation finishes")
+			check(is_instance_valid(game.startup.sky) and game.world.visible and game.world.wildlife==null and game.world.avatar==null,"world is present behind the continuous sky before living things load")
+			check(game.camera.unproject_position(game.camera.global_basis.y*15.).y>root.size.y,"first world frame keeps the planet below the lower edge")
 			await snap("04-first-planet")
 		if game.startup.phase in ["wildlife_resources","wildlife"] and not captured.has("drag"):
 			captured.drag=true;await exercise_loading_drag()

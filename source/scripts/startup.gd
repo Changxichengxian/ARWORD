@@ -17,12 +17,13 @@ var last_tick=0
 const CAMERA_SECONDS=1.65
 var camera_elapsed=0.0
 var camera_running=false
+var sky_blend=0.0
 
 func mark(label:String):marks[label]=Time.get_ticks_msec()
 
 func start(owner_game):
 	game=owner_game
-	var layer=CanvasLayer.new();layer.layer=1;add_child(layer)
+	var layer=CanvasLayer.new();layer.layer=-11;add_child(layer)
 	sky=preload("res://scripts/startup_sky.gd").new();layer.add_child(sky)
 	set_phase("waiting");set_process(true)
 	mark("search_ready")
@@ -50,9 +51,9 @@ func assemble():
 	if game.art_preview:game.world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
 	game.stop_view_transition();pull_back(0.)
 	game.world.show();game.world.process_mode=Node.PROCESS_MODE_INHERIT
-	# Reveal on the first renderable frame. Space, audio and living things do
-	# not hold the planet behind the black canvas.
-	layer_free();set_phase("reveal")
+	# The world is already present below the frame. Only the camera reveals
+	# its horizon; removing a full-screen cover must never pop in the planet.
+	set_phase("reveal")
 	if DisplayServer.get_name()!="headless":await RenderingServer.frame_post_draw
 	else:await get_tree().process_frame
 	mark("world_reveal")
@@ -60,6 +61,7 @@ func assemble():
 	set_phase("space")
 	if not await game.startup_turn():return
 	game.cosmos=load("res://scripts/cosmos.gd").new();game.cosmos.name="Cosmos";game.add_child(game.cosmos);game.cosmos.setup(game)
+	game.cosmos.display.modulate.a=0.0
 	pull_back(camera_progress());mark("space_ready")
 	if not await game.startup_turn():return
 	game.setup_world_audio();mark("audio_ready")
@@ -152,6 +154,10 @@ func set_phase(value:String):
 
 func _process(dt):
 	advance_arrivals(dt)
+	if is_instance_valid(sky) and is_instance_valid(game.cosmos):
+		sky_blend=minf(1.,sky_blend+minf(dt,1./30.)/.45)
+		game.cosmos.display.modulate.a=smoothstep(0.,1.,sky_blend)
+		if sky_blend>=1.:layer_free()
 	if camera_running and not game.closing:
 		# A single shader upload must not consume the whole visible movement.
 		camera_elapsed=minf(CAMERA_SECONDS,camera_elapsed+minf(dt,1./30.))
@@ -179,8 +185,10 @@ func camera_progress()->float:
 func pull_back(value:float):
 	if game.closing:return
 	game.camera.size=lerpf(7.,25.5,value)
-	game.camera.position=Vector3(0,17,12).lerp(game.HOME_CAMERA,value)
-	game.camera_focus=Vector3(0,10.4,0).lerp(Vector3(0,4.2,0),value)
+	var view=game.get_viewport().get_visible_rect().size
+	var sky_focus=Vector3(0,IslandTerrain.RADIUS+8.+3.5*view.y/maxf(1.,view.x),0)
+	game.camera.position=game.HOME_CAMERA
+	game.camera_focus=sky_focus.lerp(Vector3(0,4.2,0),value)
 	game.camera.look_at(game.camera_focus);game.world_zoom=game.camera.size
 	if is_instance_valid(game.cosmos):
 		game.cosmos.space_camera.position=game.cosmos.CENTER*(.28*(1.-value))
@@ -188,7 +196,7 @@ func pull_back(value:float):
 		# the pullback, even though their physical distance would hide it.
 		game.cosmos.opening_pullback=value
 		game.cosmos.update_sky_camera()
-	if is_instance_valid(sky):sky.pullback=value;sky.reveal=smoothstep(.02,.42,value)
+	if is_instance_valid(sky):sky.pullback=value
 
 func prepare_arrivals():
 	var wildlife=game.world.wildlife

@@ -25,6 +25,7 @@ func _init():
 	data["lesson_schedule"]={}
 	data["word_turn"]=0
 	data["practice_modes"]={}
+	data["review_style"]="mixed"
 	data["black_hole"]=DEFAULT_BLACK_HOLE
 	data["sky_default_version"]=1
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
@@ -79,6 +80,7 @@ func accept_save(candidate)->bool:
 		if candidate.get(k) is int or candidate.get(k) is float:data[k]=maxi(0,int(candidate[k]))
 	var preferences=candidate.get("practice_modes",{})
 	data.practice_modes={}
+	if data.review_style not in ["mixed","audio","text","reverse"]:data.review_style="mixed"
 	if preferences is Dictionary:
 		for mode in CONTEXT_MODES:
 			if preferences.get(mode) is bool and preferences[mode]:data.practice_modes[mode]=true
@@ -166,6 +168,12 @@ func next_word(now:float,focus:Array=[],allow_early_spot_check=false)->Dictionar
 
 func needs_intro(id:String)->bool:
 	return not data.words.has(id) and not data.pending_help.has(id)
+
+func review_kind(id:String)->String:
+	if needs_intro(id):return "text"
+	if data.review_style!="mixed":return data.review_style
+	# Each word rotates through the three tasks without changing its due date.
+	return ["audio","text","reverse"][posmod(int(data.words.get(id,{}).get("seen",0))+id.hash(),3)]
 
 func introduce(id:String,already_known=false):
 	if not by_id.has(id) or not needs_intro(id):return

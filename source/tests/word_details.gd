@@ -15,7 +15,7 @@ func snap(label:String):
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(output.path_join(label+".png"))
 func set_word(word:String,intro=false):
-	game.hud.close();game.exploring=false;game.locked=false;game.help_visible=false;game.helped=false;game.mode="word";game.word_selected=[]
+	game.hud.close();game.exploring=false;game.locked=false;game.help_visible=false;game.helped=false;game.mode="word";game.word_selected=[];game.review_feedback=""
 	game.learning.data.listen=false;game.learning.data.speech=false
 	game.current=game.word_senses.prepare(game.learning.by_id[word]);game.order=range(game.current.options.size());game.order.shuffle()
 	if intro:game.learning.data.words.erase(word)
@@ -75,9 +75,9 @@ func run():
 		if word=="light":await snap("six-select-three")
 	set_word("bank");await settle();game.toggle_word_answer(0);game.toggle_word_answer(5)
 	var record=JSON.stringify(game.learning.data.words["bank"]);units=game.frontier.finished_units();game.submit_word_answers();await settle()
-	check(game.help_visible and game.helped and game.frontier.finished_units()==units,"wrong multi-select shows help without granting progress")
+	check(game.review_feedback=="retry" and game.helped and game.frontier.finished_units()==units,"wrong multi-select shows help without granting progress")
 	check(JSON.stringify(game.learning.data.words["bank"])==record,"wrong multi-select does not invent successful recall")
-	game.retry();await settle();check(game.word_selected.is_empty(),"retry clears all checked choices")
+	game.continue_word_feedback();await settle();check(game.word_selected.is_empty(),"retry clears all checked choices")
 	for index in game.current.correct_indices:game.toggle_word_answer(index)
 	game.submit_word_answers();var action_count=game.learning.data.actions;game.submit_word_answers()
 	check(game.locked and game.learning.data.words.bank.helped>0 and game.learning.data.actions==action_count,"assisted multi-select is recorded once and double submit is blocked")

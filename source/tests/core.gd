@@ -115,13 +115,15 @@ func run():
 	check(game.learning.data.actions==before+1,"double tap cannot collect twice")
 	check(game.world.effects.size()>=5 and not game.hud.overlay.visible,"recall moves actual 3D material without reward dialog")
 	await create_timer(1.45).timeout
+	game.continue_word_feedback()
 	before=game.learning.data.actions
 	while game.introducing():game.introduce_word(game.current.id)
 	game.answer((int(game.current.correct)+1)%4)
-	check(game.help_visible and game.learning.data.actions==before,"wrong meaning teaches without false collection")
-	var id=game.current.id;game.retry();game.answer(game.current.correct)
+	check(game.review_feedback=="retry" and game.learning.data.actions==before,"wrong meaning teaches without false collection")
+	var id=game.current.id;game.continue_word_feedback();game.answer(game.current.correct)
 	check(game.learning.data.actions==before+1 and game.learning.data.words[id].strength==0,"assisted recall builds without counting independent mastery")
 	await create_timer(1.45).timeout
+	game.continue_word_feedback()
 	check(game.mode=="read","two recalls lead directly into a reading task")
 	# Expanded wordbooks pace construction across several exercises; inspect the
 	# actual earned tile count, rather than assuming one exercise is one world step.

@@ -34,9 +34,10 @@ func learning_flow():
 	check(game.current.id==first and game.hud.answers.size()==4,"first recall follows another word")
 	var restored=IslandLearning.new();restored.accept_save(JSON.parse_string(JSON.stringify(m.data)))
 	check(restored.data.word_turn==2 and restored.next_word(1000.).id==first,"pending round survives JSON reload")
-	game.answer((int(game.current.correct)+1)%4);game.retry();game.answer(game.current.correct)
+	game.answer((int(game.current.correct)+1)%4);game.continue_word_feedback();game.answer(game.current.correct)
 	check(m.data.words[first].helped==1 and m.data.words[first].correct==0 and m.data.words[first].review_round==0,"a miss remains scheduled for independent recall")
 	await create_timer(1.5).timeout
+	game.continue_word_feedback()
 	check(game.current.id==second,"another card separates the retry")
 	var skips=m.data.dev_steps;var turn=m.data.word_turn
 	game.skip_learning();check(m.data.word_turn==turn and m.data.dev_steps==skips+1,"developer skip earns no recall")
@@ -109,10 +110,10 @@ func harbor_check():
 	w.desired_rotation=Quaternion(w.surface(landing).normalized(),Vector3.UP);w.globe.quaternion=w.desired_rotation
 	game.set_user_zoom(3.2)
 	var axis=game.camera.global_basis.z
-	check(absf(rad_to_deg(asin(axis.dot(Vector3.UP)))-35.)<.02,"closed maximum zoom looks across the ground at 35 degrees")
+	check(absf(rad_to_deg(asin(axis.dot(Vector3.UP)))-25.)<.02,"closed maximum zoom looks across the ground at 25 degrees")
 	await snap("pier-close")
 	game.resume_collect();await create_timer(.55).timeout
-	check(game.camera.position==game.HOME_CAMERA and game.inspection_tilt==0.,"opening a word card restores the original camera")
+	check(is_equal_approx(game.camera.size,3.2) and game.inspection_tilt==1.,"opening a word card preserves the chosen close camera")
 func run():
 	game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.45).timeout

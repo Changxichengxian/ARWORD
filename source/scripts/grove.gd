@@ -419,6 +419,7 @@ func setup(owner_node):
 func setup_base(owner_node):
 	game=owner_node
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color.BLACK;e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
+	if is_instance_valid(game.startup):e.background_mode=Environment.BG_CANVAS;e.background_canvas_max_layer=-10
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
 	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_split_1=.53;sun.directional_shadow_max_distance=49;sun.shadow_blur=1.35;sun.shadow_bias=.022;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)

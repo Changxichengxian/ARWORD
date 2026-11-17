@@ -1,4 +1,9 @@
-ARWORD · 0.14.12 竖屏小星球
+ARWORD · 0.14.13 竖屏小星球
+
+开场、镜头与单词复习（2026-11-17）
+真实星球在开场已位于画面下方，镜头运动中逐渐进入视野；星空之间平滑衔接，不以整颗显隐制造出场。手动放大最接近时俯角为 25°，点工地和收起词卡保留所选缩放与近景角度。
+复习默认混合听音选意、看词选意和看意选词；同一个词的复习方式轮换，词书页也可选固定题型。看意选词不提前朗读答案。作答后显示每项中文及其对应英文，等待新的轻点继续；错误选项揭示后轻点重试，仍记录为辅助回忆。多义词保留经复核的多选题。
+Windows 试玩：outputs/0.14.13/Windows/ARWORD.exe。安卓公开包：outputs/0.14.13/Public/ARWORD-0.14.13.apk，版本代码 46。增量附件从真实旧签名包生成并还原核对；公开包不含私人角色及声包。
 
 观星与岸边动物（2026-11-16）
 观星台沿正常建设流程解锁，取消额外的固定阅读、听力或学习累计次数门槛。「词书 → 练习内容」可一键选只背单词，或加入阅读、听力和组句，仍可逐项调整。
@@ -166,6 +171,7 @@ build.ps1 调用 android-plugin/prepare.ps1 注入更新插件并通过 Gradle �
 检查
 Godot --headless --editor --path . --import
 Godot --headless --path . --script tests/core.gd -- --qa
+Godot --path . --script tests/review_camera.gd -- --qa
 Godot --headless --path . --script tests/two_finger.gd -- --qa
 Godot --headless --path . --script tests/rest_terrain.gd -- --qa
 Godot --path . --script tests/rest_support.gd -- --qa

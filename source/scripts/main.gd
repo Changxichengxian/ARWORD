@@ -12,6 +12,7 @@ var pair_frame=Basis.IDENTITY
 var pair_rotation=Quaternion.IDENTITY
 var mouse_drag=false
 var world_zoom=10.0
+var user_zoomed=false
 var world
 var scene_ready=false
 var startup_last_input=-1000
@@ -24,14 +25,21 @@ var camera_focus=Vector3(0,10.0,0)
 var camera_tween:Tween
 var inspection_tilt=0.0
 const HOME_CAMERA=Vector3(0,24,21)
-const CLOSE_PITCH=35.0
+const CLOSE_PITCH=25.0
 var current:Dictionary={}
 var mission:Dictionary={}
 var dictionary={}
 var word_details
 var word_search_query=""
 var word_senses=preload("res://scripts/word_senses.gd").new()
+var word_review=preload("res://scripts/word_review.gd").new()
 var word_selected:Array=[]
+var review_feedback=""
+var review_pointer=-1
+var review_origin=Vector2.ZERO
+var review_moved=false
+var review_ready_at=0
+var task_serial=0
 var mode="word"
 var order:Array=[]
 var locked=false
@@ -160,12 +168,17 @@ func save_progress():
 func context_key()->String:return str(mission.id)+"_"+mode
 func next_task():
 	if closing:return
+	task_serial+=1;review_feedback="";review_pointer=-1
 	mode=frontier.mode();locked=false;help_visible=false;sentence_hint="";word_selected=[]
 	context_between_words=false
 	if mode=="word":
 		var extra_modes=learning.context_modes()
 		current=learning.next_word(Time.get_unix_time_from_system(),[],extra_modes.is_empty())
-		if not current.is_empty():current=word_senses.prepare(current)
+		if not current.is_empty():
+			current=word_senses.prepare(current)
+			if not learning.needs_intro(current.id):
+				if word_review.entries.is_empty():word_review.setup(learning.by_id)
+				current=word_review.prepare(current,learning.review_kind(current.id),learning.active_bank)
 		context_between_words=current.is_empty() and not extra_modes.is_empty()
 		if context_between_words:mode=extra_modes[int(learning.data.word_turn)%extra_modes.size()]
 	mission=curriculum.preview(learning) if mode=="word" else curriculum.next(learning,mode)
@@ -198,6 +211,7 @@ func select_site(site):
 	speech.stop();save_progress();hud.close();world.sync_buildings();next_task()
 	world.worker.visit(frontier.target(id))
 	if exploring:resume_collect()
+	else:world.recenter()
 
 func introducing()->bool:
 	return mode=="word" and not current.is_empty() and learning.needs_intro(current.id)
@@ -211,7 +225,7 @@ func answer(index:int):
 	if mode=="word" and (current.is_empty() or word_senses.is_multi(current)):return
 	var correct=int(current.correct) if mode=="word" else int(mission.correct if mode=="read" else mission.cue_correct)
 	if index!=correct:
-		if mode=="word":reveal()
+		if mode=="word":wrong_word_answer(index)
 		else:mark_context_help();hud.show_task()
 		return
 	finish_answer(index)
@@ -227,17 +241,62 @@ func toggle_word_answer(index:int):
 func submit_word_answers():
 	if locked or help_visible or hud.overlay.visible or exploring or introducing() or not word_senses.is_multi(current):return
 	if word_selected.size()!=current.correct_indices.size():return
-	if not word_senses.matches(current,word_selected):reveal();return
+	if not word_senses.matches(current,word_selected):wrong_word_answer(-1);return
 	finish_answer(-1)
 
 func finish_answer(index:int):
-	locked=true;speech.stop();hud.feedback(index)
+	locked=true;speech.stop()
+	if mode=="word":begin_word_feedback(index,true)
+	else:hud.feedback(index)
 	if mode=="word":learning.record(current.id,helped,Time.get_unix_time_from_system(),false,world.active_kind)
 	else:learning.finish_context(mode,mission.id,context_assisted,false)
 	var result=frontier.study_advance()
 	complete_action(result)
 	if mode=="word" and learning.data.words[current.id].get("mastered",false):
 		hud.toast(current.word+" · 已学会")
+
+func wrong_word_answer(index:int):
+	helped=true;learning.mark_help(current.id);save_progress();speech.stop()
+	begin_word_feedback(index,false)
+
+func begin_word_feedback(index:int,correct:bool):
+	locked=true;review_feedback="next" if correct else "retry"
+	review_pointer=-1;review_ready_at=Time.get_ticks_msec()+160
+	reset_world_input();hud.show_word_feedback(index,correct)
+
+func continue_word_feedback():
+	if review_feedback.is_empty():return
+	var action=review_feedback;review_feedback="";review_pointer=-1
+	if action=="retry":locked=false;retry()
+	else:next_task()
+
+func feedback_input(event)->bool:
+	if review_feedback.is_empty() or exploring or hud.overlay.visible:return false
+	if event is InputEventMouse and event.device==InputEvent.DEVICE_ID_EMULATION:return true
+	if event is InputEventScreenTouch or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT):
+		var pointer=event.index if event is InputEventScreenTouch else -2
+		if event.pressed:
+			if review_pointer!=-1:review_moved=true
+			elif Time.get_ticks_msec()>=review_ready_at:
+				review_pointer=pointer;review_origin=event.position;review_moved=false
+		elif pointer==review_pointer:
+			var proceed=not review_moved and event.position.distance_to(review_origin)<12
+			if event is InputEventScreenTouch:proceed=proceed and not event.canceled
+			review_pointer=-1
+			if proceed:continue_word_feedback()
+		return true
+	if event is InputEventScreenDrag or (event is InputEventMouseMotion and review_pointer==-2):
+		if event.position.distance_to(review_origin)>=12:review_moved=true
+		if review_moved and hud.card.get_global_rect().has_point(review_origin):hud.card_scroll.scroll_vertical-=roundi(event.relative.y)
+		return true
+	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		if event.pressed:hud.card_scroll.scroll_vertical+=-40 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 40
+		return true
+	return false
+
+func word_should_autoplay()->bool:
+	if current.get("review_kind","")=="reverse":return false
+	return current.get("review_kind","")=="audio" or learning.data.speech or (introducing() and learning.data.listen)
 func skip_learning():
 	if locked or exploring or hud.overlay.visible or not learning.data.dev_skip:return
 	locked=true;speech.stop();learning.data.dev_steps+=1
@@ -258,8 +317,10 @@ func complete_action(result:Dictionary,learned=true):
 		var id=str(frontier.data.active)
 		hud.toast("船已备好 · 可以去远方的群岛" if id=="shipyard" else "点天空中的天体，可以近看" if id=="mountain" else frontier.facility_title(id)+"做好了")
 	var duration=1.35 if result.complete else 1.15
+	if not review_feedback.is_empty():return
+	var completed_task=task_serial
 	get_tree().create_timer(duration).timeout.connect(func():
-		if is_inside_tree():next_task()
+		if is_inside_tree() and completed_task==task_serial:next_task()
 	)
 func mark_context_help():
 	context_assisted=true;learning.data.context_help[context_key()]=true;save_progress()
@@ -285,6 +346,7 @@ func bookmark(word=""):
 
 func speak_word():
 	if closing or current.is_empty() or exploring or hud.overlay.visible or not hud.card.visible:return
+	if current.get("review_kind","")=="reverse" and not help_visible and review_feedback.is_empty():return
 	play_speech(current.audio);hud.pulse_word()
 func word_audio(word:String)->String:return str(learning.by_id[word].audio) if learning.by_id.has(word) else "audio/lookup_"+word+".mp3"
 func speak_task(slow=false):
@@ -326,7 +388,7 @@ func sentence_reset():
 	sentence_used=[];sentence_chosen=[];sentence_hint="";hud.show_task()
 
 func zoom_tilt(zoom:float)->float:
-	return 1.-smoothstep(3.2,12.,zoom) if exploring else 0.
+	return 1.-smoothstep(3.2,12.,zoom) if exploring or user_zoomed else 0.
 
 func apply_framing(focus:Vector3,zoom:float,tilt:float):
 	camera_focus=focus;camera.size=zoom;inspection_tilt=tilt
@@ -338,8 +400,9 @@ func apply_framing(focus:Vector3,zoom:float,tilt:float):
 
 func set_user_zoom(zoom:float):
 	var size_new=clampf(zoom,3.2,29.)
+	user_zoomed=true
 	apply_framing(camera_focus,size_new,zoom_tilt(size_new))
-	if not exploring:world_zoom=size_new
+	world_zoom=size_new
 
 func frame_view(focus:Vector3,zoom:float,animate=true):
 	if camera_tween and camera_tween.is_valid():camera_tween.kill()
@@ -353,13 +416,16 @@ func stop_view_transition():
 	if camera_tween and camera_tween.is_valid():camera_tween.kill()
 func explore(wide=false,animate=true):
 	if exploring and not wide and not hud.card_open:return
+	if wide:user_zoomed=false
 	exploring=true;hud.set_card_open(false,animate);hud.sites.hide();speech.stop()
-	frame_view(Vector3(0,4.2,0) if wide else Vector3(0,8.8,0),25.5 if wide else minf(29,world_zoom*1.12),animate)
+	frame_view(Vector3(0,4.2,0) if wide else Vector3(0,8.8,0),25.5 if wide else camera.size if user_zoomed else minf(29,world_zoom*1.12),animate)
 func resume_collect():
+	stop_view_transition()
+	if user_zoomed:world_zoom=camera.size
 	exploring=false;hud.set_card_open(true);hud.sites.hide();frame_view(Vector3(0,10.0,0),world_zoom)
 	world.recenter()
 	if mode=="listen":speak_task()
-	elif mode=="word" and (learning.data.listen or learning.data.speech):speak_word()
+	elif mode=="word" and word_should_autoplay() and review_feedback.is_empty():speak_word()
 func recenter():world.recenter()
 func world_area(p:Vector2)->bool:
 	return hud.safe_rect.has_point(p) and p.y>hud.safe_rect.position.y+86 and p.y<hud.safe_rect.end.y-4 and (not hud.card.visible or not hud.card.get_global_rect().has_point(p))
@@ -473,6 +539,7 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion and mouse_drag:stop_view_transition();drag_distance+=event.relative.length();world.drag(event.relative)
 
 func _input(event):
+	if scene_ready and feedback_input(event):get_viewport().set_input_as_handled();return
 	if event is InputEventScreenTouch or event is InputEventScreenDrag or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT) or (event is InputEventMouseMotion and event.button_mask&MOUSE_BUTTON_MASK_LEFT):startup_last_input=Time.get_ticks_msec()
 	if not scene_ready:
 		if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
@@ -487,6 +554,7 @@ func _input(event):
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_ESCAPE,KEY_BACK]:back();get_viewport().set_input_as_handled()
 func _notification(what):
 	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT,NOTIFICATION_APPLICATION_PAUSED]:
+		review_pointer=-1
 		reset_observatory_input()
 		reset_world_input()
 	if what==NOTIFICATION_WM_CLOSE_REQUEST:request_exit()
@@ -682,7 +750,7 @@ func show_wordbooks():
 	var prefs=hud.row(box)
 	hud.button(prefs,"难度 · "+["基础","适中","进阶","挑战"][learning.data.band],func():learning.data.band=(learning.data.band+1)%4;learning.data.success_run=0;learning.data.miss_run=0;save_progress();show_wordbooks())
 	hud.button(prefs,"自动读词 · "+("开" if learning.data.speech else "关"),func():learning.data.speech=not learning.data.speech;save_progress();show_wordbooks())
-	hud.ghost(box,"回忆方式 · "+("听词" if learning.data.listen else "看词"),toggle_listen_preference)
+	hud.ghost(box,"复习题型 · "+{"mixed":"混合","audio":"听音选意","text":"看词选意","reverse":"看意选词"}.get(learning.data.review_style,"混合"),toggle_listen_preference)
 	var practice_count=learning.context_modes().size()
 	var contents="只背单词" if practice_count==0 else "单词 + %d 项" % practice_count
 	hud.button(box,"练习内容 · "+contents,show_practice_modes)
@@ -719,8 +787,14 @@ func toggle_practice_mode(kind:String):
 	save_progress();show_practice_modes()
 
 func toggle_listen_preference():
-	learning.data.listen=not learning.data.listen;save_progress()
+	if locked:return
+	var kinds=["mixed","audio","text","reverse"]
+	learning.data.review_style=kinds[(kinds.find(learning.data.review_style)+1)%kinds.size()];save_progress()
 	if scene_ready:
+		if mode=="word" and not current.is_empty() and not introducing():
+			if word_review.entries.is_empty():word_review.setup(learning.by_id)
+			current=word_review.prepare(word_senses.prepare(learning.by_id[current.id]),learning.review_kind(current.id),learning.active_bank)
+			order=range(current.options.size());order.shuffle();word_selected=[]
 		if help_visible:hud.show_help()
 		else:hud.show_task()
 	show_wordbooks()

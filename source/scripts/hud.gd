@@ -22,6 +22,7 @@ var answers:Array=[]
 var word_label:Button
 var word_submit:Button
 var word_selection_count:Label
+var word_help:Button
 var screen=""
 var word_tween:Tween
 var clock_label:Label
@@ -121,7 +122,7 @@ func clear_body():
 	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
 	card_scroll.scroll_vertical=0
 	for child in body.get_children():child.hide();child.queue_free()
-	answers.clear();word_label=null;word_submit=null;word_selection_count=null
+	answers.clear();word_label=null;word_submit=null;word_selection_count=null;word_help=null
 func layout_card(height:float):
 	card_height=height
 	position_card(card_shift)
@@ -261,14 +262,19 @@ func show_word():
 	if intro:
 		card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
 	layout_card((285 if multi else 225) if intro else (510 if multi else 365))
-	var listen=game.learning.data.listen and not intro
+	var kind=str(q.get("review_kind","text"))
+	var listen=kind=="audio" and not intro
+	var reverse=kind=="reverse" and not intro
 	var state=game.learning.data.words.get(q.id,{})
 	var title="新词" if intro else ("复习 "+str(int(state.get("review_round",0))+1)+"/3" if state.has("review_at") else "到期复习")
 	if state.has("spot_hits"):title="回忆"
-	var r=task_heading(title+(" · 听音" if listen else ""))
+	var r=task_heading(title+(" · "+{"audio":"听音选意","text":"看词选意","reverse":"看意选词"}[kind] if not intro else ""))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
-	word_label=word_button(body,"点一下，再听一遍" if listen else q.word,q.id);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
-	if not listen:
+	if reverse:
+		text(body,q.zh,25,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	else:
+		word_label=word_button(body,"点一下，再听一遍" if listen else q.word,q.id);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
+	if not listen and not reverse:
 		var width=game.font.get_string_size(q.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x
 		word_label.add_theme_font_size_override("font_size",clampi(int(34*minf(1.0,(size.x-80)/maxf(1,width))),19,34))
 	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
@@ -277,7 +283,7 @@ func show_word():
 		var actions=row(body)
 		button(actions,"记好了",game.introduce_word.bind(q.id),true)
 		button(actions,"学会",game.introduce_word.bind(q.id,true))
-		if not game.exploring and (game.learning.data.speech or game.learning.data.listen):game.call_deferred("speak_word")
+		if not game.exploring and game.word_should_autoplay():game.call_deferred("speak_word")
 		return
 	if multi:
 		word_selection_count=text(body,"",16,GREEN);word_selection_count.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
@@ -288,8 +294,31 @@ func show_word():
 	if multi:
 		word_submit=button(body,"确认",game.submit_word_answers,true,44);word_submit.name="WordSubmit"
 		update_word_selection()
-	spacer(body,5);divider(body);ghost(body,"想不起来？看提示",game.reveal,35)
-	if not game.exploring and (game.learning.data.listen or game.learning.data.speech):game.call_deferred("speak_word")
+	spacer(body,5);divider(body);word_help=ghost(body,"想不起来？看提示",game.reveal,35)
+	if not game.exploring and game.word_should_autoplay() and game.review_feedback.is_empty():game.call_deferred("speak_word")
+
+func show_word_feedback(selected:int,correct:bool):
+	if not game.current.has("option_words"):
+		if game.word_review.entries.is_empty():game.word_review.setup(game.learning.by_id)
+		game.current=game.word_review.prepare(game.current,str(game.current.get("review_kind","text")),game.learning.active_bank)
+	clear_body();show_word()
+	var q=game.current
+	layout_card(550 if game.word_senses.is_multi(q) else 435)
+	if is_instance_valid(word_label):word_label.text=q.word
+	if is_instance_valid(word_submit):word_submit.hide()
+	if is_instance_valid(word_selection_count):word_selection_count.hide()
+	if is_instance_valid(word_help):word_help.hide()
+	var expected:Array=q.get("correct_indices",[int(q.correct)])
+	for i in answers.size():
+		var index=game.order[i];var b=answers[i]
+		b.text=str(q.option_meanings[index])+"\n"+str(q.option_words[index])
+		b.custom_minimum_size.y=76;b.add_theme_font_size_override("font_size",17);b.disabled=true
+		b.add_theme_color_override("font_disabled_color",INK)
+		var style=b.get_theme_stylebox("disabled").duplicate()
+		if expected.has(index):style.bg_color=Color("B6DDAC")
+		elif index==selected or game.word_selected.has(index):style.bg_color=Color("F3C4B9")
+		b.add_theme_stylebox_override("disabled",style)
+	text(body,"轻点任意处，继续" if correct else "看看对应的单词 · 轻点任意处再试一次",16,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 func show_help():
 	clear_body();screen="help";layout_card(365);var q=game.current
 	var r=row(body);word_label=word_button(r,q.word,q.id,48);word_label.add_theme_font_size_override("font_size",30)
