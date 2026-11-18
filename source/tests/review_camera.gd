@@ -38,6 +38,28 @@ func run():
 	for seen in 3:
 		learning.data.words.tradition.seen=seen;modes.append(learning.review_kind("tradition"))
 	check(modes.has("audio") and modes.has("text") and modes.has("reverse"),"one reviewed word rotates through all three tasks")
+	check(not learning.data.spelling,"spelling is opt-in")
+	game.show_practice_modes();game.toggle_spelling();game.hud.close()
+	var scheduled=[]
+	for i in 4:
+		learning.data.words.tradition.seen=i
+		scheduled.append(learning.review_kind("tradition"))
+	var prefs=IslandLearning.new();prefs.accept_save(JSON.parse_string(JSON.stringify(learning.data)))
+	check(scheduled.count("spelling")==1 and prefs.data.spelling,"spelling is mixed in and the preference survives reload")
+	set_word("right","spelling")
+	check(game.hud.spelling_field!=null and game.hud.answers.is_empty() and game.current.options.is_empty(),"spelling a multi-sense word offers a text field without answer choices")
+	var work_before=learning.data.actions
+	game.hud.spelling_field.text_submitted.emit("  ")
+	check(not game.locked,"blank spelling cannot submit")
+	game.hud.spelling_field.text_submitted.emit("rite")
+	check(game.review_feedback=="retry" and game.hud.word_label.text=="right" and learning.data.actions==work_before,"incorrect spelling reveals the target and grants no work")
+	game.continue_word_feedback();game.hud.spelling_field.text_submitted.emit(" RIGHT ")
+	check(game.review_feedback=="next" and learning.data.words.right.helped==1 and learning.data.words.right.correct==0,"correcting spelling stays assisted")
+	game.continue_word_feedback();set_word("tradition","spelling")
+	game.hud.spelling_field.text_submitted.emit("Tradition")
+	game.submit_spelling("tradition")
+	check(learning.data.words.tradition.correct==1 and learning.data.actions==work_before+2,"independent spelling works once through Enter and accepts case")
+	game.continue_word_feedback();game.toggle_spelling();game.hud.close()
 	var restored=IslandLearning.new();restored.accept_save(JSON.parse_string(JSON.stringify(learning.data)))
 	check(restored.review_kind("tradition")==learning.review_kind("tradition"),"task rotation and learning records survive saving")
 	for kind in ["audio","text","reverse"]:

@@ -67,6 +67,7 @@ var ferry:Node3D
 var ferry_tween:Tween
 var ferry_walking=false
 var piers={}
+var landing_pier:Node3D
 var sea_routes
 var avatar_appearing=false
 var avatar:Node3D
@@ -118,13 +119,69 @@ func clear_local_avatar():
 	worker.rest_ground_ready=false;navigation_signature="";rebuild_navigation();worker.update_skin()
 func surface(p:Vector2)->Vector3:return terrain.point(p)
 func ground_point(p:Vector2)->Vector3:
+	var found=land_hit(p)
+	return found if found!=Vector3.ZERO else surface(p)
+
+func land_hit(p:Vector2)->Vector3:
 	var normal=surface(p).normalized();var found=Vector3.ZERO
 	for cell in ground_faces:
 		if IslandFrontier.point(cell).distance_squared_to(p)>IslandFrontier.HEX*IslandFrontier.HEX*1.1:continue
 		for face in ground_faces[cell]:
 			var hit=Geometry3D.ray_intersects_triangle(normal*30,-normal,face[0],face[1],face[2])
 			if hit is Vector3 and hit.length_squared()>found.length_squared():found=hit
-	return found if found.length_squared()>1.0 else surface(p)
+	return found
+
+# Follow each pile's own axis, including at the lip of a coastal hex.
+func pile_depth(top:Vector3,up:Vector3)->float:
+	var above=0.;var below=IslandWater.MAX_DEPTH+4.
+	for step in 13:
+		var d=(above+below)*.5
+		var point=top-up*d
+		var land_surface=land_hit(terrain.coordinates(point))
+		var floor_height=maxf(land_surface.length(),water.floor_radius(point.normalized()))
+		if point.length()>floor_height:above=d
+		else:below=d
+	return below+.045
+
+func fit_cottage_deck():
+	var house:Node3D=buildings[0]
+	var deck:Node3D=additions[0][0]
+	var anchor:Node3D=deck.get_parent()
+	# Doorstep and deck edges from the editable models, at their finished scales.
+	var doorstep=house.transform*(Vector3(0,.10,-1.08)*.8)
+	var up=house.position.normalized()
+	var forward=(-house.basis.z).slide(up).normalized()
+	anchor.basis=Basis.looking_at(forward,up)
+	anchor.position=doorstep+forward*(.65*.64-.012)-up*(.20*.64)
+	fit_timber_piles(deck,"Post*",.60,.64)
+
+func fit_landing_pier():
+	var anchor:Node3D=landing_pier.get_parent()
+	var center=IslandFrontier.point(Vector2i(0,1))
+	var direction=Vector2(.62,.95).normalized()
+	var shore=ground_point(center+direction*1.05)
+	var up=shore.normalized()
+	var forward=(surface(center+direction*2.)-shore).slide(up).normalized()
+	anchor.basis=Basis.looking_at(forward,up)
+	anchor.position=shore+forward*(.87*.75)
+	# Keep the eleven boards level and clear of both the bank and the high swell.
+	var lift=maxf(0,IslandWater.BASE_RADIUS+.04-shore.length())
+	for z in [-.85,0.,.85]:
+		for x in [-.4,.4]:
+			var point=anchor.transform*(Vector3(x,0,z)*.75)
+			var ground=land_hit(terrain.coordinates(point))
+			if ground!=Vector3.ZERO:lift=maxf(lift,(ground-point).dot(up))
+	anchor.position+=up*(lift+.025-.11*.75)
+	fit_timber_piles(landing_pier,"Piling*",.31,.75)
+
+func fit_timber_piles(visual:Node3D,pattern:String,top_height:float,model_scale:float):
+	var frame=visual.get_parent().transform*Transform3D(Basis.IDENTITY.scaled(Vector3.ONE*model_scale),Vector3.ZERO)
+	for post in visual.find_children(pattern,"MeshInstance3D",true,false):
+		var box:AABB=post.get_aabb()
+		var top=Vector3(post.position.x,top_height,post.position.z)
+		var length=pile_depth(frame*top,frame.basis.y.normalized())/model_scale
+		post.scale.y=length/box.size.y
+		post.position.y=top.y-box.end.y*post.scale.y
 func place(node:Node3D,p:Vector2,angle=0.0):
 	node.position=ground_point(p) if node==builder else surface(p);node.basis=terrain.surface_basis(p);node.rotate_object_local(Vector3.UP,angle)
 # Register stationary scenery separately from the moving actor and the hex meshes.
@@ -270,7 +327,8 @@ func update_selection_ring():
 	var center=game.frontier.target(id)
 	var origin=ground_point(center)
 	var up=origin.normalized()
-	var top=0.0
+	# The water mesh is transparent and can reach .04 above its mean radius.
+	var top=maxf(0.,IslandWater.BASE_RADIUS+.04-origin.length())
 	for i in 64:
 		var sample_point=ground_point(center+Vector2.from_angle(TAU*i/64.)*radius)
 		top=maxf(top,(sample_point-origin).dot(up))
@@ -505,7 +563,7 @@ func setup_base(owner_node):
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place_static(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
 	fixed_obstacles.append(pod_anchor)
-	var pier=Node3D.new();globe.add_child(pier);place_static(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
+	var pier=Node3D.new();globe.add_child(pier);landing_pier=model("pier",pier);landing_pier.scale=Vector3.ONE*.75
 	for id in IslandFrontier.BUILD_IDS:marker(id)
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
 	marker("rocket")
@@ -513,13 +571,19 @@ func setup_base(owner_node):
 func setup_buildings(progressive=false):
 	for i in range(3):
 		if progressive and not await game.startup_checkpoint():return
-		var a=Node3D.new();globe.add_child(a);place_static(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),PI)
+		var a=Node3D.new();globe.add_child(a)
+		# The cottage opens onto the level approach between the shore and the uphill hex.
+		place_static(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),deg_to_rad(120) if i==0 else PI)
 		var b=model(["cottage","windmill","garden"][i],a);b.scale=Vector3.ONE*.8;buildings.append(a);register_foundation(b)
 		if i==1:rotor=b.find_child("Rotor",true,false)
 		var extra=[]
 		for j in range(3):
-			var point=Node3D.new();globe.add_child(point);var offset=[Vector2(-1.1,.25),Vector2(.9,.65),Vector2(0,-1.15)][j];place_static(point,game.frontier.target(IslandFrontier.BUILD_IDS[i])+offset,PI+.4*j)
-			var added=model(ADDITIONS[i][j],point);added.scale=Vector3.ONE*.64;added.visible=false;extra.append(added);register_foundation(added)
+			var point=Node3D.new();globe.add_child(point)
+			var offset=[Vector2(-1.1,.25),Vector2(.9,.65),Vector2(0,-1.15)][j]
+			var added=model(ADDITIONS[i][j],point);added.scale=Vector3.ONE*.64;added.visible=false;extra.append(added)
+			if i!=0 or j!=0:
+				place_static(point,game.frontier.target(IslandFrontier.BUILD_IDS[i])+offset,PI+.4*j)
+				register_foundation(added)
 		additions.append(extra)
 	for id in FACILITY_MODELS:
 		if progressive and not await game.startup_checkpoint():return
@@ -553,6 +617,7 @@ func setup_buildings(progressive=false):
 
 func setup_actor():
 	ring_material=StandardMaterial3D.new();ring_material.albedo_color=Color.WHITE;ring_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;ring_material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;ring_material.cull_mode=BaseMaterial3D.CULL_DISABLED
+	ring_material.render_priority=water.foam_material.render_priority+1
 	make_selection_ring()
 	builder=Node3D.new();globe.add_child(builder);place(builder,Vector2(.2,.9));actor=model("builder",builder);actor.scale=Vector3.ONE*IslandWorker.ACTOR_SCALE
 	# Keep the authored rig as an invisible motion driver, never as a character.
@@ -579,7 +644,10 @@ func sync_buildings(animate=true):
 		fit_static_sites()
 	batch_static_decor()
 	# Build once with the actual land, before piers and sea routes query depths.
-	if water and water.land_count!=land.size():water.rebuild()
+	if water and water.land_count!=land.size():
+		water.rebuild()
+		fit_cottage_deck()
+		fit_landing_pier()
 	for id in markers:
 		var ready=game.frontier.available(id);var old_ready=markers[id].get_meta("available",ready)
 		markers[id].set_meta("available",ready)
@@ -829,8 +897,9 @@ func build_gangway(chart:int,landing:Vector2,normal:Vector3):
 	top.append(deck);pier.set_meta("walkway",top)
 	for side in [-1,1]:
 		for d in [.47,1.08]:
-			var post=deck+landward.normalized()*d+frame.x*side*.27-normal*.31
-			timbers[0].append(Transform3D(frame*Basis.from_scale(Vector3(.085,1.,.085)),post))
+			var post_top=deck+landward.normalized()*d+frame.x*side*.27+normal*.19
+			var depth=pile_depth(post_top,normal)
+			timbers[0].append(Transform3D(frame*Basis.from_scale(Vector3(.085,depth,.085)),post_top-normal*depth*.5))
 	for i in 2:
 		var mm=MultiMesh.new();mm.transform_format=MultiMesh.TRANSFORM_3D
 		mm.mesh=BoxMesh.new();mm.instance_count=timbers[i].size()

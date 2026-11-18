@@ -42,6 +42,10 @@ func alternative(q:Dictionary,bank:Array,used:Array,seed:int)->Dictionary:
 func prepare(word:Dictionary,kind:String,bank:Array)->Dictionary:
 	var q=word.duplicate(true)
 	q["review_kind"]=kind;q["option_words"]=[];q["option_meanings"]=[]
+	if kind=="spelling":
+		q.erase("correct_indices")
+		q.options=[]
+		return q
 	if kind=="reverse":
 		q.erase("correct_indices");q.correct=0;q.options=[q.word]
 		q.option_words=[q.word];q.option_meanings=[q.zh]

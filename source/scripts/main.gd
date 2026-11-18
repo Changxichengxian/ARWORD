@@ -39,6 +39,7 @@ var review_pointer=-1
 var review_origin=Vector2.ZERO
 var review_moved=false
 var review_ready_at=0
+var next_review_at=INF
 var task_serial=0
 var mode="word"
 var order:Array=[]
@@ -169,6 +170,7 @@ func context_key()->String:return str(mission.id)+"_"+mode
 func next_task():
 	if closing:return
 	task_serial+=1;review_feedback="";review_pointer=-1
+	next_review_at=INF
 	mode=frontier.mode();locked=false;help_visible=false;sentence_hint="";word_selected=[]
 	context_between_words=false
 	if mode=="word":
@@ -181,6 +183,7 @@ func next_task():
 				current=word_review.prepare(current,learning.review_kind(current.id),learning.active_bank)
 		context_between_words=current.is_empty() and not extra_modes.is_empty()
 		if context_between_words:mode=extra_modes[int(learning.data.word_turn)%extra_modes.size()]
+		elif current.is_empty():next_review_at=learning.next_review_time()
 	mission=curriculum.preview(learning) if mode=="word" else curriculum.next(learning,mode)
 	context_assisted=learning.data.context_help.get(context_key(),false)
 	short_reading=curriculum.short_first(learning,mission)
@@ -222,13 +225,22 @@ func introduce_word(id:String,already_known=false):
 
 func answer(index:int):
 	if locked or help_visible or hud.overlay.visible or exploring or introducing():return
-	if mode=="word" and (current.is_empty() or word_senses.is_multi(current)):return
+	if mode=="word" and (current.is_empty() or current.get("review_kind")=="spelling" or word_senses.is_multi(current)):return
 	var correct=int(current.correct) if mode=="word" else int(mission.correct if mode=="read" else mission.cue_correct)
 	if index!=correct:
 		if mode=="word":wrong_word_answer(index)
 		else:mark_context_help();hud.show_task()
 		return
 	finish_answer(index)
+
+func submit_spelling(value:String):
+	if mode!="word" or current.get("review_kind")!="spelling" or locked or help_visible or hud.overlay.visible or exploring:return
+	var typed=value.strip_edges().to_lower().replace("’","'").replace("‘","'")
+	if typed.is_empty():return
+	hud.dismiss_spelling_keyboard()
+	var expected=str(current.word).to_lower().replace("’","'").replace("‘","'")
+	if typed==expected:finish_answer(-1)
+	else:wrong_word_answer(-1)
 
 func toggle_word_answer(index:int):
 	if locked or help_visible or hud.overlay.visible or exploring or introducing() or not word_senses.is_multi(current):return
@@ -246,10 +258,12 @@ func submit_word_answers():
 
 func finish_answer(index:int):
 	locked=true;speech.stop()
-	if mode=="word":begin_word_feedback(index,true)
-	else:hud.feedback(index)
-	if mode=="word":learning.record(current.id,helped,Time.get_unix_time_from_system(),false,world.active_kind)
-	else:learning.finish_context(mode,mission.id,context_assisted,false)
+	if mode=="word":
+		learning.record(current.id,helped,Time.get_unix_time_from_system(),false,world.active_kind)
+		begin_word_feedback(index,true)
+	else:
+		hud.feedback(index)
+		learning.finish_context(mode,mission.id,context_assisted,false)
 	var result=frontier.study_advance()
 	complete_action(result)
 	if mode=="word" and learning.data.words[current.id].get("mastered",false):
@@ -294,7 +308,7 @@ func feedback_input(event)->bool:
 
 func word_should_autoplay()->bool:
 	if current.get("review_kind","")=="reverse":return false
-	return current.get("review_kind","")=="audio" or learning.data.speech or (introducing() and learning.data.listen)
+	return current.get("review_kind","") in ["audio","spelling"] or learning.data.speech or (introducing() and learning.data.listen)
 func skip_learning():
 	if locked or exploring or hud.overlay.visible or not learning.data.dev_skip:return
 	locked=true;speech.stop();learning.data.dev_steps+=1
@@ -415,6 +429,7 @@ func stop_view_transition():
 func explore(wide=false,animate=true):
 	if exploring and not wide and not hud.card_open:return
 	if not review_feedback.is_empty():continue_word_feedback()
+	hud.dismiss_spelling_keyboard()
 	if wide:user_zoomed=false
 	exploring=true;hud.set_card_open(false,animate);hud.sites.hide();speech.stop()
 	frame_view(Vector3(0,4.2,0) if wide else Vector3(0,8.8,0),25.5 if wide else camera.size if user_zoomed else minf(29,world_zoom*1.12),animate)
@@ -592,6 +607,7 @@ func back():
 	elif hud.screen in ["book_select","practice_modes","journal","bookmarks"]:show_wordbooks()
 	elif hud.screen=="voices":settings()
 	elif hud.overlay.visible:hide_word_keyboard();hud.close()
+	elif is_instance_valid(hud.spelling_field) and hud.spelling_field.has_focus():hud.dismiss_spelling_keyboard()
 	elif not exploring:explore()
 	else:settings()
 
@@ -734,7 +750,7 @@ func show_wordbooks():
 	var stats=hud.row(box)
 	var learned=0
 	for state in learning.data.words.values():
-		if state.get("mastered",false) or int(state.get("review_round",0))>=3:learned+=1
+		if state.get("mastered",false):learned+=1
 	var read_count=0
 	for key in learning.data.contexts:
 		if str(key).ends_with("_read") and int(learning.data.contexts[key].get("completed",0))>0:read_count+=1
@@ -761,6 +777,7 @@ func show_practice_modes():
 	hud.button(box,"只背单词",set_practice_mix.bind(false),count==0)
 	hud.button(box,"单词 + 阅读、听力、组句",set_practice_mix.bind(true),count==3)
 	hud.text(box,"单词始终开启",17,IslandHUD.GREEN)
+	hud.button(box,"单词拼写 · "+("开" if learning.data.spelling else "关"),toggle_spelling,learning.data.spelling)
 	for item in [["read","阅读"],["listen","听力"],["sentence","组句"]]:
 		var enabled=learning.data.practice_modes.get(item[0],false)
 		hud.button(box,item[1]+" · "+("开" if enabled else "关"),toggle_practice_mode.bind(item[0]),enabled)
@@ -789,6 +806,17 @@ func toggle_listen_preference():
 	if locked:return
 	var kinds=["mixed","audio","text","reverse"]
 	learning.data.review_style=kinds[(kinds.find(learning.data.review_style)+1)%kinds.size()];save_progress()
+	refresh_word_review()
+	show_wordbooks()
+
+func toggle_spelling():
+	if locked:return
+	learning.data.spelling=not learning.data.spelling
+	save_progress()
+	refresh_word_review()
+	show_practice_modes()
+
+func refresh_word_review():
 	if scene_ready:
 		if mode=="word" and not current.is_empty() and not introducing():
 			if word_review.entries.is_empty():word_review.setup(learning.by_id)
@@ -796,7 +824,6 @@ func toggle_listen_preference():
 			order=range(current.options.size());order.shuffle();word_selected=[]
 		if help_visible:hud.show_help()
 		else:hud.show_task()
-	show_wordbooks()
 
 func select_book_panel():
 	var box=hud.modal("换词书");hud.screen="book_select"

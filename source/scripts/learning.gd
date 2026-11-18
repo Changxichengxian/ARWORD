@@ -5,6 +5,8 @@ const NEEDS=[8,12,16]
 const EXTRA=36
 const MODES=["word","word","read","word","listen","sentence"]
 const CONTEXT_MODES=["read","listen","sentence"]
+const REVIEW_DAYS=[1,3,7]
+const DAY_SECONDS=86400
 const PROJECTS=["木屋","风车","花园"]
 const DEFAULT_BLACK_HOLE=true
 const SPACE_DEFAULTS={"nebula":1.45,"color":1.3,"band":1.15,"stars":1.1,"drift":1.0}
@@ -26,6 +28,7 @@ func _init():
 	data["word_turn"]=0
 	data["practice_modes"]={}
 	data["review_style"]="mixed"
+	data["spelling"]=false
 	data["black_hole"]=DEFAULT_BLACK_HOLE
 	data["sky_default_version"]=1
 	data["book_id"]=wordbooks.default_id();data["study_plan"]={};data["pending_help"]={}
@@ -126,7 +129,7 @@ func next_word(now:float,focus:Array=[],allow_early_spot_check=false)->Dictionar
 				if allow_early_spot_check and at<waiting_turn:waiting=q;waiting_turn=at
 				continue
 			if at<first_turn:queued=q;first_turn=at
-		elif not s.is_empty() and float(s.get("due",0))<=now and not recent.has(q.id):
+		elif not s.is_empty() and float(s.get("due",0))<=now and (s.has("day_round") or not recent.has(q.id)):
 			var at=float(s.get("due",0))
 			if due.is_empty() or at<due_time:due=q;due_time=at
 		elif s.is_empty() and absi(int(q.band)-data.band)==0:fresh.append(q)
@@ -155,7 +158,7 @@ func next_word(now:float,focus:Array=[],allow_early_spot_check=false)->Dictionar
 		var varied:Dictionary={};var varied_time=INF
 		for q in active_bank:
 			var s=data.words.get(q.id,{})
-			if s.get("mastered",false) or s.has("spot_hits"):continue
+			if s.get("mastered",false) or s.has("spot_hits") or float(s.get("due",0))>now:continue
 			var at=float(s.get("due",0))
 			if earliest.is_empty() or at<earliest_time:earliest=q;earliest_time=at
 			if not recent.has(q.id) and (varied.is_empty() or at<varied_time):varied=q;varied_time=at
@@ -169,8 +172,18 @@ func next_word(now:float,focus:Array=[],allow_early_spot_check=false)->Dictionar
 func needs_intro(id:String)->bool:
 	return not data.words.has(id) and not data.pending_help.has(id)
 
+func next_review_time()->float:
+	var earliest=INF
+	for q in active_bank:
+		var state=data.words.get(q.id,{})
+		if not state.get("mastered",false) and not state.has("review_at"):
+			earliest=minf(earliest,float(state.get("due",INF)))
+	return earliest
+
 func review_kind(id:String)->String:
 	if needs_intro(id):return "text"
+	var seen=int(data.words.get(id,{}).get("seen",0))
+	if data.spelling and posmod(seen+id.hash(),4)==0:return "spelling"
 	if data.review_style!="mixed":return data.review_style
 	# Each word rotates through the three tasks without changing its due date.
 	return ["audio","text","reverse"][posmod(int(data.words.get(id,{}).get("seen",0))+id.hash(),3)]
@@ -191,6 +204,7 @@ func mark_help(id:String):data.help_pending=id;data.pending_help[id]=true
 func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)->Dictionary:
 	var s=data.words.get(id,{"seen":0,"correct":0,"strength":0,"last":0,"due":0,"helped":0})
 	helped=helped or data.help_pending==id or data.pending_help.has(id)
+	var next_due=float(s.due)
 	var spaced=now-float(s.last)>=120
 	s.seen+=1
 	if helped:
@@ -203,21 +217,33 @@ func record(id:String,helped:bool,now:float,advance_build=true,harvest_kind=-1)-
 		s.due=maxf(float(s.due),now+gaps[int(s.strength)]);data.miss_run=0;data.success_run+=1
 		if data.success_run>=4:data.band=mini(3,data.band+1);data.success_run=0
 	data.word_turn+=1
-	if s.has("spot_hits"):
+	if s.has("day_round"):
+		var round_done=int(s.day_round)
+		if helped:
+			s.due=now+DAY_SECONDS
+		elif now>=next_due:
+			round_done+=1
+			s.day_round=round_done
+			if round_done>=REVIEW_DAYS.size():s.mastered=true
+			else:s.due=now+REVIEW_DAYS[round_done]*DAY_SECONDS
+		else:s.due=next_due
+	elif s.has("spot_hits"):
 		s.spot_hits=0 if helped else int(s.spot_hits)+1
 		if s.spot_hits==2:
-			s.mastered=true
+			s.day_round=0
+			s.due=now+REVIEW_DAYS[0]*DAY_SECONDS
 			s.erase("spot_hits")
 			s.erase("review_at")
 		else:s.review_at=data.word_turn+(rng.randi_range(2,4) if helped else rng.randi_range(10,18))
-	elif s.has("review_round") or helped:
+	elif s.has("review_round") or helped or not s.get("mastered",false):
 		s.erase("mastered")
 		var round_done=0 if helped else mini(3,int(s.get("review_round",0))+1)
 		s.review_round=round_done
 		if round_done<3:s.review_at=data.word_turn+[1,2,5][round_done]
 		else:
 			s.erase("review_at")
-			s.due=maxf(float(s.due),now+86400.)
+			s.day_round=0
+			s.due=now+REVIEW_DAYS[0]*DAY_SECONDS
 	s.last=now;data.words[id]=s;data.pending_help.erase(id)
 	if data.help_pending==id:data.help_pending=""
 	data.harvested[harvest_kind if harvest_kind>=0 else (1 if data.active==1 else 0)]+=1

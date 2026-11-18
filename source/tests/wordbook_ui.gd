@@ -43,7 +43,7 @@ func run():
 	game.select_site(game.frontier.data.active);await create_timer(.4).timeout
 	var viewport_rect=game.hud.card_scroll.get_global_rect();var shadows_ok=not game.hud.card_scroll.get_v_scroll_bar().visible
 	for b in game.hud.body.find_children("*","Button",true,false):
-		if b.text in ["学会","记好了"] or b.tooltip_text=="收藏":
+		if b.text in ["认识","记好了"] or b.tooltip_text=="收藏":
 			shadows_ok=shadows_ok and viewport_rect.encloses(b.get_global_rect().grow_individual(4,1,4,7))
 	check(shadows_ok,"intro actions and star leave space inside the clip for their entire shadows");await snap("intro")
 	var entries=game.learning.wordbooks.entries.values();var candidates=[]

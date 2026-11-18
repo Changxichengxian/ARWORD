@@ -36,6 +36,19 @@ func inspect_world(game):
 			minimum=minf(minimum,height);maximum=maxf(maximum,absf(vertex.y))
 	check(minimum>.07 and maximum<.001,"the entire dashed ring floats above the slopes in a single tangent plane")
 	check(world.cursor.get_child_count()==1 and not world.ring_material.no_depth_test,"one selection ring keeps normal depth occlusion")
+	check(world.ring_material.render_priority>world.water.material.render_priority and world.ring_material.render_priority>world.water.foam_material.render_priority,"sea and foam draw before the selected ring")
+	var deck=world.additions[0][0]
+	var house=world.buildings[0]
+	var sill=house.to_global(Vector3(0,.10,-1.08)*.8)
+	check(deck.to_global(Vector3(0,.20,.65)).distance_to(sill)<.025 and deck.global_basis.x.normalized().dot(house.global_basis.x.normalized())>.98,"the cottage boardwalk meets the doorstep squarely")
+	for item in [[deck,"Post*"],[world.landing_pier,"Piling*"]]:
+		var posts=item[0].find_children(item[1],"MeshInstance3D",true,false)
+		var grounded=posts.size()==4
+		for post in posts:
+			var bottom=world.globe.to_local(post.to_global(Vector3.UP*post.get_aabb().position.y))
+			var radius=maxf(world.land_hit(world.terrain.coordinates(bottom)).length(),world.water.floor_radius(bottom.normalized()))
+			grounded=grounded and bottom.length()<=radius and radius-bottom.length()<.12
+		check(grounded,"all four timber piles enter their actual support surface: "+str(item[1]))
 func run():
 	var game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.7).timeout

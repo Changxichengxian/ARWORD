@@ -47,10 +47,10 @@ func check_selection():
 	for word in learning.active_bank:future[word.id]={"due":500}
 	future.early.due=200;future.later.due=300
 	word_state(learning,future);learning.recent=["early"]
-	check(learning.next_word(100).id=="later","fallback chooses earliest due time outside recent words")
+	check(learning.next_word(100).is_empty() and learning.next_review_time()==200,"waiting words expose their due time without offering early practice")
 	word_state(learning,future)
 	for word in learning.active_bank:learning.recent.append(word.id)
-	check(learning.next_word(100).id=="early","fallback can reuse a recent word when all candidates are recent")
+	check(learning.next_word(250).id=="early","fallback can reuse a recent word once it is due")
 	var excluded={}
 	for word in learning.active_bank:excluded[word.id]={"mastered":true}
 	excluded.early={"spot_hits":1,"review_at":9}

@@ -37,7 +37,7 @@ def mesh(name,verts,faces,m,parent=None):
 def export(name):
     if ONLY and name not in ONLY.split(','):return
     # Small static props share one vertex-colored mesh instead of one draw per petal/branch.
-    if name in {'oak','coast_garden','cypress','lantern','pier','cliff_rocks','reeds','driftwood'}:
+    if name in {'oak','coast_garden','cypress','lantern','cliff_rocks','reeds','driftwood'}:
         bpy.ops.object.select_all(action='DESELECT')
         parts=[o for o in bpy.context.scene.objects if o.type=='MESH']
         for part in parts:part.select_set(True)

@@ -43,7 +43,7 @@ func run():
 			game.order=range(game.current.options.size());hud.show_task()
 			await inspect_card("intro-"+id)
 			game.learning.introduce(id)
-			for kind in ["text","audio","reverse"]:
+			for kind in ["text","audio","reverse","spelling"]:
 				game.current=game.word_review.prepare(game.word_senses.prepare(game.learning.by_id[id]),kind,game.learning.active_bank)
 				game.order=range(game.current.options.size());hud.show_task()
 				await inspect_card("normal" if kind=="text" else kind)

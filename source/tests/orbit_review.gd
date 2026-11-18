@@ -24,7 +24,7 @@ func learning_flow():
 	var buttons=game.hud.body.find_children("*","Button",true,false)
 	var known_button:Button
 	for button in buttons:
-		if button.text=="学会":known_button=button
+		if button.text=="认识":known_button=button
 	check(known_button!=null and not game.hud.card_scroll.get_v_scroll_bar().visible and game.hud.card.get_global_rect().encloses(known_button.get_global_rect()),"intro offers the known path and shows the full button without scrolling")
 	await snap("introduction")
 	game.introduce_word(first);var second=game.current.id
@@ -67,8 +67,25 @@ func learning_flow():
 		reloaded.data.word_turn=int(reloaded.data.words[first].review_at)
 		check(reloaded.next_word(3000.).id==first,"pending spot check returns")
 		reloaded.record(first,false,3000.,false)
-	check(reloaded.data.words[first].mastered and reloaded.next_word(1e12).is_empty(),"two independent checks retire the word even after tomorrow or when the book is complete")
+	check(not reloaded.data.words[first].get("mastered",false) and reloaded.next_word(3001.,[],true).is_empty(),"a familiar word waits until tomorrow even in a one-word book")
+	check_day_reviews(reloaded,first,3000.)
+	restored.active_bank=[restored.by_id[first]]
+	check_day_reviews(restored,first,1000.)
 	await create_timer(1.5).timeout
+
+func check_day_reviews(m:IslandLearning,id:String,now:float):
+	for stage in IslandLearning.REVIEW_DAYS.size():
+		now+=IslandLearning.REVIEW_DAYS[stage]*IslandLearning.DAY_SECONDS
+		check(m.next_review_time()==now and m.next_word(now-1,[],true).is_empty(),"no early recall at stage "+str(stage))
+		check(m.next_word(now).get("id")==id,"overdue word returns even when it was the last word practiced")
+		var restored=IslandLearning.new();restored.accept_save(JSON.parse_string(JSON.stringify(m.data)))
+		restored.active_bank=[restored.by_id[id]];m=restored
+		if stage==1:
+			m.mark_help(id);m.record(id,false,now,false)
+			check(m.data.words[id].day_round==stage and not m.data.words[id].get("mastered",false),"a hinted cross-day review earns no stage")
+			now+=IslandLearning.DAY_SECONDS
+		m.record(id,false,now,false)
+	check(m.data.words[id].mastered and m.next_word(now+100*IslandLearning.DAY_SECONDS).is_empty(),"all three independent cross-day reviews retire the word")
 func harbor_check():
 	game.frontier.finish_for_development(true);var w=game.world;w.sync_buildings(false)
 	check(w.piers.size()==5 and not w.transporting,"five docks exist before the first voyage")
@@ -139,4 +156,5 @@ func run():
 	game.close_observatory()
 	check(not mat.get_shader_parameter("close_view") and not sky.space_environment.glow_enabled,"leaving inspection restores the lighter daily sky")
 	print("ORBIT_REVIEW_RESULT ",count," checks / ",failures," failed")
-	game.closing=true;game.queue_free();await process_frame;quit(int(failures>0))
+	game.closing=true;game.ambience.shutdown();game.speech.stop();game.speech.stream=null
+	game.queue_free();await process_frame;await process_frame;quit(int(failures>0))

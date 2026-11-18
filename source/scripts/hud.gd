@@ -27,6 +27,7 @@ var word_inventory:Button
 var word_footer:HBoxContainer
 var word_grid:GridContainer
 var word_help:Button
+var spelling_field:LineEdit
 var screen=""
 var word_tween:Tween
 var clock_label:Label
@@ -123,6 +124,7 @@ func set_world_ready(ready:bool):
 	clock_label.visible=ready and game.exploring and not overlay.visible
 
 func clear_body():
+	dismiss_spelling_keyboard();spelling_field=null
 	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
 	body.add_theme_constant_override("separation",6)
 	var panel=card.get_theme_stylebox("panel");panel.content_margin_left=16;panel.content_margin_right=16
@@ -137,8 +139,12 @@ func position_card(shift:float):
 	var height=minf(card_height,maxf(1,safe_rect.size.y-98))
 	if card_scroll.vertical_scroll_mode==ScrollContainer.SCROLL_MODE_DISABLED:
 		height=maxf(height,body.get_parent().get_combined_minimum_size().y+card.get_theme_stylebox("panel").get_minimum_size().y)
-	card.offset_bottom=-20+shift
-	card.offset_top=-20+shift-height
+	var bottom=-20+shift
+	if OS.has_feature("android") and is_instance_valid(spelling_field) and spelling_field.has_focus():
+		var keyboard=DisplayServer.virtual_keyboard_get_height()*get_viewport_rect().size.y/maxf(1,DisplayServer.window_get_size().y)
+		bottom-=maxf(0,keyboard-(get_viewport_rect().size.y-safe_rect.end.y))
+	card.offset_bottom=bottom
+	card.offset_top=bottom-height
 	sites.offset_top=card.offset_top-60;sites.offset_bottom=card.offset_top-10
 func set_card_open(open:bool,animate=true):
 	if card_tween and card_tween.is_valid():card_tween.kill()
@@ -264,7 +270,9 @@ func show_word():
 	if q.is_empty():
 		layout_card(205)
 		task_heading("单词")
-		text(body,"本书的单词已学会",22).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		var waiting=is_finite(game.next_review_at)
+		text(body,"今天的单词已练完" if waiting else "本书的单词已学会",22).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		if waiting:text(body,next_review_label(game.next_review_at),17,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		button(body,"换词书",game.select_book_panel,true)
 		return
 	var intro=game.introducing()
@@ -274,10 +282,32 @@ func show_word():
 	var listen=kind=="audio" and not intro
 	var reverse=kind=="reverse" and not intro
 	var state=game.learning.data.words.get(q.id,{})
-	var title="新词" if intro else ("复习 "+str(int(state.get("review_round",0))+1)+"/3" if state.has("review_at") else "到期复习")
+	var title="新词" if intro else ("回忆 "+str(mini(3,int(state.get("review_round",0))+1))+"/3" if state.has("review_at") else "到期复习")
 	if state.has("spot_hits"):title="回忆"
-	var r=task_heading(title+(" · "+{"audio":"听音选意","text":"看词选意","reverse":"看意选词"}[kind] if not intro else ""))
+	if state.has("day_round"):title="跨天复习 %d/%d" % [mini(int(state.day_round)+1,IslandLearning.REVIEW_DAYS.size()),IslandLearning.REVIEW_DAYS.size()]
+	if game.review_feedback=="next":title="答对了"
+	var r=task_heading(title+(" · "+{"audio":"听音选意","text":"看词选意","reverse":"看意选词","spelling":"听音拼写"}[kind] if not intro else ""))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
+	if kind=="spelling":
+		icon(r,"headphones",game.speak_word,"再听一遍")
+		word_meaning=text(body,q.zh,25,GREEN);word_meaning.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		spelling_field=LineEdit.new();spelling_field.name="WordSpelling";spelling_field.placeholder_text="输入英文单词"
+		spelling_field.custom_minimum_size.y=44;spelling_field.max_length=128;body.add_child(spelling_field)
+		var field_style=skin(Color("FFFCF3"),12);field_style.shadow_size=0
+		field_style.set_border_width_all(1);field_style.border_color=Color("A2B9AB")
+		spelling_field.add_theme_stylebox_override("normal",field_style)
+		var focused=field_style.duplicate();focused.set_border_width_all(2);focused.border_color=GREEN
+		spelling_field.add_theme_stylebox_override("focus",focused)
+		spelling_field.add_theme_color_override("font_color",INK);spelling_field.add_theme_color_override("caret_color",GREEN)
+		spelling_field.add_theme_color_override("font_placeholder_color",Color("63776D"))
+		spelling_field.text_submitted.connect(game.submit_spelling)
+		var actions=row(body)
+		ghost(actions,"看提示",game.reveal)
+		var submit=button(actions,"确认",func():game.submit_spelling(spelling_field.text),true,44);submit.disabled=true
+		spelling_field.text_changed.connect(func(value):submit.disabled=value.strip_edges().is_empty())
+		fit_word_controls()
+		if not game.exploring:game.call_deferred("speak_word")
+		return
 	if reverse:
 		word_meaning=text(body,q.zh,25,GREEN);word_meaning.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	else:
@@ -291,7 +321,7 @@ func show_word():
 		text(body,"\n".join(q.sense_labels) if multi else q.options[int(q.correct)],21 if multi else 23).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		var actions=row(body)
 		button(actions,"记好了",game.introduce_word.bind(q.id),true)
-		button(actions,"学会",game.introduce_word.bind(q.id,true))
+		button(actions,"认识",game.introduce_word.bind(q.id,true))
 		fit_word_controls()
 		if not game.exploring and game.word_should_autoplay():game.call_deferred("speak_word")
 		return
@@ -312,6 +342,18 @@ func show_word():
 	if not game.exploring and game.word_should_autoplay() and game.review_feedback.is_empty():game.call_deferred("speak_word")
 
 func show_word_feedback(selected:int,correct:bool):
+	var state=game.learning.data.words.get(game.current.id,{})
+	var cue="轻点任意处，继续" if correct else "看看对应的单词 · 轻点任意处再试一次"
+	if correct and state.has("day_round") and not state.get("mastered",false):cue=next_review_label(state.due)+" · 轻点继续"
+	if game.current.get("review_kind")=="spelling":
+		clear_body();card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;layout_card(1)
+		task_heading("拼对了" if correct else "再记一次拼写")
+		word_label=word_button(body,game.current.word,game.current.id)
+		word_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		text(body,game.current.zh,19,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		text(body,cue if correct else "轻点任意处，再拼一次",16,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		fit_word_controls()
+		return
 	if not game.current.has("option_words"):
 		if game.word_review.entries.is_empty():game.word_review.setup(game.learning.by_id)
 		game.current=game.word_review.prepare(game.current,str(game.current.get("review_kind","text")),game.learning.active_bank)
@@ -330,8 +372,18 @@ func show_word_feedback(selected:int,correct:bool):
 		if expected.has(index):style.bg_color=Color("B6DDAC")
 		elif index==selected or game.word_selected.has(index):style.bg_color=Color("F3C4B9")
 		b.add_theme_stylebox_override("disabled",style)
-	text(body,"轻点任意处，继续" if correct else "看看对应的单词 · 轻点任意处再试一次",16,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	text(body,cue,16,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	fit_word_controls()
+
+func next_review_label(due:float)->String:
+	var local=Time.get_datetime_dict_from_unix_time(int(due)+int(Time.get_time_zone_from_system().bias)*60)
+	return "下次复习 %d 月 %d 日 %02d:%02d" % [local.month,local.day,local.hour,local.minute]
+
+func dismiss_spelling_keyboard():
+	if is_instance_valid(spelling_field) and spelling_field.has_focus():
+		spelling_field.release_focus()
+		game.hide_word_keyboard()
+		position_card(card_shift)
 
 func fit_word_controls():
 	if not is_instance_valid(card_scroll) or card_scroll.vertical_scroll_mode!=ScrollContainer.SCROLL_MODE_DISABLED:return
@@ -426,6 +478,7 @@ func pulse_word():
 	word_label.pivot_offset=word_label.size*.5;word_label.scale=Vector2.ONE
 	word_tween=create_tween();word_tween.tween_property(word_label,"scale",Vector2.ONE*(1.+minf(.035,8./maxf(1,word_label.size.x))),.10);word_tween.tween_property(word_label,"scale",Vector2.ONE,.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 func modal(title:String,bottom=false,dim=true)->VBoxContainer:
+	dismiss_spelling_keyboard()
 	for child in overlay.get_children():child.hide();child.queue_free()
 	overlay.color.a=.66 if dim else 0.0;overlay.show()
 	var center=MarginContainer.new() if bottom else CenterContainer.new()
@@ -470,10 +523,12 @@ func _process(dt):
 		if layout_timer<=0.:
 			layout_timer=.35;refresh_safe_area()
 			if screen=="search" and overlay.visible:fit_modal()
+			if is_instance_valid(spelling_field) and card.visible:position_card(card_shift)
 	toast_timer=maxf(0,toast_timer-dt);toast_label.modulate.a=minf(1,toast_timer)
 	update_world_progress()
 	clock_label.visible=game.scene_ready and game.exploring and not overlay.visible
 	clock_label.modulate.a=1.0-card.modulate.a if card.visible else 1.0
 	var second=int(Time.get_unix_time_from_system())
+	if game.scene_ready and not game.locked and not overlay.visible and second>=game.next_review_at:game.next_task()
 	if clock_label.visible and second!=clock_second:
 		clock_second=second;var now=Time.get_datetime_dict_from_system();clock_label.text="%02d:%02d" % [now.hour,now.minute]
