@@ -15,8 +15,11 @@ func setup(owner_game):
 	game=owner_game
 	player=AudioStreamPlayer.new();add_child(player);player.volume_db=-11
 	if not DirAccess.dir_exists_absolute(MUSIC_DIR):return
+	# A source project may still have an import sidecar after a track was
+	# dragged out in Explorer. Exports expose the imported resource names.
+	var packed=FileAccess.file_exists("res://project.binary")
 	for file in ResourceLoader.list_directory(MUSIC_DIR):
-		if file.get_extension().to_lower() in ["ogg","mp3","wav"]:tracks.append(file)
+		if file.get_extension().to_lower() in ["ogg","mp3","wav"] and (packed or FileAccess.file_exists(MUSIC_DIR+file)):tracks.append(file)
 	if tracks.is_empty():return
 	tracks.shuffle()
 	var history:Array=game.learning.data.music_openers
