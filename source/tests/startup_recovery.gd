@@ -34,7 +34,7 @@ func run():
 	game.lookup("tradition")
 	check(game.spoken.size()==1,"failed world does not block word pronunciation")
 	check(words==JSON.stringify(game.learning.data.words) and units==game.frontier.finished_units(),"failure recovery does not invent learning or construction progress")
-	check(game.startup.sky.stars.size()==315,"opening contains three times as many stars")
+	check(game.startup.sky.display.texture==game.startup.sky.viewport.get_texture(),"the persistent star field remains available when world loading fails")
 	print("STARTUP_RECOVERY_RESULT ",failures," failed")
 	await game.request_exit()
 	if failures:quit(1)

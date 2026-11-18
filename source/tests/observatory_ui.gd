@@ -54,9 +54,11 @@ func run():
 	game.hud.close();game.explore(true,false)
 	var history=JSON.stringify(game.learning.data)
 	var opening=load("res://scripts/startup.gd").new();opening.game=game
-	opening.pull_back(0.);var close_fov=cosmos.star_material.get_shader_parameter("field_of_view")
+	opening.pull_back(0.);cosmos.set_opening_view(0.)
+	var close_fov=cosmos.star_material.get_shader_parameter("field_of_view")
 	await snapshot("opening-close")
-	opening.pull_back(1.);var far_fov=cosmos.star_material.get_shader_parameter("field_of_view")
+	opening.pull_back(1.);cosmos.set_opening_view(1.)
+	var far_fov=cosmos.star_material.get_shader_parameter("field_of_view")
 	check(close_fov<far_fov and opening.CAMERA_SECONDS>=1.5,"opening pullback gives the star field visible parallax at a gentler pace")
 	opening.free();await snapshot("daily-sky")
 	var overview=cosmos.space_camera.transform

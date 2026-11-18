@@ -118,6 +118,9 @@ func _ready():
 		call_deferred("initialize_avatar")
 
 func setup_camera():
+	var e=Environment.new();e.background_mode=Environment.BG_CANVAS;e.background_canvas_max_layer=-10
+	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
+	var env=WorldEnvironment.new();env.environment=e;add_child(env)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=HOME_CAMERA;camera.look_at(Vector3(0,10.0,0));camera.current=true
 
 func setup_world_audio():
@@ -882,9 +885,6 @@ func rewind_building(all_sites:bool):
 	var old=world
 	world=load("res://scripts/grove.gd").new();remove_child(old);old.queue_free()
 	add_child(world);world.setup(self)
-	for node in world.get_children():
-		if node is WorldEnvironment:
-			node.environment.background_mode=Environment.BG_CANVAS;node.environment.background_canvas_max_layer=-10
 	world.wildlife=load("res://scripts/wildlife.gd").new();world.add_child(world.wildlife);world.wildlife.setup(world)
 	if not apply_fixed_character("deepseek",false):call_deferred("initialize_avatar")
 	world_zoom=10;next_task();explore(true,false);hud.sync_goal()

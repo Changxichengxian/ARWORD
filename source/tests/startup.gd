@@ -21,7 +21,7 @@ func tap(button:Button):
 		var event=InputEventMouseButton.new();event.position=at;event.global_position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=down;root.push_input(event,true)
 	await settle()
 func exercise_loading_drag():
-	var point=Vector2(root.size.x*.55,root.size.y*.65)
+	var point=root.get_visible_rect().size*Vector2(.55,.65)
 	var press=InputEventScreenTouch.new();press.index=0;press.position=point;press.pressed=true;root.push_input(press,true)
 	await process_frame
 	var phase=game.startup.phase;var pending=game.startup.pending.size();var before=game.world.globe.quaternion
@@ -39,6 +39,7 @@ func run():
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--visual-out="):output=arg.trim_prefix("--visual-out=")
 	game=load("res://main.tscn").instantiate();game.set_script(load("res://tests/word_details_game.gd"));root.add_child(game)
+	var first_sky=game.startup.sky
 	check(game.startup!=null and game.world==null and not game.scene_ready,"search exists before the world is assembled")
 	check(not game.hud.search_button.disabled and not game.hud.books_button.disabled and not game.hud.settings_button.disabled,"all three toolbar entries are available during startup")
 	await snap("01-first-stars")
@@ -95,6 +96,7 @@ func run():
 	check(game.startup.marks.has("animals_ready"),"startup completes")
 	if not game.startup.marks.has("animals_ready"):quit(1);return
 	var marks=game.startup.marks
+	check(game.cosmos==first_sky and game.cosmos.display.is_visible_in_tree(),"daily play keeps the opening sky and its canvas alive")
 	check(marks.first_draw<=marks.world_reveal and marks.world_ready<=marks.person_start and marks.person_ready<=marks.animals_start,"order is stars, world, character, then animals")
 	check(min_zoom<12 and max_zoom>=25.4,"camera pulls back from the close planet to the whole scene")
 	check(marks.world_reveal<marks.space_ready and marks.world_reveal<marks.phase_wildlife_resources and marks.world_reveal<marks.person_start,"space, animal loading and character loading never delay the first visible planet")

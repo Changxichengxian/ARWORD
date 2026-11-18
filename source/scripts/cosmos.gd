@@ -20,13 +20,15 @@ var cloud_regions:Array=[]
 var bodies:Array=[]
 var sun:Node3D
 var black_hole:MeshInstance3D
+var debris:MultiMeshInstance3D
+var debris_orbits:Array=[]
 var solar_surface:MeshInstance3D
 var clock=0.0
 var nebula_clock=0.0
 var sky_seed=0
 var settings=DEFAULT_SETTINGS.duplicate()
 var base_fov=44.0
-var opening_pullback=1.0
+var opening_time=1.0
 var overview_transform=Transform3D.IDENTITY
 var overview_fov=44.0
 var shooting_star:MeshInstance3D
@@ -42,6 +44,10 @@ var observation_zoom=1.0
 var observation_blend=0.0
 
 func setup(owner_game):
+	setup_backdrop(owner_game)
+	populate()
+
+func setup_backdrop(owner_game):
 	game=owner_game
 	viewport=SubViewport.new();viewport.name="SolarSystemView";viewport.own_world_3d=true;viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS;viewport.msaa_3d=Viewport.MSAA_DISABLED if OS.has_feature("android") else Viewport.MSAA_4X;add_child(viewport)
 	space=Node3D.new();viewport.add_child(space)
@@ -51,13 +57,25 @@ func setup(owner_game):
 	atmosphere.glow_blend_mode=Environment.GLOW_BLEND_MODE_ADDITIVE
 	atmosphere.background_mode=Environment.BG_CANVAS;atmosphere.background_canvas_max_layer=-20;atmosphere.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;atmosphere.ambient_light_color=Color("718FA9");atmosphere.ambient_light_energy=.28
 	star_material=ShaderMaterial.new();star_material.shader=preload("res://assets/cosmos_sky.gdshader")
-	make_cloud_regions()
 	randomize_sky()
 	apply_settings(game.learning.data.get("space_settings",{}))
 	var sky_canvas=CanvasLayer.new();sky_canvas.layer=-20;viewport.add_child(sky_canvas)
 	var sky_field=ColorRect.new();sky_field.mouse_filter=Control.MOUSE_FILTER_IGNORE;sky_field.material=star_material;sky_canvas.add_child(sky_field);sky_field.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	space_camera=Camera3D.new();space_camera.fov=base_fov;space_camera.near=.1;space_camera.far=280;space_camera.current=true;space.add_child(space_camera)
-	var light=DirectionalLight3D.new();space.add_child(light);light.rotation_degrees=Vector3(-22,-35,-12);light.light_color=Color("FFE5B5");light.light_energy=1.25
+	canvas=CanvasLayer.new();canvas.name="SolarBackground";canvas.layer=-10;add_child(canvas)
+	display=TextureRect.new();display.texture=viewport.get_texture();display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;display.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;display.stretch_mode=TextureRect.STRETCH_SCALE;display.mouse_filter=Control.MOUSE_FILTER_IGNORE;canvas.add_child(display);display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	resize();get_viewport().size_changed.connect(resize);update_sky_camera()
+
+func set_opening_view(progress:float):
+	opening_time=clampf(progress,0.,1.)
+	var remaining=1.-smoothstep(0.,1.,opening_time)
+	space_camera.rotation.x=deg_to_rad(-38.)*remaining
+	space_camera.fov=base_fov*(1.-.12*remaining)
+	update_sky_camera()
+
+func populate():
+	make_cloud_regions();arrange_cloud_regions()
+	var light=DirectionalLight3D.new();space.add_child(light);light.rotation_degrees=Vector3(-22,-35,-12);light.light_color=Color("FFE5B5");light.light_energy=1.25;light.light_cull_mask=1
 	sun=Node3D.new();space.add_child(sun);sun.position=CENTER
 	solar_surface=sphere(sun,1.48,Color("FFD783"),28,14);var solar_material=ShaderMaterial.new();solar_material.shader=preload("res://assets/cosmos_sun.gdshader");solar_surface.material_override=solar_material
 	glow(sun,8.0,Color(1,.46,.12,.22));glow(sun,4.6,Color(1,.76,.30,.36))
@@ -67,8 +85,8 @@ func setup(owner_game):
 	black_hole.mesh=volume
 	black_hole.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var accretion=ShaderMaterial.new();accretion.shader=preload("res://assets/accretion_disk.gdshader");black_hole.material_override=accretion
-	accretion.set_shader_parameter("null_orbits",preload("res://assets/cosmos/null_orbits.png"))
-	accretion.set_shader_parameter("orbital_gas",preload("res://assets/cosmos/orbital_gas.png"))
+	accretion.set_shader_parameter("null_orbits",load("res://assets/cosmos/null_orbits.png"))
+	accretion.set_shader_parameter("orbital_gas",load("res://assets/cosmos/orbital_gas.png"))
 	var sight=(-CENTER).normalized()
 	var up=Vector3.UP.slide(sight).normalized()
 	var disk_axis=(up*cos(.06)+sight*sin(.06)).rotated(sight,.205)
@@ -79,15 +97,42 @@ func setup(owner_game):
 	add_body("ember",26.0,-1.05,.0031,.72,Color("292334"),Color("EAAA64"),2)
 	add_body("garden",8.0,-2.25,.0081,.67,Color("153D4E"),Color("76A78D"),3)
 	add_meteor()
-	canvas=CanvasLayer.new();canvas.name="SolarBackground";canvas.layer=-10;add_child(canvas)
-	display=TextureRect.new();display.texture=viewport.get_texture();display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;display.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;display.stretch_mode=TextureRect.STRETCH_SCALE;display.mouse_filter=Control.MOUSE_FILTER_IGNORE;canvas.add_child(display);display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for child in game.world.get_children():
-		if child is WorldEnvironment:
-			child.environment.background_mode=Environment.BG_CANVAS;child.environment.background_canvas_max_layer=-10
-	resize();get_viewport().size_changed.connect(resize)
 	advance(0)
 func set_black_hole(enabled:bool):
 	sun.visible=not enabled;black_hole.visible=enabled
+	if observatory_active:update_observation_quality()
+
+func make_debris():
+	var rock=load("res://assets/models/basalt_ore.glb").instantiate()
+	var surfaces=rock.find_children("*","MeshInstance3D",true,false)
+	var instances=MultiMesh.new();instances.transform_format=MultiMesh.TRANSFORM_3D
+	instances.mesh=surfaces[0].mesh if not surfaces.is_empty() else rock.mesh
+	rock.free()
+	var basalt=StandardMaterial3D.new();basalt.albedo_color=Color("584B44");basalt.roughness=.89
+	debris=MultiMeshInstance3D.new();debris.name="OrbitingRocks";debris.layers=2
+	debris.material_override=basalt;debris.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	black_hole.add_child(debris);debris.multimesh=instances;instances.instance_count=108
+	var rng=RandomNumberGenerator.new();rng.seed=837641
+	for i in instances.instance_count:
+		var radius=rng.randf_range(11.35,14.8)
+		var size=lerpf(.014,.125,pow(rng.randf(),3.))
+		var shape=Vector3(size*rng.randf_range(.72,1.36),size*rng.randf_range(.54,.93),size)
+		var plane=Basis(Vector3.UP,rng.randf_range(-PI,PI))*Basis(Vector3.RIGHT,rng.randf_range(-.26,.26))
+		debris_orbits.append({"plane":plane,"phase":rng.randf_range(-PI,PI),"radius":radius,"speed":.20*pow(12./radius,1.5),"spin":rng.randf_range(-1.,1.),"shape":shape})
+	for i in 4:
+		var angle=i*TAU/4.
+		var light=OmniLight3D.new();light.light_cull_mask=2;light.light_color=Color("FFCF9E")
+		light.light_energy=2.8;light.omni_range=20.;light.omni_attenuation=1.
+		debris.add_child(light);light.position=Vector3(cos(angle),0.,sin(angle))*3.8
+	move_debris()
+
+func move_debris():
+	for i in debris_orbits.size():
+		var orbit=debris_orbits[i]
+		var angle=orbit.phase+clock*orbit.speed
+		var position=orbit.plane*Vector3(cos(angle),0.,sin(angle))*orbit.radius
+		var rotation=orbit.plane*Basis(Vector3(.63,.74,.24).normalized(),orbit.phase+clock*orbit.spin)
+		debris.multimesh.set_instance_transform(i,Transform3D(rotation.scaled_local(orbit.shape),position))
 
 func set_sky_seed(value:int):
 	sky_seed=posmod(value,1048576);nebula_clock=0.0
@@ -160,6 +205,7 @@ func valid_observation(index:int,body_index:int=-1)->bool:
 func enter_observatory(index:int=0,primary:bool=false,body_index:int=-1)->bool:
 	if not game.frontier.done("mountain") or not is_instance_valid(space_camera) or not valid_observation(index,body_index):return false
 	if not observatory_active:
+		if opening_time<1.:set_opening_view(1.)
 		overview_transform=space_camera.transform;overview_fov=space_camera.fov
 	observatory_active=true;canvas.layer=4
 	select_observation_target(index)
@@ -178,12 +224,18 @@ func select_observation_target(index:int)->bool:
 func rotate_observation(delta:Vector2):
 	if not observatory_active:return
 	delta=delta.rotated(-observation_roll)
-	observation_yaw=clampf(observation_yaw-delta.x*.003,-.48,.48)
-	observation_pitch=clampf(observation_pitch+delta.y*.0025,-.28,.28)
+	if primary_close and black_hole.visible:
+		observation_yaw=wrapf(observation_yaw-delta.x*.003,-PI,PI)
+		observation_pitch=clampf(observation_pitch+delta.y*.0025,-1.55,1.43)
+	else:
+		observation_yaw=clampf(observation_yaw-delta.x*.003,-.48,.48)
+		observation_pitch=clampf(observation_pitch+delta.y*.0025,-.28,.28)
 func zoom_observation(factor:float):
 	if observatory_active and is_finite(factor):observation_zoom=clampf(observation_zoom*factor,.68 if primary_close else .53,2.5 if primary_close else 1.72)
 func update_observation_quality():
 	var close_disk=observatory_active and primary_close and black_hole.visible
+	if close_disk and not is_instance_valid(debris):make_debris()
+	if is_instance_valid(debris):debris.visible=close_disk
 	space_environment.glow_enabled=close_disk
 	black_hole.material_override.set_shader_parameter("close_view",close_disk)
 	for body in bodies:body.orbit.visible=not primary_close
@@ -195,8 +247,7 @@ func update_observation_quality():
 func update_sky_camera():
 	if not is_instance_valid(space_camera):return
 	star_material.set_shader_parameter("sky_basis",space_camera.global_basis)
-	var parallax=lerpf(.76,1.,opening_pullback) if not observatory_active else 1.
-	star_material.set_shader_parameter("field_of_view",deg_to_rad(space_camera.fov)*parallax)
+	star_material.set_shader_parameter("field_of_view",deg_to_rad(space_camera.fov))
 func advance_observation(dt:float):
 	if observatory_active:
 		observation_blend=minf(1,observation_blend+dt*1.35)
@@ -209,13 +260,24 @@ func advance_observation(dt:float):
 			target=body.orbit.position
 			distance=body.size*(9.5 if body.id=="ring" else 6.5)*observation_zoom
 		var toward_camera=(-target).normalized()
-		var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
-		space_camera.position=space_camera.position.lerp(target+offset,1-exp(-dt*5.5))
-		var framing=Vector3.ZERO
+		var weight=1.-exp(-dt*5.5)
 		if primary_close and black_hole.visible:
-			var across=Vector3.UP.cross(offset.normalized()).normalized()
-			framing=-across*.56*observation_zoom
-		space_camera.look_at(target+framing);space_camera.fov=base_fov
+			var axis=black_hole.basis.y
+			var meridian=toward_camera.slide(axis).normalized()
+			var current=space_camera.position-target
+			var heading=meridian.signed_angle_to(current.slide(axis).normalized(),axis)
+			var azimuth=lerp_angle(heading,observation_yaw,weight)
+			var elevation=lerpf(asin(clampf(current.normalized().dot(axis),-1.,1.)),observation_pitch+asin(toward_camera.dot(axis)),weight)
+			var radial=meridian.rotated(axis,azimuth)
+			var sight=radial*cos(elevation)+axis*sin(elevation)
+			space_camera.position=target+sight*lerpf(current.length(),distance,weight)
+			space_camera.look_at(target,axis*cos(elevation)-radial*sin(elevation))
+			space_camera.rotate_object_local(Vector3.BACK,-.205)
+		else:
+			var offset=toward_camera.rotated(Vector3.UP,observation_yaw).rotated(Vector3.RIGHT,observation_pitch)*distance
+			space_camera.position=space_camera.position.lerp(target+offset,weight)
+			space_camera.look_at(target)
+		space_camera.fov=base_fov
 		space_camera.rotate_object_local(Vector3.BACK,observation_roll)
 	for region in cloud_regions:
 		region.node.look_at(space_camera.global_position,Vector3.UP)
@@ -268,10 +330,13 @@ func add_meteor():
 	shooting_star=MeshInstance3D.new();var mesh=QuadMesh.new();mesh.size=Vector2(2.5,.035);shooting_star.mesh=mesh;var material=StandardMaterial3D.new();material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED;material.albedo_color=Color(.64,.83,1,.0);material.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA;shooting_star.material_override=material;space.add_child(shooting_star)
 func advance(dt:float):
 	clock+=dt;meteor_clock+=dt
-	if black_hole.visible:black_hole.material_override.set_shader_parameter("flow_time",clock)
 	nebula_clock+=dt*settings.drift
 	star_material.set_shader_parameter("drift",nebula_clock)
 	star_material.set_shader_parameter("twinkle_time",clock)
+	if not is_instance_valid(black_hole):return
+	if opening_time<1. and not observatory_active:set_opening_view(opening_time+minf(dt,1./30.)/1.65)
+	if black_hole.visible:black_hole.material_override.set_shader_parameter("flow_time",clock)
+	if is_instance_valid(debris) and debris.is_visible_in_tree():move_debris()
 	for i in range(cloud_regions.size()):
 		var region=cloud_regions[i];var offset=Vector3(sin(nebula_clock*.011+i)-sin(float(i)),sin(nebula_clock*.008+i*.7)-sin(i*.7),0)*.45
 		region.node.position=region.center+offset;region.material.set_shader_parameter("cloud_center",region.node.position);region.material.set_shader_parameter("drift",nebula_clock)
@@ -290,7 +355,7 @@ func advance(dt:float):
 var sky_frame_time=0.
 func _process(dt):
 	if not is_instance_valid(viewport):return
-	var opening=is_instance_valid(game.startup) and game.startup.camera_running
+	var opening=opening_time<1.
 	if OS.has_feature("android") and not observatory_active and not opening:
 		sky_frame_time+=dt
 		if sky_frame_time<.05:return

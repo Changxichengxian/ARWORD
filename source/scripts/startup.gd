@@ -17,14 +17,17 @@ var last_tick=0
 const CAMERA_SECONDS=1.65
 var camera_elapsed=0.0
 var camera_running=false
-var sky_blend=0.0
 
 func mark(label:String):marks[label]=Time.get_ticks_msec()
 
 func start(owner_game):
 	game=owner_game
-	var layer=CanvasLayer.new();layer.layer=-11;add_child(layer)
-	sky=preload("res://scripts/startup_sky.gd").new();layer.add_child(sky)
+	game.setup_camera()
+	sky=load("res://scripts/cosmos.gd").new();sky.name="Cosmos";game.add_child(sky)
+	sky.setup_backdrop(game)
+	sky.set_opening_view(0.)
+	sky.display.self_modulate.a=0.
+	sky.create_tween().tween_property(sky.display,"self_modulate:a",1.,.42)
 	set_phase("waiting");set_process(true)
 	mark("search_ready")
 	call_deferred("assemble")
@@ -46,7 +49,7 @@ func assemble():
 	if not await game.startup_turn():return
 	game.world.setup_actor();mark("rig_ready")
 	if not await game.startup_turn():return
-	game.world.finish_setup();game.setup_camera();mark("geometry_ready")
+	game.world.finish_setup();mark("geometry_ready")
 	game.hud.attach_world();game.next_task();game.explore(true,false)
 	if game.art_preview:game.world.desired_rotation=Quaternion(Vector3.UP,Vector3(0,.85,.53).normalized())
 	game.stop_view_transition();pull_back(0.)
@@ -60,9 +63,7 @@ func assemble():
 	camera_running=true;mark("camera_start")
 	set_phase("space")
 	if not await game.startup_turn():return
-	game.cosmos=load("res://scripts/cosmos.gd").new();game.cosmos.name="Cosmos";game.add_child(game.cosmos);game.cosmos.setup(game)
-	game.cosmos.display.modulate.a=0.0
-	pull_back(camera_progress());mark("space_ready")
+	sky.populate();game.cosmos=sky;mark("space_ready")
 	if not await game.startup_turn():return
 	game.setup_world_audio();mark("audio_ready")
 	game.scene_ready=true;game.hud.set_world_ready(true);mark("world_ready")
@@ -140,9 +141,6 @@ func advance_arrivals(dt:float):
 		arrival.visual.scale=arrival.base*lerpf(.025,1.,size)
 		if t>=1.:arrival.visual.scale=arrival.base;arrival.done=true;growing.remove_at(i)
 
-func layer_free():
-	if is_instance_valid(sky):sky.get_parent().queue_free();sky=null
-
 func shutdown():
 	pending.clear();held_resources.clear();camera_running=false
 	for arrival in growing:arrival.done=true
@@ -154,10 +152,6 @@ func set_phase(value:String):
 
 func _process(dt):
 	advance_arrivals(dt)
-	if is_instance_valid(sky) and is_instance_valid(game.cosmos):
-		sky_blend=minf(1.,sky_blend+minf(dt,1./30.)/.45)
-		game.cosmos.display.modulate.a=smoothstep(0.,1.,sky_blend)
-		if sky_blend>=1.:layer_free()
 	if camera_running and not game.closing:
 		# A single shader upload must not consume the whole visible movement.
 		camera_elapsed=minf(CAMERA_SECONDS,camera_elapsed+minf(dt,1./30.))
@@ -190,13 +184,6 @@ func pull_back(value:float):
 	game.camera.position=game.HOME_CAMERA
 	game.camera_focus=sky_focus.lerp(Vector3(0,4.2,0),value)
 	game.camera.look_at(game.camera_focus);game.world_zoom=game.camera.size
-	if is_instance_valid(game.cosmos):
-		game.cosmos.space_camera.position=game.cosmos.CENTER*(.28*(1.-value))
-		# A small intentional parallax makes the distant stars participate in
-		# the pullback, even though their physical distance would hide it.
-		game.cosmos.opening_pullback=value
-		game.cosmos.update_sky_camera()
-	if is_instance_valid(sky):sky.pullback=value
 
 func prepare_arrivals():
 	var wildlife=game.world.wildlife

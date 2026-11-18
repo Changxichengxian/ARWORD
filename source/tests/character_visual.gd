@@ -44,12 +44,10 @@ func run():
 	worker.work_left=0;worker.waking=0;worker.visit_target=Vector2.INF
 	world.motion_speed=0;world.transporting=false
 	root.size=Vector2i(720,900);root.content_scale_size=Vector2i(720,900)
-	for child in world.get_children():
-		if child is WorldEnvironment:
-			var env=child.environment
-			env.background_mode=Environment.BG_COLOR;env.background_color=Color("172435")
-			env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-			env.ambient_light_color=Color("C7D5E6");env.ambient_light_energy=.48
+	var env=world.get_world_3d().environment
+	env.background_mode=Environment.BG_COLOR;env.background_color=Color("172435")
+	env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color=Color("C7D5E6");env.ambient_light_energy=.48
 	var sun=DirectionalLight3D.new();world.add_child(sun)
 	sun.rotation_degrees=Vector3(-42,-38,0);sun.light_color=Color("FFF3E4")
 	sun.light_energy=1.1;sun.shadow_enabled=true;sun.directional_shadow_max_distance=12
