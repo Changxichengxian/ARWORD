@@ -16,6 +16,37 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def verify_godot_assets(archive):
+    """Godot reads external APK assets using sizes from its own sparse pack."""
+    directory = archive.read("assets/assets.sparsepck")
+    if directory[:8] != b"GDPC\x03\0\0\0" or struct.unpack_from("<I", directory, 20)[0] != 6:
+        raise ValueError("Expected a Godot v3 sparse resource index.")
+    cursor, = struct.unpack_from("<Q", directory, 32)
+    count, = struct.unpack_from("<I", directory, cursor)
+    cursor += 4
+    indexed = set()
+    for _ in range(count):
+        length, = struct.unpack_from("<I", directory, cursor)
+        cursor += 4
+        name = directory[cursor:cursor+length].rstrip(b"\0").decode("utf8")
+        cursor += length
+        offset, size, checksum, flags = struct.unpack_from("<QQ16sI", directory, cursor)
+        cursor += 36
+        path = "assets/" + name
+        if path in indexed or offset or flags:
+            raise ValueError(f"Invalid sparse resource entry: {name}")
+        indexed.add(path)
+        try:
+            data = archive.read(path)
+        except KeyError as error:
+            raise ValueError(f"Missing indexed Godot resource: {name}") from error
+        if len(data) != size or hashlib.md5(data).digest() != checksum:
+            raise ValueError(f"APK content differs from Godot's resource index: {name}")
+    scripts = {name for name in archive.namelist() if name.startswith("assets/scripts/") and not name.endswith("/")}
+    if cursor != len(directory) or "assets/project.binary" not in indexed or not scripts.issubset(indexed):
+        raise ValueError("Incomplete Godot resource index.")
+
+
 def payloads(path, data):
     """APK ZIP local headers include alignment padding; offsets differ between builds."""
     with zipfile.ZipFile(path) as archive:
@@ -116,6 +147,7 @@ def main():
     if package not in info:
         p.error('Manifest must match the target APK package, versionCode and versionName')
     with zipfile.ZipFile(a.apk) as archive:
+        verify_godot_assets(archive)
         if any(n.lower().endswith(('.vrm', '.arvoice')) for n in archive.namelist()):
             p.error('Personal character or voice in target APK. Generate a public build with -PublicRelease.')
     for base in a.base:
