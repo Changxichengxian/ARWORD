@@ -69,9 +69,10 @@ var drag_distance=0.0
 var last_back=-1000
 var lookup_return:Callable
 var closing=false
-var observatory_layer:CanvasLayer
 var observatory_drag=false
-var observatory_touch=-1
+var observation_travel=0.0
+var observation_press=Vector2.ZERO
+var observation_pressed_at=0
 var observatory_touch_points={}
 var observatory_hud_visible=true
 var curriculum=preload("res://scripts/curriculum.gd").new()
@@ -118,7 +119,8 @@ func _ready():
 		call_deferred("initialize_avatar")
 
 func setup_camera():
-	var e=Environment.new();e.background_mode=Environment.BG_CANVAS;e.background_canvas_max_layer=-10
+	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color.BLACK
+	e.reflected_light_source=Environment.REFLECTION_SOURCE_DISABLED
 	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
 	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=HOME_CAMERA;camera.look_at(Vector3(0,10.0,0));camera.current=true
@@ -447,10 +449,15 @@ func recenter():world.recenter()
 func world_area(p:Vector2)->bool:
 	return hud.safe_rect.has_point(p) and p.y>hud.safe_rect.position.y+86 and p.y<hud.safe_rect.end.y-4 and (not hud.card.visible or not hud.card.get_global_rect().has_point(p))
 func tap_world(p:Vector2):
-	var id=world.site_at(p)
 	if not exploring:
 		explore()
 		return
+	for site in hud.world_progress:
+		var label=hud.world_progress[site].panel
+		if label.is_visible_in_tree() and label.get_global_rect().has_point(p):select_site(site);return
+	if is_instance_valid(world.avatar) and world.avatar.greet_at(p):return
+	if world.wildlife and world.wildlife.handle_tap(p,true):return
+	var id=world.site_at(p)
 	if not id.is_empty():select_site(id);return
 	if world.wildlife and world.wildlife.handle_tap(p):return
 	if cosmos:cosmos.handle_tap(p)
@@ -628,7 +635,7 @@ func settings():
 	hud.button(box,"英语朗读 · "+("大肥鱼" if learning.data.feiyu_voice and study_voice.archive!=null else "原声"),voice_settings)
 	var music_row=hud.row(box)
 	hud.button(music_row,"轻音乐 · "+("开" if learning.data.music else "关"),func():learning.data.music=not learning.data.music;save_progress();settings())
-	hud.ghost(music_row,"下一首",ambience.next_track).disabled=not learning.data.music
+	hud.ghost(music_row,"下一首",ambience.next_track).disabled=not learning.data.music or ambience.tracks.is_empty()
 	hud.button(box,"星空与星云",space_settings)
 	hud.button(box,"人物",show_avatar_settings)
 	hud.button(box,"开发特权 · "+("开" if learning.data.dev_skip else "关"),show_developer)
@@ -1008,47 +1015,36 @@ func open_observatory(primary=false,index:int=0,body_index:int=-1):
 	stop_view_transition();speech.stop();hud.close();explore(false);reset_world_input()
 	if not cosmos.enter_observatory(index,primary,body_index):return
 	reset_observatory_input();observatory_hud_visible=hud.visible;hud.hide()
-	observatory_layer=CanvasLayer.new();observatory_layer.layer=5;add_child(observatory_layer)
-	var root=Control.new();root.mouse_filter=Control.MOUSE_FILTER_IGNORE;observatory_layer.add_child(root)
-	root.position=hud.safe_rect.position;root.size=hud.safe_rect.size
-	hud.safe_rect_changed.connect(layout_observation_ui)
-	var margin=MarginContainer.new();root.add_child(margin);margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE);margin.add_theme_constant_override("margin_left",16);margin.add_theme_constant_override("margin_right",16);margin.add_theme_constant_override("margin_top",20)
-	var bar=HBoxContainer.new();margin.add_child(bar);bar.add_theme_constant_override("separation",8)
-	var back_button=hud.icon(bar,"close",close_observatory,"返回星球");back_button.custom_minimum_size=Vector2(44,44)
-	margin.add_theme_constant_override("margin_top",roundi(hud.header.offset_top))
-func layout_observation_ui(rect:Rect2):
-	if is_instance_valid(observatory_layer) and observatory_layer.get_child_count()>0:
-		var controls=observatory_layer.get_child(0)
-		controls.position=rect.position;controls.size=rect.size
 
 func select_observation(index:int):
 	reset_observatory_input();cosmos.select_observation_target(index)
 func close_observatory():
-	if hud.safe_rect_changed.is_connected(layout_observation_ui):hud.safe_rect_changed.disconnect(layout_observation_ui)
 	cosmos.leave_observatory();reset_observatory_input()
-	if is_instance_valid(observatory_layer):observatory_layer.queue_free()
-	observatory_layer=null;hud.visible=observatory_hud_visible
+	hud.visible=observatory_hud_visible
 	reset_world_input()
 func reset_observatory_input():
-	observatory_drag=false;observatory_touch=-1;observatory_touch_points.clear()
-func observatory_over_controls(position:Vector2)->bool:
-	if not is_instance_valid(observatory_layer):return false
-	for button in observatory_layer.find_children("*","BaseButton",true,false):
-		if button.is_visible_in_tree() and button.get_global_rect().has_point(position):return true
-	return false
+	observatory_drag=false;observatory_touch_points.clear();observation_travel=0.
+func begin_observation_press(at:Vector2):
+	observation_travel=0.;observation_press=at;observation_pressed_at=Time.get_ticks_msec()
+func observation_tapped(at:Vector2)->bool:
+	return observation_travel<10. and observation_press.distance_to(at)<10. and Time.get_ticks_msec()-observation_pressed_at<550
 func observatory_capture_input(event)->bool:
 	if event is InputEventMouse and event.device==InputEvent.DEVICE_ID_EMULATION:return false
 	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed and observatory_drag:
-		observatory_drag=false;return true
+		observatory_drag=false
+		if not event.canceled and observation_tapped(event.position):close_observatory()
+		return true
 	if event is InputEventMouseMotion and observatory_drag:
+		observation_travel+=event.relative.length()
 		cosmos.rotate_observation(event.relative);return true
 	if event is InputEventScreenTouch and (not event.pressed or event.canceled) and observatory_touch_points.has(event.index):
 		observatory_touch_points.erase(event.index)
-		observatory_touch=-1 if observatory_touch_points.is_empty() else int(observatory_touch_points.keys()[0])
+		if not event.canceled and observatory_touch_points.is_empty() and observation_tapped(event.position):close_observatory()
 		return true
 	if event is InputEventScreenDrag and observatory_touch_points.has(event.index):
 		var previous=finger_line(observatory_touch_points) if observatory_touch_points.size()==2 else Vector2.ZERO
 		observatory_touch_points[event.index]=event.position
+		observation_travel+=event.relative.length()
 		if observatory_touch_points.size()==2:
 			var line=finger_line(observatory_touch_points)
 			if minf(line.length(),previous.length())>=MIN_PAIR_SPAN:
@@ -1061,11 +1057,15 @@ func observatory_input(event):
 	if observatory_capture_input(event):return
 	if event is InputEventMouse and (event.device==InputEvent.DEVICE_ID_EMULATION or not observatory_touch_points.is_empty()):return
 	if event is InputEventMouseButton:
-		if event.button_index==MOUSE_BUTTON_LEFT:observatory_drag=event.pressed
-		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:cosmos.zoom_observation(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1)
+		if event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+			observatory_drag=true;begin_observation_press(event.position)
+		elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+			observation_travel=100.;cosmos.zoom_observation(.9 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1.1)
 	elif event is InputEventScreenTouch:
-		if event.pressed and not event.canceled and not observatory_over_controls(event.position) and observatory_touch_points.size()<2:
-			observatory_touch_points[event.index]=event.position;observatory_touch=int(observatory_touch_points.keys()[0])
+		if event.pressed and not event.canceled and observatory_touch_points.size()<2:
+			if observatory_touch_points.is_empty():begin_observation_press(event.position)
+			else:observation_travel=100.
+			observatory_touch_points[event.index]=event.position
 func bookmarks(page:int):
 	var ids=learning.data.bookmarks.keys();var box=hud.modal("收藏的词");hud.screen="bookmarks"
 	if ids.is_empty():hud.text(box,"暂无收藏",19)

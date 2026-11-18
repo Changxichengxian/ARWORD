@@ -42,6 +42,8 @@ var rest_actor_height=0.0
 var rest_cached=false
 var rest_length=1.20
 var enabled=false
+var greeted_at=-20.
+var greet_side=1.
 var is_fish=false
 var baked_surfaces={}
 var used_baked_surfaces=0
@@ -385,6 +387,10 @@ static func expression_values(state:Dictionary,now:float,neutral:bool=false)->Di
 
 func apply_expression(state:Dictionary,now:float,neutral:bool=false):
 	var values=expression_values(state,now,neutral)
+	if not neutral:
+		var greeting=greeting_weight()
+		values.happy=maxf(values.happy,.58*greeting)
+		values.blink=maxf(values.blink,.66*greeting)
 	# Combined and per-eye blink shapes usually deform the same vertices.
 	if not expression_bindings.get("blink",[]).is_empty():values.blinkLeft=0.0;values.blinkRight=0.0
 	for target in expression_targets:
@@ -394,17 +400,40 @@ func apply_expression(state:Dictionary,now:float,neutral:bool=false):
 		target.mesh.set_blend_shape_value(target.index,clampf(value,0,1))
 
 func canonical(rotation:Basis)->Basis:return native_to_game.inverse()*rotation*native_to_game
+func greeting_weight()->float:
+	var t=world.time-greeted_at
+	return smoothstep(0.,.13,t)*(1.-smoothstep(.38,.92,t))
+
+func greet_at(screen_pos:Vector2)->bool:
+	if not enabled or not is_visible_in_tree():return false
+	var camera=world.game.camera
+	var head=skeleton.to_global(skeleton.get_bone_global_pose(humanoid.head).origin)
+	var hips=skeleton.to_global(skeleton.get_bone_global_pose(humanoid.hips).origin)
+	if camera.is_position_behind(head) or (head-world.globe.global_position).normalized().dot((camera.global_position-head).normalized())<.08:return false
+	var center=camera.unproject_position(head)
+	var radius=center.distance_to(camera.unproject_position(head+camera.global_basis.x*.28))
+	var closest=Geometry2D.get_closest_point_to_segment(screen_pos,center,camera.unproject_position(hips))
+	if closest.distance_to(screen_pos)>clampf(radius,13.,58.):return false
+	greeted_at=world.time
+	greet_side=-1. if screen_pos.x<center.x else 1.
+	return true
+
 func update_pose(neutral=false):
 	if (not enabled and not neutral) or not is_instance_valid(skeleton) or world.worker==null:return
 	position=Vector3.ZERO
 	var body=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs.Body.rotation);var head=Basis.from_euler(world.worker.head_pivot.rotation) if not neutral and world.worker.head_pivot else Basis.IDENTITY
 	var napping=not neutral and world.worker.work_left<=0 and world.worker.rest_variant==1 and world.worker.waking<=0
+	var greeting=0. if neutral else greeting_weight()
+	head=head*Basis(Vector3.UP,greet_side*.30*greeting)*Basis(Vector3.FORWARD,greet_side*.20*greeting)*Basis(Vector3.RIGHT,-.13*greeting)
 	var rotations={humanoid.spine:canonical(Basis.IDENTITY.slerp(body,.55)),humanoid.head:canonical(body*head)}
 	for part in ["chest","upperChest","neck"]:
 		if humanoid.has(part):rotations[humanoid[part]]=canonical(body)
 	for side in ["left","right"]:
 		var suffix="L" if side=="left" else "R"
 		var arm=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs["Arm"+suffix].rotation);var elbow=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs["Elbow"+suffix].rotation)
+		if side=="right" and greeting>0. and world.worker.work_left<=0 and not world.worker.carry.visible:
+			arm=arm*Basis(Vector3.FORWARD,-.76*greeting)
+			elbow=elbow*Basis(Vector3.RIGHT,-.47*greeting)
 		rotations[humanoid[side+"UpperArm"]]=canonical(body*arm)*down[side]
 		rotations[humanoid[side+"LowerArm"]]=canonical(body*arm*elbow)*down[side]
 		var leg=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs["Leg"+suffix].rotation);var knee=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs["Knee"+suffix].rotation)

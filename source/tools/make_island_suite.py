@@ -4,7 +4,7 @@ import numpy as np
 import soundfile as sf
 
 RATE = 32000
-OUT = Path(__file__).resolve().parents[1] / "assets/audio"
+OUT = Path(__file__).resolve().parents[1] / "assets/music"
 
 def render(name, beat, bars, score):
     duration = bars * beat + 3.5

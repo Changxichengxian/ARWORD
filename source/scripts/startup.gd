@@ -25,9 +25,10 @@ func start(owner_game):
 	game.setup_camera()
 	sky=load("res://scripts/cosmos.gd").new();sky.name="Cosmos";game.add_child(sky)
 	sky.setup_backdrop(game)
+	sky.show_behind_planet()
 	sky.set_opening_view(0.)
-	sky.display.self_modulate.a=0.
-	sky.create_tween().tween_property(sky.display,"self_modulate:a",1.,.42)
+	sky.backdrop_material.set_shader_parameter("reveal",0.)
+	sky.create_tween().tween_property(sky.backdrop_material,"shader_parameter/reveal",1.,.42)
 	set_phase("waiting");set_process(true)
 	mark("search_ready")
 	call_deferred("assemble")

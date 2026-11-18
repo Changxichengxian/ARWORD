@@ -3,17 +3,6 @@ extends SceneTree
 # then test complete aquatic bodies against the physical sea floor and surface.
 var failed=0
 var passed=0
-class GameStub extends Node3D:
-	var camera:Camera3D
-	var frontier=IslandFrontier.new(IslandLearning.new())
-class WorldStub extends Node3D:
-	var game
-	var globe:Node3D
-	var water:IslandWater
-	var time=0.
-	var terrain=IslandTerrain.new()
-	var land={Vector2i(0,0):true,Vector2i(1,0):true,Vector2i(0,1):true}
-	func surface(p:Vector2)->Vector3:return terrain.point(p)
 func _initialize():
 	if not "--qa" in OS.get_cmdline_user_args():quit(2);return
 	call_deferred("run")
@@ -29,13 +18,8 @@ func vertices(model:Node3D)->Array:
 		result.append({"part":part,"vertices":points.keys()})
 	return result
 func run():
-	var game=GameStub.new();root.add_child(game)
-	game.camera=Camera3D.new();game.add_child(game.camera);game.camera.position=Vector3(0,24,24);game.camera.look_at(Vector3.ZERO)
-	var world=WorldStub.new();game.add_child(world);world.game=game;world.globe=Node3D.new();world.add_child(world.globe)
-	for cell in IslandFrontier.ROCKET_CELLS:world.land[cell]=true
-	var ocean=load("res://assets/models/ocean.glb").instantiate();world.globe.add_child(ocean)
-	world.water=IslandWater.new();world.globe.add_child(world.water);world.water.setup(world,ocean)
-	var life=IslandWildlife.new();world.add_child(life);life.setup(world);life.set_process(false)
+	var game=load("res://main.tscn").instantiate();root.add_child(game)
+	var world=game.world;var life=world.wildlife;life.set_process(false)
 	var sampled=[];var types={}
 	for animal in life.animals:
 		if animal.kind=="fish" and not types.has(animal.species):
@@ -52,9 +36,8 @@ func run():
 	var dolphins_surface=false;var dolphins_dive=false;var squid_states={};var moving_fins={}
 	for expanded in [false,true]:
 		if expanded:
-			for chapter in IslandFrontier.CHAPTERS:
-				for cell in chapter.cells:world.land[cell]=true
-			world.water.rebuild();life.refresh_habitats()
+			game.frontier.finish_for_development(true);world.sync_buildings(false)
+			life.refresh_habitats()
 		var valid=0;var trench=0;var main_shore=0;var quadrants={}
 		for animal in life.animals:
 			if animal.kind!="fish" or not animal.route_valid:continue
@@ -98,5 +81,5 @@ func run():
 	check(dolphins_surface and dolphins_dive,"dolphins alternate surface breathing and submerged swimming")
 	check(squid_states.has("pulse") and squid_states.has("glide") and moving_fins.size()==2,"squid pulses and glides; seahorse and puffer actively paddle")
 	print("MIN_SEABED_CLEARANCE ",minimum);print("MIN_SURFACE_CLEARANCE ",maximum)
-	game.queue_free();await process_frame;await process_frame
+	game.closing=true;game.ambience.shutdown();game.queue_free();await process_frame;await process_frame
 	print("WILDLIFE_MOTION_RESULT ",passed," passed / ",failed," failed");quit(int(failed>0))

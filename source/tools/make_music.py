@@ -37,7 +37,7 @@ for delay,gain in [(.31,.18),(.59,.13),(.91,.09),(1.31,.06)]:
     audio+=np.roll(dry[:,::-1],round(delay*RATE),axis=0)*gain
 audio=np.tanh(audio*1.2)
 peak=float(np.max(np.abs(audio)));audio*=.42/max(.42,peak)
-target=ROOT/'assets/audio/island_drift.ogg'
+target=ROOT/'assets/music/island_drift.ogg'
 print('Encoding loop',flush=True)
 with sf.SoundFile(target,'w',samplerate=RATE,channels=2,format='OGG',subtype='VORBIS') as output:
     for offset in range(0,N,4096):output.write(audio[offset:offset+4096])

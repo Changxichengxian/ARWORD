@@ -96,7 +96,7 @@ func run():
 	check(game.startup.marks.has("animals_ready"),"startup completes")
 	if not game.startup.marks.has("animals_ready"):quit(1);return
 	var marks=game.startup.marks
-	check(game.cosmos==first_sky and game.cosmos.display.is_visible_in_tree(),"daily play keeps the opening sky and its canvas alive")
+	check(game.cosmos==first_sky and game.get_world_3d().environment.sky.sky_material==first_sky.backdrop_material,"daily play retains the same sky inside the planet's render target")
 	check(marks.first_draw<=marks.world_reveal and marks.world_ready<=marks.person_start and marks.person_ready<=marks.animals_start,"order is stars, world, character, then animals")
 	check(min_zoom<12 and max_zoom>=25.4,"camera pulls back from the close planet to the whole scene")
 	check(marks.world_reveal<marks.space_ready and marks.world_reveal<marks.phase_wildlife_resources and marks.world_reveal<marks.person_start,"space, animal loading and character loading never delay the first visible planet")

@@ -4,7 +4,7 @@ import json
 import numpy as np
 import soundfile as sf
 root=Path(__file__).resolve().parents[1]
-path=root/'assets/audio/island_drift.ogg'
+path=root/'assets/music/island_drift.ogg'
 audio,rate=sf.read(path,always_2d=True)
 peak=float(np.abs(audio).max());rms=float(np.sqrt(np.mean(audio**2)))
 derivative=np.abs(np.diff(audio,axis=0))

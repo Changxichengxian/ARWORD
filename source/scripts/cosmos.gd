@@ -14,6 +14,7 @@ var space:Node3D
 var canvas:CanvasLayer
 var display:TextureRect
 var star_material:ShaderMaterial
+var backdrop_material:ShaderMaterial
 var space_environment:Environment
 var cloud_texture:NoiseTexture3D
 var cloud_regions:Array=[]
@@ -45,6 +46,7 @@ var observation_blend=0.0
 
 func setup(owner_game):
 	setup_backdrop(owner_game)
+	show_behind_planet()
 	populate()
 
 func setup_backdrop(owner_game):
@@ -62,9 +64,19 @@ func setup_backdrop(owner_game):
 	var sky_canvas=CanvasLayer.new();sky_canvas.layer=-20;viewport.add_child(sky_canvas)
 	var sky_field=ColorRect.new();sky_field.mouse_filter=Control.MOUSE_FILTER_IGNORE;sky_field.material=star_material;sky_canvas.add_child(sky_field);sky_field.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	space_camera=Camera3D.new();space_camera.fov=base_fov;space_camera.near=.1;space_camera.far=280;space_camera.current=true;space.add_child(space_camera)
-	canvas=CanvasLayer.new();canvas.name="SolarBackground";canvas.layer=-10;add_child(canvas)
+	canvas=CanvasLayer.new();canvas.name="ObservatoryView";canvas.layer=4;add_child(canvas);canvas.hide()
 	display=TextureRect.new();display.texture=viewport.get_texture();display.texture_filter=CanvasItem.TEXTURE_FILTER_LINEAR;display.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;display.stretch_mode=TextureRect.STRETCH_SCALE;display.mouse_filter=Control.MOUSE_FILTER_IGNORE;canvas.add_child(display);display.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	resize();get_viewport().size_changed.connect(resize);update_sky_camera()
+
+func show_behind_planet():
+	# The planet renderer draws its background in the same 3D target as the
+	# water. A full-resolution canvas copy can leave stale rectangles when
+	# the Android 3D target is downscaled and a canvas scissor is active.
+	backdrop_material=ShaderMaterial.new();backdrop_material.shader=preload("res://assets/planet_backdrop.gdshader")
+	backdrop_material.set_shader_parameter("solar_view",viewport.get_texture())
+	var sky=Sky.new();sky.radiance_size=Sky.RADIANCE_SIZE_32;sky.sky_material=backdrop_material
+	var env=game.get_world_3d().environment
+	env.sky=sky;env.background_mode=Environment.BG_SKY
 
 func set_opening_view(progress:float):
 	opening_time=clampf(progress,0.,1.)
@@ -207,12 +219,12 @@ func enter_observatory(index:int=0,primary:bool=false,body_index:int=-1)->bool:
 	if not observatory_active:
 		if opening_time<1.:set_opening_view(1.)
 		overview_transform=space_camera.transform;overview_fov=space_camera.fov
-	observatory_active=true;canvas.layer=4
+	observatory_active=true;canvas.show()
 	select_observation_target(index)
 	primary_close=primary;observation_body=body_index
 	update_observation_quality();return true
 func leave_observatory():
-	observatory_active=false;primary_close=false;observation_body=-1;observation_blend=0.0;canvas.layer=-10
+	observatory_active=false;primary_close=false;observation_body=-1;observation_blend=0.0;canvas.hide()
 	space_camera.transform=overview_transform;space_camera.fov=overview_fov
 	update_observation_quality();update_sky_camera()
 func select_observation_target(index:int)->bool:
@@ -360,9 +372,6 @@ func _process(dt):
 		sky_frame_time+=dt
 		if sky_frame_time<.05:return
 		dt=sky_frame_time;sky_frame_time=0.
-		viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
-	elif viewport.render_target_update_mode!=SubViewport.UPDATE_ALWAYS:
-		viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
 	advance(dt)
 func screen_position(index:int)->Vector2:
 	var position=space_camera.unproject_position(bodies[index].orbit.position)

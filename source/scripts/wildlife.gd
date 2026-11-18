@@ -13,6 +13,7 @@ var fish_regions:Array[int]=[]
 var used_fish_homes:Array=[]
 var trench_normal=Vector3.DOWN
 var meadows:Array=[]
+var perch_layout=""
 var water_effects:Array=[]
 var scenery:Node3D
 var grass:Array=[]
@@ -167,6 +168,7 @@ func refresh_habitats(progressive=false):
 		if animal.kind=="orca":
 			if progressive:await configure_whale(animal,true)
 			else:configure_whale(animal)
+	arrange_perches()
 
 func species(index:int)->String:
 	if index<4:return "gold"
@@ -190,6 +192,94 @@ func spawn(kind:String,index:int):
 	for mesh in model.find_children("*","MeshInstance3D",true,false):mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	animals.append({"kind":kind,"species":type,"index":index,"anchor":anchor,"model":model,"scale":scale_factor,"home":meadows[(index*5)%meadows.size()],"normal":Vector3.UP,"radius":.7,"phase":float(index)*.63,"action_offset":0.0,"startle":0.0,"left":model.find_child("FlipperL" if kind=="whale" or type in ["ray","turtle"] else "WingL",true,false),"right":model.find_child("FlipperR" if kind=="whale" or type in ["ray","turtle"] else "WingR",true,false),"tail":model.find_child("Tail",true,false),"fluke":model.find_child("Fluke",true,false),"blowhole":model.find_child("Blowhole",true,false),"last":Vector3.ZERO,"state":"swim","breath_cycle":-1,"route_valid":true,"depth":.3})
 	bind_joints(animals.back())
+	if kind in ["bird","butterfly"]:
+		var animal=animals.back()
+		animal.perch_phase="flight";animal.perch_time=3.+index*1.7;animal.lift=1.
+		animal.takeoff_height=0.;animal.support=Vector3.ZERO;animal.flower=null
+
+func arrange_perches():
+	if not world.has_method("land_hit"):return
+	perch_layout=world.navigation_signature
+	var occupied:Array[Vector2]=[]
+	for a in animals:
+		if a.kind not in ["bird","butterfly"]:continue
+		var preferred:Vector2=a.home
+		var best=Vector2(INF,INF);var best_distance=INF
+		for cell in world.land:
+			var kind=world.terrain.kind(cell)
+			if kind=="rocket" or (a.kind=="butterfly" and kind not in ["shore","grove","meadow","hill","wetland","sunreach"]):continue
+			var center=IslandFrontier.point(cell)
+			if center.distance_to(preferred)>sqrt(best_distance)+IslandFrontier.HEX:continue
+			for i in 45:
+				var p=center+Vector2.from_angle(i*2.4)*(.18*sqrt(i))
+				var cost=p.distance_squared_to(preferred)
+				if cost>=best_distance or not world.clear_ground(p,.24 if a.kind=="bird" else .14,false):continue
+				if is_instance_valid(world.builder) and world.surface(p).distance_to(world.builder.position)<1.15:continue
+				var blocked=false
+				for other in occupied:
+					if other.distance_to(p)<.64:blocked=true;break
+				for prop in land_life.low_props:
+					if p.distance_to(prop.center)<prop.radius-(.05 if a.kind=="bird" else .15):blocked=true;break
+				if blocked or world.land_hit(p)==Vector3.ZERO:continue
+				best_distance=cost;best=p
+		if not best.is_finite():
+			a.support=Vector3.ZERO
+			if is_instance_valid(a.flower):a.flower.hide()
+			continue
+		occupied.append(best);a.home=best
+		var ground=world.ground_point(best);var up=ground.normalized()
+		a.support=ground+up*(.137*a.scale)
+		if a.kind=="butterfly":
+			if not is_instance_valid(a.flower):a.flower=world.model("flower",self)
+			a.flower.show();a.flower.position=ground
+			a.flower.basis=world.terrain.surface_basis(best).scaled_local(Vector3.ONE*.72)
+			var heart=a.flower.find_child("Center",true,false)
+			var box=heart.mesh.get_aabb()
+			a.support=to_local(heart.to_global(Vector3(0.,box.end.y,0.)))+up*(.026*a.scale)
+
+func take_flight(a:Dictionary):
+	a.takeoff_height=a.lift;a.perch_phase="takeoff";a.perch_time=0.
+
+func flying_position(a:Dictionary,dt:float)->Vector3:
+	var bird=a.kind=="bird"
+	var t=a.phase
+	a.perch_time+=dt
+	if a.support==Vector3.ZERO:a.perch_phase="flight";a.lift=1.
+	elif a.perch_phase=="flight" and a.perch_time>(12. if bird else 8.)+a.index*.9 and (not is_instance_valid(world.get("builder")) or world.builder.position.distance_to(a.support)>1.):
+		a.perch_phase="landing";a.perch_time=0.
+	elif a.perch_phase=="landing":
+		if is_instance_valid(world.builder) and world.builder.position.distance_to(a.support)<.73:
+			take_flight(a)
+			return a.last
+		a.lift=1.-smoothstep(0.,2.6 if bird else 1.7,a.perch_time)
+		if a.lift<=0.:a.perch_phase="perched";a.perch_time=0.
+	elif a.perch_phase=="perched" and (a.perch_time>(8. if bird else 7.)+a.index or (is_instance_valid(world.builder) and world.builder.position.distance_to(a.support)<.73)):take_flight(a)
+	elif a.perch_phase=="takeoff":
+		a.lift=lerpf(a.takeoff_height,1.,smoothstep(0.,1.45 if bird else 1.05,a.perch_time))
+		if a.lift>=1.:a.perch_phase="flight";a.perch_time=0.
+	if bird:animate_bird(a,t)
+	else:animate_butterfly(a,t)
+	var rest=1.-a.lift
+	if rest>0.:
+		if bird:
+			a.left.rotation=a.left.rotation.lerp(Vector3(.04,1.16,-.20),rest)
+			a.right.rotation=a.right.rotation.lerp(Vector3(.04,-1.16,.20),rest)
+			a.tip_left.rotation.y=.93*rest;a.tip_right.rotation.y=-.93*rest
+			a.head.rotation.y=lerpf(a.head.rotation.y,.36*sin(t*1.25),rest)
+		else:
+			var fold=.82+.32*sin(t*1.6+a.index)
+			a.left.rotation.z=lerpf(a.left.rotation.z,-fold,rest)
+			a.right.rotation.z=lerpf(a.right.rotation.z,fold,rest)
+			a.hind_wing_left.rotation.z*=a.lift;a.hind_wing_right.rotation.z*=a.lift
+		a.model.rotation*=a.lift
+		a.state=a.perch_phase
+	elif bird:a.tip_left.rotation.y=0.;a.tip_right.rotation.y=0.
+	if a.lift==0.:return a.support
+	var orbit=Vector2(cos(t*.30)*1.6,sin(t*.30)) if bird else Vector2(sin(t*.8)*.42,sin(t*1.3)*.32)
+	var p=world.surface(a.home+orbit*a.lift*a.lift)
+	var base_radius=p.length() if a.support==Vector3.ZERO else lerpf(a.support.length(),p.length(),a.lift)
+	var altitude=2.9+sin(t*.55)*.42+a.reaction*.65 if bird else .48+.12*sin(t*2)+a.reaction*.40
+	return p.normalized()*(base_radius+altitude*a.lift)
 
 func bind_joints(animal:Dictionary):
 	# Cache articulated parts once, including optional parts of older models.
@@ -591,6 +681,7 @@ func _process(dt):
 	if not is_instance_valid(world):return
 	clock+=dt
 	if land_count!=world.land.size():refresh_habitats()
+	elif world.has_method("land_hit") and perch_layout!=world.navigation_signature:arrange_perches()
 	tidepool.animate(clock,dt)
 	land_life.animate(clock,dt)
 	for animal in animals:
@@ -640,14 +731,7 @@ func _process(dt):
 				if surfacing>.02:animal.state="surface"
 		elif animal.kind=="whale":pos=whale_position(animal,t)
 		elif animal.kind=="orca":pos=orca_position(animal,t)
-		else:
-			var p:Vector2=animal.home
-			if animal.kind=="bird":
-				p+=Vector2(cos(t*.30)*1.6,sin(t*.30)*1.0);pos=world.surface(p);pos+=pos.normalized()*(2.9+sin(t*.55)*.42+animal.reaction*.65)
-				animate_bird(animal,t)
-			else:
-				p+=Vector2(sin(t*.8)*.42,sin(t*1.3)*.32);pos=world.surface(p);pos+=pos.normalized()*(.42+.12*sin(t*2)+.06*sin(t*.7)+animal.reaction*.40)
-				animate_butterfly(animal,t)
+		else:pos=flying_position(animal,dt)
 		var forward=pos-animal.last
 		if animal.last==Vector3.ZERO:forward=tangent_axes(pos.normalized())[0]
 		animal.anchor.position=pos
@@ -666,16 +750,21 @@ func update_water_effects(dt:float):
 		var effect=water_effects[i];effect.age+=dt;var age=effect.age
 		effect.node.position=effect.start+effect.velocity*age-effect.normal*1.8*age*age;effect.node.scale=Vector3.ONE*(1-age/effect.life)
 		if age>=effect.life:effect.node.queue_free();water_effects.remove_at(i)
-func handle_tap(screen_pos:Vector2)->bool:
+func handle_tap(screen_pos:Vector2,fliers_only=false)->bool:
 	if not is_instance_valid(world.game.camera):return false
-	if land_life.handle_tap(screen_pos):return true
+	if not fliers_only and land_life.handle_tap(screen_pos):return true
 	var camera=world.game.camera;var nearest={};var distance=30.0
-	if tidepool.handle_tap(screen_pos,camera):return true
+	if not fliers_only and tidepool.handle_tap(screen_pos,camera):return true
 	for animal in animals:
+		if fliers_only and animal.kind not in ["bird","butterfly"]:continue
 		if not animal.anchor.visible:continue
 		var p=animal.anchor.global_position;var normal=world.globe.global_basis*animal.anchor.position.normalized()
 		if normal.dot((camera.global_position-p).normalized())<.10 or camera.is_position_behind(p):continue
 		var d=camera.unproject_position(p).distance_to(screen_pos)
+		if fliers_only:
+			var span=.46 if animal.kind=="bird" else .20
+			var size=camera.unproject_position(p+camera.global_basis.x*span).distance_to(camera.unproject_position(p))
+			if d>clampf(size,11.,30.):continue
 		if d<distance:nearest=animal;distance=d
 	if nearest.is_empty():return false
 	if nearest.kind=="whale":nearest.action_offset=12.0-fmod(nearest.phase,124.0);nearest.breath_cycle=-1
@@ -686,5 +775,7 @@ func handle_tap(screen_pos:Vector2)->bool:
 		if nearest.species in ["gold","silver","reef"]:
 			for animal in animals:
 				if animal.species==nearest.species and animal.last.distance_to(nearest.last)<2.0:animal.startle=2.4
-	else:nearest.startle=2.4
+	else:
+		nearest.startle=2.4
+		if nearest.perch_phase in ["perched","landing"]:take_flight(nearest)
 	return true

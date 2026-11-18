@@ -24,6 +24,7 @@ func _init():
 	data["feiyu_voice"]=false
 	data["voice_choice_version"]=1
 	data["space_settings"]=SPACE_DEFAULTS.duplicate()
+	data["music_openers"]=[]
 	data["lesson_schedule"]={}
 	data["word_turn"]=0
 	data["practice_modes"]={}

@@ -34,9 +34,9 @@ func run():
 		g.leave_trench();h.close()
 	g.frontier.data.progress.mountain=g.frontier.chapter("mountain").need
 	g.learning.data.black_hole=true;g.cosmos.set_black_hole(true);g.open_observatory(true)
-	await settle();var close=g.observatory_layer.find_children("*","BaseButton",true,false)[0]
-	check(h.safe_rect.encloses(close.get_global_rect()),"fullscreen observation respects safe content bounds")
+	await settle()
+	check(g.cosmos.canvas.visible and not h.visible,"observation leaves the full screen clear")
 	h.apply_safe_rect(Rect2(17,115,410,680));await settle()
-	check(close.global_position.y>=115 and h.safe_rect.encloses(close.get_global_rect()),"observation updates with live window insets")
+	check(g.cosmos.canvas.visible and not h.visible,"changing insets does not bring observation controls back")
 	g.close_observatory();g.closing=true;g.queue_free();await process_frame
 	print("SAFE_AREA_RESULT ",checks," checks / ",failed," failed");quit(int(failed>0))
