@@ -162,10 +162,12 @@ func recover_coast(entry:Dictionary):
 	var coordinate=world.terrain.coordinates(n)
 	if world.on_land(coordinate):
 		entry.point=world.ground_point(coordinate)+n*.045;entry.up=n
+		entry.phase="seek_shore";entry.surface="land";entry.wait=.8
 		var nearby=homes.duplicate()
 		nearby.sort_custom(func(a,b):return a.dry.distance_squared_to(coordinate)<b.dry.distance_squared_to(coordinate))
 		for home in nearby:
 			if world.terrain.chart_at(coordinate)!=home.chart:continue
+			if shore_occupied(home,entry) or (entry.index==3 and not home.seal_room):continue
 			var walk=world.walking_route(coordinate,home.dry)
 			if walk.is_empty():continue
 			var points=[entry.point];var ups=[n];var surfaces=[]
@@ -186,8 +188,15 @@ func recover_coast(entry:Dictionary):
 
 func shore_occupied(home:Dictionary,entry:Dictionary)->bool:
 	for other in crabs+[seal_mover]:
-		if other==entry or other.home.is_empty():continue
-		if other.phase in ["travel","rest","depart"] and other.home.dry.distance_to(home.dry)<maxf(1.2,resident_radius(entry)+resident_radius(other)+.15):return true
+		if other.index==entry.index or other.home.is_empty() or other.phase not in ["travel","rest","depart"]:continue
+		var clearance=resident_radius(entry)+resident_radius(other)+.12
+		# Two different beaches can share the same way around a headland.
+		# Reserve the approach as well as the dry resting point.
+		if home.shore[0].distance_to(other.home.shore[0])>9.:continue
+		for i in range(home.shore.size()-1):
+			for j in range(other.home.shore.size()-1):
+				var near=Geometry3D.get_closest_points_between_segments(home.shore[i],home.shore[i+1],other.home.shore[j],other.home.shore[j+1])
+				if near[0].distance_to(near[1])<clearance:return true
 	return false
 
 func set_route(entry:Dictionary,points:Array,ups:Array,surfaces:Array):
@@ -260,7 +269,8 @@ func advance_mover(entry:Dictionary,dt:float):
 	if entry.route.is_empty():
 		entry.wait-=dt
 		if entry.wait<=0.:
-			if entry.phase=="rest":leave_shore(entry)
+			if entry.phase=="seek_shore":recover_coast(entry)
+			elif entry.phase=="rest":leave_shore(entry)
 			elif not visit_shore(entry):
 				entry.wait=5.
 				var n:Vector3=entry.point.normalized()
@@ -277,13 +287,12 @@ func advance_mover(entry:Dictionary,dt:float):
 			if entry.distance<length and length>.0001:
 				var amount=entry.distance/length
 				var next_point=a.lerp(b,amount)
-				if entry.surfaces[entry.segment]=="seabed":
-					var blocker=blocked_by(entry,next_point)
-					if not blocker.is_empty():
-						entry.distance=maxf(0.,entry.distance-dt*speed*(1.+entry.panic*.55))
-						entry.blocked_time=entry.get("blocked_time",0.)+dt
-						if entry.blocked_time>.45:detour(entry,blocker)
-						break
+				var blocker=blocked_by(entry,next_point)
+				if not blocker.is_empty():
+					entry.distance=maxf(0.,entry.distance-dt*speed*(1.+entry.panic*.55))
+					entry.blocked_time=entry.get("blocked_time",0.)+dt
+					if entry.blocked_time>.45 and entry.surfaces[entry.segment]=="seabed":detour(entry,blocker)
+					break
 				entry.blocked_time=0.
 				entry.point=next_point;entry.up=entry.ups[entry.segment].slerp(entry.ups[entry.segment+1],amount).normalized()
 				entry.surface=entry.surfaces[entry.segment]

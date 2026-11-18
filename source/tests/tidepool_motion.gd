@@ -43,8 +43,11 @@ func inspect(life,expanded:bool):
 	for entry in residents:meshes.append(vertices(entry.model))
 	var states={};var visits={};var floor_gap=INF;var land_gap=INF;var max_jump=0.;var previous={}
 	var before=JSON.stringify(game.learning.data)
+	var nearest_seal=INF
 	for step in 2400:
 		pool.animate(step*.25,.25)
+		for crab in pool.crabs:
+			nearest_seal=minf(nearest_seal,crab.model.position.distance_to(pool.seal.position))
 		for index in residents.size():
 			var entry=residents[index];states[str(index)+" "+entry.phase]=true
 			if entry.phase=="rest":visits[str(index)+"/"+str(entry.home.chart)]=true
@@ -62,6 +65,7 @@ func inspect(life,expanded:bool):
 	var complete=true
 	for i in range(4):complete=complete and states.has(str(i)+" rest") and states.has(str(i)+" depart") and states.has(str(i)+" forage")
 	check(complete,"all three crabs and the seal visit shore and return underwater "+str(expanded))
+	check(nearest_seal>1.0,"seal and crabs keep room through shore transitions and replanning "+str(expanded))
 	check(max_jump<.15,"coastal movement stays continuous "+str(expanded))
 	check(floor_gap>-.055 and land_gap>-.055,"animal meshes stay above the real seabed and dry ground "+str(expanded))
 	check(JSON.stringify(game.learning.data)==before,"animal activity never awards or changes learning and construction "+str(expanded))
