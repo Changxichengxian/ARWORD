@@ -58,6 +58,10 @@ clean();r=node('Shipyard')
 for x in [-.92,.92]:
     for y in [-.75,.1,.85]:cyl('pile',(x,y,.24),.085,.68,wood,r,8)
     for i in range(12):box('dock board',(x,-.92+i*.17,.59),(.42,.145,.09),light if i%3 else wood,r,.01)
+for x in [-.92,.92]:beam('dock stringer',(x,-.98,.51),(x,.98,.51),.15,wood,r)
+for y in [-.58,.51]:
+    box('slipway sleeper',(0,y,.09),(1.55,.18,.20),wood,r)
+    for side in [-1,1]:beam('cradle shore',(side*.56,y,.16),(side*.34,y,.77),.12,wood,r)
 for y in [-.70,-.28,.18,.62]:
     for sign in [-1,1]:beam('boat rib',(0,y,.58),(sign*.55,y,.95-abs(y)*.12),.065,wood,r)
 beam('keel',(0,-.9,.56),(0,.92,.56),.10,navy,r)
@@ -70,7 +74,10 @@ export('shipyard')
 
 clean();r=node('Stonecutter')
 box('bed',(0,0,.21),(1.45,.9,.42),stone,r,.06)
-for x in [-.54,.54]:beam('rail',(x,-.55,.5),(x,.55,.5),.065,navy,r)
+for x in [-.54,.54]:beam('rail',(x,-.55,.445),(x,.55,.445),.065,navy,r)
+for side in [-1,1]:
+    box('bearing pedestal',(0,side*.40,.71),(.18,.12,.59),stone,r)
+beam('blade axle',(0,-.43,.95),(0,.43,.95),.08,gold,r)
 box('cut block',(0,0,.64),(.7,.62,.42),cream,r,.055)
 wheel=node('CutterWheel',r,(0,0,.95));o=cyl('saw',(0,0,0),.42,.04,navy,wheel,20);o.rotation_euler[0]=math.pi/2
 for i in range(12):
@@ -83,15 +90,32 @@ for z in [.3,1.42]:beam('crossbar',(-.67,0,z),(.67,0,z),.10,light,r)
 for i in range(11):beam('warp',(-.5+i*.1,0,.34),(-.5+i*.1,0,1.36),.016,cream,r)
 mesh('half woven sail',[(-.5,-.02,.34),(.5,-.02,.34),(.5,-.02,.95),(-.5,-.02,1.08)],[(0,1,2,3),(3,2,1,0)],cream,r)
 for x in [-.62,.62]:beam('foot',(x,-.42,.06),(x,.42,.06),.10,navy,r)
+for x in [.62,.91]:box('cloth trestle',(x,.49,.11),(.10,.73,.22),wood,r)
 for i in range(3):
-    o=cyl('cloth roll',(.63+i*.12,.4,.34),.09,.52,cream,r,10);o.rotation_euler[1]=math.pi/2
+    o=cyl('cloth roll',(.76,.26+i*.18,.30),.09,.52,cream,r,10);o.rotation_euler[1]=math.pi/2
 export('weavery')
 
 clean();r=node('Forge')
-box('hearth',(-.35,.2,.3),(.85,.75,.60),black,r,.08)
-box('dark opening',(-.35,-.19,.24),(.49,.025,.30),navy,r)
-for i in range(4):ico('coal',(-.51+i*.11,-.23,.18),(.075,.06,.065),ember,r)
-cyl('hood',(-.35,.2,.87),.50,.62,stone,r,6,.23);cyl('chimney',(-.35,.2,1.45),.20,.58,cream,r,6)
+# A riveted boiler over an open-sided brick firebox, alongside the anvil.
+box('hearth footing',(-.35,.10,.10),(.98,.97,.20),black,r,.05)
+for side in [-1,1]:
+    box('firebrick cheek',(-.35+side*.345,.12,.36),(.17,.79,.34),stone,r)
+box('firebox rear',(-.35,.46,.36),(.67,.13,.36),black,r)
+box('fire grate',(-.35,.05,.22),(.53,.58,.06),navy,r)
+for i in range(5):ico('coals',(-.55+i*.10,-.11+.05*(i%2),.28),(.082,.10,.065),ember,r)
+cyl('boiler shell',(-.35,.12,.87),.43,.70,blue,r,16)
+cyl('shoulder',(-.35,.12,1.28),.43,.14,blue,r,16,.30)
+for z in [.56,1.18]:cyl('strap',(-.35,.12,z),.444,.075,navy,r,16)
+for i in range(12):
+    a=i*math.tau/12
+    ico('strap rivet',(-.35+.441*math.cos(a),.12+.441*math.sin(a),1.18),(.021,.021,.021),gold,r)
+cyl('flue',(-.42,.21,1.55),.14,.46,black,r,12)
+cyl('flue collar',(-.42,.21,1.78),.17,.07,navy,r,12)
+cyl('flue opening',(-.42,.21,1.818),.115,.01,black,r,12)
+beam('gauge stem',(-.32,-.24,1.17),(-.32,-.30,1.33),.065,gold,r)
+for name,y,radius,matl in [('gauge case',-.305,.135,gold),('porcelain dial',-.343,.106,cream)]:
+    dial=cyl(name,(-.32,y,1.40),radius,.044,matl,r,16);dial.rotation_euler.x=math.pi/2
+beam('pressure needle',(-.32,-.37,1.40),(-.26,-.37,1.45),.016,navy,r)
 cyl('stump',(.45,-.2,.26),.32,.5,wood,r,8)
 box('anvil',(.45,-.2,.63),(.65,.3,.21),navy,r);mesh('horn',[(.77,-.35,.55),(.77,-.05,.55),(1,-.2,.65),(.77,-.35,.73),(.77,-.05,.73)],[(0,1,2),(3,2,4),(0,2,3),(1,4,2)],navy,r)
 export('forge')
@@ -117,7 +141,8 @@ export('windpump')
 
 clean();r=node('OrchardPress')
 box('table',(0,0,.45),(1.05,.65,.13),light,r)
-for x in [-.4,.4]:beam('leg',(x,0,.02),(x,0,.45),.1,wood,r)
+for x in [-.4,.4]:
+    for y in [-.22,.22]:beam('leg',(x,y,0),(x,y,.45),.1,wood,r)
 cyl('press barrel',(0,0,.78),.25,.55,wood,r,12)
 beam('press screw',(0,0,.95),(0,0,1.35),.06,navy,r);beam('handle',(-.35,0,1.3),(.35,0,1.3),.07,light,r)
 box('basket',(.63,.1,.22),(.4,.4,.44),wood,r)
@@ -126,10 +151,22 @@ export('orchard_press')
 
 clean();r=node('Glassworks')
 cyl('kiln',(0,.15,.5),.53,1.0,cream,r,10,.38)
-box('fire door',(0,-.38,.33),(.38,.05,.39),navy,r)
+# An iron-jacketed glass furnace: bands follow the taper of the vessel.
+for z in [.27,.78]:
+    radius=.53-.15*z
+    cyl('iron jacket band',(0,.15,z),radius+.018,.07,navy,r,10,radius+.009)
+box('door collar',(0,-.325,.37),(.48,.17,.44),navy,r)
+box('iron fire door',(0,-.419,.36),(.38,.045,.33),black,r)
+for x in [-.11,0,.11]:box('warm fire slot',(x,-.445,.30),(.044,.016,.12),ember,r,.007)
+beam('door latch',(.10,-.46,.40),(.22,-.46,.40),.04,gold,r)
+cyl('flue shoulder',(0,.15,1.02),.38,.18,black,r,10,.19)
+for x in [.52,.96]:
+    for y in [-.32,.22]:box('bench leg',(x,y,.20),(.10,.10,.42),wood,r)
 box('bench',(.73,-.05,.43),(.65,.75,.13),wood,r)
 for i in range(3):ico('glass lump',(.55+i*.15,-.08,.60),(.11,.18,.16),[blue,mint,violet][i],r)
-cyl('chimney',(0,.15,1.16),.17,.38,stone,r,8)
+cyl('chimney',(0,.15,1.30),.17,.42,stone,r,10)
+cyl('flue rim',(0,.15,1.50),.20,.07,navy,r,10)
+cyl('flue mouth',(0,.15,1.537),.145,.008,black,r,10)
 export('glassworks')
 
 clean();r=node('Basaltworks')

@@ -113,7 +113,7 @@ func harbor_check():
 	check(absf(rad_to_deg(asin(axis.dot(Vector3.UP)))-25.)<.02,"closed maximum zoom looks across the ground at 25 degrees")
 	await snap("pier-close")
 	game.resume_collect();await create_timer(.55).timeout
-	check(is_equal_approx(game.camera.size,3.2) and game.inspection_tilt==1.,"opening a word card preserves the chosen close camera")
+	check(is_equal_approx(game.camera.size,3.2) and is_equal_approx(game.inspection_tilt,1.),"opening a word card preserves the chosen close camera")
 func run():
 	game=load("res://main.tscn").instantiate();root.add_child(game)
 	await create_timer(.45).timeout

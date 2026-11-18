@@ -22,6 +22,10 @@ var answers:Array=[]
 var word_label:Button
 var word_submit:Button
 var word_selection_count:Label
+var word_meaning:Label
+var word_inventory:Button
+var word_footer:HBoxContainer
+var word_grid:GridContainer
 var word_help:Button
 var screen=""
 var word_tween:Tween
@@ -120,13 +124,14 @@ func set_world_ready(ready:bool):
 
 func clear_body():
 	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_AUTO
+	body.add_theme_constant_override("separation",6)
+	var panel=card.get_theme_stylebox("panel");panel.content_margin_left=16;panel.content_margin_right=16
 	card_scroll.scroll_vertical=0
 	for child in body.get_children():child.hide();child.queue_free()
-	answers.clear();word_label=null;word_submit=null;word_selection_count=null;word_help=null
+	word_grid=null;word_footer=null;word_meaning=null;word_inventory=null;answers.clear();word_label=null;word_submit=null;word_selection_count=null;word_help=null
 func layout_card(height:float):
 	card_height=height
 	position_card(card_shift)
-	sites.offset_top=-height-80;sites.offset_bottom=-height-30
 func position_card(shift:float):
 	card_shift=shift
 	var height=minf(card_height,maxf(1,safe_rect.size.y-98))
@@ -134,6 +139,7 @@ func position_card(shift:float):
 		height=maxf(height,body.get_parent().get_combined_minimum_size().y+card.get_theme_stylebox("panel").get_minimum_size().y)
 	card.offset_bottom=-20+shift
 	card.offset_top=-20+shift-height
+	sites.offset_top=card.offset_top-60;sites.offset_bottom=card.offset_top-10
 func set_card_open(open:bool,animate=true):
 	if card_tween and card_tween.is_valid():card_tween.kill()
 	card_open=open
@@ -160,7 +166,9 @@ func refresh_safe_area():
 func apply_safe_rect(rect:Rect2):
 	if not rect.has_area() or (rect.is_equal_approx(safe_rect) and safe_frame.size.is_equal_approx(rect.size)):return
 	safe_rect=rect;safe_frame.position=rect.position;safe_frame.size=rect.size
-	if is_instance_valid(card):position_card(card_shift)
+	if is_instance_valid(card):
+		fit_word_controls()
+		position_card(card_shift)
 	if is_instance_valid(active_panel):fit_modal()
 	safe_rect_changed.emit(rect)
 
@@ -238,7 +246,8 @@ func update_world_progress():
 func task_heading(label:String):
 	var r=row(body);text(r,label,15,GREEN).size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	if game.frontier.data.active in ["goldmine","smelter"]:
-		ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
+		word_inventory=ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
+		word_inventory.size_flags_horizontal=Control.SIZE_SHRINK_END
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
 	return r
 func show_task():
@@ -250,6 +259,7 @@ func show_task():
 		"listen":show_listen()
 		"sentence":show_sentence()
 func show_word():
+	card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
 	var q=game.current
 	if q.is_empty():
 		layout_card(205)
@@ -259,9 +269,7 @@ func show_word():
 		return
 	var intro=game.introducing()
 	var multi=game.word_senses.is_multi(q)
-	if intro:
-		card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
-	layout_card((285 if multi else 225) if intro else (510 if multi else 365))
+	layout_card(1)
 	var kind=str(q.get("review_kind","text"))
 	var listen=kind=="audio" and not intro
 	var reverse=kind=="reverse" and not intro
@@ -271,30 +279,36 @@ func show_word():
 	var r=task_heading(title+(" · "+{"audio":"听音选意","text":"看词选意","reverse":"看意选词"}[kind] if not intro else ""))
 	var star=icon(r,"star",game.bookmark,"收藏");star.lit=game.learning.data.bookmarks.has(q.id)
 	if reverse:
-		text(body,q.zh,25,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		word_meaning=text(body,q.zh,25,GREEN);word_meaning.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	else:
 		word_label=word_button(body,"点一下，再听一遍" if listen else q.word,q.id);word_label.add_theme_font_size_override("font_size",28 if listen else 34)
-	if not listen and not reverse:
-		var width=game.font.get_string_size(q.word,HORIZONTAL_ALIGNMENT_LEFT,-1,34).x
-		word_label.add_theme_font_size_override("font_size",clampi(int(34*minf(1.0,(size.x-80)/maxf(1,width))),19,34))
-	text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	if is_instance_valid(word_label):
+		word_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+		word_label.custom_minimum_size.y=44
+	if not multi or not intro:
+		text(body,q.pos,14,Color("789087")).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	if intro:
 		text(body,"\n".join(q.sense_labels) if multi else q.options[int(q.correct)],21 if multi else 23).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 		var actions=row(body)
 		button(actions,"记好了",game.introduce_word.bind(q.id),true)
 		button(actions,"学会",game.introduce_word.bind(q.id,true))
+		fit_word_controls()
 		if not game.exploring and game.word_should_autoplay():game.call_deferred("speak_word")
 		return
+	word_grid=GridContainer.new();word_grid.columns=2
+	word_grid.add_theme_constant_override("h_separation",8);word_grid.add_theme_constant_override("v_separation",6)
+	body.add_child(word_grid)
+	for answer in game.order:
+		var b=button(word_grid,q.options[answer],game.toggle_word_answer.bind(answer) if multi else game.answer.bind(answer),false,44)
+		b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)
+	word_footer=row(body)
+	word_help=ghost(word_footer,"看提示",game.reveal,40)
 	if multi:
-		word_selection_count=text(body,"",16,GREEN);word_selection_count.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	var grid=GridContainer.new();grid.columns=2;grid.add_theme_constant_override("h_separation",10);grid.add_theme_constant_override("v_separation",9);body.add_child(grid)
-	for i in range(q.options.size()):
-		var answer=game.order[i];var b=button(grid,q.options[answer],game.toggle_word_answer.bind(answer) if multi else game.answer.bind(answer),false,51 if multi else 57);b.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;b.custom_minimum_size.x=1;answers.append(b)
-		if str(q.options[answer]).length()>18:b.add_theme_font_size_override("font_size",15)
-	if multi:
-		word_submit=button(body,"确认",game.submit_word_answers,true,44);word_submit.name="WordSubmit"
+		word_selection_count=text(word_footer,"",15,GREEN)
+		word_selection_count.autowrap_mode=TextServer.AUTOWRAP_OFF
+		word_submit=button(word_footer,"确认",game.submit_word_answers,true,44);word_submit.name="WordSubmit"
 		update_word_selection()
-	spacer(body,5);divider(body);word_help=ghost(body,"想不起来？看提示",game.reveal,35)
+	fit_word_controls()
 	if not game.exploring and game.word_should_autoplay() and game.review_feedback.is_empty():game.call_deferred("speak_word")
 
 func show_word_feedback(selected:int,correct:bool):
@@ -303,31 +317,63 @@ func show_word_feedback(selected:int,correct:bool):
 		game.current=game.word_review.prepare(game.current,str(game.current.get("review_kind","text")),game.learning.active_bank)
 	clear_body();show_word()
 	var q=game.current
-	layout_card(550 if game.word_senses.is_multi(q) else 435)
 	if is_instance_valid(word_label):word_label.text=q.word
-	if is_instance_valid(word_submit):word_submit.hide()
-	if is_instance_valid(word_selection_count):word_selection_count.hide()
-	if is_instance_valid(word_help):word_help.hide()
+	if is_instance_valid(word_meaning):word_meaning.text=q.word
+	word_footer.hide()
 	var expected:Array=q.get("correct_indices",[int(q.correct)])
 	for i in answers.size():
 		var index=game.order[i];var b=answers[i]
 		b.text=str(q.option_meanings[index])+"\n"+str(q.option_words[index])
-		b.custom_minimum_size.y=76;b.add_theme_font_size_override("font_size",17);b.disabled=true
+		b.disabled=true
 		b.add_theme_color_override("font_disabled_color",INK)
 		var style=b.get_theme_stylebox("disabled").duplicate()
 		if expected.has(index):style.bg_color=Color("B6DDAC")
 		elif index==selected or game.word_selected.has(index):style.bg_color=Color("F3C4B9")
 		b.add_theme_stylebox_override("disabled",style)
 	text(body,"轻点任意处，继续" if correct else "看看对应的单词 · 轻点任意处再试一次",16,GREEN).horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+	fit_word_controls()
+
+func fit_word_controls():
+	if not is_instance_valid(card_scroll) or card_scroll.vertical_scroll_mode!=ScrollContainer.SCROLL_MODE_DISABLED:return
+	var compact=safe_rect.size.x<410 or safe_rect.size.y<600
+	var panel=card.get_theme_stylebox("panel")
+	panel.content_margin_left=10 if compact else 16;panel.content_margin_right=panel.content_margin_left
+	body.add_theme_constant_override("separation",3 if compact else 6)
+	if is_instance_valid(word_inventory):
+		var stock="矿 %d · 金 %d" % [game.frontier.data.voyage.ore,game.frontier.data.voyage.coins]
+		word_inventory.text="库存" if compact else stock;word_inventory.tooltip_text=stock
+	if is_instance_valid(word_meaning):word_meaning.add_theme_font_size_override("font_size",19 if compact else 25)
+	var width=safe_rect.size.x+card.offset_right-card.offset_left-card.get_theme_stylebox("panel").get_minimum_size().x-10.
+	if is_instance_valid(word_label):
+		var available=width
+		if word_label.get_parent() is HBoxContainer:
+			for control in word_label.get_parent().get_children():
+				if control!=word_label:available-=control.get_combined_minimum_size().x+9
+		var measured=game.font.get_string_size(word_label.text,HORIZONTAL_ALIGNMENT_LEFT,-1,32).x
+		word_label.add_theme_font_size_override("font_size",clampi(floori(32*available/maxf(measured,1)),17,32))
+	if not is_instance_valid(word_grid):return
+	var column=floorf((width-word_grid.get_theme_constant("h_separation"))/2.)
+	for b in answers:
+		var font_size=15 if compact else 16 if b.disabled or column<160 or b.text.length()>16 else 19
+		b.add_theme_font_size_override("font_size",font_size)
+		for state in ["normal","pressed","hover","disabled"]:
+			var box=b.get_theme_stylebox(state)
+			box.content_margin_left=8 if compact else 14;box.content_margin_right=box.content_margin_left
+			box.content_margin_top=4 if compact else 8;box.content_margin_bottom=box.content_margin_top
+		var style=b.get_theme_stylebox("disabled" if b.disabled else "normal")
+		var interior=maxf(1,column-style.get_minimum_size().x)
+		var lines=game.font.get_multiline_string_size(b.text,HORIZONTAL_ALIGNMENT_CENTER,interior,font_size)
+		b.custom_minimum_size.y=maxf(44,ceilf(lines.y)+style.get_minimum_size().y+2)
 func show_help():
-	clear_body();screen="help";layout_card(365);var q=game.current
-	var r=row(body);word_label=word_button(r,q.word,q.id,48);word_label.add_theme_font_size_override("font_size",30)
+	clear_body();screen="help";card_scroll.vertical_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED;layout_card(1);var q=game.current
+	var r=row(body);word_label=word_button(r,q.word,q.id,48);word_label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;word_label.add_theme_font_size_override("font_size",30)
 	if game.frontier.data.active in ["goldmine","smelter"]:
-		ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
+		word_inventory=ghost(r,"矿 "+str(game.frontier.data.voyage.ore)+" · 金 "+str(game.frontier.data.voyage.coins),game.show_rocket,30)
+		word_inventory.size_flags_horizontal=Control.SIZE_SHRINK_END
 	if game.learning.data.dev_skip:icon(r,"skip",game.skip_learning,"跳过学习")
 	text(body,"\n".join(q.sense_labels) if game.word_senses.is_multi(q) else q.zh,21,GREEN)
-	if not str(q.get("example","")).is_empty():reading(body,q.example,72,20);text(body,q.translation,17,Color("70857B"))
-	spacer(body,5);button(body,"遮住释义，再想一次",game.retry,true,47)
+	if not str(q.get("example","")).is_empty():reading(body,q.example,0,19);text(body,q.translation,17,Color("70857B"))
+	button(body,"遮住释义，再想一次",game.retry,true,47);fit_word_controls()
 func show_read():
 	layout_card(430);var m=game.mission;var r=task_heading(m.title)
 	icon(r,"play",game.speak_task,"听这段");ghost(r,"展开" if game.short_reading else "短一点",game.toggle_short)
@@ -367,17 +413,18 @@ func feedback(answer:int):
 func update_word_selection():
 	if not is_instance_valid(word_submit) or not is_instance_valid(word_selection_count):return
 	var count=game.current.correct_indices.size()
-	word_selection_count.text="选出 %d 个常见意思 · 已选 %d/%d" % [count,game.word_selected.size(),count]
+	word_selection_count.text="选 %d 项 · %d/%d" % [count,game.word_selected.size(),count]
 	word_submit.disabled=game.word_selected.size()!=count or game.locked
 	for i in range(answers.size()):
 		var selected=game.word_selected.has(game.order[i]);var b=answers[i]
 		b.text=("✓ " if selected else "")+str(game.current.options[game.order[i]])
 		b.add_theme_stylebox_override("normal",skin(Color("BFD9CE") if selected else Color("E5EFE4"),14))
+	fit_word_controls()
 func pulse_word():
 	if not is_instance_valid(word_label):return
 	if word_tween and word_tween.is_valid():word_tween.kill()
 	word_label.pivot_offset=word_label.size*.5;word_label.scale=Vector2.ONE
-	word_tween=create_tween();word_tween.tween_property(word_label,"scale",Vector2.ONE*1.035,.10);word_tween.tween_property(word_label,"scale",Vector2.ONE,.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	word_tween=create_tween();word_tween.tween_property(word_label,"scale",Vector2.ONE*(1.+minf(.035,8./maxf(1,word_label.size.x))),.10);word_tween.tween_property(word_label,"scale",Vector2.ONE,.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 func modal(title:String,bottom=false,dim=true)->VBoxContainer:
 	for child in overlay.get_children():child.hide();child.queue_free()
 	overlay.color.a=.66 if dim else 0.0;overlay.show()
@@ -410,7 +457,7 @@ func close():
 	if screen=="space_settings":game.save_progress()
 	overlay.hide();screen="help" if game.help_visible else game.mode
 func reading(parent:Node,value:String,height=235,font_size=21):
-	var rich=RichTextLabel.new();rich.bbcode_enabled=true;rich.custom_minimum_size.y=height;rich.scroll_active=true;rich.meta_underlined=false
+	var rich=RichTextLabel.new();rich.bbcode_enabled=true;rich.custom_minimum_size.y=height;rich.fit_content=height==0;rich.scroll_active=height>0;rich.meta_underlined=false
 	rich.add_theme_color_override("default_color",INK);rich.add_theme_font_size_override("normal_font_size",font_size)
 	var regex=RegEx.new();regex.compile("[A-Za-z]+(?:'[A-Za-z]+)?");var result="";var last=0
 	for m in regex.search_all(value):

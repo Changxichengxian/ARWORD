@@ -25534,14 +25534,14 @@
   {
     "id": "boiler",
     "word": "boiler",
-    "zh": "煮器",
+    "zh": "锅炉",
     "definition": "n. 煮器, 汽锅, 锅炉\n[化] 锅炉",
     "pos": "名词",
     "band": 2,
     "audio": "wordbooks/audio/8b4df85a07e71f5eaa57.mp3",
     "options": [
       "社区",
-      "煮器",
+      "锅炉",
       "区域",
       "巨大"
     ],
@@ -25549,7 +25549,7 @@
     "example": "",
     "translation": "",
     "phonetic": "'bɒilә",
-    "meaning_source": "dictionary",
+    "meaning_source": "reviewed",
     "option_ids": [
       "community",
       "boiler",
@@ -90802,7 +90802,7 @@
     "options": [
       "倾斜",
       "同盟者",
-      "煮器",
+      "锅炉",
       "伙伴关系"
     ],
     "correct": 3,
@@ -98783,7 +98783,7 @@
     "audio": "wordbooks/audio/d735fb5e9f2f61a33e8d.mp3",
     "options": [
       "客户",
-      "火炉",
+      "熔炉",
       "化石",
       "水牛"
     ],
@@ -101922,13 +101922,13 @@
   {
     "id": "furnace",
     "word": "furnace",
-    "zh": "火炉",
+    "zh": "熔炉",
     "definition": "n. 火炉, 熔炉, 考验\nvt. 在炉中烧",
     "pos": "名词",
     "band": 2,
     "audio": "wordbooks/audio/5a5770fe3a5dec2f47e9.mp3",
     "options": [
-      "火炉",
+      "熔炉",
       "存款",
       "吸收",
       "批评家"
@@ -101937,7 +101937,7 @@
     "example": "",
     "translation": "",
     "phonetic": "'fә:nis",
-    "meaning_source": "dictionary",
+    "meaning_source": "reviewed",
     "option_ids": [
       "furnace",
       "saving",
@@ -190616,7 +190616,7 @@
     "options": [
       "托盘",
       "争论",
-      "煮器",
+      "锅炉",
       "公主"
     ],
     "correct": 3,
@@ -193190,7 +193190,7 @@
     "options": [
       "贫穷",
       "誓约",
-      "火炉",
+      "熔炉",
       "景色"
     ],
     "correct": 3,
@@ -217238,7 +217238,7 @@
     "band": 2,
     "audio": "wordbooks/audio/21a0270b7f66a1e4c259.mp3",
     "options": [
-      "煮器",
+      "锅炉",
       "插入",
       "手迹",
       "缎带"
@@ -237079,7 +237079,7 @@
       "阻止",
       "立场",
       "刺激",
-      "火炉"
+      "熔炉"
     ],
     "correct": 2,
     "example": "",
@@ -265834,7 +265834,7 @@
     "options": [
       "光亮",
       "驴",
-      "煮器",
+      "锅炉",
       "天鹅绒"
     ],
     "correct": 3,
@@ -273271,7 +273271,7 @@
       "皇室",
       "研究人员",
       "威士忌酒",
-      "煮器"
+      "锅炉"
     ],
     "correct": 2,
     "example": "",

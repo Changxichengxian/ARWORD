@@ -74,4 +74,4 @@ func test_footprint_samples():
 			sample_world.water.calls=0
 			check(absf(life.body_depth_normal(n,radius)-expected)<.000001,"animal seabed clearance changed")
 			check(sample_world.water.calls==9,"animal footprint must still query all nine samples")
-	life.tidepool.free();life.free()
+	life.tidepool.free();life.land_life.free();life.free()

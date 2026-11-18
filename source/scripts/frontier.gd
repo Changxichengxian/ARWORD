@@ -8,23 +8,23 @@ const ROCKET_CELLS=[Vector2i(0,-20),Vector2i(1,-20),Vector2i(0,-19)]
 const TRADE_PRICE=36
 const TRADE_BAG=6
 const CHAPTERS=[
-	{"id":"grove","title":"沿岸树林","need":6,"requires":[],"cells":[Vector2i(-1,0),Vector2i(-1,1),Vector2i(-2,1)],"point":Vector2i(-1,1),"site":0,"note":0},
-	{"id":"quarry","title":"露出石岸","need":6,"requires":[],"cells":[Vector2i(1,-1),Vector2i(2,-1),Vector2i(2,0)],"point":Vector2i(2,-1),"site":1,"note":0},
-	{"id":"sawmill","title":"林间锯木坊","need":8,"requires":["grove","quarry"],"cells":[Vector2i(0,-1),Vector2i(0,-2),Vector2i(1,-2)],"point":Vector2i(0,-1),"site":0,"note":1},
-	{"id":"meadow","title":"南边的草地","need":6,"requires":["grove"],"cells":[Vector2i(0,2),Vector2i(-1,2),Vector2i(-1,3)],"point":Vector2i(-1,2),"site":2,"note":3},
-	{"id":"kiln","title":"石岸砖窑","need":8,"requires":["quarry","sawmill"],"cells":[Vector2i(3,-1),Vector2i(3,0),Vector2i(2,1)],"point":Vector2i(3,0),"site":1,"note":2},
-	{"id":"crystal","title":"晶簇小湾","need":8,"requires":["kiln"],"cells":[Vector2i(-1,-1),Vector2i(-1,-2),Vector2i(-2,-1)],"point":Vector2i(-1,-1),"site":1,"note":4},
-	{"id":"hill","title":"向风的小丘","need":6,"requires":["quarry"],"cells":[Vector2i(1,1),Vector2i(1,2),Vector2i(1,3)],"point":Vector2i(1,2),"site":1,"note":3},
-	{"id":"wetland","title":"芦苇浅湾","need":8,"requires":["meadow"],"cells":[Vector2i(-2,2),Vector2i(-3,2),Vector2i(-3,3)],"point":Vector2i(-3,2),"site":0,"note":3,"gate":"wood","threshold":8},
-	{"id":"plateau","title":"石脊高原","need":10,"requires":["quarry"],"cells":[Vector2i(3,-2),Vector2i(4,-2),Vector2i(4,-1)],"point":Vector2i(4,-2),"site":1,"note":0,"gate":"stone","threshold":10},
-	{"id":"mountain","title":"云杉观星台","need":12,"requires":["plateau","hill","crystal"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0},
-	{"id":"shipyard","title":"弯月船坞","need":12,"requires":["sawmill","kiln","wetland","plateau"],"cells":[Vector2i(-3,0),Vector2i(-3,1),Vector2i(-4,1)],"point":Vector2i(-3,1),"site":0,"note":5},
-	{"id":"sunreach","title":"椰风群岛","need":10,"requires":["shipyard"],"cells":[Vector2i(20,0),Vector2i(21,0),Vector2i(20,1)],"point":Vector2i(20,0),"site":0,"note":6},
-	{"id":"coral","title":"潮光玻璃坊","need":12,"requires":["sunreach","crystal"],"cells":[Vector2i(19,1),Vector2i(19,2),Vector2i(20,2)],"point":Vector2i(19,1),"site":1,"note":7},
-	{"id":"basalt","title":"黑沙熔岩台","need":10,"requires":["shipyard","plateau"],"cells":[Vector2i(-20,0),Vector2i(-21,1),Vector2i(-20,1)],"point":Vector2i(-20,0),"site":1,"note":8},
-	{"id":"tideworks","title":"潮汐引水站","need":12,"requires":["basalt","sunreach","wetland"],"cells":[Vector2i(-19,0),Vector2i(-19,-1),Vector2i(-20,-1)],"point":Vector2i(-19,0),"site":2,"note":9},
-	{"id":"goldmine","title":"远岛金矿洞","need":8,"requires":["shipyard"],"cells":[Vector2i(0,20),Vector2i(1,20),Vector2i(0,21)],"point":Vector2i(0,20),"site":1},
-	{"id":"smelter","title":"主岛铸币坊","need":8,"requires":["goldmine","kiln"],"cells":[Vector2i(-3,-1),Vector2i(-4,0),Vector2i(-4,-1)],"point":Vector2i(-3,-1),"site":1}
+	{"id":"grove","title":"树林","need":6,"requires":[],"cells":[Vector2i(-1,0),Vector2i(-1,1),Vector2i(-2,1)],"point":Vector2i(-1,1),"site":0,"note":0},
+	{"id":"quarry","title":"采石场","need":6,"requires":[],"cells":[Vector2i(1,-1),Vector2i(2,-1),Vector2i(2,0)],"point":Vector2i(2,-1),"site":1,"note":0},
+	{"id":"sawmill","title":"锯木坊","need":8,"requires":["grove","quarry"],"cells":[Vector2i(0,-1),Vector2i(0,-2),Vector2i(1,-2)],"point":Vector2i(0,-1),"site":0,"note":1},
+	{"id":"meadow","title":"草地","need":6,"requires":["grove"],"cells":[Vector2i(0,2),Vector2i(-1,2),Vector2i(-1,3)],"point":Vector2i(-1,2),"site":2,"note":3},
+	{"id":"kiln","title":"砖窑","need":8,"requires":["quarry","sawmill"],"cells":[Vector2i(3,-1),Vector2i(3,0),Vector2i(2,1)],"point":Vector2i(3,0),"site":1,"note":2},
+	{"id":"crystal","title":"水晶湾","need":8,"requires":["kiln"],"cells":[Vector2i(-1,-1),Vector2i(-1,-2),Vector2i(-2,-1)],"point":Vector2i(-1,-1),"site":1,"note":4},
+	{"id":"hill","title":"山丘","need":6,"requires":["quarry"],"cells":[Vector2i(1,1),Vector2i(1,2),Vector2i(1,3)],"point":Vector2i(1,2),"site":1,"note":3},
+	{"id":"wetland","title":"芦苇湾","need":8,"requires":["meadow"],"cells":[Vector2i(-2,2),Vector2i(-3,2),Vector2i(-3,3)],"point":Vector2i(-3,2),"site":0,"note":3,"gate":"wood","threshold":8},
+	{"id":"plateau","title":"高原","need":10,"requires":["quarry"],"cells":[Vector2i(3,-2),Vector2i(4,-2),Vector2i(4,-1)],"point":Vector2i(4,-2),"site":1,"note":0,"gate":"stone","threshold":10},
+	{"id":"mountain","title":"观星台","need":12,"requires":["plateau","hill","crystal"],"cells":[Vector2i(0,-3),Vector2i(1,-3),Vector2i(2,-3)],"point":Vector2i(1,-3),"site":1,"note":0},
+	{"id":"shipyard","title":"船坞","need":12,"requires":["sawmill","kiln","wetland","plateau"],"cells":[Vector2i(-3,0),Vector2i(-3,1),Vector2i(-4,1)],"point":Vector2i(-3,1),"site":0,"note":5},
+	{"id":"sunreach","title":"椰林岛","need":10,"requires":["shipyard"],"cells":[Vector2i(20,0),Vector2i(21,0),Vector2i(20,1)],"point":Vector2i(20,0),"site":0,"note":6},
+	{"id":"coral","title":"玻璃坊","need":12,"requires":["sunreach","crystal"],"cells":[Vector2i(19,1),Vector2i(19,2),Vector2i(20,2)],"point":Vector2i(19,1),"site":1,"note":7},
+	{"id":"basalt","title":"玄武岩台","need":10,"requires":["shipyard","plateau"],"cells":[Vector2i(-20,0),Vector2i(-21,1),Vector2i(-20,1)],"point":Vector2i(-20,0),"site":1,"note":8},
+	{"id":"tideworks","title":"引水站","need":12,"requires":["basalt","sunreach","wetland"],"cells":[Vector2i(-19,0),Vector2i(-19,-1),Vector2i(-20,-1)],"point":Vector2i(-19,0),"site":2,"note":9},
+	{"id":"goldmine","title":"金矿洞","need":8,"requires":["shipyard"],"cells":[Vector2i(0,20),Vector2i(1,20),Vector2i(0,21)],"point":Vector2i(0,20),"site":1},
+	{"id":"smelter","title":"铸币坊","need":8,"requires":["goldmine","kiln"],"cells":[Vector2i(-3,-1),Vector2i(-4,0),Vector2i(-4,-1)],"point":Vector2i(-3,-1),"site":1}
 ]
 const PRODUCTION={
 	"grove":{"name":"木料","raw":"timber","product":"timber","tool":0},
@@ -317,4 +317,4 @@ func try_unlock_rocket()->bool:
 	return true
 
 func facility_title(id:String)->String:
-	return {"quarry":"石岸切石场","wetland":"浅湾织帆屋","plateau":"高原锻造台","crystal":"晶湾磨镜台","mountain":"云杉观星台","hill":"山风取水泵","meadow":"果粮采收园"}.get(id,title(id))
+	return {"quarry":"切石场","wetland":"织帆屋","plateau":"锻造台","crystal":"磨镜台","mountain":"观星台","hill":"取水泵","meadow":"果园"}.get(id,title(id))

@@ -16,7 +16,9 @@ var other_claw:Node3D
 var pincer_left:Node3D
 var pincer_right:Node3D
 var legs:Array=[]
-var belly_points:PackedVector3Array=[]
+var coat:Skeleton3D
+var chest_bone:int
+var head_bone:int
 var attention=0.
 var scuttle=0.
 var attention_blend=0.
@@ -45,16 +47,8 @@ func _ready():
 	hind_left=seal.find_child("HindL",true,false);hind_right=seal.find_child("HindR",true,false)
 	claw=crab.find_child("ClawL",true,false);other_claw=crab.find_child("ClawR",true,false)
 	pincer_left=crab.find_child("PincerL",true,false);pincer_right=crab.find_child("PincerR",true,false)
-	# Only the torso contact points determine belly support; flippers remain
-	# hinged at the shoulder and rise on the lower side during a body roll.
-	var unique={}
-	for part in body.get_children():
-		if not part is MeshInstance3D:continue
-		for surface in part.mesh.get_surface_count():
-			for v in part.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]:
-				var point=body.to_local(part.to_global(v))
-				if point.y<.18:unique[point]=true
-	for point in unique:belly_points.append(point)
+	coat=seal.find_children("*","Skeleton3D",true,false)[0]
+	chest_bone=coat.find_bone("CoatChest");head_bone=coat.find_bone("CoatHead")
 	for side in ["L","R"]:
 		for index in range(4):
 			var leg=crab.find_child("Leg"+side+str(index),true,false)
@@ -128,7 +122,12 @@ func choose_coast(life):
 				for i in range(13):
 					var n=lip.slerp(sea,float(i)/12.)
 					if not life.clear_of_cave(n,.72) or not life.clear_of_seabed_props(n,.55,IslandWater.MAX_DEPTH):safe=false;break
-				if safe:homes.append({"cell":cell,"chart":world.terrain.chart_at(center),"dry":dry,"sea":sea,"shore":shore,"ups":ups})
+				var side=Vector2(-out.y,out.x)
+				var seal_room=world.clear_segment(dry-side*.55,dry+side*.55,.21,false)
+				for prop in life.land_life.low_props:
+					var nearest=Geometry2D.get_closest_point_to_segment(prop.center,dry-side*.55,dry+side*.55)
+					if nearest.distance_to(prop.center)<prop.radius:seal_room=false;break
+				if safe:homes.append({"seal_room":seal_room,"cell":cell,"chart":world.terrain.chart_at(center),"dry":dry,"sea":sea,"shore":shore,"ups":ups})
 	show()
 	var residents=crabs+[seal_mover]
 	for entry in residents:
@@ -143,7 +142,7 @@ func choose_coast(life):
 				if not navigation.clear_arc(candidate,candidate):continue
 				var separated=true
 				for other in residents:
-					if other!=entry and other.get("point",Vector3.ZERO)!=Vector3.ZERO and other.point.distance_to(seabed_point(candidate))<1.0:separated=false
+					if other!=entry and other.get("point",Vector3.ZERO)!=Vector3.ZERO and other.point.distance_to(seabed_point(candidate))<resident_radius(other)+resident_radius(entry):separated=false
 				if separated:n=candidate;break
 			entry.point=seabed_point(n);entry.up=n
 		elif entry.point!=Vector3.ZERO:
@@ -188,7 +187,7 @@ func recover_coast(entry:Dictionary):
 func shore_occupied(home:Dictionary,entry:Dictionary)->bool:
 	for other in crabs+[seal_mover]:
 		if other==entry or other.home.is_empty():continue
-		if other.phase in ["travel","rest","depart"] and other.home.dry.distance_to(home.dry)<1.2:return true
+		if other.phase in ["travel","rest","depart"] and other.home.dry.distance_to(home.dry)<maxf(1.2,resident_radius(entry)+resident_radius(other)+.15):return true
 	return false
 
 func set_route(entry:Dictionary,points:Array,ups:Array,surfaces:Array):
@@ -212,8 +211,8 @@ func visit_shore(entry:Dictionary)->bool:
 		var av=(0. if a.chart!=other_chart else 2.)+float(posmod(hash(a.dry)^seed,1000))/1000.
 		var bv=(0. if b.chart!=other_chart else 2.)+float(posmod(hash(b.dry)^seed,1000))/1000.
 		return av<bv)
-	for home in choices.slice(0,12):
-		if shore_occupied(home,entry):continue
+	for home in choices:
+		if shore_occupied(home,entry) or (entry.index==3 and not home.seal_room):continue
 		var route=navigation.sea_path(start,home.sea)
 		if route.is_empty():continue
 		var points=[entry.point];var ups=[entry.up];var surfaces=[]
@@ -227,6 +226,30 @@ func visit_shore(entry:Dictionary)->bool:
 		entry.home=home;set_route(entry,points,ups,surfaces);entry.phase="travel";entry.queue_time=0.
 		return true
 	return false
+
+# Conservative horizontal envelopes include the tip of the tail and the claws.
+func resident_radius(entry:Dictionary)->float:
+	return entry.size*(1.09 if entry.index==3 else .62)
+
+func blocked_by(entry:Dictionary,next_point:Vector3)->Dictionary:
+	for other in crabs+[seal_mover]:
+		if entry.index==other.index or other.get("point",Vector3.ZERO)==Vector3.ZERO:continue
+		var distance=next_point.distance_to(other.point)
+		if distance<resident_radius(entry)+resident_radius(other) and distance<entry.point.distance_to(other.point):
+			return other
+	return {}
+
+func detour(entry:Dictionary,other:Dictionary):
+	var n:Vector3=entry.point.normalized()
+	var away:Vector3=(entry.point-other.point).slide(n).normalized()
+	for turn in [1.,-1.,0.]:
+		var direction=(away+n.cross(away)*turn).normalized()
+		var end=(entry.point+direction*.85).normalized()
+		if not navigation.clear_arc(n,end):continue
+		var target=seabed_point(end)
+		if not blocked_by(entry,target).is_empty():continue
+		set_route(entry,[entry.point,target],[n,end],["seabed"])
+		entry.phase="roam";entry.blocked_time=0.;return
 
 func advance_mover(entry:Dictionary,dt:float):
 	entry.moving=false
@@ -253,7 +276,16 @@ func advance_mover(entry:Dictionary,dt:float):
 			var length=a.distance_to(b)
 			if entry.distance<length and length>.0001:
 				var amount=entry.distance/length
-				entry.point=a.lerp(b,amount);entry.up=entry.ups[entry.segment].slerp(entry.ups[entry.segment+1],amount).normalized()
+				var next_point=a.lerp(b,amount)
+				if entry.surfaces[entry.segment]=="seabed":
+					var blocker=blocked_by(entry,next_point)
+					if not blocker.is_empty():
+						entry.distance=maxf(0.,entry.distance-dt*speed*(1.+entry.panic*.55))
+						entry.blocked_time=entry.get("blocked_time",0.)+dt
+						if entry.blocked_time>.45:detour(entry,blocker)
+						break
+				entry.blocked_time=0.
+				entry.point=next_point;entry.up=entry.ups[entry.segment].slerp(entry.ups[entry.segment+1],amount).normalized()
 				entry.surface=entry.surfaces[entry.segment]
 				if entry.surface=="seabed":
 					entry.point=seabed_point(entry.point.normalized());entry.up=seabed_up(entry.point.normalized())
@@ -315,24 +347,32 @@ func support_surface(entry:Dictionary,dt:float):
 	entry.support_wait=entry.get("support_wait",0.)-dt
 	if entry.support_wait>0. and entry.get("support_surface","")==entry.surface:return
 	entry.support_wait=.05;entry.support_surface=entry.surface
-	var lift=0.
+	var lift=-INF
 	# Fit the actual posed fins, belly and feet to curved basin floors. The
 	# movement path itself remains continuous; only ground support is lifted.
 	var old:float=entry.get("support_lift",0.)
-	if entry.surface in ["seabed","land"]:
+	var near_shore=entry.surface=="shore" and absf(entry.point.length()-entry.home.shore[1].length())<.33
+	if entry.surface in ["seabed","land"] or near_shore:
 		for contact in entry.contacts:
 			var p=to_local(contact.node.to_global(contact.point))-entry.point.normalized()*old
 			var height=habitat.world.water.floor_radius(p.normalized())
-			if entry.surface=="land":
+			if entry.surface=="land" or near_shore:
 				var coordinate=habitat.world.terrain.coordinates(p)
 				if habitat.world.on_land(coordinate):
 					var key=Vector2i(roundi(coordinate.x*40.),roundi(coordinate.y*40.))
 					if not ground_support_cache.has(key):ground_support_cache[key]=habitat.world.ground_point(coordinate).length()
 					height=ground_support_cache[key]
-			lift=maxf(lift,height+.022-p.length())
+			lift=maxf(lift,height+.012-p.length())
+	lift=maxf(-.07,lift) if is_finite(lift) else 0.
 	lift=maxf(lift,lerpf(old,lift,1.-exp(-maxf(dt,.05)*7.)))
 	entry.support_lift=lift
 	entry.model.position=entry.point+entry.point.normalized()*lift
+
+func rotate_coat_joint(index:int,joint:Node3D):
+	var parent=coat.get_bone_parent(index)
+	var axes=coat.get_bone_global_rest(parent).basis.orthonormalized()
+	var rest=coat.get_bone_rest(index).basis.orthonormalized()
+	coat.set_bone_pose_rotation(index,(axes.inverse()*joint.basis*axes*rest).get_rotation_quaternion())
 
 func animate_seal(t:float):
 	var swimming=habitat and seal_mover.surface=="seabed"
@@ -347,6 +387,7 @@ func animate_seal(t:float):
 	chest.rotation.x=.12*stretch+.055*attention_blend+.045*stroke
 	head.rotation.x=.04*sin(t*.9)-.23*attention_blend+.10*stretch
 	head.rotation.y=.22*sin(t*.48)+.20*attention_blend
+	rotate_coat_joint(chest_bone,chest);rotate_coat_joint(head_bone,head)
 	flipper.rotation=Vector3(.08*stroke,.13*stroke,-.10-.22*stretch-.18*stroke)
 	other_flipper.rotation=Vector3(-.08*stroke,-.13*stroke,.10+.22*stretch+.18*stroke)
 	hind_left.rotation=Vector3(0.,.30*stroke,-.09-.10*stroke)

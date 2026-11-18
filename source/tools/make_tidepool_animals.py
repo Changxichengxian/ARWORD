@@ -106,16 +106,38 @@ def seal():
     coat=material('Soft silver blue coat','9AAEB8')
     belly=material('Pearl belly and muzzle','E0E6DF')
     spots=material('Muted back freckles','7B939F')
-    torso=loft('Rounded tapered body',[(-.85,.065,.07,.10),(-.65,.15,.13,.145),(-.43,.28,.22,.235),
-            (-.16,.35,.285,.285),(.10,.36,.29,.30),(.30,.29,.25,.32),(.44,.21,.19,.34)],body,[coat,belly],28)
-    # Mottling is painted into the coat instead of separate floating bumps.
+    # One skin from tail to brow. The two short joints blend into each other
+    # so looking up does not swing a separate head through the shoulder.
+    rings=[(-.85,.065,.07,.10),(-.65,.15,.13,.145),(-.43,.28,.22,.235),
+           (-.16,.35,.285,.285),(.10,.36,.29,.30),(.22,.33,.27,.32),
+           (.32,.28,.235,.345),(.39,.235,.213,.38),(.44,.225,.215,.423),
+           (.51,.245,.229,.47),(.58,.248,.221,.49),(.65,.216,.18,.48),
+           (.708,.154,.127,.465),(.74,.085,.077,.45),(.752,.024,.032,.45)]
+    torso=loft('Continuous seal coat',rings,body,[coat,belly],28)
     torso.data.materials.append(spots)
     for face in torso.data.polygons:
         if face.center.z>.38 and face.center.y<.13 and int((face.center.y+.9)*37+abs(face.center.x)*61)%11==0:face.material_index=2
     chest=node('Chest',body,(0,.25,.27))
-    loft('Soft shoulder',[(-.10,.27,.20,.025),(.06,.255,.21,.065),(.18,.20,.17,.10)],chest,[coat,belly],28)
     head=node('Head',chest,(0,.16,.12))
-    ico('Rounded head',(0,.10,.10),(.265,.255,.235),coat,head,3)
+    # Keep facial details rigid in the Head frame and ease the shoulder
+    # and neck weights to 100% at the face.
+    bones=bpy.data.armatures.new('Seal joints')
+    rig=bpy.data.objects.new('Coat rig',bones);bpy.context.collection.objects.link(rig)
+    rig.parent=body;torso.parent=rig
+    bpy.context.view_layer.objects.active=rig;bpy.ops.object.mode_set(mode='EDIT')
+    previous=None
+    for name,pivot in [('CoatBody',(0,0,0)),('CoatChest',(0,.25,.27)),('CoatHead',(0,.41,.39))]:
+        bone=bones.edit_bones.new(name);bone.head=pivot;bone.tail=Vector(pivot)+Vector((0,.12,0))
+        bone.parent=previous;previous=bone
+    bpy.ops.object.mode_set(mode='OBJECT')
+    groups=[torso.vertex_groups.new(name=name) for name in ['CoatBody','CoatChest','CoatHead']]
+    for vertex in torso.data.vertices:
+        y=vertex.co.y
+        shoulder=min(1.,max(0.,(y-.10)/.23))
+        neck=min(1.,max(0.,(y-.33)/.21))
+        for group,weight in zip(groups,[1.-shoulder,shoulder*(1.-neck),neck]):
+            if weight:group.add([vertex.index],weight,'REPLACE')
+    skin=torso.modifiers.new('Shoulder and neck','ARMATURE');skin.object=rig
     for s in [-1,1]:
         ico('Soft muzzle',(s*.070,.305,.035),(.102,.068,.074),belly,head,3)
         ico('Dark eye',(s*.169,.268,.147),(.038,.028,.042),ink,head,3)
@@ -132,7 +154,7 @@ def seal():
         hind=node('Hind'+label,body,(s*.065,-.79,.075));fins.append(hind)
         blade('Webbed hind flipper',[(0,.06,0),(s*.08,.015,.005),(s*.13,-.20,-.012),
               (s*.09,-.29,-.01),(s*.035,-.26,0),(-s*.025,-.23,0),(-s*.045,-.06,0)],(0,0,.035),coat,hind)
-    export('wild_seal',[body,chest,head,*fins])
+    export('wild_seal',[rig,chest,head,*fins])
 
 
 def crab():

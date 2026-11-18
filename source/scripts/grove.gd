@@ -53,6 +53,8 @@ var nav_grid={}
 var nav_components={}
 var navigation_signature=""
 var ground_faces={}
+var ground_sites:Array=[]
+var foundations:Array=[]
 var walk_goal=Vector2.ZERO
 var ring_site=""
 var ring_land_count=-1
@@ -125,6 +127,83 @@ func ground_point(p:Vector2)->Vector3:
 	return found if found.length_squared()>1.0 else surface(p)
 func place(node:Node3D,p:Vector2,angle=0.0):
 	node.position=ground_point(p) if node==builder else surface(p);node.basis=terrain.surface_basis(p);node.rotate_object_local(Vector3.UP,angle)
+# Register stationary scenery separately from the moving actor and the hex meshes.
+# The finished coast can be lower than the analytic terrain at the same coordinate.
+func place_static(anchor:Node3D,p:Vector2,angle:float):
+	place(anchor,p,angle)
+	ground_sites.append({"anchor":anchor,"point":p,"angle":angle})
+
+func fit_static_sites():
+	for site in ground_sites:
+		var p:Vector2=site.point
+		if not on_land(p):continue
+		var anchor:Node3D=site.anchor
+		var base=terrain.surface_basis(p)
+		var a=ground_point(p+Vector2(.24,0))-ground_point(p-Vector2(.24,0))
+		var b=ground_point(p+Vector2(0,.24))-ground_point(p-Vector2(0,.24))
+		var normal=b.cross(a).normalized()
+		if normal.dot(base.y)<0:normal=-normal
+		# Gentle slopes follow the footprint; masonry and trees stay upright on cliffs.
+		var tilt=base.y.angle_to(normal)
+		if tilt>.001:base=Basis(Quaternion(base.y,base.y.slerp(normal,minf(1.,.20/tilt))))*base
+		var scale_before=anchor.scale
+		anchor.basis=base.rotated(base.y,site.angle).scaled_local(scale_before)
+		anchor.position=ground_point(p)-base.y*.012
+	for entry in foundations:fit_foundation(entry)
+	for key in decoration_groups:dirty_groups[key]=true
+
+# Sample only the bottom of the actual model. Overhanging roofs and vanes
+# must never enlarge the footing. Its lower rim follows the visible ground.
+func register_foundation(visual:Node3D):
+	var points=PackedVector3Array()
+	var low=INF
+	var relative=visual.global_transform.affine_inverse()
+	for part in visual.find_children("*","MeshInstance3D",true,false):
+		var frame=relative*part.global_transform
+		for surface_id in part.mesh.get_surface_count():
+			for vertex in part.mesh.surface_get_arrays(surface_id)[Mesh.ARRAY_VERTEX]:
+				var point:Vector3=frame*vertex
+				if point.y<=.16:
+					points.append(point)
+					low=minf(low,point.y)
+	var outline=PackedVector2Array()
+	for point in points:
+		if point.y<=low+.07:outline.append(Vector2(point.x,point.z))
+	if outline.size()<3:return
+	var hull=Geometry2D.convex_hull(outline)
+	var rim=PackedVector3Array()
+	for i in range(hull.size()-1):
+		var count=maxi(1,ceili(hull[i].distance_to(hull[i+1])/.24))
+		for step in count:
+			var xy=hull[i].lerp(hull[i+1],float(step)/count)
+			rim.append(Vector3(xy.x,low+.012,xy.y))
+	if rim.size()<3:return
+	var skirt=MeshInstance3D.new();skirt.name="Footing";visual.add_child(skirt);skirt.hide()
+	skirt.material_override=mat("877F72");skirt.material_override.cull_mode=BaseMaterial3D.CULL_DISABLED;skirt.layers=visual.find_children("*","MeshInstance3D",true,false)[0].layers
+	foundations.append({"visual":visual,"skirt":skirt,"rim":rim})
+
+func fit_foundation(entry:Dictionary):
+	var visual:Node3D=entry.visual
+	var anchor:Node3D=visual.get_parent()
+	if not on_land(terrain.coordinates(anchor.position)):return
+	# Resolve at the final scale even when a construction tween is in progress.
+	var frame=Transform3D(anchor.basis.orthonormalized(),anchor.position)*Transform3D(
+		visual.basis.orthonormalized().scaled_local(visual.get_meta("full_scale",visual.scale)),visual.position)
+	var inverse=frame.affine_inverse()
+	var rim:PackedVector3Array=entry.rim;var bottom=PackedVector3Array();var gap=0.
+	for top in rim:
+		var point=frame*top;var p=terrain.coordinates(point)
+		var foot=ground_point(p) if on_land(p) else point.normalized()*(RADIUS-.55)
+		var depth=maxf(.018,top.y-(inverse*foot).y+.025)
+		bottom.append(top-Vector3.UP*depth);gap=maxf(gap,depth)
+	if gap<.06:
+		entry.skirt.hide();return
+	var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in rim.size():
+		var j=(i+1)%rim.size()
+		for v in [rim[i],bottom[j],bottom[i],rim[i],rim[j],bottom[j]]:st.add_vertex(v)
+	st.generate_normals();entry.skirt.mesh=st.commit();entry.skirt.show()
+
 func pebble(parent:Node3D,p:Vector3,s:Vector3,color:String)->MeshInstance3D:
 	var n=MeshInstance3D.new();var mesh=SphereMesh.new();mesh.radius=.5;mesh.height=1;mesh.radial_segments=6;mesh.rings=3;n.mesh=mesh;n.material_override=mat(color);parent.add_child(n);n.position=p;n.scale=s;return n
 func pop(node:Node3D,delay=0.0,base=Vector3.ONE):
@@ -262,7 +341,7 @@ func path_segment(a:Vector2,b:Vector2):
 	var side=Vector2(-(b-a).y,(b-a).x).normalized()*.11;var st=SurfaceTool.new();st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for i in range(6):
 		var p=a.lerp(b,i/6.0);var q=a.lerp(b,(i+1)/6.0)
-		for v in [p-side,q+side,p+side,p-side,q-side,q+side]:st.add_vertex(surface(v)*1.002)
+		for v in [p-side,q+side,p+side,p-side,q-side,q+side]:st.add_vertex(ground_point(v)*1.0007)
 	st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();n.material_override=mat("C9B983");scenery.add_child(n)
 func marker(id:String):
 	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,game.frontier.target(id));markers[id]=anchor
@@ -272,14 +351,14 @@ func marker(id:String):
 		for i in range(3):
 			var peak=MeshInstance3D.new();var cone=CylinderMesh.new();cone.top_radius=0;cone.bottom_radius=.27;cone.height=.5+i*.1;cone.radial_segments=6;peak.mesh=cone;peak.material_override=mat("A7CBC9");icon.add_child(peak);peak.position=Vector3((i-1)*.25,.15,0)
 func add_resource(kind:int,p:Vector2,scale_factor:float,crystal=false,region="",visual_name="",material=""):
-	var a=Node3D.new();globe.add_child(a);place(a,p,p.x*.4)
+	var a=Node3D.new();globe.add_child(a);place_static(a,p,p.x*.4)
 	if visual_name.is_empty():visual_name="crystal" if crystal else "oak" if kind==0 else "ore"
 	var prop=model(visual_name,a);prop.scale=Vector3.ONE*scale_factor
 	if region.is_empty():region=terrain.kind(terrain.cell_at(p))
 	if material.is_empty():material="crystal" if crystal else "timber" if kind==0 else "ore"
 	resources[kind].append({"anchor":a,"visual":prop,"p":p,"base":prop.scale,"cooldown":0.0,"crystal":crystal,"region":region,"material":material})
 func decor_prop(name:String,p:Vector2,scale_factor=1.0,angle=0.0,solid=false)->Node3D:
-	var anchor=Node3D.new();globe.add_child(anchor);place(anchor,p,angle)
+	var anchor=Node3D.new();globe.add_child(anchor);place_static(anchor,p,angle)
 	var visual=model(name,anchor);visual.scale=Vector3.ONE*scale_factor
 	if solid:fixed_obstacles.append(anchor)
 	elif terrain.chart_at(p)!=4:
@@ -363,9 +442,9 @@ func decorate_cell(cell:Vector2i,animate:bool):
 			add_resource(0,p+offset,.55+rng.randf()*.25,false,region,"reeds","reed_bundle")
 		if v==2:decor_prop("driftwood",p+Vector2(.1,.15),.58,.9)
 	elif region=="meadow":
-		if v==0:decor_prop("orchard",p+Vector2(-.10,-.15),.55,.2)
+		if v==0 and cell not in IslandFrontier.BUILD_CELLS:decor_prop("orchard",p+Vector2(-.10,-.15),.55,.2)
 		elif v==2:decor_prop("coast_garden",p+Vector2(.55,-.5),1.0)
-		add_resource(0,p+Vector2(-.6,-.6),1.0,false,region,"fruit_crate","fruit_crate")
+		add_resource(0,p+Vector2(-.78,-.71),.78,false,region,"fruit_crate","fruit_crate")
 	elif region=="hill":
 		if v==0:decor_prop("cypress",p+Vector2(-.5,-.3),.75)
 		elif v==1:decor_prop("coast_garden",p+Vector2(-.6,-.7),.7)
@@ -424,9 +503,9 @@ func setup_base(owner_node):
 	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_split_1=.53;sun.directional_shadow_max_distance=49;sun.shadow_blur=1.35;sun.shadow_bias=.022;add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
-	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
+	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place_static(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7
 	fixed_obstacles.append(pod_anchor)
-	var pier=Node3D.new();globe.add_child(pier);place(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
+	var pier=Node3D.new();globe.add_child(pier);place_static(pier,IslandFrontier.point(Vector2i(0,1))+Vector2(.62,.95),-.5);model("pier",pier).scale=Vector3.ONE*.75
 	for id in IslandFrontier.BUILD_IDS:marker(id)
 	for c in IslandFrontier.CHAPTERS:marker(c.id)
 	marker("rocket")
@@ -434,19 +513,20 @@ func setup_base(owner_node):
 func setup_buildings(progressive=false):
 	for i in range(3):
 		if progressive and not await game.startup_checkpoint():return
-		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),PI)
-		var b=model(["cottage","windmill","garden"][i],a);b.scale=Vector3.ONE*.8;buildings.append(a)
+		var a=Node3D.new();globe.add_child(a);place_static(a,game.frontier.target(IslandFrontier.BUILD_IDS[i]),PI)
+		var b=model(["cottage","windmill","garden"][i],a);b.scale=Vector3.ONE*.8;buildings.append(a);register_foundation(b)
 		if i==1:rotor=b.find_child("Rotor",true,false)
 		var extra=[]
 		for j in range(3):
-			var point=Node3D.new();globe.add_child(point);var offset=[Vector2(-1.1,.25),Vector2(.9,.65),Vector2(0,-1.15)][j];place(point,game.frontier.target(IslandFrontier.BUILD_IDS[i])+offset,PI+.4*j)
-			var added=model(ADDITIONS[i][j],point);added.scale=Vector3.ONE*.64;added.visible=false;extra.append(added)
+			var point=Node3D.new();globe.add_child(point);var offset=[Vector2(-1.1,.25),Vector2(.9,.65),Vector2(0,-1.15)][j];place_static(point,game.frontier.target(IslandFrontier.BUILD_IDS[i])+offset,PI+.4*j)
+			var added=model(ADDITIONS[i][j],point);added.scale=Vector3.ONE*.64;added.visible=false;extra.append(added);register_foundation(added)
 		additions.append(extra)
 	for id in FACILITY_MODELS:
 		if progressive and not await game.startup_checkpoint():return
-		var a=Node3D.new();globe.add_child(a);place(a,game.frontier.target(id),PI)
+		var a=Node3D.new();globe.add_child(a);place_static(a,game.frontier.target(id),PI)
 		var n=model(FACILITY_MODELS[id],a);n.scale=Vector3.ONE*(.62 if id=="mountain" else .85 if id=="shipyard" else .72)
 		facilities[id]=a
+		if id!="shipyard":register_foundation(n)
 		var part={"sawmill":"SawWheel","quarry":"CutterWheel","hill":"PumpRotor","tideworks":"TideWheel"}.get(id,"")
 		if not part.is_empty():
 			var moving=a.find_child(part,true,false)
@@ -458,10 +538,11 @@ func setup_buildings(progressive=false):
 		globe.add_child(anchor)
 		var location=game.frontier.target(id)
 		if id=="goldmine":location+=Vector2(.68,.12) # Leave the west shore clear for the permanent dock.
-		place(anchor,location,.13 if id=="smelter" else -.11)
+		place_static(anchor,location,.13 if id=="smelter" else -.11)
 		var visual=model(pair[1],anchor)
 		visual.scale=Vector3.ONE*(1.05 if id=="rocket" else .80)
 		facilities[id]=anchor
+		register_foundation(visual)
 	trader=Berth.new()
 	globe.add_child(trader)
 	place(trader,game.frontier.target("rocket"))
@@ -487,9 +568,15 @@ func setup_actor():
 func finish_setup():
 	sync_buildings(false);worker=IslandWorker.new(self);worker.settle();prepare_resource(false);recenter();motion_previous=builder.position
 func sync_buildings(animate=true):
+	var new_cells=[]
 	for cell in game.frontier.cells():
-		if not land.has(cell):tile(cell,animate);decorate_cell(cell,animate)
-	if coast_count!=land.size():terrain_geometry()
+		if not land.has(cell):
+			tile(cell,animate)
+			new_cells.append(cell)
+	if coast_count!=land.size():
+		terrain_geometry()
+		for cell in new_cells:decorate_cell(cell,animate)
+		fit_static_sites()
 	batch_static_decor()
 	# Build once with the actual land, before piers and sea routes query depths.
 	if water and water.land_count!=land.size():water.rebuild()
@@ -553,7 +640,7 @@ func add_obstacle(visual:Node3D,label:String,reserve_finished=false):
 	if not visual.is_visible_in_tree():return
 	var points=PackedVector2Array()
 	for mesh in visual.find_children("*","MeshInstance3D",true,false):
-		if not reserve_finished and not mesh.is_visible_in_tree():continue
+		if not mesh.mesh or (not reserve_finished and not mesh.is_visible_in_tree()):continue
 		var box=mesh.get_aabb()
 		for i in range(8):points.append(terrain.coordinates(stable_point(mesh,box.get_endpoint(i))))
 	if points.size()>2:

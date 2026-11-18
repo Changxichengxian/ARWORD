@@ -287,10 +287,8 @@ func feedback_input(event)->bool:
 		return true
 	if event is InputEventScreenDrag or (event is InputEventMouseMotion and review_pointer==-2):
 		if event.position.distance_to(review_origin)>=12:review_moved=true
-		if review_moved and hud.card.get_global_rect().has_point(review_origin):hud.card_scroll.scroll_vertical-=roundi(event.relative.y)
 		return true
 	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		if event.pressed:hud.card_scroll.scroll_vertical+=-40 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 40
 		return true
 	return false
 

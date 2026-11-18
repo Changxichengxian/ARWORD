@@ -145,7 +145,7 @@ export('builder')
 def building_start(name):
     clean();r=empty(name);return r,[empty('Stage'+str(i),r) for i in range(4)]
 def gable(name,w,d,z,h,m,par):
-    return mesh(name,[(-w/2,-d/2,z),(w/2,-d/2,z),(0,-d/2,z+h),(-w/2,d/2,z),(w/2,d/2,z),(0,d/2,z+h)],[(0,2,1),(3,4,5),(0,1,4,3),(0,3,5,2),(1,2,5,4)],m,par)
+    return mesh(name,[(-w/2,-d/2,z),(w/2,-d/2,z),(0,-d/2,z+h),(-w/2,d/2,z),(w/2,d/2,z),(0,d/2,z+h)],[(0,1,2),(3,5,4),(0,3,4,1),(0,2,5,3),(1,4,5,2)],m,par)
 r,s=building_start('Cottage')
 cube('Stone footing',(0,0,.12),(1.65,1.45,.24),lightstone,s[0],.08)
 for x in [-.65,.65]:
@@ -170,6 +170,7 @@ r,s=building_start('Windmill');cyl('Foot',(0,0,.13),.8,.26,lightstone,s[0],10)
 cyl('Tower',(0,0,.85),.58,1.45,cream,s[1],10,.42)
 for z in [.38,1.0,1.45]:cyl('Timber belt',(0,0,z),.61-(z-.38)*.12,.075,wood,s[2],10)
 cube('Door',(0,.56,.48),(.35,.06,.58),teal,s[2],.08);cyl('Roof',(0,0,1.78),.69,.7,roof,s[3],10,.025)
+beam('Rotor axle',(0,.32,1.37),(0,.72,1.37),.13,navy,s[3])
 rotor=empty('Rotor',s[3]);rotor.location=(0,.70,1.37)
 for a in range(4):
     angle=a*math.pi/2;end=(math.sin(angle)*1.06,0,math.cos(angle)*1.06)
@@ -183,6 +184,7 @@ for x in [-.58,0,.58]:
     for y in [-.4,0,.4]:ico('Plant',(x,y,.42),(.17,.18,.22),leaf,s[2],1);ico('Fruit',(x+.07,y,.54),(.09,.09,.10),roof,s[3],1)
 for x in [-.88,.88]:
     for y in [-.75,.75]:beam('Post',(x,y,.1),(x,y,1.2),.06,cream,s[2])
+for x in [-.88,.88]:beam('Trellis wall plate',(x,-.78,1.16),(x,.78,1.16),.08,wood,s[3])
 for y in [-.76,0,.76]:
     beam('Arch',(-.90,y,1.15),(0,y,1.64),.07,cream,s[3]);beam('Arch',(0,y,1.64),(.90,y,1.15),.07,cream,s[3])
 beam('Ridge',(0,-.82,1.64),(0,.82,1.64),.09,teal,s[3])
@@ -190,6 +192,7 @@ export('garden')
 
 # Small additions make each completed chapter visible without inflating building levels.
 clean();root=empty('Deck')
+for y in [-.50,.50]:cube('Deck bearer',(0,y,.04),(1.30,.11,.10),wood,root,.01)
 for i in range(7):cube('Plank',((i-3)*.18,0,.12),(.16,1.3,.16),cut,root,.018)
 for x in [-.65,.65]:
     for y in [-.52,.52]:cyl('Post',(x,y,.30),.065,.60,wood,root,8)
@@ -202,6 +205,7 @@ cube('Back',(0,-.23,.72),(1.15,.10,.46),teal,root,.04)
 export('bench')
 clean();root=empty('Camp')
 for x in [-.65,.65]:beam('Pole',(x,0,0),(x,0,1.6),.065,wood,root)
+beam('Tent ridge',(-.75,0,1.63),(.75,0,1.63),.065,wood,root)
 mesh('Canopy',[(-.75,-.6,1.24),(.75,-.6,1.24),(-.75,0,1.66),(.75,0,1.66),(-.75,.6,1.24),(.75,.6,1.24)],[(0,1,3,2),(2,3,5,4)],cream,root)
 cube('Rug',(0,0,.035),(1.25,.95,.07),teal,root,.025)
 for x in [-.35,.35]:ico('Cushion',(x,.12,.13),(.22,.25,.13),roof,root,2)
@@ -266,22 +270,41 @@ wheel=empty('SawWheel',root);wheel.location=(0,0,.96)
 o=cyl('Steel blade',(0,0,0),.36,.075,lightstone,wheel,16);o.rotation_euler[0]=math.pi/2
 for i in range(12):
     a=i*math.tau/12;o=cube('Tooth',(math.sin(a)*.34,0,math.cos(a)*.34),(.10,.08,.13),cream,wheel,.01);o.rotation_euler[1]=a
+for y in [.70,1.10]:cube('Timber bearer',(-.62,y,.05),(.72,.11,.10),wood,root,.01)
 for x in [-.38,-.62,-.86]:cube('Output plank',(x,.80,.16),(.15,.9,.12),cut,root,.015)
 for y in [-.35,.10]:o=cyl('Waiting log',(.5,y,1.03),.12,1.2,wood,root,10);o.rotation_euler[1]=math.pi/2
 export('sawmill')
 clean();root=empty('Kiln')
-cyl('Stone base',(0,0,.14),.92,.28,lightstone,root,10)
-round_shape('Clay oven',(0,0,.54),(.78,.65,.64),roof,root)
-round_shape('Dark opening',(0,.59,.45),(.31,.05,.29),navy,root)
-round_shape('Warm embers',(0,.645,.29),(.21,.025,.10),gold,root)
-cyl('Chimney',(0,-.27,1.13),.18,.7,stone,root,8)
-for x in [-.65,-.28]:
-    for y in [.9,1.15]:cube('Finished brick',(x,y,.14),(.31,.19,.16),rooflight,root,.035)
+# A through vault with refractory walls, a recessed firebox and a rear flue.
+cube('Stone footing',(0,0,.09),(1.62,1.52,.22),stone,root,.06)
+cube('Firing floor',(0,0,.23),(1.34,1.32,.10),lightstone,root)
+for side in [-1,1]:
+    cube('Firebrick jamb',(side*.52,0,.47),(.27,1.25,.44),roof,root,.018)
+cube('Rear wall',(0,-.54,.60),(1.10,.18,.70),roof,root)
+cube('Soot at back',(0,-.44,.53),(.76,.04,.46),navy,root,.025)
+# Each arch stone spans the wall thickness. The opening stays empty.
+for i in range(11):
+    a=math.pi*i/11;b=math.pi*(i+1)/11
+    section=[(radius*math.cos(t),.68+radius*math.sin(t))
+             for radius,t in [(.385,a),(.655,a),(.655,b),(.385,b)]]
+    verts=[(x,y,z) for y in [-.62,.63] for x,z in section]
+    mesh('Vault brick',verts,[(0,1,2,3),(7,6,5,4),(0,4,5,1),(1,5,6,2),(2,6,7,3),(3,7,4,0)],
+         [roof,rooflight,roof][i%3],root)
+cube('Chimney heel',(0,-.43,1.24),(.41,.39,.27),roof,root,.015)
+for i in range(3):
+    cube('Flue course',(0,-.43,1.41+i*.12),(.35,.34,.12),rooflight if i==1 else roof,root,.009)
+cube('Chimney crown',(0,-.43,1.72),(.43,.42,.10),lightstone,root,.014)
+cube('Flue mouth',(0,-.43,1.773),(.27,.26,.008),navy,root,.012)
+for x in [-.22,.03,.24]:
+    ico('Banked embers',(x,.25,.31),(.13,.14,.055),rooflight,root,1)
+for i in range(3):
+    cube('Drying brick',(.91,.34-i*.24,.075),(.30,.19,.15),roof,root,.014)
+cube('Drying brick',(.91,.21,.22),(.30,.19,.14),rooflight,root,.014)
 export('kiln')
 clean();root=empty('Crystal')
 for x,y,z,r in [(0,0,.65,.23),(-.34,.02,.37,.18),(.29,.17,.48,.19),(0,-.3,.30,.16)]:
-    o=cyl('Prism',(x,y,z*.45),r,z,mat('Crystal '+str(x)+str(y),'AE8DEA' if x<=0 else 'D5AEFA'),root,5,r*.84)
-    cyl('Crystal tip',(x,y,z+.06),r*.84,z*.30,teal if x>0 else pink,root,5,.0)
+    o=cyl('Prism',(x,y,z*.5),r,z,mat('Crystal '+str(x)+str(y),'AE8DEA' if x<=0 else 'D5AEFA'),root,5,r*.84)
+    cyl('Crystal tip',(x,y,z*1.15),r*.84,z*.30,teal if x>0 else pink,root,5,.0)
 export('crystal')
 clean();root=empty('LandingPod')
 round_shape('Hull',(0,0,.65),(.50,.43,.67),cream,root)

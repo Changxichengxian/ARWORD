@@ -335,5 +335,5 @@ func target_hit(screen_pos:Vector2,point:Vector3,radius:float)->bool:
 	return screen_pos.distance_to(center)<=maxf(24.,edge.distance_to(center))
 func observation_unlocked()->bool:
 	if game.frontier.done("mountain"):return true
-	game.hud.toast("建成云杉观星台后，可以近看天体")
+	game.hud.toast("建成观星台后，可以近看天体")
 	return false
