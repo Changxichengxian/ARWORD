@@ -1,0 +1,12 @@
+[
+  {"shot":"opening","seconds":5.0},
+  {"shot":"shore","seconds":4.8,"at":0.35,"line":"刚来那会儿，岸边就这么一小块。"},
+  {"shot":"word","seconds":7.3,"at":0.45,"line":"点一下树林。今天先记这个词。","book":"primary","word":"island"},
+  {"shot":"work","seconds":5.2,"at":0.35,"line":"你答对一题，我就能干上一会儿。先去弄点木头。"},
+  {"shot":"growth","seconds":9.0,"at":1.0,"line":"还记得刚才那段岸吗？后来又背了好些词，树林都长到这儿了。"},
+  {"shot":"rabbit","seconds":5.1,"at":0.6,"line":"我有时候会停下来，看看这只兔子。"},
+  {"shot":"butterfly","seconds":4.0},
+  {"shot":"archipelago","seconds":4.2},
+  {"shot":"lookout","seconds":4.8,"at":0.4,"line":"等山上的观星台盖好，就能凑近看黑洞了。"},
+  {"shot":"disk","seconds":10.5}
+]
