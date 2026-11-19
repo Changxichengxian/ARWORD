@@ -9,6 +9,8 @@ var close_offset: Vector3
 var coast: Vector3
 var written := 0
 var failed := false
+var resting_birds: Array[Node3D] = []
+const RABBIT_WIDTH := 1.18
 
 func _initialize():
 	call_deferred("run")
@@ -39,7 +41,9 @@ func run():
 	game.learning.rng.seed = 1201
 	game.learning.data.review_style = "text"
 	game.cosmos.set_sky_seed(831)
-	game.cosmos.set_black_hole(true)
+	# Keep the dark sky over the shore. Reveal the central body at the telescope.
+	game.cosmos.set_black_hole(false)
+	game.cosmos.sun.hide()
 	game.hud.hide()
 	for i in 4:
 		await process_frame
@@ -58,6 +62,9 @@ func run():
 			direct(shot, index, u, fps, int(scene.frames))
 			if failed: return
 			await RenderingServer.frame_post_draw
+			if shot == "rabbit" and world.wildlife.animals.any(func(a): return a.kind == "bird" and a.model.is_visible_in_tree()):
+				fail("A gull entered the rabbit close-up.")
+				return
 			var img := root.get_texture().get_image()
 			if img.get_size() != Vector2i(plan.width, plan.height):
 				fail("Unexpected recording dimensions: " + str(img.get_size()))
@@ -67,6 +74,11 @@ func run():
 				return
 			written += 1
 			await process_frame
+		if shot == "rabbit":
+			paused = false
+			world.builder.show()
+			for bird in resting_birds: bird.show()
+			resting_birds.clear()
 	print("INTRO_COMPLETE ", written)
 	game.closing = true
 	game.ambience.shutdown()
@@ -87,14 +99,6 @@ func start_shot(scene: Dictionary):
 	game.stop_view_transition()
 	game.hud.hide()
 	match shot:
-		"opening":
-			# A flash-forward to the same observatory seen at the end.
-			game.frontier.data.progress.mountain = game.frontier.chapter("mountain").need
-			game.open_observatory(true)
-		"shore":
-			game.close_observatory()
-			game.frontier.data.progress.mountain = 0
-			game.hud.hide()
 		"word":
 			var id := str(scene.word)
 			if not game.learning.wordbooks.contains(scene.book, id):
@@ -116,6 +120,13 @@ func start_shot(scene: Dictionary):
 			if world.land.size() != game.frontier.cells().size():
 				world.sync_buildings(false)
 		"rabbit":
+			# Stage a cutaway in the recording world. Hold passing actors off-camera
+			# while the rabbit performs its normal grooming animation.
+			world.builder.hide()
+			for animal in world.wildlife.animals:
+				if animal.kind == "bird" and animal.model.visible:
+					resting_birds.append(animal.model)
+					animal.model.hide()
 			world.wildlife.land_life.refresh_habitat()
 			await frame_rabbit()
 		"butterfly":
@@ -136,12 +147,13 @@ func start_shot(scene: Dictionary):
 			game.frontier.finish_for_development(true)
 			world.sync_buildings(false)
 		"disk":
+			game.cosmos.set_black_hole(true)
 			game.open_observatory(true)
-	if shot in ["disk", "opening"]:
+	if shot == "disk":
 		if not game.cosmos.observatory_active:
 			fail("The black hole close view did not open.")
 			return
-		move_disk(shot, 0.0)
+		move_disk(0.0)
 		game.cosmos.advance_observation(5.0)
 
 func frame_rabbit():
@@ -151,11 +163,12 @@ func frame_rabbit():
 	var best := 0
 	for animal in world.wildlife.land_life.rabbits:
 		if not animal.anchor.visible: continue
+		world.wildlife.land_life.place_rabbit(animal, 0.)
 		var p: Vector3 = animal.anchor.position
 		var basis: Basis = Basis(Quaternion(p.normalized(), Vector3.UP)) * animal.anchor.basis
 		for direction in [Vector3(3,2.7,-5), Vector3(-3,2.7,-5), Vector3(5,3,0), Vector3(-5,3,0), Vector3(0,6,-3)]:
 			var offset: Vector3 = basis * direction
-			face(p, 1.55, offset, .19)
+			face(p, RABBIT_WIDTH, offset, .19)
 			await RenderingServer.frame_post_draw
 			var visible_frame := root.get_texture().get_image()
 			visible_frame.resize(96, 170)
@@ -173,7 +186,6 @@ func frame_rabbit():
 				best = pixels
 				tracked = animal
 				close_offset = offset
-	paused = false
 	if best < 85:
 		fail("No clear camera angle for the rabbit.")
 		return
@@ -181,17 +193,12 @@ func frame_rabbit():
 	tracked.elapsed = 0.
 	tracked.duration = 8.
 
-func move_disk(shot: String, u: float):
+func move_disk(u: float):
 	var sky = game.cosmos
 	var ease := smoothstep(0., 1., u)
-	if shot == "opening":
-		sky.observation_pitch = lerpf(.18, .04, ease)
-		sky.observation_yaw = lerpf(-.32, .02, ease)
-		sky.observation_zoom = lerpf(1.5, 1.33, ease)
-	else:
-		sky.observation_pitch = lerpf(-.17, .48, ease)
-		sky.observation_yaw = lerpf(.1, .9, ease)
-		sky.observation_zoom = lerpf(1.18, 1.95, ease)
+	sky.observation_pitch = lerpf(-.17, .48, ease)
+	sky.observation_yaw = lerpf(.1, .9, ease)
+	sky.observation_zoom = lerpf(1.18, 1.95, ease)
 
 func show_review():
 	# Introductions do not grant work. Wait for a real recall card in this book.
@@ -222,8 +229,8 @@ func expand_to(site: String, units: int):
 
 func direct(shot: String, index: int, u: float, fps: int, frames: int):
 	match shot:
-		"opening", "disk":
-			move_disk(shot, u)
+		"disk":
+			move_disk(u)
 		"shore", "growth":
 			face(coast, 12.8, Vector3(2, 13, 6))
 			if shot == "growth":
@@ -244,8 +251,9 @@ func direct(shot: String, index: int, u: float, fps: int, frames: int):
 			face(world.builder.position, lerpf(2.5, 3.2, u), close_offset, .38)
 		"rabbit":
 			var point: Vector3 = tracked.anchor.position
-			# Look towards the nose from slightly off the rabbit's shoulder.
-			face(point, 1.55, close_offset, .19)
+			tracked.elapsed = float(index) / fps
+			world.wildlife.land_life.pose(tracked, world.wildlife.clock + tracked.elapsed, 0.)
+			face(point, RABBIT_WIDTH, close_offset, .19)
 		"butterfly":
 			if index == roundi(2.1*fps):
 				var screen: Vector2 = game.camera.unproject_position(tracked.anchor.global_position)

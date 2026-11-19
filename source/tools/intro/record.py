@@ -35,11 +35,17 @@ def wsl_path(path):
     return f"/mnt/{path.drive[0].lower()}/" + "/".join(path.parts[1:])
 
 
-def narrate(work, scenes, ffmpeg, args):
-    print("正在生成大肥鱼的中文旁白……", flush=True)
+def voice_command(args, worker, paths):
+    if args.voice_python:
+        return [args.voice_python, worker, *paths]
+    return ["wsl.exe", "-d", args.distro, "--cd", "~", "--exec", ".local/share/arword-feiyu/env/bin/python",
+            wsl_path(worker), *[wsl_path(v) if isinstance(v, Path) else v for v in paths]]
+
+
+def legacy_takes(work, scenes, ffmpeg, args, script):
     powershell = Path(os.environ["SystemRoot"]) / "System32/WindowsPowerShell/v1.0/powershell.exe"
     subprocess.run([powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-                    HERE/"mandarin.ps1", "-Story", STORY, "-Destination", work], check=True)
+                    HERE/"mandarin.ps1", "-Story", script, "-Destination", work], check=True)
     original, converted = work/"mandarin.zip", work/"feiyu.zip"
     with zipfile.ZipFile(original, "w") as archive:
         for scene in scenes:
@@ -51,14 +57,9 @@ def narrate(work, scenes, ffmpeg, args):
             archive.writestr(f"audio/{shot}.mp3", take)
 
     # Reuse the exact reference/checkpoint validation and conversion used by the personal voice pack.
-    converter_args = [SOURCE/"tools/make_study_voice.py", "--input", original, "--output", converted,
+    converter_args = ["--input", original, "--output", converted,
                       "--reference", args.reference.resolve(), "--converter", args.converter.resolve()]
-    if args.voice_python:
-        command = [args.voice_python, *converter_args]
-    else:
-        command = ["wsl.exe", "-d", args.distro, "--cd", "~", "--exec",
-                   ".local/share/arword-feiyu/env/bin/python",
-                   *[wsl_path(v) if isinstance(v, Path) else v for v in converter_args]]
+    command = voice_command(args, SOURCE/"tools/make_study_voice.py", converter_args)
     conversion = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=600)
     if conversion.returncode:
         raise RuntimeError("大肥鱼音色转换失败。\n" + conversion.stdout.decode("utf8", errors="replace")[-3500:])
@@ -70,7 +71,23 @@ def narrate(work, scenes, ffmpeg, args):
         for scene in scenes_with_lines(scenes):
             shot = scene["shot"]
             clips[shot] = decode_voice(ffmpeg, archive.read(f"audio/{shot}.mp3"))
-    words = {s["word"] for s in scenes if s.get("word")}
+    return clips
+
+
+def narrate(work, scenes, ffmpeg, args):
+    script = work/"lines.json"
+    script.write_text(json.dumps(scenes, ensure_ascii=False), encoding="utf8")
+    if args.voice == "legacy":
+        clips = legacy_takes(work, scenes, ffmpeg, args, script)
+    else:
+        print("正在用大肥鱼可爱版模型直接合成中文……", flush=True)
+        command = voice_command(args, HERE/"feiyu_tts.py",
+                                ["--model", args.voice_model.resolve(), "--engine", args.voice_engine.resolve(),
+                                 "--story", script, "--output", work])
+        subprocess.run(command, check=True, timeout=900)
+        clips = {s["shot"]: decode_voice(ffmpeg, (work/(s["shot"]+".wav")).read_bytes())
+                 for s in scenes_with_lines(scenes)}
+    words = {s["word"] for s in scenes if s.get("word") and not args.sample}
     if words:
         lexicon = json.loads((SOURCE/"assets/wordbooks/lexicon.json").read_text("utf8"))
         paths = {w["id"]: w["audio"] for w in lexicon}
@@ -128,9 +145,9 @@ def timeline(work, scenes, clips, fps, width):
                 audio.extend(clips[("word", scene["word"])])
                 seconds = max(seconds, len(audio)/(2*RATE)-start+1.35)
         scene["frames"] = math.ceil(seconds*fps)
-        if shot == "opening":
-            caption(.45, seconds-.45, "Title", r"{\fad(300,350)}ARWORD")
-            caption(.8, seconds-.45, "Deck", r"{\fad(300,350)}在小星球上背单词")
+        if shot == "shore":
+            caption(start+.15, start+min(seconds, 3.6), "Title", r"{\an8\pos(360,106)\fad(240,320)}ARWORD")
+            caption(start+.4, start+min(seconds, 3.6), "Deck", r"{\an8\pos(360,174)\fad(240,320)}在小岛上背单词")
         frame += scene["frames"]
     audio.extend(bytes(round(frame/fps*RATE)*2-len(audio)))
     with wave.open(str(work/"voice.wav"), "wb") as wav:
@@ -206,31 +223,54 @@ def encode(work, output, ffmpeg, fps, frames):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=ROOT/"outputs/应用介绍/ARWORD-介绍.mp4")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--sample", metavar="SHOT", help="只导出这个镜头的中文干声，例如 rabbit")
     parser.add_argument("--godot", type=Path)
     parser.add_argument("--ffmpeg", type=Path)
     parser.add_argument("--width", type=int, choices=[360, 540, 720, 1080], default=720)
     parser.add_argument("--fps", type=int, choices=[12, 24, 30], default=24)
     parser.add_argument("--reference", type=Path, default=VOICE/"feiyu/references/cute_N01.wav")
     parser.add_argument("--converter", type=Path, default=VOICE/"converter")
-    parser.add_argument("--voice-python", type=Path, help="Native Python with the OpenVoice CUDA dependencies")
+    parser.add_argument("--voice", choices=("native","legacy"), default="native",
+                        help="直接合成中文，或显式选用旧的系统朗读转音色")
+    parser.add_argument("--voice-model", type=Path, default=ROOT/"work/intro-feiyu")
+    parser.add_argument("--voice-engine", type=Path, default=VOICE/"engine")
+    parser.add_argument("--voice-python", type=Path, help="Windows Python with the chosen voice engine installed")
     parser.add_argument("--distro", default="Ubuntu")
     args = parser.parse_args()
-    engine = locate(args.godot, "godot", sorted((ROOT/"work/tools3d/godot").glob("*_console.exe")))
     ffmpeg = locate(args.ffmpeg, "ffmpeg", [r"C:\App\Fun\steam\steamapps\common\ShareX\ShareX\ffmpeg.exe",
                                           r"C:\App\Work\BBDown\ffmpeg.exe"])
-    for required in (args.reference, args.converter/"checkpoint.pth", MUSIC,
-                     SOURCE/"assets/characters/deepseek.vrm"):
+    scenes = json.loads(STORY.read_text("utf8"))
+    voice_files = ((args.voice_model/"manifest.json", args.voice_engine/"cosyvoice/cli/cosyvoice.py")
+                   if args.voice == "native" else (args.reference, args.converter/"checkpoint.pth"))
+    if args.sample:
+        scenes = [s for s in scenes if s["shot"] == args.sample and s.get("line")]
+        if not scenes:
+            parser.error("这个镜头没有中文台词。")
+        default_name = f"试听-{args.sample}-{args.voice}.wav"
+        assets = voice_files
+    else:
+        engine = locate(args.godot, "godot", sorted((ROOT/"work/tools3d/godot").glob("*_console.exe")))
+        default_name = "ARWORD-介绍.mp4"
+        assets = (*voice_files, MUSIC, STUDY_PACK, SOURCE/"assets/characters/deepseek.vrm")
+    for required in assets:
         if not required.is_file():
             parser.error(f"Missing local recording asset: {required}")
-    output = args.output.resolve()
-    if output.suffix.lower() != ".mp4":
-        parser.error("--output must end in .mp4")
+    output = (args.output or ROOT/"outputs/应用介绍"/default_name).resolve()
+    if output.suffix.lower() != Path(default_name).suffix:
+        parser.error(f"--output must end in {Path(default_name).suffix}")
     output.parent.mkdir(parents=True, exist_ok=True)
-    scenes = json.loads(STORY.read_text("utf8"))
     with tempfile.TemporaryDirectory(prefix="record-", dir=output.parent) as staging:
         work = Path(staging)
         clips = narrate(work, scenes, ffmpeg, args)
+        if args.sample:
+            sample = work/"audition.wav"
+            with wave.open(str(sample), "wb") as wav:
+                wav.setparams((1, 2, RATE, 0, "NONE", "not compressed"))
+                wav.writeframes(clips[args.sample])
+            os.replace(sample, output)
+            print(output)
+            return
         frames = timeline(work, scenes, clips, args.fps, args.width)
         print("配音完成，开始拍摄。", flush=True)
         capture(work, engine, frames, args.fps, args.width)
