@@ -75,12 +75,16 @@ bill = [(-.034,.105,-.003),(.034,.105,-.003),(-.026,.105,.035),(.026,.105,.035),
 mesh('slender yellow bill', bill,
      [(0,4,5,1),(0,2,7,6,4),(1,5,6,7,3),(2,3,7),(4,6,5),(0,1,3,2)], gold, head)
 ico('lower bill spot', (.014,.192,-.004), (.008,.018,.009), coral, head, 1)
+legs = []
 for s in [-1, 1]:
     ico('small black eye', (s*.078,.072,.042), (.012,.016,.014), dark, head, 2)
     ico('eye highlight', (s*.088,.076,.047), (.0035,.004,.004), ivory, head, 1)
-    rod('tucked leg', (s*.045,-.14,-.095), (s*.045,-.245,-.13), .012, gold, body)
-    plate('tucked webbed foot', [(s*.027,-.22,-.13),(s*.070,-.22,-.13),
-                               (s*.081,-.285,-.13),(s*.045,-.272,-.135)], .004, gold, body)
+    leg = node('LegL' if s < 0 else 'LegR', body, (s*.060,-.055,-.075))
+    legs.append(leg)
+    rod('lower leg', (0,0,0), (0,-.019,-.080), .012, gold, leg)
+    rod('ankle', (0,-.019,-.080), (0,.002,-.138), .010, gold, leg)
+    plate('webbed toes', [(-.014,-.016,-.139),(.014,-.016,-.139),(.034,.049,-.139),
+                          (.012,.041,-.142),(0,.059,-.141),(-.014,.042,-.142),(-.031,.049,-.139)], .003, gold, leg)
 tail = node('Tail', root, (0,-.235,.005))
 plate('white rounded tail', [(-.065,.025,0),(.065,.025,0),(.112,-.19,-.012),
                              (.075,-.208,-.012),(0,-.217,-.012),(-.075,-.208,-.012),
@@ -107,7 +111,7 @@ for side, s in [('L', -1), ('R', 1)]:
                                        (s*(x+.018),y-.008,-.019),
                                        (s*(x+.004),y-.031,-.020),
                                        (s*(x-.022),y-.011,-.018)], .003, ivory, wrist)
-export('wild_bird', [body, head, tail, *wings])
+export('wild_bird', [body, head, tail, *wings, *legs])
 
 
 clean()
@@ -153,56 +157,87 @@ mesh('vertical forked caudal fin', vertices,
 export('wild_fish', [body, tail, *fins])
 
 
-clean()
-root = node('Butterfly')
-body = node('Body', root)
-ico('slender abdomen', (0,-.055,0), (.025,.105,.026), border, body, 2)
-ico('thorax', (0,.045,.004), (.035,.054,.034), dark, body, 2)
-ico('small head', (0,.098,.008), (.029,.03,.028), dark, body, 2)
-for s in [-1,1]:
-    rod('antenna stem', (s*.013,.115,.015), (s*.050,.188,.027), .0045, border, body)
-    ico('antenna club', (s*.050,.188,.027), (.007,.012,.007), border, body, 1)
-wings = []
-for side,s in [('L',-1),('R',1)]:
-    wing = node('Wing'+side, root, (s*.016,0,0))
-    hind = node('HindWing'+side, wing, (0,-.045,-.004))
-    wings.extend([wing,hind])
-    outline = [(0,.055,0),(s*.09,.181,0),(s*.21,.234,0),(s*.281,.194,0),
-               (s*.307,.116,0),(s*.257,.004,0),(s*.139,-.052,0),(0,-.038,0)]
-    plate('rounded forewing border', outline, .006, border, wing)
-    plate('violet forewing field', [(s*.035,.052,.009),(s*.112,.163,.009),
-                                    (s*.209,.204,.009),(s*.253,.173,.009),
-                                    (s*.269,.116,.009),(s*.229,.03,.009),
-                                    (s*.135,-.017,.009)], .003, purple, wing)
-    plate('rounded hindwing border', [(0,.03,0),(s*.153,.013,0),(s*.239,-.063,0),
-                                     (s*.218,-.133,0),(s*.147,-.188,0),
-                                     (s*.071,-.163,0),(0,-.074,0)], .006, border, hind)
-    plate('jade hindwing field', [(s*.029,-.013,.009),(s*.148,-.017,.009),
-                                  (s*.206,-.064,.009),(s*.187,-.118,.009),
-                                  (s*.143,-.153,.009),(s*.09,-.132,.009)], .003, mint, hind)
-    for x,y in [(.20,.15),(.242,.111),(.20,.063)]:
-        ico('warm forewing dot',(s*x,y,.016),(.016,.022,.003),patch,wing,1)
-    ico('hindwing eyespot dark centre',(s*.151,-.097,.016),(.028,.032,.004),border,hind,2)
-    ico('hindwing eyespot pale pupil',(s*.151,-.097,.020),(.013,.017,.003),patch,hind,1)
-    # Both faces are visible during flight. Mirror only the markings and inner
-    # colour fields, with a quieter palette on the underside of the wings.
-    for part in [wing,hind]:
-        for original in list(part.children):
-            if original.type != 'MESH' or not any(word in original.name for word in ['field','dot','eyespot']):
-                continue
-            underside = original.copy()
-            underside.data = original.data.copy()
-            underside.name = original.name + ' underside'
-            bpy.context.collection.objects.link(underside)
-            underside.parent = part
-            underside.location.z = -original.location.z
-            underside.scale.z = -original.scale.z
-            for index, mat in enumerate(underside.data.materials):
-                if mat == purple:
-                    underside.data.materials[index] = underside_violet
-                elif mat == mint:
-                    underside.data.materials[index] = underside_jade
-export('wild_butterfly', [body, *wings])
+
+def butterfly(name, pattern, purple, mint, border, patch, underside_violet, underside_jade):
+    if ONLY and name not in ONLY:
+        return
+    clean()
+    root = node('Butterfly')
+    body = node('Body', root)
+    ico('slender abdomen', (0,-.055,0), (.025,.105,.026), border, body, 2)
+    ico('thorax', (0,.045,.004), (.035,.054,.034), dark, body, 2)
+    ico('small head', (0,.098,.008), (.029,.03,.028), dark, body, 2)
+    for s in [-1,1]:
+        rod('antenna stem', (s*.013,.115,.015), (s*.050,.188,.027), .0045, border, body)
+        ico('antenna club', (s*.050,.188,.027), (.007,.012,.007), border, body, 1)
+    wings = []
+    for side,s in [('L',-1),('R',1)]:
+        wing = node('Wing'+side, root, (s*.016,0,0))
+        hind = node('HindWing'+side, wing, (0,-.045,-.004))
+        wings.extend([wing,hind])
+        outline = [(0,.055,0),(s*.09,.181,0),(s*.21,.234,0),(s*.281,.194,0),
+                   (s*.307,.116,0),(s*.257,.004,0),(s*.139,-.052,0),(0,-.038,0)]
+        plate('rounded forewing border', outline, .006, border, wing)
+        plate('violet forewing field', [(s*.035,.052,.009),(s*.112,.163,.009),
+                                        (s*.209,.204,.009),(s*.253,.173,.009),
+                                        (s*.269,.116,.009),(s*.229,.03,.009),
+                                        (s*.135,-.017,.009)], .003, purple, wing)
+        plate('rounded hindwing border', [(0,.03,0),(s*.153,.013,0),(s*.239,-.063,0),
+                                         (s*.218,-.133,0),(s*.147,-.188,0),
+                                         (s*.071,-.163,0),(0,-.074,0)], .006, border, hind)
+        plate('jade hindwing field', [(s*.029,-.013,.009),(s*.148,-.017,.009),
+                                      (s*.206,-.064,.009),(s*.187,-.118,.009),
+                                      (s*.143,-.153,.009),(s*.09,-.132,.009)], .003, mint, hind)
+        def marking(label, points, parent, paint):
+            plate(label, [(s*x,y,.017) for x,y in points], .002, paint, parent)
+
+        if pattern == 'veins':
+            for y in [.018,.081,.143]:
+                marking('field vein',[(.055,.045),(.22,y-.007),(.267,y+.005),(.216,y+.009)],wing,border)
+            for x,y in [(.246,.16),(.273,.125),(.26,.078),(.218,-.070),(.195,-.11)]:
+                ico('ivory dot',(s*x,y,.019),(.009,.012,.003),patch,wing if y>0 else hind,2)
+        elif pattern == 'band':
+            marking('forewing field band',[(.087,.138),(.117,.17),(.248,.068),(.231,.039)],wing,patch)
+            marking('hindwing field band',[(.10,-.016),(.139,-.023),(.196,-.107),(.178,-.13)],hind,patch)
+            for x,y in [(.22,.17),(.244,.143)]:
+                ico('wingtip dot',(s*x,y,.019),(.010,.014,.003),ivory,wing,2)
+        else:
+            spots=[(.20,.15),(.242,.111),(.20,.063)] if pattern=='spots' else [(.165,.15),(.21,.085)]
+            for x,y in spots:
+                ico('forewing dot',(s*x,y,.017),(.022,.025,.003),patch,wing,2)
+            for x,y in ([(.151,-.097)] if pattern=='spots' else [(.12,-.083),(.170,-.103)]):
+                ico('hindwing eyespot rim',(s*x,y,.016),(.028,.032,.004),border,hind,2)
+                ico('hindwing eyespot pupil',(s*x,y,.020),(.014,.018,.003),patch,hind,2)
+        # Both faces are visible during flight. Mirror only the markings and inner
+        # colour fields, with a quieter palette on the underside of the wings.
+        for part in [wing,hind]:
+            for original in list(part.children):
+                if original.type != 'MESH' or not any(word in original.name for word in ['field','dot','eyespot']):
+                    continue
+                underside = original.copy()
+                underside.data = original.data.copy()
+                underside.name = original.name + ' underside'
+                bpy.context.collection.objects.link(underside)
+                underside.parent = part
+                underside.location.z = -original.location.z
+                underside.scale.z = -original.scale.z
+                for index, mat in enumerate(underside.data.materials):
+                    if mat == purple:
+                        underside.data.materials[index] = underside_violet
+                    elif mat == mint:
+                        underside.data.materials[index] = underside_jade
+    export(name, [body, *wings])
+
+
+butterfly('wild_butterfly', 'spots', purple, mint, border, patch, underside_violet, underside_jade)
+for suffix, pattern, colors in [
+    ('amber','veins', ['F29A3F','E8A850','49352E','FFF0C2','C88750','C3A471']),
+    ('blue','band', ['376AB5','268A9A','263753','B1F4E9','777C94','648C94']),
+    ('pearl','eyes', ['F6E4C5','F3C9AB','825957','B45255','D7C5B2','D1B6B1']),
+]:
+    paints = [material(suffix+' '+role, rgb) for role,rgb in zip(
+        ['forewing','hindwing','border','markings','underside fore','underside hind'],colors)]
+    butterfly('wild_butterfly_'+suffix,pattern,*paints)
 
 if not ONLY or 'wild_whale' in ONLY:
     import runpy

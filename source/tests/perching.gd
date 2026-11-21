@@ -29,12 +29,19 @@ func run():
 	for a in animals:
 		check(a.support!=Vector3.ZERO,"starting island has a landing site for "+a.kind)
 		if a.support==Vector3.ZERO:continue
+		var largest_step=0.
+		var approach_wings=[]
 		for i in 480:
+			var previous:Vector3=a.last
 			life._process(.05)
+			if previous!=Vector3.ZERO:largest_step=maxf(largest_step,a.last.distance_to(previous))
+			if a.perch_phase=="landing":approach_wings.append(a.left.rotation.z)
 			if a.perch_phase=="perched":break
 		check(a.perch_phase=="perched" and a.last.distance_to(a.support)<.003,a.kind+" reaches the surface and stays on it")
 		var foot=world.ground_point(a.home)
-		if a.kind=="bird":check(absf(a.last.distance_to(foot)-a.scale*.137)<.004,"webbed feet reach the terrain")
+		if a.kind=="bird":
+			check(absf(a.last.distance_to(foot)-a.scale*.219)<.004,"webbed feet reach the terrain")
+			check(largest_step<=.191 and approach_wings.size()>30 and approach_wings.max()-approach_wings.min()>.55,"continuous approach with braking wingbeats")
 		else:
 			var center=a.flower.find_child("Center",true,false)
 			var bloom=life.to_local(center.to_global(Vector3(0,center.mesh.get_aabb().end.y,0)))
@@ -46,8 +53,14 @@ func run():
 		await snap(a.kind+"-perched")
 		game.tap_world(game.camera.unproject_position(a.anchor.global_position))
 		check(a.perch_phase=="takeoff" and a.startle>0.,"tapping the visible "+a.kind+" starts a startled takeoff")
-		for i in 12:life._process(.05)
-		check(a.lift>.28 and a.last.distance_to(a.support)>.12,a.kind+" departs from its landing site")
+		var departure_wings=[]
+		for i in 16:
+			life._process(.05);departure_wings.append(a.left.rotation.z)
+		check(a.lift>.25 and a.last.distance_to(a.support)>.12,a.kind+" departs from its landing site")
+		if a.kind=="bird":
+			check(departure_wings.max()-departure_wings.min()>.6 and a.leg_l.rotation.x<-.1,"gull unfolds, beats its wings and draws up its feet")
+			var previous:Vector3=a.last;life._process(.8)
+			check(a.last.distance_to(previous)<.35,"a stalled frame cannot skip the rest of the climb")
 	if "--qa-with-cast" in OS.get_cmdline_user_args():
 		var actor=world.avatar;check(is_instance_valid(actor),"personal test character is installed")
 		if actor:
@@ -63,6 +76,10 @@ func run():
 	for a in life.animals:
 		if a.kind in ["bird","butterfly"] and a.support!=Vector3.ZERO:supports.append(a.support)
 	check(supports.size()==10,"four gulls and six butterflies have landing sites after expansion")
+	var patterns={}
+	for a in life.animals:
+		if a.kind=="butterfly":patterns[a.model.scene_file_path]=true
+	check(patterns.size()==4,"four distinct butterfly patterns share the working flight rig")
 	var first_tracks={}
 	for i in game.ambience.tracks.size():
 		var music=load("res://scripts/ambience.gd").new();game.add_child(music);music.setup(game)

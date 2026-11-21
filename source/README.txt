@@ -1,4 +1,6 @@
-ARWORD · 0.14.20 竖屏小星球
+ARWORD · 0.14.21 竖屏小星球
+
+0.14.21（安卓代码 62）。海鸥连续滑翔落地、收翅和振翅起飞；蝴蝶有四种翅面花纹。看意思选词在提交正误结果后朗读目标词。
 
 安卓开场与光照（0.14.20，安卓代码 60）
 支持的安卓设备从启动起统一使用 OpenGL ES 3。以原版画面校准地表、海色与暗部。星云和吸积盘按到达镜头的光量合成。安装包包含 32 位、64 位的 ARM 和 x86 原生程序。
@@ -150,7 +152,7 @@ scripts/ambience.gd：背景音乐、语音时压低音乐和退出释放。
 scripts/study_voice.gd：可选私人声包的校验、导入与录音读取。
 scripts/hud.gd、icon_button.gd：原生游戏界面和图标。
 assets/vocabulary.json、missions.json、frontier_missions.json：教学内容；改英文语音文字后需重新生成对应录音。
-art-source 与 assets/models 中有 92 对可编辑模型源文件和 GLB。tools/make_voyage_art.py 生成火箭、金矿洞、铸币坊、金矿石和金币。tools/make_rocket_kraken.py 生成火箭岛巨型触手。可在 art-source/rocket_kraken.blend 中编辑四条触手的形态、吸盘和退海动作。
+art-source 与 assets/models 中有 95 对可编辑模型源文件和 GLB。tools/make_voyage_art.py 生成火箭、金矿洞、铸币坊、金矿石和金币。tools/make_rocket_kraken.py 生成火箭岛巨型触手。可在 art-source/rocket_kraken.blend 中编辑四条触手的形态、吸盘和退海动作。
 tools/make_art.py：Blender 4.4.3 后台运行，生成模型。render_icon.py 保留旧版图标生成过程，勿运行以覆盖当前 art-source/app-icon/ 图标。
 tools/make_life_art.py：生成鸟、蝴蝶、鱼和鲸的 Blender 源文件与运行模型。
 tools/make_blue_whale.py：单独重建连续长身、宽扁头、细长胸鳍和水平分叉尾的蓝鲸，不重导其他动物；make_life_art.py 的鲸生成也使用它。

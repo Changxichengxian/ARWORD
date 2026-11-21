@@ -20,7 +20,8 @@ var grass:Array=[]
 var cave:Dictionary={}
 var seabed_obstacles:Array=[]
 var bird_scene=preload("res://assets/models/wild_bird.glb")
-var butterfly_scene=preload("res://assets/models/wild_butterfly.glb")
+const BUTTERFLIES=[preload("res://assets/models/wild_butterfly.glb"),preload("res://assets/models/wild_butterfly_amber.glb"),preload("res://assets/models/wild_butterfly_blue.glb"),preload("res://assets/models/wild_butterfly_pearl.glb")]
+var butterfly_palette_offset=randi_range(0,BUTTERFLIES.size()-1)
 var whale_scene=preload("res://assets/models/wild_whale.glb")
 var orca_scene=preload("res://assets/models/wild_orca.glb")
 var tidepool=preload("res://scripts/tidepool.gd").new()
@@ -144,7 +145,7 @@ func refresh_habitats(progressive=false):
 	if progressive:await land_life.refresh_habitat(true)
 	else:land_life.refresh_habitat()
 	tidepool.choose_coast(self)
-	var desired={"bird":mini(4,1+land_count/8),"fish":38 if land_count>=18 else 34,"butterfly":mini(6,1+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
+	var desired={"bird":mini(4,1+land_count/8),"fish":38 if land_count>=18 else 34,"butterfly":mini(6,2+land_count/6),"whale":2 if land_count>=18 else 1,"orca":1}
 	for kind in desired:
 		var count=0
 		for animal in animals:
@@ -183,7 +184,7 @@ func species(index:int)->String:
 func spawn(kind:String,index:int):
 	var anchor=Node3D.new();add_child(anchor)
 	var type=species(index) if kind=="fish" else kind
-	var scene=fish_scenes[type] if kind=="fish" else {"bird":bird_scene,"butterfly":butterfly_scene,"whale":whale_scene,"orca":orca_scene}[kind]
+	var scene=fish_scenes[type] if kind=="fish" else {"bird":bird_scene,"butterfly":BUTTERFLIES[(index+butterfly_palette_offset)%BUTTERFLIES.size()],"whale":whale_scene,"orca":orca_scene}[kind]
 	var model=scene.instantiate();anchor.add_child(model)
 	var scale_factor=float(SCALES[type]) if kind=="fish" else .68 if kind=="bird" else (1.62 if index==0 else .82) if kind=="whale" else .66
 	if kind=="orca":scale_factor=1.52
@@ -196,6 +197,10 @@ func spawn(kind:String,index:int):
 		var animal=animals.back()
 		animal.perch_phase="flight";animal.perch_time=3.+index*1.7;animal.lift=1.
 		animal.takeoff_height=0.;animal.support=Vector3.ZERO;animal.flower=null
+		if kind=="bird":
+			animal.flight_center=world.surface(animal.home)
+			animal.velocity=Vector3.ZERO;animal.wing_fold=0.;animal.beat=animal.phase*7.5
+			animal.leg_l=model.find_child("LegL",true,false);animal.leg_r=model.find_child("LegR",true,false)
 
 func arrange_perches():
 	if not world.has_method("land_hit"):return
@@ -204,6 +209,7 @@ func arrange_perches():
 	for a in animals:
 		if a.kind not in ["bird","butterfly"]:continue
 		var preferred:Vector2=a.home
+		var previous_support:Vector3=a.support
 		var best=Vector2(INF,INF);var best_distance=INF
 		for cell in world.land:
 			var kind=world.terrain.kind(cell)
@@ -223,12 +229,16 @@ func arrange_perches():
 				if blocked or world.land_hit(p)==Vector3.ZERO:continue
 				best_distance=cost;best=p
 		if not best.is_finite():
+			if a.kind=="bird" and previous_support!=Vector3.ZERO and a.perch_phase in ["perched","landing"]:take_flight(a)
 			a.support=Vector3.ZERO
 			if is_instance_valid(a.flower):a.flower.hide()
 			continue
 		occupied.append(best);a.home=best
 		var ground=world.ground_point(best);var up=ground.normalized()
-		a.support=ground+up*(.137*a.scale)
+		a.support=ground+up*(.219*a.scale)
+		if a.kind=="bird":
+			if not previous_support.is_equal_approx(a.support) and a.last!=Vector3.ZERO:take_flight(a)
+			a.flight_center=ground
 		if a.kind=="butterfly":
 			if not is_instance_valid(a.flower):a.flower=world.model("flower",self)
 			a.flower.show();a.flower.position=ground
@@ -239,46 +249,102 @@ func arrange_perches():
 
 func take_flight(a:Dictionary):
 	a.takeoff_height=a.lift;a.perch_phase="takeoff";a.perch_time=0.
+	if a.kind=="bird":
+		a.departure=a.last
+		a.departure_heading=-a.anchor.basis.z
+		a.departure_velocity=a.velocity
+
+func gull_position(a:Dictionary,dt:float)->Vector3:
+	var center:Vector3=a.flight_center
+	var up=center.normalized()
+	var axes=tangent_axes(up)
+	var angle:float=a.phase*.30
+	# A bird crosses hex edges at cruising height, independent of the step
+	# in the terrain mesh below. Position and altitude share one tangent frame.
+	var offset:Vector3=axes[0]*cos(angle)*1.75+axes[1]*sin(angle)*1.20
+	var cruise=(center+offset).normalized()*(center.length()+2.85+.32*sin(a.phase*.55)+.36*a.reaction)
+	a.perch_time+=dt
+	var near_actor=is_instance_valid(world.get("builder")) and world.builder.position.distance_to(a.support)<.85
+	if a.perch_phase=="flight" and a.support!=Vector3.ZERO and not near_actor and a.perch_time>12.+a.index:
+		a.approach=a.last if a.last!=Vector3.ZERO else cruise
+		a.approach_velocity=a.velocity
+		a.approach_heading=(a.support-a.approach).slide(up).normalized()
+		a.perch_phase="landing";a.perch_time=0.
+	elif a.perch_phase in ["landing","perched"] and (near_actor or a.support==Vector3.ZERO or (a.perch_phase=="perched" and a.perch_time>8.+a.index)):
+		take_flight(a)
+	var pos:Vector3=cruise
+	var fold=0.;var effort=bird_effort(a,a.phase);var pitch=0.
+	if a.perch_phase=="landing":
+		var u=clampf(a.perch_time/3.15,0.,1.)
+		var brake=u*u*(2.-u)
+		var t=lerpf(u,smoothstep(0.,1.,u),brake)
+		pos=a.approach.bezier_interpolate(a.approach+a.approach_velocity*1.05,a.support-a.approach_heading*.75+up*.34,a.support,t)
+		a.lift=1.-smoothstep(0.,1.,u)
+		effort=lerpf(effort,1.,smoothstep(.35,.70,u))
+		pitch=.21*sin(PI*smoothstep(.48,1.,u))
+		fold=.38*smoothstep(.89,1.,u)
+		if u>=1.:a.perch_phase="perched";a.perch_time=0.
+	elif a.perch_phase=="perched":
+		pos=a.support;a.lift=0.;fold=1.;effort=0.
+	elif a.perch_phase=="takeoff":
+		var u=clampf(a.perch_time/2.25,0.,1.)
+		var push=smoothstep(.065,.58,u)
+		var direction:Vector3=a.departure_heading.slide(a.departure.normalized()).normalized()
+		var spring:Vector3=a.departure+a.departure_velocity*minf(a.perch_time,.55)*(1.-push)+direction*push*.92+up*push*1.08
+		pos=spring.lerp(cruise,smoothstep(.19,1.,u))
+		a.lift=lerpf(a.takeoff_height,1.,smoothstep(.065,.8,u))
+		effort=1.;pitch=.24*sin(push*PI)
+		if u>=1.:a.perch_phase="flight";a.perch_time=0.
+	else:a.lift=1.
+	a.wing_fold=move_toward(a.wing_fold,fold,dt*(4.8 if fold<a.wing_fold else 2.7))
+	a.beat+=dt*lerpf(7.5,12.,effort)
+	animate_bird(a,a.phase,effort,a.beat)
+	var rest:float=a.wing_fold
+	a.left.rotation=a.left.rotation.lerp(Vector3(.04,1.16,-.20),rest)
+	a.right.rotation=a.right.rotation.lerp(Vector3(.04,-1.16,.20),rest)
+	a.tip_left.rotation.y=.93*rest;a.tip_right.rotation.y=-.93*rest
+	a.model.rotation*=1.-rest;a.model.rotation.x+=pitch
+	a.head.rotation.y=lerpf(a.head.rotation.y,.36*sin(a.phase*1.25),rest)
+	var feet=-1.03*smoothstep(.04,.78,a.lift)
+	a.leg_l.rotation.x=feet;a.leg_r.rotation.x=feet
+	if a.perch_phase!="flight":a.state=a.perch_phase
+	# Replanning a perch or resuming after a long frame must not teleport.
+	if a.last!=Vector3.ZERO and dt>0.:
+		pos=a.last.move_toward(pos,dt*3.8)
+		a.velocity=(pos-a.last)/dt
+	return pos
 
 func flying_position(a:Dictionary,dt:float)->Vector3:
-	var bird=a.kind=="bird"
+	if a.kind=="bird":return gull_position(a,dt)
 	var t=a.phase
 	a.perch_time+=dt
 	if a.support==Vector3.ZERO:a.perch_phase="flight";a.lift=1.
-	elif a.perch_phase=="flight" and a.perch_time>(12. if bird else 8.)+a.index*.9 and (not is_instance_valid(world.get("builder")) or world.builder.position.distance_to(a.support)>1.):
+	elif a.perch_phase=="flight" and a.perch_time>8.+a.index*.9 and (not is_instance_valid(world.get("builder")) or world.builder.position.distance_to(a.support)>1.):
 		a.perch_phase="landing";a.perch_time=0.
 	elif a.perch_phase=="landing":
 		if is_instance_valid(world.builder) and world.builder.position.distance_to(a.support)<.73:
 			take_flight(a)
 			return a.last
-		a.lift=1.-smoothstep(0.,2.6 if bird else 1.7,a.perch_time)
+		a.lift=1.-smoothstep(0.,1.7,a.perch_time)
 		if a.lift<=0.:a.perch_phase="perched";a.perch_time=0.
-	elif a.perch_phase=="perched" and (a.perch_time>(8. if bird else 7.)+a.index or (is_instance_valid(world.builder) and world.builder.position.distance_to(a.support)<.73)):take_flight(a)
+	elif a.perch_phase=="perched" and (a.perch_time>7.+a.index or (is_instance_valid(world.builder) and world.builder.position.distance_to(a.support)<.73)):take_flight(a)
 	elif a.perch_phase=="takeoff":
-		a.lift=lerpf(a.takeoff_height,1.,smoothstep(0.,1.45 if bird else 1.05,a.perch_time))
+		a.lift=lerpf(a.takeoff_height,1.,smoothstep(0.,1.05,a.perch_time))
 		if a.lift>=1.:a.perch_phase="flight";a.perch_time=0.
-	if bird:animate_bird(a,t)
-	else:animate_butterfly(a,t)
+	animate_butterfly(a,t)
 	var rest=1.-a.lift
 	if rest>0.:
-		if bird:
-			a.left.rotation=a.left.rotation.lerp(Vector3(.04,1.16,-.20),rest)
-			a.right.rotation=a.right.rotation.lerp(Vector3(.04,-1.16,.20),rest)
-			a.tip_left.rotation.y=.93*rest;a.tip_right.rotation.y=-.93*rest
-			a.head.rotation.y=lerpf(a.head.rotation.y,.36*sin(t*1.25),rest)
-		else:
-			var fold=.82+.32*sin(t*1.6+a.index)
-			a.left.rotation.z=lerpf(a.left.rotation.z,-fold,rest)
-			a.right.rotation.z=lerpf(a.right.rotation.z,fold,rest)
-			a.hind_wing_left.rotation.z*=a.lift;a.hind_wing_right.rotation.z*=a.lift
+		var fold=.82+.32*sin(t*1.6+a.index)
+		a.left.rotation.z=lerpf(a.left.rotation.z,-fold,rest)
+		a.right.rotation.z=lerpf(a.right.rotation.z,fold,rest)
+		a.hind_wing_left.rotation.z*=a.lift;a.hind_wing_right.rotation.z*=a.lift
 		a.model.rotation*=a.lift
 		a.state=a.perch_phase
-	elif bird:a.tip_left.rotation.y=0.;a.tip_right.rotation.y=0.
 	if a.lift==0.:return a.support
-	var orbit=Vector2(cos(t*.30)*1.6,sin(t*.30)) if bird else Vector2(sin(t*.8)*.42,sin(t*1.3)*.32)
+	var orbit=Vector2(sin(t*.8)*.42,sin(t*1.3)*.32)
 	var p=world.surface(a.home+orbit*a.lift*a.lift)
 	var base_radius=p.length() if a.support==Vector3.ZERO else lerpf(a.support.length(),p.length(),a.lift)
-	var altitude=2.9+sin(t*.55)*.42+a.reaction*.65 if bird else .48+.12*sin(t*2)+a.reaction*.40
+	var altitude=.48+.12*sin(t*2)+a.reaction*.40
 	return p.normalized()*(base_radius+altitude*a.lift)
 
 func bind_joints(animal:Dictionary):
@@ -311,9 +377,9 @@ func bird_effort(animal:Dictionary,t:float)->float:
 	var effort=1.-smoothstep(3.2,4.5,phase)+smoothstep(8.4,9.5,phase)
 	return maxf(effort,smoothstep(0.,1.2,animal.startle))
 
-func animate_bird(animal:Dictionary,t:float):
-	var effort=bird_effort(animal,t)
-	var beat=t*7.5
+func animate_bird(animal:Dictionary,t:float,effort=-1.,beat=-1.):
+	if effort<0.:effort=bird_effort(animal,t)
+	if beat<0.:beat=t*7.5
 	var flap=sin(beat)*.50*effort+.065*(1.-effort)
 	animal.left.rotation=Vector3(0.,.045*effort*(1.-cos(beat)),-flap)
 	animal.right.rotation=Vector3(0.,-.045*effort*(1.-cos(beat)),flap)
@@ -687,7 +753,8 @@ func _process(dt):
 	for animal in animals:
 		animal.startle=maxf(0,animal.startle-dt)
 		animal.reaction=lerpf(animal.reaction,smoothstep(0.,1.2,animal.startle),1.-exp(-dt*5.))
-		animal.phase+=dt*(1.+.8*animal.reaction if animal.kind!="whale" else 1.)
+		var motion_dt=minf(dt,.09) if animal.kind=="bird" else dt
+		animal.phase+=motion_dt*(1.+.8*animal.reaction if animal.kind!="whale" else 1.)
 		var t=animal.phase;var pos:Vector3
 		if animal.kind=="fish":
 			if not animal.route_valid:
@@ -731,7 +798,7 @@ func _process(dt):
 				if surfacing>.02:animal.state="surface"
 		elif animal.kind=="whale":pos=whale_position(animal,t)
 		elif animal.kind=="orca":pos=orca_position(animal,t)
-		else:pos=flying_position(animal,dt)
+		else:pos=flying_position(animal,motion_dt)
 		var forward=pos-animal.last
 		if animal.last==Vector3.ZERO:forward=tangent_axes(pos.normalized())[0]
 		animal.anchor.position=pos

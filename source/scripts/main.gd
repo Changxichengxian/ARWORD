@@ -295,6 +295,7 @@ func begin_word_feedback(index:int,correct:bool):
 	locked=true;review_feedback="next" if correct else "retry"
 	review_pointer=-1;review_ready_at=Time.get_ticks_msec()+160
 	reset_world_input();hud.show_word_feedback(index,correct)
+	if current.get("review_kind","")=="reverse":speak_word()
 
 func continue_word_feedback():
 	if review_feedback.is_empty():return
