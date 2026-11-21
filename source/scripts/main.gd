@@ -721,12 +721,11 @@ func initialize_avatar():
 	if is_instance_valid(startup) and not await startup_turn():return
 	if closing or not is_inside_tree():return
 	var directory=character_directory
-	var legacy="" if qa else "user://avatars/current.vrm"
 	cast_store=FixedCast.new(directory)
 	if qa and not "--qa-with-cast" in OS.get_cmdline_user_args():
 		fixed_character=""
 		return
-	cast_store.prepare(FixedCast.BUILTIN,legacy)
+	cast_store.prepare()
 	fixed_character=""
 	if cast_store.preferred()=="deepseek":apply_fixed_character("deepseek",false)
 
@@ -753,10 +752,13 @@ func show_avatar_settings():
 	hud.screen="avatar"
 	if cast_store!=null and not cast_store.model_path.is_empty():
 		hud.text(box,"大肥鱼",24,IslandHUD.GREEN)
-		hud.text(box,"DeepSeek 娘 · 木子恶魔",16,IslandHUD.GREEN)
+		hud.text(box,"DeepSeek 娘 · ARWORD 重制",16,IslandHUD.GREEN)
+		hud.text(box,"原作：上善无形　女仆设计：ZipZipPipe",14)
+		hud.text(box,"设定参考：YunYueSama、xiaoweigen",14)
+		hud.ghost(box,"模型来源与许可",func():OS.shell_open("https://github.com/Changxichengxian/ARWORD/blob/v0.14.22/source/assets/characters/whale-girl-CREDITS.txt"))
 	else:
-		hud.text(box,"大肥鱼尚未安装",22,IslandHUD.GREEN)
-		hud.text(box,"请使用含人物的个人安装包，已有学习记录会保留。",16)
+		hud.text(box,"人物资源未能加载",22,IslandHUD.GREEN)
+		hud.text(box,"可从设置检查更新。",16)
 	hud.ghost(box,"返回",settings)
 
 func space_settings():

@@ -1,0 +1,12 @@
+大肥鱼 / DeepSeek 娘 · ARWORD 游戏人物
+角色原作「鲸鱼娘」：上善无形（上善） https://space.bilibili.com/4456176
+DeepSeek 女仆二次设计：ZipZipPipe https://www.pixiv.net/artworks/148186519
+Q 版造型参考：YunYueSama https://github.com/YunYueSama/codex-deepseek-pet
+六视图改编与整理：xiaoweigen https://github.com/xiaoweigen/deepseek-dafeiyu-assets/tree/main/characters/whale-girl
+上游署名和修改记录：https://github.com/xiaoweigen/deepseek-dafeiyu-assets/blob/main/NOTICE.md
+
+ARWORD 新增改编：根据上述二维设定重新创作三维网格、材质与顶点绘色，制作表情、骨骼、鲸尾、搪瓷饭碗、勺子、铁盆和进食动画。使用 OpenAI API 辅助建模和动作设计，在 Blender 中制作与检查。首次发布版本为 0.14.22。
+新三维模型、表情与动画按 CC BY-NC-SA 4.0（署名—非商业性使用—相同方式共享）提供。
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+完整协议见 whale-girl-LICENSE.txt。YunYueSama 的版权与完整许可见同目录 YunYueSama-ATTRIBUTION-1.0.txt、YunYueSama-ASSET_LICENSE.txt。
+可编辑文件与制作代码：https://github.com/Changxichengxian/ARWORD/tree/v0.14.22/source

@@ -10,7 +10,7 @@
 
 在 **设置 → 检查更新** 中可以查看新版和下载量。有适配的差异文件时，手机会复用本机资源，还原新的签名安装包，再由系统确认安装。普通学习可离线进行。
 
-当前人物只保留大肥鱼，由木子恶魔制作。使用本地个人首装包的玩家，先打开一次让它保存人物，之后覆盖更新公开稳定版仍可使用这个角色。公开版不包含作者模型，未安装时显示安装说明。[模型作者页面](https://www.aplaybox.com/details/model/ayXkRzVflmnd)
+本版大肥鱼以鲸鱼娘原作和 DeepSeek 女仆设定图重建。原作上善无形（上善），女仆设计 ZipZipPipe，Q 版参考 YunYueSama，六视图整理 xiaoweigen。完整署名与许可见 source/assets/characters/whale-girl-CREDITS.txt。首装和覆盖更新均直接使用内置模型。 [模型出处与许可](source/assets/characters/whale-girl-CREDITS.txt)
 
 **0.14.11** 主岛浅海、岛外和外海各有动物活动，新增章鱼、锤头鲨和翻车鱼。兔子有更圆的脸、更短的爪子，会眨眼、动鼻子和抖耳朵。
 

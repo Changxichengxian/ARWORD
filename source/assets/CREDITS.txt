@@ -35,3 +35,5 @@ https://huggingface.co/hexgrad/Kokoro-82M
 https://github.com/thewh1teagle/kokoro-onnx
 
 潮间岩台和四种新增动物由 tools/make_tidepool_animals.py 建模并导出。
+
+本版大肥鱼以鲸鱼娘原作和 DeepSeek 女仆设定图重建。原作上善无形（上善），女仆设计 ZipZipPipe，Q 版参考 YunYueSama，六视图整理 xiaoweigen。完整署名与许可见 assets/characters/whale-girl-CREDITS.txt。首装和覆盖更新均直接使用内置模型。

@@ -1,7 +1,7 @@
 extends Node3D
 class_name IslandAvatar
 
-# Fixed character rig. The model bytes are supplied with the personal installation.
+# The packaged character and legacy VRM fixtures share the same motion driver.
 const MAX_BYTES=64*1024*1024
 const HEIGHT=1.085
 const REQUIRED=["hips","spine","head","leftUpperArm","leftLowerArm","leftHand","rightUpperArm","rightLowerArm","rightHand","leftUpperLeg","leftLowerLeg","leftFoot","rightUpperLeg","rightLowerLeg","rightFoot"]
@@ -44,9 +44,11 @@ var rest_length=1.20
 var enabled=false
 var greeted_at=-20.
 var greet_side=1.
+var whale_rest
 var is_fish=false
 var baked_surfaces={}
 var used_baked_surfaces=0
+var rebuild_contacts=false
 
 static func preflight(path:String)->Dictionary:
 	var f=FileAccess.open(path,FileAccess.READ)
@@ -114,22 +116,32 @@ static func preflight(path:String)->Dictionary:
 
 func load_file(owner_world,path:String,cache_folder:String="")->Dictionary:
 	world=owner_world
-	var model_hash=FileAccess.get_sha256(path) if FileAccess.file_exists(path) else ""
-	is_fish=model_hash==preload("res://scripts/fixed_cast.gd").MODEL_HASH
-	if not is_fish:cache_folder=""
-	scene=PreparedCache.read(cache_folder,model_hash)
-	used_prepared_cache=scene!=null
 	var result:Dictionary={};var state:GLTFState;var bone_names:Dictionary={}
-	if used_prepared_cache:
-		result=scene.get_meta("arword_import").duplicate(true)
-		bone_names=result.bone_names;expression_paths=result.expression_paths
+	var model_hash=""
+	if path==preload("res://scripts/fixed_cast.gd").BUILTIN:
+		var packed_scene=load(path) as PackedScene
+		if not packed_scene:return {"ok":false,"error":"无法打开内置人物"}
+		scene=packed_scene.instantiate()
+		whale_rest=preload("res://scripts/whale_rest.gd").new()
+		cache_folder=""
+		result={"title":"大肥鱼","author":"ARWORD","version":"1","vertices":0,"json":{}}
+		for key in REQUIRED+["chest","neck"]:bone_names[key]=key
 	else:
-		result=preflight(path)
-		if not result.ok:return result
-		var document=GLTFDocument.new();state=GLTFState.new()
-		if document.append_from_buffer(result.bytes,"",state)!=OK:return {"ok":false,"error":"原生引擎无法读取这个模型"}
-		scene=document.generate_scene(state)
-		for name in result.bones:bone_names[name]=str(state.get_nodes()[result.bones[name]].original_name)
+		model_hash=FileAccess.get_sha256(path) if FileAccess.file_exists(path) else ""
+		is_fish=model_hash==preload("res://scripts/fixed_cast.gd").MODEL_HASH
+		if not is_fish:cache_folder=""
+		scene=PreparedCache.read(cache_folder,model_hash)
+		used_prepared_cache=scene!=null
+		if used_prepared_cache:
+			result=scene.get_meta("arword_import").duplicate(true)
+			bone_names=result.bone_names;expression_paths=result.expression_paths
+		else:
+			result=preflight(path)
+			if not result.ok:return result
+			var document=GLTFDocument.new();state=GLTFState.new()
+			if document.append_from_buffer(result.bytes,"",state)!=OK:return {"ok":false,"error":"原生引擎无法读取这个模型"}
+			scene=document.generate_scene(state)
+			for name in result.bones:bone_names[name]=str(state.get_nodes()[result.bones[name]].original_name)
 	if scene==null:return {"ok":false,"error":"无法生成模型"}
 	var imported_transform=scene.transform
 	add_child(scene)
@@ -146,12 +158,16 @@ func load_file(owner_world,path:String,cache_folder:String="")->Dictionary:
 		if not humanoid.has(name):return {"ok":false,"error":"无法对应人形骨骼："+name}
 	for i in skeleton.get_bone_count():
 		local_rest.append(skeleton.get_bone_rest(i));global_rest.append(skeleton.get_bone_global_rest(i));poses.append(skeleton.get_bone_global_rest(i))
-		if str(skeleton.get_bone_name(i)).begins_with("WeiBa"):tail_bones.append(i)
+		if str(skeleton.get_bone_name(i)).begins_with("WeiBa") or str(skeleton.get_bone_name(i)) in ["TailRoot","TailMid","TailFin","HairL","HairR","HairBack"]:tail_bones.append(i)
 	native_to_game=Basis(Vector3.UP,PI) if result.version=="1" else Basis.IDENTITY
 	basis=native_to_game
 	meshes=scene.find_children("*","MeshInstance3D",true,false)
+	if whale_rest:whale_rest.setup(scene,skeleton,meshes)
 	var box=AABB();var found=false
 	for mesh in meshes:
+		if whale_rest and mesh.mesh is ArrayMesh:
+			for surface in mesh.mesh.get_surface_count():result.vertices+=mesh.mesh.surface_get_array_len(surface)
+		if whale_rest and str(mesh.name) in whale_rest.PROPS:continue
 		var mesh_box=scene.global_transform.affine_inverse()*mesh.global_transform*mesh.get_aabb()
 		box=box.merge(mesh_box) if found else mesh_box;found=true
 	if not found or box.size.y<.05 or box.size.y>20:return {"ok":false,"error":"人物尺寸不合理"}
@@ -164,9 +180,10 @@ func load_file(owner_world,path:String,cache_folder:String="")->Dictionary:
 	for side in ["left","right"]:
 		var upper:int=humanoid[side+"UpperArm"];var lower:int=humanoid[side+"LowerArm"]
 		var direction:Vector3=(global_rest[lower].origin-global_rest[upper].origin).normalized()
-		var target=native_to_game.inverse()*Vector3(-.16 if side=="left" else .16,-1,-.035).normalized()
+		var spread=.52 if whale_rest else .16
+		var target=native_to_game.inverse()*Vector3(-spread if side=="left" else spread,-1,-.085 if whale_rest else -.035).normalized()
 		down[side]=Basis(Quaternion(direction,target))
-	if not used_prepared_cache:prepare_materials()
+	if not used_prepared_cache and not whale_rest:prepare_materials()
 	prepare_probes();prepare_blink(result.json,state)
 	if foot_probes.is_empty() or support_probes.is_empty():return {"ok":false,"error":"模型缺少可适配的脚部蒙皮"}
 	# Capture the imported rest pose, before the animation driver changes bones.
@@ -212,12 +229,17 @@ func prepare_materials():
 func prepare_probes():
 	var profile={}
 	var profile_path="res://assets/characters/contact_points.json"
-	if is_fish and FileAccess.file_exists(profile_path):
+	if whale_rest:
+		profile_path="res://assets/characters/whale_contacts.json"
+		if not rebuild_contacts and FileAccess.file_exists(profile_path):
+			var data=JSON.parse_string(FileAccess.get_file_as_string(profile_path))
+			if data is Dictionary:profile=data.get("surfaces",{})
+	elif is_fish and FileAccess.file_exists(profile_path):
 		var data=JSON.parse_string(FileAccess.get_file_as_string(profile_path))
 		if data is Dictionary and data.get("hash","")==preload("res://scripts/fixed_cast.gd").MODEL_HASH:
 			profile=data.get("surfaces",{})
 	for mesh in meshes:
-		if mesh.skin==null:continue
+		if mesh.skin==null or (whale_rest and str(mesh.name) in whale_rest.PROPS):continue
 		var binds=[]
 		for i in mesh.skin.get_bind_count():
 			var bone=skeleton.find_bone(mesh.skin.get_bind_name(i)) if not mesh.skin.get_bind_name(i).is_empty() else mesh.skin.get_bind_bone(i)
@@ -388,6 +410,9 @@ static func expression_values(state:Dictionary,now:float,neutral:bool=false)->Di
 func apply_expression(state:Dictionary,now:float,neutral:bool=false):
 	var values=expression_values(state,now,neutral)
 	if not neutral:
+		if whale_rest:
+			values.ih=maxf(values.ih,whale_rest.mouth)
+			values.blink=maxf(values.blink,whale_rest.blink)
 		var greeting=greeting_weight()
 		values.happy=maxf(values.happy,.58*greeting)
 		values.blink=maxf(values.blink,.66*greeting)
@@ -421,6 +446,7 @@ func greet_at(screen_pos:Vector2)->bool:
 func update_pose(neutral=false):
 	if (not enabled and not neutral) or not is_instance_valid(skeleton) or world.worker==null:return
 	position=Vector3.ZERO
+	if whale_rest:whale_rest.sample(world,neutral)
 	var body=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs.Body.rotation);var head=Basis.from_euler(world.worker.head_pivot.rotation) if not neutral and world.worker.head_pivot else Basis.IDENTITY
 	var napping=not neutral and world.worker.work_left<=0 and world.worker.rest_variant==1 and world.worker.waking<=0
 	var greeting=0. if neutral else greeting_weight()
@@ -436,12 +462,17 @@ func update_pose(neutral=false):
 			elbow=elbow*Basis(Vector3.RIGHT,-.47*greeting)
 		rotations[humanoid[side+"UpperArm"]]=canonical(body*arm)*down[side]
 		rotations[humanoid[side+"LowerArm"]]=canonical(body*arm*elbow)*down[side]
+		if whale_rest and (neutral or (world.worker.work_left<=0 and not world.worker.carry.visible)):
+			rotations[humanoid[side+"Hand"]]=rotations[humanoid[side+"LowerArm"]]*Basis(Vector3.RIGHT,-.90)
 		var leg=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs["Leg"+suffix].rotation);var knee=Basis.IDENTITY if neutral else Basis.from_euler(world.limbs["Knee"+suffix].rotation)
 		rotations[humanoid[side+"UpperLeg"]]=canonical(leg)
 		rotations[humanoid[side+"LowerLeg"]]=canonical(leg*knee)
 	for i in skeleton.get_bone_count():
 		var parent=skeleton.get_bone_parent(i);var pose:Transform3D=local_rest[i] if parent<0 else poses[parent]*local_rest[i]
 		if rotations.has(i):pose.basis=rotations[i]*global_rest[i].basis
+		if whale_rest:
+			pose.basis=whale_rest.apply(i,pose.basis,poses[parent].basis if parent>=0 else Basis.IDENTITY)
+			if skeleton.get_bone_name(i)=="BasinMount":pose.origin+=poses[parent].basis*global_rest[parent].basis.inverse()*Vector3.UP*whale_rest.lift
 		if i in tail_bones:
 			var n=str(skeleton.get_bone_name(i))
 			var effort=clampf(world.motion_speed,0,1) if not neutral else 0.0

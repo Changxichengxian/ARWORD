@@ -1,4 +1,6 @@
-ARWORD · 0.14.21 竖屏小星球
+ARWORD · 0.14.22 竖屏小星球
+
+0.14.22（安卓代码 64）。大肥鱼采用按鲸鱼娘设定图重建的内置人物，可眨眼、顶盆和端碗吃饭。角色网格、表情、动画与美术源文件按 CC BY-NC-SA 4.0 公开。
 
 0.14.21（安卓代码 62）。海鸥连续滑翔落地、收翅和振翅起飞；蝴蝶有四种翅面花纹。看意思选词在提交正误结果后朗读目标词。
 
@@ -107,8 +109,8 @@ Windows 交付目标为 outputs/character-preview/Windows/ARWORD.exe，同一程
 阅读可选短版或展开版；长文仅在阅读区域内滚动。听力可重播、慢放或看原文。句子词块保持固定位置，选过的变灰。
 
 固定人物
-个人版首次启动会校验大肥鱼原件并复制到 user://characters/。当前只保留大肥鱼，设置显示人物信息与作者署名；旧的默认人物选择会自动使用已安装的大肥鱼。大肥鱼的步幅、工具握点、尾部留空与闭眼打盹已适配；9 个表面的接触点索引预先计算。作者为木子恶魔。
-从 0.14.5 起已去掉白模人物。未安装大肥鱼的设备保持人物隐藏并显示安装说明。历史个人首装包 outputs/0.14.4/Android/ARWORD-0.14.4-setup.apk（版本代码 27）可先打开一次，让应用校验并保存大肥鱼，再从“设置 → 检查更新”升级并继续使用缓存人物。清除应用数据或卸载会删除该设备上的缓存模型与学习记录。作者原模型不进公开仓库、公开安装包或更新附件。
+本版大肥鱼以鲸鱼娘原作和 DeepSeek 女仆设定图重建。原作上善无形（上善），女仆设计 ZipZipPipe，Q 版参考 YunYueSama，六视图整理 xiaoweigen。完整署名与许可见 assets/characters/whale-girl-CREDITS.txt。首装和覆盖更新均直接使用内置模型。
+0.14.5–0.14.21 的私人 VRM 与缓存属于旧版。新版使用包内模型，设备上的旧模型文件和学习记录保留。外部作者的原件仍仅限本机。
 
 可以停下来看什么
 宇宙保留大面积深黑。三处稀疏、低饱和的程序体积星云置于太阳系后方的不同距离，以三维噪声和沿视线取样形成云层、暗核和薄亮边，不使用摄影图片或生成的星云壁纸。每次启动使用新的随机种子，设置里的“换片星空”可以立即换一次；五项参数保持用户选择。太阳与四颗风格不同的行星在独立的透视三维空间中公转、自转，远景按实际窗口像素渲染以减少模糊。轨道和距离经过压缩；当前星体只供观察和轻触反馈，不能登陆、旅行或建设。
@@ -188,7 +190,7 @@ study_voice 只缓存最近使用的可选声包录音，最多 32 条、合计 
 构建
 Windows：Python 调用 build_desktop.py --godot <Godot控制台exe> --templates <4.5.1 templates.tpz> --output <交付目录>。使用独立编辑器配置和临时目录，导出内嵌资源的单个 EXE 与来源哈希，不再生成公共美术预览启动器。无需签名资料。交付程序不含测试代码、Blender 工程或浏览器。
 Android：依赖 Godot 4.5.1 及对应 Android 导出模板、Android SDK、JDK 21。Templates 目录还须有同版官方 android_source.zip；这是构建依赖，不是旧安装包，也不提交 Git。PowerShell 7 调用 build.ps1，传入 -Godot、-Templates、-AndroidSdk、-JavaHome、-SigningProperties、-OutputDirectory。签名配置属于私密文件，勿提交 Git。
-build.ps1 调用 android-plugin/prepare.ps1 注入更新插件并通过 Gradle 导出。公开构建使用 -PublicRelease，个人构建从被 Git 忽略的 assets/characters/deepseek.vrm 读取固定模型。更新仓库默认为 Changxichengxian/ARWORD。
+build.ps1 调用 android-plugin/prepare.ps1 构建原生安卓包。公开构建使用 -PublicRelease，各平台使用同一套鲸鱼娘网格与骨骼。更新仓库为 Changxichengxian/ARWORD。
 脚本在独立临时目录导入和导出，不修改全局 Godot 设置；对齐、签名、验证后清理本次中间目录。生成 APK、SHA256SUMS.txt、source-inputs-sha256.json、android-build-dependencies.json 和 build.log。输入清单覆盖 Java 插件源码；依赖清单记录源模板哈希与 Manifest 注册名，配合 prepare.ps1 核对模板来源、修改和最终 APK 的注册/权限声明。
 海面与海床、鱼群共享测深数据。水面用硬件深度测试和透明混合，浅水能看见海床，波纹保留动态高光。手机单独限制三维场景的像素数，学习界面保持屏幕原始分辨率。
 

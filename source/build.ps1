@@ -28,15 +28,8 @@ foreach($name in @("assets","scripts","project.godot","main.tscn","export_preset
 }
 $voicePack = Join-Path $stage 'assets/characters/feiyu-cute-v1.arvoice'
 if (Test-Path -LiteralPath $voicePack) {Remove-Item -LiteralPath $voicePack}
-if ($PublicRelease) {
-    $personal = Join-Path $stage 'assets/characters/deepseek.vrm'
-    if (Test-Path -LiteralPath $personal) {Remove-Item -LiteralPath $personal}
-} else {
-    $personal=Join-Path $stage 'assets/characters/deepseek.vrm'
-    if(-not (Test-Path -LiteralPath $personal) -or (Get-FileHash -LiteralPath $personal -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'c14879ff5c42501043896aae03ce971b2c11eee2e76106d47ee98741aa842ff5'){
-        throw '个人首装包需要指定的本机大肥鱼源文件。公开构建请使用 -PublicRelease。'
-    }
-}
+$oldModel=Join-Path $stage 'assets/characters/deepseek.vrm'
+if (Test-Path -LiteralPath $oldModel) {Remove-Item -LiteralPath $oldModel}
 $inputs=Get-ChildItem -LiteralPath $stage -Recurse -File | ForEach-Object {
     [pscustomobject]@{path=$_.FullName.Substring($stage.Length+1).Replace('\','/');sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
 }

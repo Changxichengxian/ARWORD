@@ -21,6 +21,7 @@ New-Item -ItemType Directory -Path $android -Force | Out-Null
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::ExtractToDirectory($template,$build)
 & (Join-Path $PSScriptRoot 'prepare-model-colors.ps1') -ModelDirectory (Join-Path $Stage 'assets/models')
+& (Join-Path $PSScriptRoot 'prepare-model-colors.ps1') -ModelDirectory (Join-Path $Stage 'assets/characters')
 $javaPkg = Join-Path $build 'src/io/github/changxichengxian/arword'
 New-Item -ItemType Directory -Force -Path $javaPkg | Out-Null
 foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java','SafeViewport.java')) {
