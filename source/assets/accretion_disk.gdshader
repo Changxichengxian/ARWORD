@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_back, depth_draw_never, fog_disabled;
 
+#include "res://assets/scene_color.gdshaderinc"
 uniform sampler2D null_orbits : filter_linear, repeat_disable;
 uniform sampler2D orbital_gas : filter_linear_mipmap, repeat_enable;
 uniform float flow_time;
@@ -112,6 +113,7 @@ void fragment() {
 	float rim = exp(-abs(impact-5.205)/max(0.024,aa)) * min(1.0,0.048/aa);
 	float alpha = 1.0-transmission*(1.0-max(shadow,rim*0.55));
 	if (alpha<0.002) { discard; }
-	ALBEDO = (light+transmission*rim*vec3(0.95,0.61,0.37))/alpha;
-	ALPHA = alpha;
+	vec4 result = volume_color((light+transmission*rim*vec3(0.95,0.61,0.37))/alpha, alpha, OUTPUT_IS_SRGB);
+	ALBEDO = result.rgb;
+	ALPHA = result.a;
 }

@@ -16,19 +16,16 @@ if($hash -ne '1ca4af13143abc7ee9cf56e2790e51213ed8a3905d1cffcb7babe1a2537c338f')
 $android=Join-Path $Stage 'android'
 $build=Join-Path $android 'build'
 if(Test-Path -LiteralPath $build){throw 'Android staging 已存在；请使用新的独立构建目录。'}
+if (Test-Path -LiteralPath (Join-Path $Stage 'art-source')) { throw 'Use a fresh Android staging copy.' }
 New-Item -ItemType Directory -Path $android -Force | Out-Null
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::ExtractToDirectory($template,$build)
+& (Join-Path $PSScriptRoot 'prepare-model-colors.ps1') -ModelDirectory (Join-Path $Stage 'assets/models')
 $javaPkg = Join-Path $build 'src/io/github/changxichengxian/arword'
 New-Item -ItemType Directory -Force -Path $javaPkg | Out-Null
-foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java','SafeViewport.java','PlanetActivity.java')) {
+foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java','SafeViewport.java')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot ('src/io/github/changxichengxian/arword/' + $name)) -Destination $javaPkg
 }
-$activity=Join-Path $build 'src/com/godot/game/GodotApp.java'
-$activityText=[IO.File]::ReadAllText($activity)
-$baseClass='extends GodotActivity {'
-if (-not $activityText.Contains($baseClass)) {throw '官方安卓启动类不匹配。'}
-[IO.File]::WriteAllText($activity,$activityText.Replace($baseClass,'extends io.github.changxichengxian.arword.PlanetActivity {'),[Text.UTF8Encoding]::new($false))
 if($UpdateRepository -notmatch '^[A-Za-z0-9-]+/[A-Za-z0-9_.-]+$'){throw '更新仓库必须写成 owner/repo。'}
 $channel='package io.github.changxichengxian.arword; final class UpdateChannel { static final String REPO="'+$UpdateRepository+'"; }'
 [IO.File]::WriteAllText((Join-Path $javaPkg 'UpdateChannel.java'),$channel,[Text.UTF8Encoding]::new($false))

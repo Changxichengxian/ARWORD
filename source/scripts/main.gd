@@ -124,6 +124,13 @@ func setup_camera():
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color.BLACK
 	e.reflected_light_source=Environment.REFLECTION_SOURCE_DISABLED
 	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
+	if RenderingServer.get_current_rendering_method()=="gl_compatibility":
+		# Match the former linear renderer's coastal highlights and blue shadows.
+		# The environment grades the world before the study UI is drawn.
+		e.ambient_light_energy=.36
+		e.adjustment_enabled=true
+		e.adjustment_saturation=.93
+		e.adjustment_color_correction=preload("res://assets/planet_filmic_compat.tres")
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
 	# Orthographic shadow maps span the camera depth. The globe fits within 54
 	# units from every gameplay view; the distant sky uses its own camera.

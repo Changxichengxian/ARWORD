@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode blend_mix, depth_draw_never, cull_back, diffuse_burley, specular_schlick_ggx;
 
+#include "res://assets/scene_color.gdshaderinc"
 uniform sampler2D bed_depth : filter_linear, repeat_disable;
 uniform float water_time = 0.0;
 uniform float radius = 11.62;
@@ -67,6 +68,7 @@ void fragment() {
     float absorption = 1.0-exp(-thickness*mix(.70,2.65,trench));
     vec3 shallow = vec3(0.045,0.56,0.60);
     vec3 deep = vec3(0.003,0.025,0.080);
+    if (OUTPUT_IS_SRGB) deep.r=0.013;
     shallow=mix(shallow,vec3(.009,.051,.067),trench);
     deep=mix(deep,vec3(.001,.005,.016),trench);
     float incidence=max(0.40,surface_angle);
@@ -78,13 +80,8 @@ void fragment() {
     SPECULAR = .36*(1.0-smoothstep(.25,.85,trench));
     METALLIC = 0.02;
 	float opacity=mix(.22+.52*absorption,.24+.29*absorption,trench);
-    // These water colors are linear. GLES lights the surface in display space.
-    if (OUTPUT_IS_SRGB) {
-        surface_color = mix(12.92 * surface_color,
-            1.055 * pow(surface_color, vec3(1.0 / 2.4)) - 0.055,
-            step(vec3(0.0031308), surface_color));
-    }
-    ALBEDO=surface_color;
-    EMISSION=vec3(.09,.22,.31)*fresnel*.045;
+    vec3 edge_light=vec3(.09,.22,.31)*fresnel*.045;
+    ALBEDO=OUTPUT_IS_SRGB ? display_color(surface_color) : surface_color;
+    EMISSION=OUTPUT_IS_SRGB ? display_color(edge_light) : edge_light;
     ALPHA=mix(opacity,1.0,1.0-smoothstep(.12,.52,surface_angle));
 }

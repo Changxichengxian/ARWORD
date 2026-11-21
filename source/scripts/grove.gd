@@ -374,7 +374,7 @@ func terrain_geometry():
 				for v in [mid_a,mid_b,low_b,mid_a,low_b,low_a]:st.add_vertex(inv*(v-center))
 		ground_faces[cell]=faces
 		st.generate_normals();var n=MeshInstance3D.new();n.mesh=st.commit();var material=mat("FFFFFF").duplicate();material.vertex_color_use_as_albedo=true;material.vertex_color_is_srgb=true;material.cull_mode=BaseMaterial3D.CULL_DISABLED;n.material_override=material;anchor.add_child(n)
-		if region=="rocket":n.layers=Berth.LAYER
+		if region=="rocket":Berth.isolate(n)
 	if scenery:scenery.queue_free()
 	scenery=Node3D.new();globe.add_child(scenery)
 	# Short, authored approaches to a few useful places. Most land stays wild.
@@ -558,7 +558,8 @@ func setup_base(owner_node):
 	var sun=DirectionalLight3D.new()
 	sun.rotation_degrees=Vector3(-48,-35,0)
 	sun.light_color=Color("FFF0DB")
-	sun.light_energy=1.0
+	# GLES accumulates shadowed sunlight and ambient light in display space.
+	sun.light_energy=.42 if RenderingServer.get_current_rendering_method()=="gl_compatibility" else 1.0
 	sun.light_cull_mask=1
 	sun.shadow_enabled=true
 	sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS

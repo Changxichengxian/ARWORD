@@ -22,8 +22,31 @@ var wake_index=0
 var animation_clock=0.0
 
 static func isolate(node:Node3D):
-	if node is GeometryInstance3D:node.layers=LAYER
-	for mesh in node.find_children("*","GeometryInstance3D",true,false):mesh.layers=LAYER
+	var parts=node.find_children("*","GeometryInstance3D",true,false)
+	if node is GeometryInstance3D:parts.append(node)
+	for part in parts:
+		part.layers=LAYER
+		if RenderingServer.get_current_rendering_method()!="gl_compatibility" or not part is MeshInstance3D or not part.mesh:continue
+		if part.material_override is BaseMaterial3D:
+			part.material_override=berth_surface(part.material_override)
+		elif not part.material_override:
+			for i in part.mesh.get_surface_count():
+				var material=part.get_active_material(i)
+				if material is BaseMaterial3D:part.set_surface_override_material(i,berth_surface(material))
+
+static func berth_surface(original:BaseMaterial3D)->ShaderMaterial:
+	if original.has_meta("berth_surface"):return original.get_meta("berth_surface")
+	var material=ShaderMaterial.new()
+	material.shader=preload("res://assets/berth_surface.gdshader")
+	material.set_shader_parameter("tint",original.albedo_color)
+	material.set_shader_parameter("use_paint",original.vertex_color_use_as_albedo)
+	material.set_shader_parameter("surface_roughness",original.roughness)
+	material.set_shader_parameter("surface_metallic",original.metallic)
+	if original.emission_enabled:
+		material.set_shader_parameter("glow",original.emission)
+		material.set_shader_parameter("glow_energy",original.emission_energy_multiplier)
+	original.set_meta("berth_surface",material)
+	return material
 
 func setup(owner_world):
 	world=owner_world

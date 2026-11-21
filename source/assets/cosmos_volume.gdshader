@@ -1,6 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, blend_mix, depth_draw_never, fog_disabled;
 
+#include "res://assets/scene_color.gdshaderinc"
 uniform sampler3D cloud_noise : filter_linear, repeat_enable;
 uniform vec3 cloud_center = vec3(0.0,20.0,-110.0);
 uniform vec3 cloud_radii = vec3(18.0,9.0,12.0);
@@ -54,6 +55,9 @@ void fragment() {
 	vec3 phase=noise_phase+vec3(drift*.0011,-drift*.0007,drift*.0005);
 	vec3 glow=vec3(0.0);
 	float transmission=1.0;
+	vec3 cold = OUTPUT_IS_SRGB ? linear_color(cold_color.rgb) : cold_color.rgb;
+	vec3 middle = OUTPUT_IS_SRGB ? linear_color(middle_color.rgb) : middle_color.rgb;
+	vec3 warm = OUTPUT_IS_SRGB ? linear_color(warm_color.rgb) : warm_color.rgb;
 	float sample_offset=.2+pixel_random(FRAGCOORD.xy)*.6;
 	for(int i=0;i<36;i++) {
 		if(i>=ray_steps) { break; }
@@ -72,12 +76,12 @@ void fragment() {
 		// Dense dust absorbs background stars; coloured light lives around its thinner edges.
 		float dust=smoothstep(.56,.78,large)*smoothstep(.39,.65,body)*shape*edge_fade;
 		float violet=smoothstep(.30,.70,large+p.y*.18-p.x*.12);
-		vec3 gas_color=mix(cold_color.rgb,middle_color.rgb,violet*.78);
+		vec3 gas_color=mix(cold,middle,violet*.78);
 		vec3 tint=gas_color*(.20+thin_light*.90+strands*(.65+detail_view*.9));
 		float shape_rim=clamp((cloud_shape(p+vec3(-.09,.10,.04),large)-shape)*3.0,0.0,1.0);
 		float gold=(pow(thin_light,3.8)*smoothstep(.50,.78,fine)*.16+pow(shape_rim,2.2)*.7)*(.30+float(structure==2)*.9);
 		tint*=1.0-smoothstep(.035,.30,dust)*.82;
-		tint+=warm_color.rgb*gold*1.35;
+		tint+=warm*gold*1.35;
 		tint*=1.0+detail_view*.32;
 		if(detail_view>.5) {
 			// Close observation resolves thin lit sheets around darker, absorbing cores.
@@ -89,14 +93,14 @@ void fragment() {
 			density=smoothstep(.38,.65,folded)*shape*edge_fade;
 			dust=max(dust,core*shape*edge_fade*1.8);
 			float color_patch=smoothstep(.38,.67,large+p.y*.14-p.x*.09);
-			vec3 violet_edge=mix(middle_color.rgb,vec3(.42,.16,.34),.24);
-			gas_color=mix(cold_color.rgb,violet_edge,color_patch*.9);
+			vec3 violet_edge=mix(middle,vec3(.42,.16,.34),.24);
+			gas_color=mix(cold,violet_edge,color_patch*.9);
 			tint=gas_color*(.038+thin_light*.24+filaments*3.2);
 			tint*=1.0-smoothstep(.04,.48,dust)*.94;
 			// Gold is confined to the broken sunward skin, rather than broad yellow lobes.
 			float warm_edge=filaments*pow(thin_light,2.2)*smoothstep(.15,.5,shape_rim);
 			warm_edge*=.16+float(structure==2)*2.8;
-			tint+=warm_color.rgb*warm_edge*2.1;
+			tint+=warm*warm_edge*2.1;
 			// In the eyepiece, resolve a backlit shell, two interacting lobes,
 			// or eroded pillars. Preserve clear windows through the dust.
 			float skin=exp(-abs(folded-.50-(large-.5)*.18)*15.0);
@@ -123,6 +127,8 @@ void fragment() {
 		transmission*=1.0-alpha;
 	}
 	float opacity=1.0-transmission;
-	ALPHA=clamp(opacity+(pixel_random(FRAGCOORD.yx+17.0)-.5)*min(opacity,.003),0.0,.90);
-	ALBEDO=glow/max(1.0-transmission,.00001);
+	float coverage=clamp(opacity+(pixel_random(FRAGCOORD.yx+17.0)-.5)*min(opacity,.003),0.0,.90);
+	vec4 result=volume_color(glow/max(opacity,.00001),coverage,OUTPUT_IS_SRGB);
+	ALBEDO=result.rgb;
+	ALPHA=result.a;
 }
