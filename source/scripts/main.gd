@@ -119,6 +119,8 @@ func _ready():
 		call_deferred("initialize_avatar")
 
 func setup_camera():
+	if OS.has_feature("android") and RenderingServer.get_current_rendering_method()=="mobile":
+		get_viewport().screen_space_aa=Viewport.SCREEN_SPACE_AA_FXAA
 	var e=Environment.new();e.background_mode=Environment.BG_COLOR;e.background_color=Color.BLACK
 	e.reflected_light_source=Environment.REFLECTION_SOURCE_DISABLED
 	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC

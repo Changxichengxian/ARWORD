@@ -78,6 +78,12 @@ void fragment() {
     SPECULAR = .36*(1.0-smoothstep(.25,.85,trench));
     METALLIC = 0.02;
 	float opacity=mix(.22+.52*absorption,.24+.29*absorption,trench);
+    // These water colors are linear. GLES lights the surface in display space.
+    if (OUTPUT_IS_SRGB) {
+        surface_color = mix(12.92 * surface_color,
+            1.055 * pow(surface_color, vec3(1.0 / 2.4)) - 0.055,
+            step(vec3(0.0031308), surface_color));
+    }
     ALBEDO=surface_color;
     EMISSION=vec3(.09,.22,.31)*fresnel*.045;
     ALPHA=mix(opacity,1.0,1.0-smoothstep(.12,.52,surface_angle));

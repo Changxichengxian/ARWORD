@@ -69,14 +69,28 @@ func setup_backdrop(owner_game):
 	resize();get_viewport().size_changed.connect(resize);update_sky_camera()
 
 func show_behind_planet():
+	var env=game.get_world_3d().environment
+	if RenderingServer.get_current_rendering_method()=="gl_compatibility":
+		# GLES can composite the live solar view behind the orthographic camera
+		# using the same canvas texture that is displayed during observation.
+		env.background_mode=Environment.BG_CANVAS
+		env.background_canvas_max_layer=-10
+		canvas.layer=-10
+		canvas.show()
+		return
 	# The planet renderer draws its background in the same 3D target as the
 	# water. A full-resolution canvas copy can leave stale rectangles when
 	# the Android 3D target is downscaled and a canvas scissor is active.
 	backdrop_material=ShaderMaterial.new();backdrop_material.shader=preload("res://assets/planet_backdrop.gdshader")
 	backdrop_material.set_shader_parameter("solar_view",viewport.get_texture())
 	var sky=Sky.new();sky.radiance_size=Sky.RADIANCE_SIZE_32;sky.sky_material=backdrop_material
-	var env=game.get_world_3d().environment
 	env.sky=sky;env.background_mode=Environment.BG_SKY
+
+func set_backdrop_reveal(amount:float):
+	if backdrop_material:
+		backdrop_material.set_shader_parameter("reveal",amount)
+	else:
+		display.self_modulate.a=amount
 
 func set_opening_view(progress:float):
 	opening_time=clampf(progress,0.,1.)
@@ -219,12 +233,14 @@ func enter_observatory(index:int=0,primary:bool=false,body_index:int=-1)->bool:
 	if not observatory_active:
 		if opening_time<1.:set_opening_view(1.)
 		overview_transform=space_camera.transform;overview_fov=space_camera.fov
-	observatory_active=true;canvas.show()
+	observatory_active=true;canvas.layer=4;canvas.show()
 	select_observation_target(index)
 	primary_close=primary;observation_body=body_index
 	update_observation_quality();return true
 func leave_observatory():
-	observatory_active=false;primary_close=false;observation_body=-1;observation_blend=0.0;canvas.hide()
+	observatory_active=false;primary_close=false;observation_body=-1;observation_blend=0.0
+	if backdrop_material:canvas.hide()
+	else:canvas.layer=-10
 	space_camera.transform=overview_transform;space_camera.fov=overview_fov
 	update_observation_quality();update_sky_camera()
 func select_observation_target(index:int)->bool:

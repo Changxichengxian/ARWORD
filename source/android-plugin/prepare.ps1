@@ -21,9 +21,14 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 [IO.Compression.ZipFile]::ExtractToDirectory($template,$build)
 $javaPkg = Join-Path $build 'src/io/github/changxichengxian/arword'
 New-Item -ItemType Directory -Force -Path $javaPkg | Out-Null
-foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java','SafeViewport.java')) {
+foreach($name in @('PlanetUpdates.java','ApkDelta.java','UpdateFiles.java','SafeViewport.java','PlanetActivity.java')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot ('src/io/github/changxichengxian/arword/' + $name)) -Destination $javaPkg
 }
+$activity=Join-Path $build 'src/com/godot/game/GodotApp.java'
+$activityText=[IO.File]::ReadAllText($activity)
+$baseClass='extends GodotActivity {'
+if (-not $activityText.Contains($baseClass)) {throw '官方安卓启动类不匹配。'}
+[IO.File]::WriteAllText($activity,$activityText.Replace($baseClass,'extends io.github.changxichengxian.arword.PlanetActivity {'),[Text.UTF8Encoding]::new($false))
 if($UpdateRepository -notmatch '^[A-Za-z0-9-]+/[A-Za-z0-9_.-]+$'){throw '更新仓库必须写成 owner/repo。'}
 $channel='package io.github.changxichengxian.arword; final class UpdateChannel { static final String REPO="'+$UpdateRepository+'"; }'
 [IO.File]::WriteAllText((Join-Path $javaPkg 'UpdateChannel.java'),$channel,[Text.UTF8Encoding]::new($false))

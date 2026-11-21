@@ -59,7 +59,8 @@ func run():
 	cosmos.advance(20)
 	check(cosmos.nebula_clock==phase and planet.distance_to(cosmos.bodies[0].orbit.position)>.1,"stopped cloud drift does not stop the solar system")
 	cosmos.apply_settings(settings);cosmos.leave_observatory()
-	check(not cosmos.observatory_active and not cosmos.canvas.visible and cosmos.space_camera.position==Vector3.ZERO,"leaving restores the normal camera and planet background")
+	var daily_view=cosmos.canvas.visible and cosmos.canvas.layer==-10 if RenderingServer.get_current_rendering_method()=="gl_compatibility" else not cosmos.canvas.visible
+	check(not cosmos.observatory_active and daily_view and cosmos.space_camera.position==Vector3.ZERO,"leaving restores the normal camera and planet background")
 	check(cosmos.settings==settings and cosmos.sky_seed==seed,"observatory preserves saved settings and the current sky")
 	check(JSON.stringify(game.learning.data)==saved,"observation does not alter learning or construction progress")
 	cosmos.set_sky_seed(7919);cosmos.advance(0);await picture("daily-seed-7919")
