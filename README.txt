@@ -1,6 +1,6 @@
 ARWORD
 
-当前源码版本为 v0.14.18。Windows 试玩位于 outputs/0.14.18/Windows/ARWORD.exe。安卓公开构建目标为 outputs/0.14.18/Public/ARWORD-0.14.18.apk（版本代码 56）。历史个人首装包保留在 outputs/0.14.4/Android/。已发布版本以 GitHub Releases 为准。
+当前源码版本为 v0.14.19。Windows 试玩位于 outputs/0.14.19/Windows/ARWORD.exe。安卓公开构建目标为 outputs/0.14.19/Public/ARWORD-0.14.19.apk（版本代码 58）。历史个人首装包保留在 outputs/0.14.4/Android/。已发布版本以 GitHub Releases 为准。
 https://github.com/Changxichengxian/ARWORD/releases/latest
 
 手动放大的近景视角降到地表上方 25°，点击工地和收起词卡保留所选缩放。复习混合听音选意、看词选意和看意选词，作答后展示每项对应英文，轻点继续。五处泊位随各自的岸边地块出现，渡船起航加速，弯道连续转向，靠岸前减速。新词先看词义，再隔开其他词独立回忆三次。进入黑洞近观后，暖白吸积盘斜穿视野，细光环与前景的气体薄雾分开呈现。拖动可绕行，缩放可在盘面特写和完整轮廓之间切换。

@@ -555,7 +555,19 @@ func setup(owner_node):
 
 func setup_base(owner_node):
 	game=owner_node
-	var sun=DirectionalLight3D.new();sun.rotation_degrees=Vector3(-48,-35,0);sun.light_color=Color("FFF0DB");sun.light_energy=1.0;sun.light_cull_mask=1;sun.shadow_enabled=true;sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS;sun.directional_shadow_split_1=.53;sun.directional_shadow_max_distance=49;sun.shadow_blur=1.35;sun.shadow_bias=.022;add_child(sun)
+	var sun=DirectionalLight3D.new()
+	sun.rotation_degrees=Vector3(-48,-35,0)
+	sun.light_color=Color("FFF0DB")
+	sun.light_energy=1.0
+	sun.light_cull_mask=1
+	sun.shadow_enabled=true
+	sun.directional_shadow_mode=DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+	sun.directional_shadow_split_1=.60
+	sun.directional_shadow_blend_splits=true
+	sun.directional_shadow_max_distance=49.0
+	sun.shadow_blur=.85
+	sun.shadow_bias=.022
+	add_child(sun)
 	globe=Node3D.new();add_child(globe);var ocean=model("ocean",globe)
 	water=load("res://scripts/water.gd").new();globe.add_child(water);water.setup(self,ocean)
 	var pod_anchor=Node3D.new();globe.add_child(pod_anchor);place_static(pod_anchor,IslandFrontier.point(Vector2i(0,1)),PI);model("landing_pod",pod_anchor).scale=Vector3.ONE*.7

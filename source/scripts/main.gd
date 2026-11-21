@@ -125,7 +125,11 @@ func setup_camera():
 	e.reflected_light_source=Environment.REFLECTION_SOURCE_DISABLED
 	e.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR;e.ambient_light_color=Color("BBD9E4");e.ambient_light_energy=.37;e.tonemap_mode=Environment.TONE_MAPPER_FILMIC
 	var env=WorldEnvironment.new();env.environment=e;add_child(env)
-	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=150;add_child(camera);camera.position=HOME_CAMERA;camera.look_at(Vector3(0,10.0,0));camera.current=true
+	# Orthographic shadow maps span the camera depth. The globe fits within 54
+	# units from every gameplay view; the distant sky uses its own camera.
+	camera=Camera3D.new();camera.projection=Camera3D.PROJECTION_ORTHOGONAL;camera.keep_aspect=Camera3D.KEEP_WIDTH;camera.size=world_zoom;camera.near=.1;camera.far=54;add_child(camera);camera.position=HOME_CAMERA;camera.look_at(Vector3(0,10.0,0));camera.current=true
+	if RenderingServer.get_current_rendering_method()=="gl_compatibility":
+		RenderingServer.directional_soft_shadow_filter_set_quality(RenderingServer.SHADOW_QUALITY_SOFT_HIGH)
 
 func setup_world_audio():
 	ambience=load("res://scripts/ambience.gd").new();add_child(ambience);ambience.setup(self)
